@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernfelder · Lernplattform</title>
+<meta name="description" content="Materialien nach Lernfeldern des Rahmenlehrplans, quer zu den fachsystematischen Bereichen.">
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+<div id="kopf"></div>
+<div id="krumen"></div>
+
+<main class="inhalt">
+  <div class="titelblock">
+    <p class="augenbraue">Berufsschule</p>
+    <h1>Lernfelder</h1>
+    <p class="lead">Materialien nach Lernfeldern des Rahmenlehrplans, quer zu den fachsystematischen Bereichen.</p>
+  </div>
+
+  <h2>Themen</h2>
+  <ul data-kacheln="themen-fach" data-id="lernfelder"></ul>
+</main>
+
+<div id="fuss"></div>
+
+<script src="../data/inhalte.js"></script>
+<script src="../assets/js/site.js"></script>
+<script>Schule.seite({ tiefe: 1, typ: "fach", id: "lernfelder" });</script>
+</body>
+</html>

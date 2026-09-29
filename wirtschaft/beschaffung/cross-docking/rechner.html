@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-Docking-Rechner</title>
+<meta name="description" content="Interaktiver Rechner: Direktbelieferung, einstufiges und mehrstufiges Cross-Docking im Vergleich nach Kilometern, Anlieferungen und Kosten.">
+<style>
+:root{
+  --blau-900:#0F2E52; --blau-700:#17518C; --blau-100:#E3EDF7; --blau-050:#F3F7FC;
+  --grau-900:#23282E; --grau-700:#434A53; --grau-500:#6B747E;
+  --grau-300:#C3CAD2; --grau-150:#E4E8ED; --grau-050:#F5F7F9;
+  --weiss:#FFFFFF;
+  --ban:#1B7A5A; --ora:#B07A08; --gur:#B33A2B;
+  --gut:#1B7A5A;
+  --radius:10px;
+  --schatten:0 1px 2px rgba(35,40,46,.06), 0 8px 20px rgba(35,40,46,.07);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;padding:18px 16px 30px;background:var(--grau-050);color:var(--grau-900);
+  font-family:var(--sans);font-size:15px;line-height:1.5;
+}
+.wrap{max-width:1160px;margin:0 auto}
+h1{font-family:var(--serif);font-size:clamp(1.4rem,1.1rem + 1.2vw,1.85rem);margin:0 0 6px;letter-spacing:-.015em}
+h2{font-family:var(--serif);font-size:1.08rem;margin:0 0 12px;letter-spacing:-.01em}
+h3{font-size:.8rem;margin:0 0 10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+p{margin:0 0 10px}
+.augenbraue{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--blau-700);font-weight:700;margin:0 0 6px}
+.lead{color:var(--grau-700);max-width:70ch;margin:0}
+.kopfzeile{border-bottom:2px solid var(--blau-900);padding-bottom:14px;margin-bottom:20px}
+
+.layout{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--weiss);border:1px solid var(--grau-150);border-radius:var(--radius);padding:16px;box-shadow:var(--schatten)}
+
+table.matrix{width:100%;border-collapse:collapse;font-size:.85rem}
+table.matrix th{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--grau-500);text-align:center;padding:0 0 6px;font-weight:700}
+table.matrix th.rowhead{text-align:left;padding-right:6px;text-transform:none;letter-spacing:0;font-size:.82rem;color:var(--grau-900)}
+table.matrix td{padding:3px 2px;text-align:center}
+table.matrix td.rowhead{text-align:left;white-space:nowrap;font-weight:600}
+.punkt{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+input[type="number"]{
+  width:100%;min-width:0;padding:6px 4px;text-align:center;font-family:var(--mono);
+  font-size:.88rem;font-variant-numeric:tabular-nums;background:var(--grau-050);
+  color:var(--grau-900);border:1px solid var(--grau-300);border-radius:6px;
+}
+input[type="number"]:focus-visible,input[type="range"]:focus-visible,button:focus-visible{
+  outline:3px solid var(--blau-700);outline-offset:2px
+}
+.matrix tfoot td{padding-top:8px;font-family:var(--mono);font-size:.82rem;color:var(--grau-700);font-variant-numeric:tabular-nums;border-top:1px solid var(--grau-150)}
+
+.feld{display:grid;gap:4px;margin-bottom:12px}
+.feld:last-child{margin-bottom:0}
+.feld label{font-size:.82rem;color:var(--grau-700);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.feld .wert{font-family:var(--mono);font-size:.82rem;color:var(--grau-900);font-variant-numeric:tabular-nums;font-weight:600}
+input[type="range"]{width:100%;accent-color:var(--blau-700);background:transparent}
+.tipp{font-size:.78rem;color:var(--grau-500);margin:8px 0 0}
+
+.reiter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.reiter button{
+  font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;
+  background:var(--weiss);color:var(--grau-700);border:1px solid var(--grau-300);font-family:inherit;
+}
+.reiter button:hover{border-color:var(--blau-700);color:var(--blau-700)}
+.reiter button[aria-pressed="true"]{background:var(--blau-900);color:var(--weiss);border-color:var(--blau-900)}
+
+.kartenfeld{background:var(--grau-050);border:1px solid var(--grau-150);border-radius:8px;padding:6px}
+svg.karte{display:block;width:100%;height:auto;max-width:100%;touch-action:none}
+.knoten-name{font-size:5px;font-weight:700}
+.knoten-sub{font-family:var(--mono);font-size:3.6px}
+.greifbar{cursor:grab}
+.greifbar:active{cursor:grabbing}
+
+.legende{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--grau-700);margin-top:10px}
+.legende span{display:flex;align-items:center;gap:5px}
+.legende i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+.kennzahlen{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden;margin-top:14px}
+.kennzahl{background:var(--weiss);padding:11px 13px}
+.kennzahl .k{font-size:.69rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.kennzahl .v{font-family:var(--mono);font-size:1.28rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:2px}
+.kennzahl .d{font-size:.74rem;color:var(--grau-700);font-variant-numeric:tabular-nums}
+.besser{color:var(--gut);font-weight:600}
+.schlechter{color:var(--gur);font-weight:600}
+
+.vergleich{display:grid;gap:14px}
+.balkenzeile{display:grid;grid-template-columns:minmax(88px,auto) minmax(0,1fr) minmax(76px,auto);gap:10px;align-items:center;margin-bottom:7px;font-size:.83rem}
+.balkenbahn{background:var(--grau-050);border-radius:4px;height:18px;overflow:hidden;border:1px solid var(--grau-150)}
+.balken{height:100%;border-radius:3px 0 0 3px;transition:width .25s ease}
+.balkenwert{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;font-weight:600;font-size:.83rem}
+@media (prefers-reduced-motion: reduce){.balken{transition:none}}
+
+details{border:1px solid var(--grau-150);border-radius:8px;background:var(--weiss);box-shadow:var(--schatten)}
+summary{cursor:pointer;padding:12px 14px;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--grau-500);font-weight:600}
+details[open] summary::after{content:"–"}
+.details-inhalt{padding:0 14px 14px;font-size:.86rem;color:var(--grau-700)}
+.rechnung{font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums;line-height:1.7}
+.rechnung b{color:var(--grau-900);font-weight:600}
+.rechenzeile{display:flex;justify-content:space-between;gap:14px;padding:3px 0;border-bottom:1px dotted var(--grau-150)}
+.rechenzeile:last-child{border-bottom:none}
+
+.modellhinweis{
+  border-left:4px solid var(--ora);background:var(--weiss);
+  border-top:1px solid var(--grau-150);border-right:1px solid var(--grau-150);border-bottom:1px solid var(--grau-150);
+  padding:13px 15px;border-radius:0 8px 8px 0;font-size:.83rem;color:var(--grau-700);margin-top:16px;
+}
+.zuruecksetzen{
+  font-size:.79rem;font-weight:600;cursor:pointer;background:var(--grau-050);color:var(--grau-700);
+  border:1px solid var(--grau-300);border-radius:6px;padding:7px 12px;margin-top:12px;font-family:inherit;
+}
+.zuruecksetzen:hover{border-color:var(--blau-700);color:var(--blau-700)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="kopfzeile">
+    <p class="augenbraue">Beschaffung · Warenumschlag</p>
+    <h1>Cross-Docking-Rechner</h1>
+    <p class="lead">Drei Lieferanten, drei Filialen, ein Umschlagpunkt. Verändern Sie Bestellmengen, Lkw&#8209;Kapazität und Standorte – und sehen Sie sofort, wie sich gefahrene Kilometer, Anlieferungen und Kosten in den drei Verfahren unterscheiden.</p>
+  </header>
+
+  <div class="layout">
+    <div class="stack">
+      <section class="panel">
+        <h2>Bestellungen (Kisten)</h2>
+        <table class="matrix">
+          <thead>
+            <tr><th class="rowhead">Lieferant</th><th>Filiale 1</th><th>Filiale 2</th><th>Filiale 3</th></tr>
+          </thead>
+          <tbody id="matrix-body"></tbody>
+          <tfoot>
+            <tr><td class="rowhead">Summe</td><td id="sum-f1">–</td><td id="sum-f2">–</td><td id="sum-f3">–</td></tr>
+          </tfoot>
+        </table>
+        <p class="tipp">Gesamtmenge: <b id="sum-total">–</b> Kisten</p>
+      </section>
+
+      <section class="panel">
+        <h2>Transport und Kosten</h2>
+        <div class="feld"><label for="cap">Kapazität je Lkw <span class="wert" id="cap-val"></span></label><input type="range" id="cap" min="2" max="40" step="1"></div>
+        <div class="feld"><label for="costKm">Fahrtkosten <span class="wert" id="costKm-val"></span></label><input type="range" id="costKm" min="0.4" max="3" step="0.05"></div>
+        <div class="feld"><label for="costAnl">Aufwand je Anlieferung in der Filiale <span class="wert" id="costAnl-val"></span></label><input type="range" id="costAnl" min="0" max="60" step="5"></div>
+        <div class="feld"><label for="handling">Umschlag am CD-Punkt je Kiste <span class="wert" id="handling-val"></span></label><input type="range" id="handling" min="0" max="4" step="0.1"></div>
+        <div class="feld"><label for="komm">Zuschlag Kommissionierung (mehrstufig) <span class="wert" id="komm-val"></span></label><input type="range" id="komm" min="0" max="4" step="0.1"></div>
+        <div class="feld"><label for="fixCD">Fixkosten CD-Punkt je Tag <span class="wert" id="fixCD-val"></span></label><input type="range" id="fixCD" min="0" max="1500" step="50"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Kurzfristige Bestelländerung</h2>
+        <div class="feld"><label for="changes">Geänderte Bestellpositionen <span class="wert" id="changes-val"></span></label><input type="range" id="changes" min="0" max="6" step="1"></div>
+        <p class="tipp">Ohne Cross-Docking und beim <b>einstufigen</b> Verfahren ist die Ware beim Lieferanten bereits filialgenau vorkommissioniert – jede Änderung erzwingt eine Nachlieferung. Beim <b>mehrstufigen</b> Verfahren wird erst am Umschlagpunkt kommissioniert; die Änderung kostet dort nur Arbeitszeit, keine zusätzliche Fahrt.</p>
+        <button class="zuruecksetzen" id="reset" type="button">Werte zurücksetzen</button>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="panel">
+        <div class="reiter" role="group" aria-label="Verfahren auswählen">
+          <button type="button" data-sc="A" aria-pressed="true">Ohne Cross-Docking</button>
+          <button type="button" data-sc="B" aria-pressed="false">Einstufig</button>
+          <button type="button" data-sc="C" aria-pressed="false">Mehrstufig</button>
+        </div>
+
+        <div class="kartenfeld">
+          <svg class="karte" id="map" viewBox="0 0 200 150" role="img" aria-label="Karte der Lieferanten, des Cross-Docking-Punkts und der Filialen mit den gefahrenen Strecken">
+            <g id="routes"></g><g id="nodes"></g>
+          </svg>
+        </div>
+        <div class="legende">
+          <span><i style="background:var(--ban)"></i> Bananen</span>
+          <span><i style="background:var(--ora)"></i> Orangen</span>
+          <span><i style="background:var(--gur)"></i> Gurken</span>
+          <span><i style="background:var(--blau-900)"></i> Sammeltour ab CD-Punkt</span>
+          <span>Standorte lassen sich mit Maus oder Finger verschieben.</span>
+        </div>
+
+        <div class="kennzahlen" id="kpis"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Vergleich der drei Verfahren</h2>
+        <div class="vergleich">
+          <div><h3>Gefahrene Kilometer</h3><div id="bars-km"></div></div>
+          <div><h3>Gesamtkosten je Tag</h3><div id="bars-cost"></div></div>
+          <div><h3>Anlieferungen in den Filialen</h3><div id="bars-anl"></div></div>
+        </div>
+      </section>
+
+      <details>
+        <summary>Rechenweg für das gewählte Verfahren</summary>
+        <div class="details-inhalt"><div class="rechnung" id="calc"></div></div>
+      </details>
+
+      <div class="modellhinweis">
+        <b>Modellannahmen:</b> Die Entfernungen sind Luftlinien auf der Karte; die Touren folgen der festen Reihenfolge Filiale&nbsp;1 → 2 → 3 ohne Routenoptimierung. Reale Tourenplanung rechnet mit Straßenkilometern, Zeitfenstern und Lenkzeiten. Die Kilometerzahlen zeigen die <em>Richtung</em> des Effekts zuverlässig, nicht seinen exakten Betrag. Einstufiges und mehrstufiges Cross-Docking unterscheiden sich im Modell nicht in der Streckenführung, sondern im Ort der Kommissionierung – und damit in Flexibilität und Umschlagkosten.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DEF = {
+    orders:[[1,2,1],[3,1,1],[1,1,3]],
+    cap:20, costKm:1.20, costAnl:25, handling:0.80, komm:0.60, fixCD:400, changes:0,
+    pos:{ L0:[22,26], L1:[18,75], L2:[24,124], CD:[100,75], F0:[176,28], F1:[182,76], F2:[172,124] }
+  };
+  var SUP = [
+    {name:"Bananen", color:"var(--ban)"},
+    {name:"Orangen", color:"var(--ora)"},
+    {name:"Gurken",  color:"var(--gur)"}
+  ];
+  var FIL = ["Filiale 1","Filiale 2","Filiale 3"];
+  var SC  = {A:"Ohne Cross-Docking", B:"Einstufiges Cross-Docking", C:"Mehrstufiges Cross-Docking"};
+
+  var S = JSON.parse(JSON.stringify(DEF));
+  S.scenario = "A";
+
+  function eur(n){ return n.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €"; }
+  function km(n){ return n.toLocaleString("de-DE",{maximumFractionDigits:0}) + " km"; }
+  function d(a,b){ return Math.sqrt((a[0]-b[0])*(a[0]-b[0]) + (a[1]-b[1])*(a[1]-b[1])); }
+
+  function compute(sc){
+    var p = S.pos, cap = S.cap;
+    var perSup = S.orders.map(function(r){ return r.reduce(function(a,b){return a+b;},0); });
+    var total  = perSup.reduce(function(a,b){return a+b;},0);
+    var perFil = [0,1,2].map(function(f){ return S.orders.reduce(function(a,r){ return a + r[f]; },0); });
+    var r = {km:0, fahrten:0, anlief:0, umschlag:0, steps:[], legs:[]};
+
+    if(sc === "A"){
+      S.orders.forEach(function(row,s){
+        var served = [0,1,2].filter(function(f){ return row[f] > 0; });
+        if(!served.length) return;
+        var touren = Math.max(1, Math.ceil(perSup[s]/cap));
+        var len = d(p["L"+s], p["F"+served[0]]);
+        for(var i=1;i<served.length;i++) len += d(p["F"+served[i-1]], p["F"+served[i]]);
+        len += d(p["F"+served[served.length-1]], p["L"+s]);
+        r.km += len*touren; r.fahrten += touren; r.anlief += served.length*touren;
+        r.steps.push({t:SUP[s].name+": Rundtour über "+served.length+" Filiale(n)",
+                      v:len.toFixed(0)+" km × "+touren+" Tour(en) = "+(len*touren).toFixed(0)+" km"});
+        var pts = [p["L"+s]];
+        served.forEach(function(f){ pts.push(p["F"+f]); });
+        pts.push(p["L"+s]);
+        r.legs.push({pts:pts, color:SUP[s].color});
+      });
+    } else {
+      S.orders.forEach(function(row,s){
+        if(perSup[s] <= 0) return;
+        var touren = Math.ceil(perSup[s]/cap);
+        var len = 2*d(p["L"+s], p.CD);
+        r.km += len*touren; r.fahrten += touren;
+        r.steps.push({t:SUP[s].name+": Lieferant → CD-Punkt → zurück",
+                      v:len.toFixed(0)+" km × "+touren+" Fahrt(en) = "+(len*touren).toFixed(0)+" km"});
+        r.legs.push({pts:[p["L"+s], p.CD], color:SUP[s].color});
+      });
+      var served = [0,1,2].filter(function(f){ return perFil[f] > 0; });
+      if(served.length){
+        var touren2 = Math.ceil(total/cap);
+        var len2 = d(p.CD, p["F"+served[0]]);
+        for(var j=1;j<served.length;j++) len2 += d(p["F"+served[j-1]], p["F"+served[j]]);
+        len2 += d(p["F"+served[served.length-1]], p.CD);
+        r.km += len2*touren2; r.fahrten += touren2; r.anlief += served.length*touren2;
+        r.steps.push({t:"Sammeltour ab CD-Punkt über "+served.length+" Filiale(n)",
+                      v:len2.toFixed(0)+" km × "+touren2+" Tour(en) = "+(len2*touren2).toFixed(0)+" km"});
+        var pts2 = [p.CD];
+        served.forEach(function(f){ pts2.push(p["F"+f]); });
+        pts2.push(p.CD);
+        r.legs.push({pts:pts2, color:"var(--blau-900)"});
+      }
+      r.umschlag = total;
+    }
+
+    r.nachlief = 0;
+    if(S.changes > 0 && sc !== "C"){
+      var pairs = [];
+      S.orders.forEach(function(row,s){
+        row.forEach(function(q,f){ if(q>0) pairs.push(2*d(p["L"+s], p["F"+f])); });
+      });
+      var avg = pairs.length ? pairs.reduce(function(a,b){return a+b;},0)/pairs.length : 0;
+      r.nachlief = S.changes;
+      r.km += avg*S.changes; r.fahrten += S.changes; r.anlief += S.changes;
+      r.steps.push({t:S.changes+" Nachlieferung(en) Lieferant → Filiale → zurück",
+                    v:"Ø "+avg.toFixed(0)+" km × "+S.changes+" = "+(avg*S.changes).toFixed(0)+" km"});
+    }
+
+    r.kostenFahrt    = r.km * S.costKm;
+    r.kostenAnl      = r.anlief * S.costAnl;
+    r.kostenUmschlag = r.umschlag * S.handling;
+    r.kostenKomm     = (sc === "C") ? total * S.komm : 0;
+    r.kostenFix      = (sc === "A") ? 0 : S.fixCD;
+    r.kosten = r.kostenFahrt + r.kostenAnl + r.kostenUmschlag + r.kostenKomm + r.kostenFix;
+    r.total = total;
+    return r;
+  }
+
+  var svg = document.getElementById("map");
+  var gR  = document.getElementById("routes");
+  var gN  = document.getElementById("nodes");
+  var NS  = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    var n = document.createElementNS(NS, tag);
+    for(var k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  function drawRoutes(res){
+    gR.textContent = "";
+    res.legs.forEach(function(leg){
+      for(var i=1;i<leg.pts.length;i++){
+        var a = leg.pts[i-1], b = leg.pts[i];
+        gR.appendChild(el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],
+          stroke:leg.color,"stroke-width":1.1,"stroke-linecap":"round",opacity:.85}));
+        var mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
+        var ang=Math.atan2(b[1]-a[1], b[0]-a[0])*180/Math.PI;
+        gR.appendChild(el("path",{d:"M -2.2 -1.8 L 2 0 L -2.2 1.8 Z",fill:leg.color,
+          transform:"translate("+mx+","+my+") rotate("+ang+")",opacity:.9}));
+      }
+    });
+  }
+
+  function nodeList(){
+    var n = [];
+    SUP.forEach(function(s,i){ n.push({key:"L"+i,label:s.name,sub:"Lieferant",color:s.color,shape:"truck"}); });
+    if(S.scenario !== "A"){
+      n.push({key:"CD",label:"CD-Punkt",sub:"Umschlag",color:"var(--blau-900)",shape:"hub"});
+    }
+    FIL.forEach(function(f,i){ n.push({key:"F"+i,label:"F "+(i+1),sub:f,color:"var(--grau-700)",shape:"store"}); });
+    return n;
+  }
+
+  function drawNodes(){
+    gN.textContent = "";
+    nodeList().forEach(function(n){
+      var x = S.pos[n.key][0], y = S.pos[n.key][1];
+      var g = el("g",{class:"greifbar","data-key":n.key,transform:"translate("+x+","+y+")"});
+      if(n.shape === "hub"){
+        g.appendChild(el("rect",{x:-9,y:-8,width:18,height:16,rx:2,fill:"var(--weiss)",stroke:n.color,"stroke-width":1.2}));
+        g.appendChild(el("path",{d:"M -6 2 L 0 -4 L 6 2 Z",fill:n.color,opacity:.85}));
+      } else if(n.shape === "truck"){
+        g.appendChild(el("rect",{x:-8,y:-6,width:16,height:12,rx:2,fill:n.color,opacity:.16,stroke:n.color,"stroke-width":1.1}));
+        g.appendChild(el("circle",{cx:0,cy:0,r:2.4,fill:n.color}));
+      } else {
+        g.appendChild(el("rect",{x:-7,y:-6,width:14,height:12,rx:1.5,fill:"var(--weiss)",stroke:"var(--grau-300)","stroke-width":1.1}));
+        g.appendChild(el("rect",{x:-7,y:-6,width:14,height:3.4,fill:"var(--grau-500)",opacity:.55}));
+      }
+      var t1 = el("text",{class:"knoten-name",x:0,y:-9.5,"text-anchor":"middle",fill:"var(--grau-900)"});
+      t1.textContent = n.label;
+      var t2 = el("text",{class:"knoten-sub",x:0,y:12.5,"text-anchor":"middle",fill:"var(--grau-500)"});
+      t2.textContent = n.sub;
+      g.appendChild(t1); g.appendChild(t2);
+      gN.appendChild(g);
+    });
+  }
+
+  var drag = null;
+  svg.addEventListener("pointerdown", function(e){
+    var g = e.target.closest ? e.target.closest("g[data-key]") : null;
+    if(!g) return;
+    drag = g.getAttribute("data-key");
+    svg.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  svg.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    var ctm = svg.getScreenCTM(); if(!ctm) return;
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var loc = pt.matrixTransform(ctm.inverse());
+    S.pos[drag] = [Math.min(194, Math.max(6, loc.x)), Math.min(142, Math.max(12, loc.y))];
+    render();
+  });
+  function endDrag(){ drag = null; }
+  svg.addEventListener("pointerup", endDrag);
+  svg.addEventListener("pointercancel", endDrag);
+
+  var mb = document.getElementById("matrix-body");
+  SUP.forEach(function(s,i){
+    var tr = document.createElement("tr");
+    var th = document.createElement("td");
+    th.className = "rowhead";
+    th.innerHTML = '<span class="punkt" style="background:'+s.color+'"></span>'+s.name;
+    tr.appendChild(th);
+    [0,1,2].forEach(function(f){
+      var td = document.createElement("td");
+      var inp = document.createElement("input");
+      inp.type="number"; inp.min="0"; inp.max="99"; inp.step="1";
+      inp.id = "o-"+i+"-"+f;
+      inp.value = S.orders[i][f];
+      inp.setAttribute("aria-label", s.name+" für "+FIL[f]);
+      inp.addEventListener("input", function(){
+        var v = parseInt(inp.value,10);
+        S.orders[i][f] = (isNaN(v)||v<0) ? 0 : Math.min(99,v);
+        render();
+      });
+      td.appendChild(inp); tr.appendChild(td);
+    });
+    mb.appendChild(tr);
+  });
+
+  var SLIDERS = [
+    {id:"cap",      fmt:function(v){ return v+" Kisten"; }},
+    {id:"costKm",   fmt:function(v){ return eur(v)+"/km"; }},
+    {id:"costAnl",  fmt:function(v){ return eur(v); }},
+    {id:"handling", fmt:function(v){ return eur(v); }},
+    {id:"komm",     fmt:function(v){ return eur(v); }},
+    {id:"fixCD",    fmt:function(v){ return eur(v); }},
+    {id:"changes",  fmt:function(v){ return v === 0 ? "keine" : v+" Position(en)"; }}
+  ];
+  SLIDERS.forEach(function(s){
+    var inp = document.getElementById(s.id);
+    inp.value = S[s.id];
+    inp.addEventListener("input", function(){ S[s.id] = parseFloat(inp.value); render(); });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+    b.addEventListener("click", function(){ S.scenario = b.getAttribute("data-sc"); render(); });
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    var fresh = JSON.parse(JSON.stringify(DEF));
+    Object.keys(fresh).forEach(function(k){ S[k] = fresh[k]; });
+    SUP.forEach(function(s,i){ [0,1,2].forEach(function(f){ document.getElementById("o-"+i+"-"+f).value = S.orders[i][f]; }); });
+    SLIDERS.forEach(function(s){ document.getElementById(s.id).value = S[s.id]; });
+    render();
+  });
+
+  function bars(node, list, unit){
+    var max = Math.max.apply(null, list.map(function(x){ return x.v; }).concat([1]));
+    var best = Math.min.apply(null, list.map(function(x){ return x.v; }));
+    node.innerHTML = list.map(function(x){
+      var col = (x.v === best) ? "var(--gut)" : (x.sc === S.scenario ? "var(--blau-900)" : "var(--grau-300)");
+      return '<div class="balkenzeile"><span>'+x.n+'</span>'+
+             '<span class="balkenbahn"><span class="balken" style="width:'+Math.max(2,(x.v/max)*100)+'%;background:'+col+'"></span></span>'+
+             '<span class="balkenwert">'+unit(x.v)+'</span></div>';
+    }).join("");
+  }
+
+  function render(){
+    var res = {A:compute("A"), B:compute("B"), C:compute("C")};
+    var cur = res[S.scenario], base = res.A;
+
+    var perFil = [0,1,2].map(function(f){ return S.orders.reduce(function(a,r){ return a + r[f]; },0); });
+    document.getElementById("sum-f1").textContent = perFil[0];
+    document.getElementById("sum-f2").textContent = perFil[1];
+    document.getElementById("sum-f3").textContent = perFil[2];
+    document.getElementById("sum-total").textContent = cur.total;
+
+    SLIDERS.forEach(function(s){ document.getElementById(s.id+"-val").textContent = s.fmt(S[s.id]); });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-sc") === S.scenario ? "true" : "false");
+    });
+
+    drawRoutes(cur); drawNodes();
+
+    var dk = cur.km - base.km, dc = cur.kosten - base.kosten;
+    function diff(v, unit){
+      if(S.scenario === "A") return '<span class="d">Vergleichsbasis</span>';
+      var cls = v < 0 ? "besser" : (v > 0 ? "schlechter" : "");
+      var sign = v > 0 ? "+" : (v < 0 ? "−" : "±");
+      return '<span class="d '+cls+'">'+sign+" "+unit(Math.abs(v))+" ggü. ohne CD</span>";
+    }
+    document.getElementById("kpis").innerHTML =
+      '<div class="kennzahl"><div class="k">Gefahrene km</div><div class="v">'+km(cur.km)+'</div>'+diff(dk,km)+'</div>'+
+      '<div class="kennzahl"><div class="k">Fahrten / Touren</div><div class="v">'+cur.fahrten+'</div><span class="d">davon '+cur.nachlief+' Nachlieferung(en)</span></div>'+
+      '<div class="kennzahl"><div class="k">Anlieferungen</div><div class="v">'+cur.anlief+'</div><span class="d">in den Filialen</span></div>'+
+      '<div class="kennzahl"><div class="k">Umschlag am CD</div><div class="v">'+cur.umschlag+'</div><span class="d">Kisten</span></div>'+
+      '<div class="kennzahl"><div class="k">Kosten je Tag</div><div class="v">'+eur(cur.kosten)+'</div>'+diff(dc,eur)+'</div>';
+
+    function rows(k){
+      return ["A","B","C"].map(function(sc){
+        return {sc:sc, n: sc==="A" ? "ohne CD" : (sc==="B" ? "einstufig" : "mehrstufig"), v:res[sc][k]};
+      });
+    }
+    bars(document.getElementById("bars-km"),   rows("km"),     km);
+    bars(document.getElementById("bars-cost"), rows("kosten"), eur);
+    bars(document.getElementById("bars-anl"),  rows("anlief"), function(v){ return v.toLocaleString("de-DE"); });
+
+    function row(t,v){ return '<div class="rechenzeile"><span>'+t+'</span><b>'+v+'</b></div>'; }
+    var html = '<div style="margin-bottom:8px;color:var(--grau-900)"><b>'+SC[S.scenario]+'</b></div>';
+    cur.steps.forEach(function(s){ html += row(s.t, s.v); });
+    html += row("Summe Strecke", km(cur.km));
+    html += '<div style="height:10px"></div>';
+    html += row("Fahrtkosten: "+cur.km.toFixed(0)+" km × "+eur(S.costKm), eur(cur.kostenFahrt));
+    html += row("Anlieferungen: "+cur.anlief+" × "+eur(S.costAnl), eur(cur.kostenAnl));
+    if(cur.umschlag)     html += row("Umschlag: "+cur.umschlag+" Kisten × "+eur(S.handling), eur(cur.kostenUmschlag));
+    if(cur.kostenKomm)   html += row("Kommissionierung: "+cur.total+" Kisten × "+eur(S.komm), eur(cur.kostenKomm));
+    if(cur.kostenFix)    html += row("Fixkosten CD-Punkt", eur(cur.kostenFix));
+    html += row("Gesamtkosten je Tag", eur(cur.kosten));
+    document.getElementById("calc").innerHTML = html;
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
