@@ -42,6 +42,10 @@ window.INHALTE = {
       kurz: "Rechtsgeschäfte, Vertragsrecht, Verwaltungsrecht.",
       status: "aktiv", rolle: "sammlung" },
 
+    { id: "ggk", name: "GGK", ordner: "ggk", icon: "globus",
+      kurz: "Geschichte mit Gemeinschaftskunde – Politik und Geschichte.",
+      status: "aktiv", rolle: "fach" },
+
     { id: "lernfelder", name: "Lernfelder", ordner: "lernfelder", icon: "raster",
       kurz: "Lernfeldbezogene Materialien der Berufsschule.",
       status: "aktiv", rolle: "sammlung" },
@@ -74,7 +78,15 @@ window.INHALTE = {
       kurz: "Finanzierungsarten, Kreditsicherheiten, Investitionsrechnung." },
 
     { id: "logistik", fach: "wirtschaft", name: "Logistik", status: "geplant",
-      kurz: "Transport, Lager, Distribution, Supply Chain Management." }
+      kurz: "Transport, Lager, Distribution, Supply Chain Management." },
+
+    { id: "ggk-politik", fach: "ggk", name: "Politik",
+      ordner: "ggk/politik", status: "aktiv",
+      kurz: "Politisches System, Parteien und Wahlen, Teilhabe und Willensbildung." },
+
+    { id: "ggk-geschichte", fach: "ggk", name: "Geschichte",
+      ordner: "ggk/geschichte", status: "geplant",
+      kurz: "Historische Themen des Bildungsplans." }
   ],
 
   /* ---------------- Einzelne Themen (Inhaltsseiten) ----------------- */
@@ -100,6 +112,17 @@ window.INHALTE = {
       faecher: ["wirtschaft", "bwl", "awl"] },
     { id: "make-or-buy", name: "Make-or-Buy", bereich: "beschaffung", status: "geplant",
       kurz: "Eigenfertigung oder Fremdbezug – Kostenvergleich und qualitative Kriterien.",
-      faecher: ["wirtschaft", "bwl"] }
+      faecher: ["wirtschaft", "bwl"] },
+
+    {
+      id: "wahlprogramme-2025",
+      name: "Wahlprogramme 2025 zuordnen",
+      bereich: "ggk-politik",
+      pfad: "ggk/politik/wahlprogramme-2025",
+      status: "aktiv",
+      kurz: "Wer schrieb das? Aussagen aus sechs Wahlprogrammen zur Bundestagswahl 2025 den Parteien zuordnen – mit Vergleichsübersicht und Arbeitsaufträgen.",
+      faecher: ["ggk"],
+      material: ["Zuordnungsspiel", "Vergleichstabelle", "Arbeitsaufträge"]
+    }
   ]
 };

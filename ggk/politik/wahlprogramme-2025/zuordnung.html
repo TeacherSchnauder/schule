@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Wahlprogramme 2025 zuordnen</title>
+<meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>
+/* Layout: ein Stimmzettel pro Runde – Zitat links, sechs Ankreuzkreise rechts; am Ende die Übersicht als Raster wie im Schulbuch (Dimension × Partei). */
+:root{
+  --paper:#f6f7f5;
+  --sheet:#ffffff;
+  --ink:#1e2228;
+  --muted:#5b6370;
+  --rule:#cdd3dc;
+  --accent:#1d3f8f;          /* „Zweitstimmen-Blau“ */
+  --accent-soft:#e6ebf7;
+  --ok:#2c7a4b; --ok-soft:#e3f2e8;
+  --bad:#b0372b; --bad-soft:#f8e5e2;
+  --warn:#8a6100; --warn-soft:#fbf1d9;
+  --f-display:"Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-text:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12151b; --sheet:#1a1f27; --ink:#e7eaf0; --muted:#9aa3b2; --rule:#343c49;
+  --accent:#93acf2; --accent-soft:#232d45;
+  --ok:#6fcf97; --ok-soft:#1d3427; --bad:#f08c80; --bad-soft:#3d2321; --warn:#e8c26a; --warn-soft:#3a3120;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#12151b; --sheet:#1a1f27; --ink:#e7eaf0; --muted:#9aa3b2; --rule:#343c49;
+  --accent:#93acf2; --accent-soft:#232d45;
+  --ok:#6fcf97; --ok-soft:#1d3427; --bad:#f08c80; --bad-soft:#3d2321; --warn:#e8c26a; --warn-soft:#3a3120;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-text);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,6vw,46px);font-weight:800;font-stretch:78%;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700;font-stretch:85%}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.eyebrow{font-family:var(--f-display);font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--f-mono);font-size:12.5px}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Kopf */
+header{display:grid;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:20px}
+.lead{max-width:62ch;color:var(--ink)}
+.leitfrage{font-family:var(--f-display);font-weight:600;font-size:19px;font-stretch:90%;color:var(--accent)}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 24px;font-size:15px;color:var(--muted);margin:0;padding:0;list-style:none}
+.howto li{display:flex;gap:10px}
+.howto b{font-family:var(--f-display);color:var(--ink);min-width:1.2em}
+
+/* Rundenleiste */
+.rounds{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rtab{font-family:var(--f-display);font-size:13.5px;font-weight:600;padding:6px 12px;border:1.5px solid var(--rule);border-radius:999px;background:var(--sheet);color:var(--muted);font-variant-numeric:tabular-nums}
+.rtab.current{border-color:var(--accent);color:var(--accent)}
+.rtab.done{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.scorebox{margin-left:auto;font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Stimmzettel */
+.ballot{background:var(--sheet);border:2px solid var(--ink);border-radius:4px}
+.ballot-head{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between;padding:16px 18px;border-bottom:2px solid var(--ink)}
+.ballot-head p{font-size:15px;color:var(--muted);max-width:60ch}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 22px;padding:16px 18px;border-bottom:1px solid var(--rule);align-items:center}
+.row:last-of-type{border-bottom:none}
+.quote{font-size:17.5px;line-height:1.45;min-width:0}
+.quote q{quotes:"„" "“"}
+.marks{display:grid;grid-template-columns:repeat(6,52px);gap:4px}
+.mark{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;padding:4px 0;cursor:pointer;border-radius:6px}
+.mark .circ{width:30px;height:30px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:var(--sheet)}
+.mark .circ svg{width:20px;height:20px;opacity:0;transition:opacity .12s}
+.mark .lbl{font-family:var(--f-display);font-size:11.5px;font-weight:600;font-stretch:80%;color:var(--muted);white-space:nowrap}
+.mark[aria-pressed="true"] .circ svg{opacity:1}
+.mark[aria-pressed="true"] .lbl{color:var(--accent)}
+.mark[aria-pressed="true"] .circ{border-color:var(--accent)}
+.mark:disabled{cursor:default}
+.mark.taken:not([aria-pressed="true"]) .lbl{text-decoration:line-through;opacity:.55}
+.mark.solution .circ{box-shadow:0 0 0 3px var(--ok)}
+.feedback{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:14.5px;padding:8px 12px;border-radius:4px}
+.row.right .feedback{background:var(--ok-soft)}
+.row.wrong .feedback{background:var(--bad-soft)}
+.verdict{font-family:var(--f-display);font-weight:700}
+.row.right .verdict{color:var(--ok)}
+.row.wrong .verdict{color:var(--bad)}
+.note{font-size:13.5px;color:var(--warn);background:var(--warn-soft);padding:2px 8px;border-radius:3px}
+
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:16px 18px;border-top:2px solid var(--ink)}
+.btn{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.02em;padding:11px 20px;border-radius:4px;border:2px solid var(--accent);background:var(--accent);color:var(--sheet);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.status{font-size:14.5px;color:var(--muted)}
+
+/* Übersicht */
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:20px 18px;display:grid;gap:14px}
+.result-line{font-family:var(--f-display);font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;border:2px solid var(--ink);border-radius:4px;background:var(--sheet)}
+table{border-collapse:collapse;min-width:960px;width:100%;font-size:14px;line-height:1.4}
+th,td{border:1px solid var(--rule);padding:10px;vertical-align:top;text-align:left}
+thead th{font-family:var(--f-display);font-size:14px;font-weight:700;background:var(--accent-soft);border-bottom:2px solid var(--ink)}
+thead th small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;line-height:1.3;margin-top:2px}
+tbody th{font-family:var(--f-display);font-weight:700;width:120px;background:var(--paper)}
+td q{quotes:"„" "“"}
+td .mono{display:block;color:var(--muted);margin-top:6px;font-size:11.5px}
+td .note{display:inline-block;margin-top:4px;font-size:11.5px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.tasks{margin:0;padding-left:1.3em;display:grid;gap:10px}
+.tasks .afb{font-family:var(--f-display);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.kritik{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15.5px}
+.kritik b{font-family:var(--f-display)}
+details{background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:14px 18px}
+details summary{font-family:var(--f-display);font-weight:700;cursor:pointer}
+details[open] summary{margin-bottom:12px}
+details ul{margin:0;padding-left:1.2em;display:grid;gap:8px;font-size:15.5px}
+.sources{font-size:14.5px;display:grid;gap:10px;margin:0;padding-left:1.2em}
+.sources .mono,.sources a{word-break:break-all;overflow-wrap:anywhere}
+footer{font-size:13.5px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:720px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .marks{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .mark .lbl{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">GGK · J1 · BPE 2.1 · Parteien und politische Willensbildung</span>
+    <h1>Wer schrieb das?</h1>
+    <p class="leitfrage">Leitfrage: Woran erkennt man, wofür eine Partei steht?</p>
+    <p class="lead">Alle Sätze stammen wörtlich aus den Wahlprogrammen zur Bundestagswahl am 23. Februar 2025. Ordnen Sie in fünf Runden jede Aussage der Partei zu, die sie geschrieben hat. Am Ende entsteht eine Übersicht der Programmatik im Vergleich.</p>
+    <ol class="howto">
+      <li><b>1</b><span>Lesen Sie die sechs Aussagen einer Runde.</span></li>
+      <li><b>2</b><span>Kreuzen Sie je Aussage eine Partei an. Jede Partei kommt pro Runde genau einmal vor.</span></li>
+      <li><b>3</b><span>Prüfen Sie und notieren Sie, woran Sie die Partei erkannt haben (Schlüsselbegriffe, Ziele).</span></li>
+    </ol>
+  </header>
+
+  <nav class="rounds" id="rounds" aria-label="Runden"></nav>
+
+  <main id="stage"></main>
+
+
+  <section class="sheet" aria-labelledby="qv">
+    <h2 id="qv">Quellen- und Materialverzeichnis</h2>
+    <ol class="sources" id="sources"></ol>
+    <p class="status">Abrufdatum aller Links: 06.10.2026. Seitenzahlen beziehen sich auf die PDF-Seiten der jeweiligen Datei.</p>
+  </section>
+
+  <footer>Arbeitsmaterial für den Unterricht, GGK J1 (Wirtschaftsgymnasium BW). Die Auswahl einzelner Sätze verkürzt die Programme; maßgeblich ist der Wortlaut im Original.</footer>
+</div>
+
+<script>
+const PARTIES=[
+  {id:"afd",short:"AfD",name:"Alternative für Deutschland"},
+  {id:"union",short:"CDU/CSU",name:"CDU und CSU"},
+  {id:"linke",short:"Linke",name:"Die Linke"},
+  {id:"fdp",short:"FDP",name:"Freie Demokratische Partei"},
+  {id:"gruene",short:"Grüne",name:"Bündnis 90/Die Grünen"},
+  {id:"spd",short:"SPD",name:"Sozialdemokratische Partei Deutschlands"}
+];
+const PROGRAMS={
+  union:{title:"„Politikwechsel für Deutschland“ – Wahlprogramm von CDU und CSU, Langfassung",url:"https://www.cdu.de/app/uploads/2025/01/km_btw_2025_wahlprogramm_langfassung_ansicht.pdf",file:"km_btw_2025_wahlprogramm_langfassung_ansicht.pdf"},
+  spd:{title:"„Mehr für Dich. Besser für Deutschland.“ – Regierungsprogramm der SPD",url:"https://www.spd.de/fileadmin/Dokumente/Beschluesse/Programm/SPD_Programm_bf.pdf",file:"SPD_Programm_bf.pdf"},
+  gruene:{title:"„Zusammen wachsen“ – Regierungsprogramm von Bündnis 90/Die Grünen",url:"https://www.gruene.de/artikel/zusammen-wachsen",file:"20250205_Regierungsprogramm_DIGITAL_DINA5.pdf (Download über die Programmseite)"},
+  fdp:{title:"„Alles lässt sich ändern“ – Wahlprogramm der FDP (Fassung Dezember 2024)",url:"https://www.fdp.de/sites/default/files/2024-12/fdp-wahlprogramm_2025.pdf",file:"fdp-wahlprogramm_2025.pdf"},
+  afd:{title:"„Zeit für Deutschland“ – Wahlprogramm der AfD, beschlossen in Riesa, 11.–12.01.2025",url:"https://www.afd.de/wp-content/uploads/2025/02/AfD_Bundestagswahlprogramm2025_web.pdf",file:"AfD_Bundestagswahlprogramm2025_web.pdf"},
+  linke:{title:"„Alle wollen regieren. Wir wollen verändern.“ – Wahlprogramm von Die Linke, beschlossen am 18.01.2025",url:"https://www.die-linke.de/fileadmin/user_upload/Wahlprogramm_Langfassung_Linke-BTW25_01.pdf",file:"Wahlprogramm_Langfassung_Linke-BTW25_01.pdf"}
+};
+const ROUNDS=[
+  {key:"A",name:"Leitidee & Selbstbild",hint:"Wie beschreiben die Parteien ihren eigenen Grundgedanken?",items:{
+    union:{q:"Wir stehen zur Sozialen Marktwirtschaft, wir stehen zu Wettbewerb, Wachstum und Wohlstand.",ref:"S. 11"},
+    spd:{q:"Denn gute Arbeit ist der Anker für ein Leben in Würde und Wohlstand.",ref:"S. 12"},
+    gruene:{q:"Wir wollen, dass unsere Wirtschaft in die Zukunft wächst: klimaneutral, nachhaltig, innovativ, wettbewerbsfähig in einem gemeinsamen Europa.",ref:"S. 10"},
+    fdp:{q:"Der beste Weg, um diese Kraft der Menschen freizusetzen, ist mehr Freiheit für mehr Menschen.",ref:"S. 4"},
+    afd:{q:"Von der EU zu einem Bund Europäischer Nationen",ref:"S. 139 (lt. Inhaltsverzeichnis)",note:"Kapitelüberschrift"},
+    linke:{q:"Unsere Leitlinie heißt: Wir gemeinsam gegen die da oben.",ref:"Präambel"}
+  }},
+  {key:"B",name:"Staat & Finanzen",hint:"Schuldenbremse, Schulden, Staatsausgaben.",items:{
+    union:{q:"Wir halten an der Schuldenbremse des Grundgesetzes fest. Die Schulden von heute sind die Steuererhöhungen von morgen.",ref:"S. 8"},
+    spd:{q:"Deshalb wollen wir die Schuldenregel im Grundgesetz so reformieren, dass Investitionen in die Zukunftsfähigkeit unseres Landes und in den Wohlstand nicht behindert werden.",ref:"S. 17"},
+    gruene:{q:"Die schwarze Null im Haushalt ist eine Hypothek für die Zukunftsfähigkeit unseres Landes.",ref:"S. 36"},
+    fdp:{q:"Freiheit für künftige Generationen bedeutet auch, ihnen keine Schuldenberge zu hinterlassen.",ref:"S. 34"},
+    afd:{q:"Deutschland hat kein Einnahmen-, sondern ein Ausgabenproblem.",ref:"S. 54"},
+    linke:{q:"Die Schuldenbremse muss weg und der Militärhaushalt muss sinken, damit wir heute und morgen in Bildung, Brücken, Bus und Bahn und die Wirtschaft investieren können.",ref:"Präambel"}
+  }},
+  {key:"C",name:"Migration",hint:"Einwanderung, Asyl, Fachkräfte.",items:{
+    union:{q:"Unser Land braucht eine grundsätzliche Wende in der Migrationspolitik. Der Zuzug ist zu viel und nicht mehr stemmbar.",ref:"S. 4"},
+    spd:{q:"Deutschland profitiert seit Langem davon, dass wir ein Einwanderungsland sind.",ref:"S. 14"},
+    gruene:{q:"Deutschland muss für qualifizierte Arbeitskräfte aus aller Welt attraktiv, offen und einladend sein.",ref:"S. 20"},
+    fdp:{q:"Wir wollen Einwanderung in den Arbeitsmarkt, nicht in die sozialen Sicherungssysteme.",ref:"S. 26"},
+    afd:{q:"Die hohen Regelbedarfssätze im Bürgergeld stellen zudem einen der Magneten für die Einwanderung in unsere Sozialsysteme dar.",ref:"S. 24"},
+    linke:{q:"Wir stehen zum Recht auf Asyl – ohne Wenn und Aber.",ref:"Präambel"}
+  }},
+  {key:"D",name:"Arbeit, Steuern & Soziales",hint:"Bürgergeld, Vermögensteuer, Steuerpolitik.",items:{
+    union:{q:"Eine Vermögensteuer lehnen wir ab.",ref:"S. 32"},
+    spd:{q:"Die ausgesetzte Vermögensteuer wollen wir für sehr hohe Vermögen revitalisieren.",ref:"S. 19"},
+    gruene:{q:"In der jetzigen Form stellt das Ehegattensplitting ein Erwerbshindernis für Frauen dar und ist weder gerecht noch zeitgemäß.",ref:"S. 20"},
+    fdp:{q:"Unser oberstes Ziel lautet: Arbeit statt Bürgergeld.",ref:"S. 18"},
+    afd:{q:"Dabei gehen wir vom Grundsatz aus, dass jeder, der arbeiten kann, auch arbeiten soll, anstatt der Gesellschaft zur Last zu fallen.",ref:"S. 25"},
+    linke:{q:"Wir wollen das Bürgergeld zu einer sanktionsfreien Mindestsicherung umbauen.",ref:"Abschnitt Soziale Sicherheit",note:"Wortlaut im Original prüfen"}
+  }},
+  {key:"E",name:"Klima & Energie",hint:"Klimaziele, Kernenergie, CO₂-Preis.",items:{
+    union:{q:"Wir halten an der Option Kernenergie fest.",ref:"S. 2"},
+    spd:{q:"Unsere Überzeugung ist: Klimaschutz muss leistbar sein.",ref:"S. 33"},
+    gruene:{q:"Fossile Energie ist ein Auslaufmodell.",ref:"S. 43"},
+    fdp:{q:"Damit soll der CO2-Preis die Strom- und Energiesteuer perspektivisch vollständig ersetzen.",ref:"S. 16"},
+    afd:{q:"Wir wollen zudem aus dem Pariser Klimaabkommen aussteigen.",ref:"S. 79"},
+    linke:{q:"Wir wollen Deutschland bis 2040 klimaneutral machen.",ref:"Abschnitt Klimagerechtigkeit und Energiewende"}
+  }}
+];
+
+const pName=id=>PARTIES.find(p=>p.id===id).short;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CROSS='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4 L16 16 M16 4 L4 16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>';
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function freshState(){return{round:0,order:ROUNDS.map(()=>shuffle(PARTIES.map(p=>p.id))),answers:ROUNDS.map(()=>({})),checked:ROUNDS.map(()=>false),view:"play"};}
+let S=freshState();
+
+const stage=document.getElementById("stage");
+const roundsNav=document.getElementById("rounds");
+
+function roundScore(r){return Object.entries(S.answers[r]).filter(([row,pick])=>row===pick).length;}
+function totalScore(){return ROUNDS.reduce((s,_,r)=>s+(S.checked[r]?roundScore(r):0),0);}
+
+function renderNav(){
+  const tabs=ROUNDS.map((R,r)=>{
+    const cls=["rtab"];if(S.view==="play"&&r===S.round)cls.push("current");if(S.checked[r])cls.push("done");
+    return `<span class="${cls.join(" ")}">${R.key} · ${esc(R.name)}${S.checked[r]?` · ${roundScore(r)}/6`:""}</span>`;
+  }).join("");
+  const done=S.checked.filter(Boolean).length;
+  roundsNav.innerHTML=tabs+`<span class="scorebox" aria-live="polite">${totalScore()} / ${done*6} Punkte</span>`;
+}
+
+function renderRound(){
+  const r=S.round,R=ROUNDS[r],ans=S.answers[r],checked=S.checked[r];
+  const used=new Set(Object.values(ans));
+  const rows=S.order[r].map((rowId,i)=>{
+    const it=R.items[rowId],pick=ans[rowId];
+    const marks=PARTIES.map(p=>{
+      const pressed=pick===p.id;
+      const cls=["mark"];if(!checked&&used.has(p.id))cls.push("taken");if(checked&&p.id===rowId)cls.push("solution");
+      return `<button type="button" class="${cls.join(" ")}" data-row="${rowId}" data-party="${p.id}" aria-pressed="${pressed}" aria-label="Aussage ${i+1}: ${esc(p.name)}" ${checked?"disabled":""}><span class="circ">${CROSS}</span><span class="lbl">${esc(p.short)}</span></button>`;
+    }).join("");
+    let fb="";
+    if(checked){
+      const ok=pick===rowId;
+      fb=`<div class="feedback"><span class="verdict">${ok?"Richtig":"Nicht richtig"}</span><span>${ok?"":"Lösung: "}<b>${esc(PARTIES.find(p=>p.id===rowId).name)}</b></span><span class="mono">Wahlprogramm 2025, ${esc(it.ref)}</span>${it.note?`<span class="note">${esc(it.note)}</span>`:""}</div>`;
+    }
+    const rowCls=checked?(pick===rowId?"row right":"row wrong"):"row";
+    return `<div class="${rowCls}"><p class="quote"><q>${esc(it.q)}</q></p><div class="marks" role="group" aria-label="Partei für Aussage ${i+1}">${marks}</div>${fb}</div>`;
+  }).join("");
+  const n=Object.keys(ans).length;
+  const last=r===ROUNDS.length-1;
+  const action=checked
+    ?`<button class="btn" type="button" id="next">${last?"Zur Übersicht":"Nächste Runde"}</button><span class="status">${roundScore(r)} von 6 richtig. Notieren Sie zu einer falsch zugeordneten Aussage, was Sie in die Irre geführt hat.</span>`
+    :`<button class="btn" type="button" id="check" ${n<6?"disabled":""}>Prüfen</button><span class="status">${n} von 6 Aussagen zugeordnet</span>`;
+  stage.innerHTML=`<section class="ballot" aria-labelledby="rh"><div class="ballot-head"><h2 id="rh">Runde ${R.key}: ${esc(R.name)}</h2><p>${esc(R.hint)}</p></div>${rows}<div class="actions">${action}</div></section>`;
+}
+
+function renderOverview(){
+  const head=PARTIES.map(p=>`<th scope="col">${esc(p.short==="Linke"?"Die Linke":p.short)}<small>${esc(PROGRAMS[p.id].title.split("–")[0].trim())}</small></th>`).join("");
+  const body=ROUNDS.map(R=>`<tr><th scope="row">${esc(R.name)}</th>${PARTIES.map(p=>{const it=R.items[p.id];return `<td><q>${esc(it.q)}</q>${it.note?`<br><span class="note">${esc(it.note)}</span>`:""}<span class="mono">${esc(it.ref)}</span></td>`;}).join("")}</tr>`).join("");
+  const done=S.checked.filter(Boolean).length;
+  stage.innerHTML=`
+  <section class="sheet" aria-labelledby="ov">
+    <span class="eyebrow">Ergebnis</span>
+    <h2 id="ov">Die Programmatik der Parteien im Vergleich (Auswahl)</h2>
+    ${done?`<p class="result-line">${totalScore()} von ${done*6} Aussagen richtig zugeordnet</p>`:`<p class="status">Übersicht ohne Spieldurchgang geöffnet.</p>`}
+    <p class="status">Wahlprogramme zur Bundestagswahl 2025, je ein wörtlicher Satz pro Themenfeld. Auf dem Smartphone die Tabelle seitlich wischen.</p>
+  </section>
+  <div class="tablewrap"><table><thead><tr><th scope="col">Themenfeld</th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+  <div class="grid2">
+    <section class="sheet" aria-labelledby="auf">
+      <h3 id="auf">Arbeitsaufträge zur Übersicht</h3>
+      <ol class="tasks">
+        <li>Beschreiben Sie die Positionen der Parteien zur Schuldenbremse. <span class="afb">AFB I</span></li>
+        <li>Vergleichen Sie die Positionen zweier Parteien Ihrer Wahl in zwei Themenfeldern. Achten Sie auf Gemeinsamkeiten, Unterschiede und die jeweilige Begründung. <span class="afb">AFB II</span></li>
+        <li>Erläutern Sie, welche Aufgabe Wahlprogramme für Parteien nach Art. 21 GG und § 1 PartG bei der politischen Willensbildung erfüllen. <span class="afb">AFB II</span></li>
+        <li>Beurteilen Sie, inwieweit sich aus einem Wahlprogramm das spätere Regierungshandeln einer Partei ableiten lässt. <span class="afb">AFB III</span></li>
+      </ol>
+    </section>
+    <section class="sheet" aria-labelledby="qk">
+      <h3 id="qk">Quellenkritik: Was ist ein Wahlprogramm?</h3>
+      <ul class="kritik">
+        <li><b>Gattung:</b> Programmschrift einer Partei, von einem Parteitag oder Parteigremium beschlossen.</li>
+        <li><b>Adressaten:</b> Wählerinnen und Wähler, Mitglieder, Medien, mögliche Koalitionspartner.</li>
+        <li><b>Intention:</b> Ziele darstellen, Profil schärfen, für Stimmen werben.</li>
+        <li><b>Aussagekraft:</b> Zeigt Ziele und Selbstbild, nicht das tatsächliche Handeln. In einer Koalition wird verhandelt.</li>
+        <li><b>Ausschnitt:</b> Hier steht je ein Satz aus Programmen mit oft über 100 Seiten. Die Auswahl verkürzt und gewichtet.</li>
+      </ul>
+      <p class="status">Sachurteil oder Werturteil? Trennen Sie „Was will die Partei?“ von „Wie finde ich das?“.</p>
+    </section>
+  </div>
+  <div class="actions" style="padding:0;border:none"><button class="btn ghost" type="button" id="restart">Neu starten</button></div>`;
+}
+
+function render(){renderNav();S.view==="overview"?renderOverview():renderRound();}
+
+stage.addEventListener("click",e=>{
+  const m=e.target.closest(".mark");
+  if(m&&!m.disabled){
+    const r=S.round,ans=S.answers[r],row=m.dataset.row,party=m.dataset.party;
+    if(ans[row]===party){delete ans[row];}
+    else{for(const k in ans){if(ans[k]===party)delete ans[k];}ans[row]=party;}
+    render();
+    const again=stage.querySelector(`.mark[data-row="${row}"][data-party="${party}"]`);if(again)again.focus();
+    return;
+  }
+  if(e.target.id==="check"){S.checked[S.round]=true;render();return;}
+  if(e.target.id==="next"){if(S.round<ROUNDS.length-1){S.round++;}else{S.view="overview";}render();stage.scrollIntoView({behavior:"smooth",block:"start"});return;}
+  if(e.target.id==="restart"){S=freshState();render();window.scrollTo({top:0});}
+});
+
+document.getElementById("sources").innerHTML=
+  PARTIES.map(p=>{const P=PROGRAMS[p.id];return `<li><b>${esc(p.name)}:</b> ${esc(P.title)}. Datei: <span class="mono">${esc(P.file)}</span>. <a href="${P.url}" target="_blank" rel="noopener">${esc(P.url)}</a></li>`;}).join("")+
+  `<li><b>Ergänzende Prüfgrundlage Die Linke:</b> Programmentwurf (Antrag L.1), bereitgestellt von der Landeszentrale für politische Bildung BW; Übersicht aller Programme: <a href="https://www.bundestagswahl-bw.de/bundestagswahl-wahlprogramme" target="_blank" rel="noopener">https://www.bundestagswahl-bw.de/bundestagswahl-wahlprogramme</a></li>`+
+  `<li><b>Rechtsgrundlagen für Auftrag 3:</b> Art. 21 Grundgesetz; § 1 Parteiengesetz (PartG).</li>`;
+
+if(location.hash==="#uebersicht"){S.view="overview";}
+render();
+</script>
+
+</body></html>
