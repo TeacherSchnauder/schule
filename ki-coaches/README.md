@@ -7,6 +7,7 @@ ihrer Wahl kopieren. Auf der Lernplattform selbst läuft keine KI.
 | Ordner         | Themenbereich | Inhalt                                             |
 |----------------|---------------|----------------------------------------------------|
 | `rechtslehre/` | Rechtslehre   | Lerncoach Rechtslehre (Verwaltungsfachangestellte) |
+| `awl/`         | AWL           | Lerncoach Allgemeine Wirtschaftslehre (Verwaltungsfachangestellte) |
 
 Pfadschema: `ki-coaches/<fach>/<coach>/` – Fach → Themenbereich → Thema wie bei
 `wirtschaft/` und `ggk/`. Die Themenbereiche sind nach Unterrichtsfach benannt.

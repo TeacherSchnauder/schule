@@ -4,8 +4,8 @@ Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
 **Stand:** 08.10.2026 – abgeglichen mit dem Repository auf GitHub
-(Commit „GGK: Fach mit Politik und Geschichte angelegt“, 07.10.2026)
-plus Fach KI-Coaches mit Lerncoach Rechtslehre.
+(Commit „Delete ggk/Struktur.md“, 08.10.2026) plus Lerncoach Allgemeine
+Wirtschaftslehre unter `ki-coaches/awl/`.
 
 ---
 
@@ -66,11 +66,18 @@ schule/
 ├── ki-coaches/                 Fach mit eigenem Inhalt (KI-Prompts, fachübergreifend)
 │   ├── index.html              Übersicht + gemeinsame „Hinweise zur Nutzung“ (#nutzung)
 │   ├── README.md
-│   └── rechtslehre/
+│   ├── rechtslehre/
+│   │   ├── index.html
+│   │   └── lerncoach/
+│   │       ├── index.html      Themenseite
+│   │       ├── coach.html      Prompt mit Kopier-Schaltfläche, eigene Adresse für QR-Code
+│   │       └── README.md
+│   └── awl/
 │       ├── index.html
 │       └── lerncoach/
 │           ├── index.html      Themenseite
 │           ├── coach.html      Prompt mit Kopier-Schaltfläche, eigene Adresse für QR-Code
+│           ├── lerncoach-awl.txt  Prompt als Textdatei (Download)
 │           └── README.md
 │
 ├── awl/  bwl/  vwl/  rechtslehre/        Fachseiten, die verlinken
@@ -263,6 +270,7 @@ Fachs.
 | Bereich | id | Status |
 |---|---|---|
 | `ki-coaches/rechtslehre/` | `ki-rechtslehre` | aktiv – Lerncoach Rechtslehre |
+| `ki-coaches/awl/` | `ki-awl` | aktiv – Lerncoach Allgemeine Wirtschaftslehre |
 | `ki-coaches/vbwl/` | `ki-vbwl` | geplant – Glossar-Coach für sprachsensiblen Unterricht |
 
 **Grundsätze**
@@ -275,7 +283,8 @@ Fachs.
   stehen nur einmal auf `ki-coaches/index.html#nutzung`. Jeder Coach verweist
   dorthin.
 - Der Prompt steht in `coach.html` zweimal: lesbar (`#rendered`) und als
-  Kopiertext (`<textarea id="raw">`). Änderungen immer an beiden Stellen.
+  Kopiertext (`<textarea id="raw">`). Änderungen immer an beiden Stellen –
+  beim AWL-Coach zusätzlich in `lerncoach-awl.txt`.
 
 **Neuen Coach anlegen:** Ordner `ki-coaches/<fach>/<coach>/` als Kopie von
 `ki-coaches/rechtslehre/lerncoach/`. Fehlt der Bereich, zusätzlich

@@ -40,12 +40,15 @@ schule/
 │
 ├── ki-coaches/                 Fach mit eigenen Inhaltsseiten: KI-Prompts
 │   ├── index.html              Übersicht + gemeinsame Hinweise zur Nutzung
-│   └── rechtslehre/
+│   ├── rechtslehre/
+│   │   ├── index.html
+│   │   └── lerncoach/
+│   │       ├── index.html      Themenseite
+│   │       ├── coach.html      Prompt mit Kopier-Schaltfläche (eigene Adresse)
+│   │       └── README.md
+│   └── awl/
 │       ├── index.html
-│       └── lerncoach/
-│           ├── index.html      Themenseite
-│           ├── coach.html      Prompt mit Kopier-Schaltfläche (eigene Adresse)
-│           └── README.md
+│       └── lerncoach/          wie oben, zusätzlich lerncoach-awl.txt
 │
 ├── awl/  bwl/  vwl/  rechtslehre/
 ├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/

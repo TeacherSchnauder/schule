@@ -96,6 +96,10 @@ window.INHALTE = {
       ordner: "ki-coaches/rechtslehre", status: "aktiv",
       kurz: "Mit dem Gesetzestext arbeiten, Fälle nach dem Prüfschema lösen, Fachsprache aufbauen." },
 
+    { id: "ki-awl", fach: "ki-coaches", name: "AWL",
+      ordner: "ki-coaches/awl", status: "aktiv",
+      kurz: "Grafiken auswerten, Zahlen in amtlichen Quellen nachschlagen, rechnen und begründet urteilen." },
+
     { id: "ki-vbwl", fach: "ki-coaches", name: "VBWL", status: "geplant",
       kurz: "Geplant: Glossar-Coach für sprachsensiblen Unterricht." }
   ],
@@ -145,6 +149,17 @@ window.INHALTE = {
       kurz: "KI-Prompt für Verwaltungsfachangestellte: keine fertigen Lösungen, sondern Rückfragen, gestufte Tipps und Arbeit mit dem eigenen Prüfschema.",
       faecher: ["ki-coaches", "rechtslehre", "pruefungsvorbereitung"],
       material: ["KI-Prompt", "Kopier-Schaltfläche"]
+    },
+
+    {
+      id: "lerncoach-awl",
+      name: "Lerncoach Allgemeine Wirtschaftslehre",
+      bereich: "ki-awl",
+      pfad: "ki-coaches/awl/lerncoach",
+      status: "aktiv",
+      kurz: "KI-Prompt für Verwaltungsfachangestellte: keine fertigen Lösungen und keine Zahlen aus dem Gedächtnis, sondern Leitfragen, amtliche Quellen und Arbeit mit dem eigenen Unterrichtsmaterial.",
+      faecher: ["ki-coaches", "awl", "pruefungsvorbereitung"],
+      material: ["KI-Prompt", "Kopier-Schaltfläche", "Textdatei"]
     }
   ]
 };
