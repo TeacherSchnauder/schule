@@ -56,7 +56,11 @@ window.INHALTE = {
 
     { id: "methodenkoffer", name: "Methodenkoffer", ordner: "methodenkoffer", icon: "werkzeug",
       kurz: "Arbeitstechniken, Präsentation, wissenschaftliches Arbeiten.",
-      status: "aktiv", rolle: "sammlung" }
+      status: "aktiv", rolle: "sammlung" },
+
+    { id: "ki-coaches", name: "KI-Coaches", ordner: "ki-coaches", icon: "seite",
+      kurz: "Prompts, die ein KI-Programm in einen Lerncoach verwandeln – freiwillig und anbieterneutral.",
+      status: "aktiv", rolle: "fach" }
   ],
 
   /* ---------------- Themenbereiche innerhalb eines Fachs ------------ */
@@ -86,7 +90,14 @@ window.INHALTE = {
 
     { id: "ggk-geschichte", fach: "ggk", name: "Geschichte",
       ordner: "ggk/geschichte", status: "geplant",
-      kurz: "Historische Themen des Bildungsplans." }
+      kurz: "Historische Themen des Bildungsplans." },
+
+    { id: "ki-rechtslehre", fach: "ki-coaches", name: "Rechtslehre",
+      ordner: "ki-coaches/rechtslehre", status: "aktiv",
+      kurz: "Mit dem Gesetzestext arbeiten, Fälle nach dem Prüfschema lösen, Fachsprache aufbauen." },
+
+    { id: "ki-vbwl", fach: "ki-coaches", name: "VBWL", status: "geplant",
+      kurz: "Geplant: Glossar-Coach für sprachsensiblen Unterricht." }
   ],
 
   /* ---------------- Einzelne Themen (Inhaltsseiten) ----------------- */
@@ -123,6 +134,17 @@ window.INHALTE = {
       kurz: "Wer schrieb das? Aussagen aus sechs Wahlprogrammen zur Bundestagswahl 2025 den Parteien zuordnen – mit Vergleichsübersicht und Arbeitsaufträgen.",
       faecher: ["ggk"],
       material: ["Zuordnungsspiel", "Vergleichstabelle", "Arbeitsaufträge"]
+    },
+
+    {
+      id: "lerncoach-rechtslehre",
+      name: "Lerncoach Rechtslehre",
+      bereich: "ki-rechtslehre",
+      pfad: "ki-coaches/rechtslehre/lerncoach",
+      status: "aktiv",
+      kurz: "KI-Prompt für Verwaltungsfachangestellte: keine fertigen Lösungen, sondern Rückfragen, gestufte Tipps und Arbeit mit dem eigenen Prüfschema.",
+      faecher: ["ki-coaches", "rechtslehre", "pruefungsvorbereitung"],
+      material: ["KI-Prompt", "Kopier-Schaltfläche"]
     }
   ]
 };

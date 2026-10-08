@@ -2,7 +2,7 @@
 
 Unterrichtsmaterial für Wirtschaft und Recht, veröffentlicht über GitHub Pages.
 
-**Adresse:** https://matthiasschnauder.github.io/schule/
+**Adresse:** https://teacherschnauder.github.io/schule/
 
 Statische Website ohne Build-System: HTML5, CSS3, Vanilla JavaScript. Keine
 externen Abhängigkeiten, keine Schriften oder Skripte von fremden Servern. Die
@@ -36,6 +36,17 @@ schule/
 │           ├── assets/         Bilder und Downloads zu diesem Thema
 │           └── README.md
 │
+├── ggk/                        Fach mit eigenen Inhaltsseiten (Politik, Geschichte)
+│
+├── ki-coaches/                 Fach mit eigenen Inhaltsseiten: KI-Prompts
+│   ├── index.html              Übersicht + gemeinsame Hinweise zur Nutzung
+│   └── rechtslehre/
+│       ├── index.html
+│       └── lerncoach/
+│           ├── index.html      Themenseite
+│           ├── coach.html      Prompt mit Kopier-Schaltfläche (eigene Adresse)
+│           └── README.md
+│
 ├── awl/  bwl/  vwl/  rechtslehre/
 ├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
@@ -43,7 +54,7 @@ schule/
 ### Fächer mit Inhalt und Fächer als Verweis
 
 Inhaltsseiten liegen **genau einmal** im fachsystematischen Baum, derzeit unter
-`wirtschaft/`. Die übrigen Fachordner (`awl/`, `bwl/`, `vwl/`, …) enthalten
+`wirtschaft/`, `ggk/` und `ki-coaches/`. Die übrigen Fachordner (`awl/`, `bwl/`, `vwl/`, …) enthalten
 keine Kopien, sondern Übersichtsseiten, die auf dieselben Themen verweisen.
 
 Cross-Docking wird dadurch unter Wirtschaft, BWL und AWL angezeigt, existiert
