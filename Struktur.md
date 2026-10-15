@@ -3,9 +3,9 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 08.10.2026 – abgeglichen mit dem Repository auf GitHub
-(Commit „Delete ggk/Struktur.md“, 08.10.2026) plus Lerncoach Allgemeine
-Wirtschaftslehre unter `ki-coaches/awl/`.
+**Stand:** 15.10.2026 – abgeglichen mit dem Repository auf GitHub
+(Commit „KI-Coaches: Lerncoach Allgemeine Wirtschaftslehre ergänzt“, 08.10.2026)
+plus VIP-Lernbegleiter Bevölkerung unter `ki-coaches/fws/`.
 
 ---
 
@@ -72,12 +72,18 @@ schule/
 │   │       ├── index.html      Themenseite
 │   │       ├── coach.html      Prompt mit Kopier-Schaltfläche, eigene Adresse für QR-Code
 │   │       └── README.md
-│   └── awl/
+│   ├── awl/
+│   │   ├── index.html
+│   │   └── lerncoach/
+│   │       ├── index.html      Themenseite
+│   │       ├── coach.html      Prompt mit Kopier-Schaltfläche, eigene Adresse für QR-Code
+│   │       ├── lerncoach-awl.txt  Prompt als Textdatei (Download)
+│   │       └── README.md
+│   └── fws/
 │       ├── index.html
-│       └── lerncoach/
+│       └── vip-lernbegleiter/
 │           ├── index.html      Themenseite
-│           ├── coach.html      Prompt mit Kopier-Schaltfläche, eigene Adresse für QR-Code
-│           ├── lerncoach-awl.txt  Prompt als Textdatei (Download)
+│           ├── coach.html      Schülerseite: Themenkarte, Prompt, Arbeitsweise, KI-Protokoll
 │           └── README.md
 │
 ├── awl/  bwl/  vwl/  rechtslehre/        Fachseiten, die verlinken
@@ -271,6 +277,7 @@ Fachs.
 |---|---|---|
 | `ki-coaches/rechtslehre/` | `ki-rechtslehre` | aktiv – Lerncoach Rechtslehre |
 | `ki-coaches/awl/` | `ki-awl` | aktiv – Lerncoach Allgemeine Wirtschaftslehre |
+| `ki-coaches/fws/` | `ki-fws` | aktiv – VIP-Lernbegleiter Bevölkerung (WG, J1); erscheint auch unter VWL |
 | `ki-coaches/vbwl/` | `ki-vbwl` | geplant – Glossar-Coach für sprachsensiblen Unterricht |
 
 **Grundsätze**
@@ -285,6 +292,11 @@ Fachs.
 - Der Prompt steht in `coach.html` zweimal: lesbar (`#rendered`) und als
   Kopiertext (`<textarea id="raw">`). Änderungen immer an beiden Stellen –
   beim AWL-Coach zusätzlich in `lerncoach-awl.txt`.
+- **Ausnahme VIP-Lernbegleiter:** Dort steht der Prompt nur einmal (`<textarea
+  id="raw">`); Lesefassung, Kopie und Textdatei erzeugt die Seite selbst. Felder
+  für die Themenkarte setzen Thema, Leitfrage und Begriffspaar beim Kopieren ein.
+  Bewährt sich das, können die anderen Coaches nach diesem Muster umgestellt werden.
+- Die KI spricht Schülerinnen und Schüler mit Kürzeln an, nicht mit Namen.
 
 **Neuen Coach anlegen:** Ordner `ki-coaches/<fach>/<coach>/` als Kopie von
 `ki-coaches/rechtslehre/lerncoach/`. Fehlt der Bereich, zusätzlich

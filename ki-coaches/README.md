@@ -8,6 +8,7 @@ ihrer Wahl kopieren. Auf der Lernplattform selbst läuft keine KI.
 |----------------|---------------|----------------------------------------------------|
 | `rechtslehre/` | Rechtslehre   | Lerncoach Rechtslehre (Verwaltungsfachangestellte) |
 | `awl/`         | AWL           | Lerncoach Allgemeine Wirtschaftslehre (Verwaltungsfachangestellte) |
+| `fws/`         | FWS           | VIP-Lernbegleiter Bevölkerung (Wirtschaftsgymnasium, J1)           |
 
 Pfadschema: `ki-coaches/<fach>/<coach>/` – Fach → Themenbereich → Thema wie bei
 `wirtschaft/` und `ggk/`. Die Themenbereiche sind nach Unterrichtsfach benannt.

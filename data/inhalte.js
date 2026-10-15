@@ -100,6 +100,10 @@ window.INHALTE = {
       ordner: "ki-coaches/awl", status: "aktiv",
       kurz: "Grafiken auswerten, Zahlen in amtlichen Quellen nachschlagen, rechnen und begründet urteilen." },
 
+    { id: "ki-fws", fach: "ki-coaches", name: "FWS",
+      ordner: "ki-coaches/fws", status: "aktiv",
+      kurz: "Finanzwirtschaftliche Studien: Projekte begleiten, Daten selbst beschaffen, Statistiken auswerten." },
+
     { id: "ki-vbwl", fach: "ki-coaches", name: "VBWL", status: "geplant",
       kurz: "Geplant: Glossar-Coach für sprachsensiblen Unterricht." }
   ],
@@ -160,6 +164,17 @@ window.INHALTE = {
       kurz: "KI-Prompt für Verwaltungsfachangestellte: keine fertigen Lösungen und keine Zahlen aus dem Gedächtnis, sondern Leitfragen, amtliche Quellen und Arbeit mit dem eigenen Unterrichtsmaterial.",
       faecher: ["ki-coaches", "awl", "pruefungsvorbereitung"],
       material: ["KI-Prompt", "Kopier-Schaltfläche", "Textdatei"]
+    },
+
+    {
+      id: "vip-lernbegleiter-fws",
+      name: "VIP-Lernbegleiter Bevölkerung",
+      bereich: "ki-fws",
+      pfad: "ki-coaches/fws/vip-lernbegleiter",
+      status: "aktiv",
+      kurz: "KI-Prompt für das VIP-Projekt Bevölkerungsentwicklung und -struktur (FWS, J1): keine Zahlen von der KI, Daten selbst bei Destatis beschaffen, Begriffe abgrenzen, Poster vorbereiten.",
+      faecher: ["ki-coaches", "vwl"],
+      material: ["KI-Prompt", "Themenkarte", "KI-Protokoll"]
     }
   ]
 };

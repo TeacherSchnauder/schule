@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VIP-Lernbegleiter Bevölkerung</title>
+<meta name="description" content="KI-Lernbegleiter für das VIP-Projekt Bevölkerungsentwicklung und -struktur (Finanzwirtschaftliche Studien, Jahrgangsstufe 1): Themenkarte eintragen, Prompt kopieren, KI-Protokoll führen.">
+<style>
+:root{
+  --paper:#F6F4EF; --surface:#FFFFFF; --ink:#22262B; --muted:#6B6F76;
+  --rule:#DCD7CC; --accent:#1F3A5F; --accent-soft:#E6ECF3;
+  --amber:#8F5A12; --amber-soft:#FAF0DC; --red:#8E2C20; --red-soft:#F7E6E3;
+  --shadow:0 1px 2px rgba(30,35,45,.06), 0 8px 24px rgba(30,35,45,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#15181C; --surface:#1C2127; --ink:#E6E9ED; --muted:#9BA2AC;
+    --rule:#2E353E; --accent:#8FB4DA; --accent-soft:#1E2A36;
+    --amber:#E0A35A; --amber-soft:#2A2114; --red:#E08C80; --red-soft:#2B1917;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15181C; --surface:#1C2127; --ink:#E6E9ED; --muted:#9BA2AC;
+  --rule:#2E353E; --accent:#8FB4DA; --accent-soft:#1E2A36;
+  --amber:#E0A35A; --amber-soft:#2A2114; --red:#E08C80; --red-soft:#2B1917;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+.wrap{max-width:46rem;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+
+/* Kopfbereich */
+header.hero{border-bottom:1px solid var(--rule);background:var(--surface)}
+.hero .wrap{padding-block:28px 22px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 10px}
+h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:700;font-size:clamp(26px,5.4vw,36px);line-height:1.15;
+   margin:0 0 10px;text-wrap:balance;color:var(--ink)}
+.lede{margin:0;color:var(--muted);font-size:17px;max-width:34rem}
+
+/* Aktionsleiste */
+.bar{position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;gap:10px;align-items:center;padding-block:10px;flex-wrap:wrap}
+button{font:inherit;font-weight:600;border-radius:8px;cursor:pointer;padding:11px 16px;border:1px solid var(--rule);
+  background:var(--surface);color:var(--ink);transition:transform .08s ease}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);color:var(--surface);border-color:var(--accent);flex:1 1 auto;min-width:180px}
+:root[data-theme="dark"] button.primary,
+:root:not([data-theme="light"]) button.primary{color:#12161B}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) button.primary{color:#FFFFFF}}
+button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.status{font-size:14px;color:var(--muted);flex:0 0 auto}
+
+/* Schritte */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0 10px}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 14px 15px}
+.step b{display:block;font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:15px;margin-bottom:3px}
+.step span{font-size:14.5px;color:var(--muted);line-height:1.45}
+.step .k{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:6px}
+
+.note{border-left:4px solid var(--amber);background:var(--amber-soft);padding:14px 16px;border-radius:0 8px 8px 0;
+  margin:22px 0;font-size:16px}
+.note b{color:var(--amber)}
+.note.info{border-left-color:var(--accent);background:var(--accent-soft)}
+.note.info b{color:var(--accent)}
+.note a{color:var(--accent)}
+
+/* Prompttext */
+.prompt{background:var(--surface);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);
+  padding:8px 22px 28px;margin-top:26px}
+.prompt h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:21px;margin:30px 0 8px;padding-top:18px;
+  border-top:1px solid var(--rule);line-height:1.25;text-wrap:balance}
+.prompt h2:first-of-type{border-top:0;padding-top:6px}
+.prompt h3{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:17.5px;margin:22px 0 6px}
+.prompt h4{font-size:16px;margin:18px 0 4px;color:var(--accent);font-weight:700}
+.prompt .n{display:inline-block;min-width:2.1em;color:var(--accent);font-weight:700}
+.prompt p{margin:.55em 0}
+.prompt ul,.prompt ol{margin:.5em 0;padding-left:1.35em}
+.prompt li{margin:.3em 0}
+.prompt ul.check{list-style:none;padding-left:0}
+.prompt ul.check li{padding-left:1.9em;position:relative}
+.prompt ul.check li::before{content:"";position:absolute;left:0;top:.42em;width:1.05em;height:1.05em;
+  border:2px solid var(--accent);border-radius:3px}
+.prompt blockquote{margin:16px 0;padding:12px 16px;border-left:4px solid var(--accent);
+  background:var(--accent-soft);border-radius:0 8px 8px 0;font-size:16px}
+.prompt hr{border:0;border-top:1px solid var(--rule);margin:26px 0}
+.prompt code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;
+  background:var(--accent-soft);padding:.1em .35em;border-radius:4px;word-break:break-word}
+.prompt a{color:var(--accent);word-break:break-word}
+.tw{overflow-x:auto;margin:14px 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:30rem}
+th,td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+
+textarea#raw{position:absolute;left:-9999px;top:0;opacity:0;height:1px;width:1px}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);color:var(--muted);font-size:14.5px}
+
+.steps.vier{grid-template-columns:repeat(4,1fr)}
+@media (max-width:760px){.steps.vier{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.steps.vier{grid-template-columns:1fr}}
+.note ul{margin:.4em 0 .2em;padding-left:1.2em}.note li{margin:.25em 0}
+details.kurz{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 16px;margin:22px 0}
+details.kurz summary{cursor:pointer;font-weight:700}
+details.kurz pre{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14.5px;background:var(--accent-soft);padding:12px 14px;border-radius:8px;margin:10px 0 6px}
+a.dl{font:inherit;font-weight:600;border-radius:8px;padding:11px 16px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);text-decoration:none}
+a.dl:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+.feld{display:grid;gap:6px;margin:14px 0}
+.feld label{font-weight:700;font-size:15.5px}
+.feld small{color:var(--muted);font-size:14px}
+.feld input{font:inherit;padding:11px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+.feld input:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.karte{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:6px 20px 18px;margin-top:26px;box-shadow:var(--shadow)}
+.karte h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:21px;margin:18px 0 6px}
+.karte h3{font-size:17px;margin:20px 0 6px}
+.karte ol,.karte ul{padding-left:1.35em}.karte li{margin:.35em 0}
+.ph{background:var(--amber-soft);color:var(--amber);border-radius:4px;padding:0 .25em;font-weight:700}
+.ph.voll{background:var(--accent-soft);color:var(--accent)}
+.prompt h4.regel{letter-spacing:.06em;font-size:15px;color:var(--accent);margin:22px 0 4px}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.zwei{grid-template-columns:1fr}}
+.zwei>div{border:1px solid var(--rule);border-radius:10px;padding:10px 14px}
+.zwei b{display:block;margin-bottom:4px}
+table.protokoll td{height:3.2em}
+.druckknopf{margin-top:12px}
+@media print{
+  .bar,.druckknopf,textarea#raw{display:none!important}
+  body.nur-protokoll header.hero, body.nur-protokoll main > :not(#protokoll), body.nur-protokoll footer{display:none!important}
+  body.nur-protokoll #protokoll{box-shadow:none;border:0}
+  table.protokoll td{height:4.2em}
+}
+</style>
+<noscript><style>textarea#raw{position:static;opacity:1;width:100%;height:24rem;margin-top:16px}</style></noscript>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Finanzwirtschaftliche Studien &middot; Jahrgangsstufe 1 &middot; VIP-Projekt</p>
+    <h1>Ihr KI-Lernbegleiter f&uuml;r das VIP-Projekt</h1>
+    <p class="lede">Bev&ouml;lkerungsentwicklung und -struktur in Deutschland. Themenkarte eintragen, Prompt kopieren, als allererste Nachricht an die KI senden.</p>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <button class="primary" id="copy" type="button">Prompt kopieren</button>
+    <button id="select" type="button">Alles markieren</button>
+    <button id="laden" type="button">Als Textdatei</button>
+    <span class="status" id="status" role="status" aria-live="polite"></span>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <div class="note info">
+    <b>Wozu diese Seite:</b> Sie d&uuml;rfen in diesem Projekt KI benutzen. Damit das etwas bringt, bekommt die KI hier zuerst klare Regeln &mdash; sonst schreibt sie Ihnen Texte, die gut klingen und im Fachgespr&auml;ch nichts wert sind. Unten folgen der Prompt, die Arbeitsweise und Ihr KI-Protokoll.
+    <a href="../../index.html#nutzung" target="_top">Allgemeine Hinweise zur Nutzung</a>
+  </div>
+
+  <section class="karte" id="themenkarte">
+    <h2>1 &middot; Themenkarte eintragen</h2>
+    <p>Diese drei Angaben stehen auf Ihrer Themenkarte. Sie werden beim Kopieren an die richtige Stelle im Prompt gesetzt. Die Eingaben bleiben auf Ihrem Ger&auml;t und werden nirgends gespeichert.</p>
+    <div class="feld"><label for="f-thema">Gruppenthema</label><input id="f-thema" type="text" autocomplete="off" data-ph="[HIER THEMA VON DER THEMENKARTE EINTRAGEN]"></div>
+    <div class="feld"><label for="f-leitfrage">Leitfrage</label><input id="f-leitfrage" type="text" autocomplete="off" data-ph="[HIER LEITFRAGE VON DER THEMENKARTE EINTRAGEN]"></div>
+    <div class="feld"><label for="f-paar">Abgrenzungsauftrag (Begriffspaar)</label><input id="f-paar" type="text" autocomplete="off" data-ph="[HIER BEGRIFFSPAAR VON DER THEMENKARTE EINTRAGEN]"></div>
+  </section>
+
+  <section class="karte">
+    <h2>2 &middot; Einrichten &mdash; einmal pro Gruppe, am Anfang von Woche 2</h2>
+    <ol>
+      <li>Legen Sie fest, welches Tablet der Gruppen-Chat ist. Am besten das Ger&auml;t, auf dem sp&auml;ter auch das Poster entsteht. Dort l&auml;uft ein einziger, durchgehender Chat &uuml;ber das ganze Projekt.</li>
+      <li>&Ouml;ffnen Sie auf diesem Ger&auml;t ein KI-System Ihrer Wahl. Welches Sie nehmen, ist Ihnen &uuml;berlassen &mdash; Sie m&uuml;ssen im KI-Protokoll nur eintragen, welches es war. Pr&uuml;fen Sie vorher Altersgrenze und Nutzungsbedingungen des Anbieters.</li>
+      <li>Tragen Sie oben Ihre Themenkarte ein und tippen Sie auf &bdquo;Prompt kopieren&ldquo;.</li>
+      <li>Senden Sie den kopierten Text als allererste Nachricht. Vorher nichts anderes schreiben.</li>
+      <li>Die KI beginnt mit Phase 0 und fragt nach Ihren K&uuml;rzeln (A, B, C &hellip;). Verwenden Sie im Chat <strong>keine Namen</strong>. Antworten Sie ehrlich; ohne Ihre Antworten kommt die KI nicht weiter.</li>
+    </ol>
+    <div class="note">
+      <b>Zwei praktische Hinweise f&uuml;rs Tablet:</b> Wenn das Kopieren hakt, laden Sie den Prompt &uuml;ber &bdquo;Als Textdatei&ldquo; herunter &mdash; Ihre Themenkarte ist darin schon eingetragen. Und: Schlie&szlig;en Sie den Chat nicht ab. Sie arbeiten &uuml;ber mehrere Doppelstunden im selben Gespr&auml;ch weiter; ein neuer Chat bedeutet: von vorn anfangen.
+    </div>
+    <div class="note">
+      <b>Das Wichtigste in einem Satz:</b> KI-Systeme erfinden Zahlen und Quellen &mdash; in v&ouml;llig glaubw&uuml;rdiger Form, mit Jahreszahl und Tabellennummer. Der Prompt reduziert das stark, aber er schaltet es nicht ab. <strong>Deshalb ohne Ausnahme: Jede Zahl, die auf Ihrem Poster steht, haben Sie selbst in der Originalquelle gesehen.</strong>
+    </div>
+  </section>
+
+  <h2 style="margin-top:34px">3 &middot; Der Prompt</h2>
+  <div class="prompt" id="rendered" aria-live="off"></div>
+  <textarea id="raw" readonly aria-label="Prompt zum Kopieren">Du bist mein Lernbegleiter für ein Projekt im Fach Finanzwirtschaftliche Studien am Wirtschaftsgymnasium (Jahrgangsstufe 1, Baden-Württemberg). Thema des Projekts: Bevölkerungsentwicklung und Bevölkerungsstruktur in Deutschland.
+
+Wir arbeiten als Gruppe an einem Tablet in einem durchgehenden Chat über mehrere Wochen. Frage zu Beginn nach unseren Kürzeln (zum Beispiel A, B, C – keine Namen) und sprich uns danach mit diesen Kürzeln an, damit klar bleibt, wer gerade antwortet.
+
+Mein Gruppenthema: [HIER THEMA VON DER THEMENKARTE EINTRAGEN]
+Unsere Leitfrage: [HIER LEITFRAGE VON DER THEMENKARTE EINTRAGEN]
+Unser Abgrenzungsauftrag: [HIER BEGRIFFSPAAR VON DER THEMENKARTE EINTRAGEN]
+
+Du bist kein Ghostwriter. Deine Aufgabe ist, dass wir am Ende unsere Statistiken verstehen, auswerten und in einem Fachgespräch verteidigen können. Halte dich strikt an die folgenden Regeln.
+
+REGEL 1 — KEINE ZAHLEN VON DIR
+Du nennst uns keine konkreten Statistikwerte aus deinem Gedächtnis: keine Bevölkerungszahlen, keine Geburtenzahlen, keine Quotienten, keine Medianalter, keine Lebenserwartungen, keine Geburtenziffern, keine Erwerbstätigenquoten, keine Haushaltszahlen, keine Ergebnisse von Bevölkerungsvorausberechnungen.
+Wenn wir dich nach einem Wert fragen, antwortest du nicht mit einer Zahl, sondern mit dem Suchweg: welche Institution, welcher Bereich des Statistikportals, welche Tabellenart, welcher Suchbegriff. Dann forderst du uns auf, den Wert selbst zu holen und hier einzufügen.
+Erst wenn wir eine Zahl mit Quelle, Stichjahr, Gebietsstand und Einheit eingefügt haben, arbeitest du damit.
+Ausnahme: Du darfst eine von uns eingefügte Zahl auf Plausibilität prüfen, etwa „diese Größenordnung wirkt ungewöhnlich, prüft bitte die Einheit". Kennzeichne das ausdrücklich als Plausibilitätsprüfung und nicht als Beleg.
+
+REGEL 2 — KEINE ERFUNDENEN QUELLEN
+Du nennst keine Studien, Autorennamen, Tabellennummern, Seitenzahlen oder Links, bei denen du unsicher bist. Du behauptest nie, du hättest eine Quelle gelesen oder geprüft.
+Du darfst Institutionen und Suchpfade nennen. Verbindliche Quelle in diesem Projekt ist das Statistische Bundesamt (destatis.de). Für das Thema Haushalte und Familienformen kommt ergänzend das Bundesministerium für Bildung, Familie, Senioren, Frauen und Jugend hinzu (bmbfsfj.bund.de) — dieses aber nur als Sekundärquelle, aus der wir zur genannten Originalquelle weitergehen müssen.
+Konkrete Fundstellen kennzeichnest du als „zu prüfen".
+
+REGEL 3 — EHRLICHKEIT VOR VOLLSTÄNDIGKEIT
+Wenn du etwas nicht sicher weißt, sagst du wörtlich: „Das weiß ich nicht sicher." Du rätst nicht und füllst keine Lücken mit plausibel klingendem Text.
+Du unterscheidest in jeder Antwort sichtbar zwischen: Definition oder Konvention, empirischer Aussage, Modellannahme, Projektion oder Szenario, und Bewertung.
+Wenn eine Frage fachlich umstritten ist, sagst du das und stellst die konkurrierenden Positionen dar, statt dich auf eine festzulegen.
+
+REGEL 4 — DU FRAGST ZUERST, WIR ANTWORTEN
+Bevor du etwas erklärst, prüfst du mit höchstens zwei Fragen, was wir schon wissen. Keine Fragenlisten.
+Nach jeder Erklärung stellst du uns eine Anwendungs- oder Kontrollfrage. Du gehst erst weiter, wenn wir geantwortet haben.
+Wenn unsere Antwort falsch oder ungenau ist: Sag es klar, benenne den Fehler, gib uns einen Hinweis — liefere nicht sofort die Lösung.
+Wenn wir dich um einen fertigen Text bitten, lehnst du ab und bietest stattdessen Struktur, Rückmeldung oder Prüffragen an.
+Am Ende jeder Phase fragst du: „Was ist euch noch unklar?" Wenn wir „nichts" sagen, stellst du stattdessen eine Prüffrage aus dieser Phase.
+
+REGEL 5 — SPRACHE UND UMFANG
+Antworte auf Deutsch, in Fachsprache, aber erklärend. Keine Füllsätze, kein Lob, keine Motivationsfloskeln.
+Antworten normalerweise unter 200 Wörtern. Wir lesen auf einem Tablet — lieber nachfragen als lange Texte liefern.
+
+UNSER AUFTRAG IM PROJEKT
+Wir erstellen ein Infografik-Poster im Format A3 zu unserem Thema, halten dazu einen fünfminütigen Kurzvortrag und stellen uns anschließend einem Fachgespräch. Auf dem Poster müssen sein: unsere Leitfrage als Überschrift, ein selbst erstelltes Diagramm aus selbst beschafften Daten, drei Kennzahlen-Kacheln mit vollständiger Quellenangabe, ein Abgrenzungsfeld mit drei Sätzen, ein Deutungsfeld, ein Grenzen-Feld und ein Quellenverzeichnis.
+Zu jeder Zahl gehören: Quelle, Stichjahr, Gebietsstand, Einheit und bei Quotienten zusätzlich die verwendete Altersabgrenzung. Erinnere uns daran, wenn eine dieser Angaben fehlt.
+Zusätzlich erstellen wir fünf Multiple-Choice-Fragen mit je vier Antwortmöglichkeiten, von denen genau eine richtig ist.
+
+ABLAUF — FÜHRE UNS DURCH DIESE ACHT PHASEN
+Nenne uns zu Beginn kurz die Phasen und starte mit Phase 0. Wechsle die Phase erst, wenn das Ziel erreicht ist, und sag uns bei jedem Wechsel, wo wir stehen. Wenn wir dich später fragen „wo waren wir?", fasse den Stand in drei Sätzen zusammen.
+
+Phase 0 — Einstieg. Frage uns: Was wissen wir über unser Thema schon? Wie viel Zeit haben wir? Wer übernimmt was? Fasse unsere Antworten in drei Sätzen zusammen und schlage eine Arbeitsreihenfolge vor.
+
+Phase 1 — Begriffe kurz klären, bevor wir suchen. Diese Phase ist bewusst kurz, etwa zehn Minuten. Kläre mit uns nur: Welche Kennzahlen brauchen wir für unser Thema? Was misst jede davon? In welcher Einheit wird sie angegeben? Welche Abgrenzung müssen wir mitführen? Ziel ist, dass wir in einer Tabelle die richtige Zeile erkennen. Die vollständige Abgrenzung kommt später in Phase 4 — verweise darauf und halte dich hier kurz.
+
+Phase 2 — Daten selbst beschaffen. Sage uns für jede benötigte Größe, bei welcher Institution und in welchem Bereich wir suchen. Erkläre, worauf wir im Tabellenkopf achten: Gebietsstand (Deutschland insgesamt, früheres Bundesgebiet, neue Länder, mit oder ohne Berlin), Stichtag, Einheit, Fußnoten, Erst- oder Endergebnis, Zeitreihenbrüche. Nenne keine Werte. Warte, bis wir Daten eingefügt haben.
+
+Phase 3 — Auswerten im Dreischritt. Für jede eingefügte Statistik: erstens formale Beschreibung (Thema, Raum, Zeit, Einheit, Quelle, Darstellungsform), zweitens Beschreibung und Auswertung (Extremwerte, Verlauf, Trendbrüche, Größenordnungen, Vergleiche), drittens Erklärung und kritische Einordnung (mögliche Ursachen, Grenzen der Aussage, mögliche Fehlinterpretationen). Wir formulieren, du prüfst. Schreibe die Auswertung nicht für uns. Frage bei Verallgemeinerungen nach: Gilt das für den ganzen Zeitraum? Für alle Regionen? Ist das ein Zusammenhang oder nur eine zeitliche Parallele?
+
+Phase 4 — Begriffe vollständig abgrenzen. Jetzt arbeitest du unseren Abgrenzungsauftrag gründlich mit uns durch. Für jeden der beiden Begriffe: Was misst er? Auf welche Bezugsgröße? Was misst er ausdrücklich nicht? Welche Verwechslung liegt nahe? Lass uns danach drei Sätze formulieren — einen Definitionssatz, einen Abgrenzungssatz und einen Grenzsatz — und korrigiere sie, ohne sie neu zu schreiben. Nutze dabei unsere eigenen Zahlen aus Phase 2 als Beispiel.
+Beachte in dieser Phase besonders: Bei Jugend- und Altenquotient sind die Altersgrenzen nicht einheitlich festgelegt; bestehe darauf, dass wir zu jeder Quotientenzahl die Abgrenzung mitführen, und weise uns darauf hin, dass wir Werte mit unterschiedlichen Altersgrenzen nicht vergleichen dürfen. Das Medianalter ist ein Lagemaß, das die Bevölkerung in zwei gleich große Hälften teilt, und nicht das Durchschnittsalter. Die zusammengefasste Geburtenziffer ist ein Periodenmaß eines Kalenderjahres und beschreibt eine hypothetische Kohorte; die endgültige Kinderzahl ist ein Kohortenmaß eines real abgeschlossenen Frauenjahrgangs. Der Tempoeffekt ist keine Kennzahl, sondern eine Verzerrung des Periodenmaßes durch Verschiebung des Geburtenzeitpunkts — lass uns begründen, warum ein Rückgang der Geburtenziffer nicht automatisch bedeutet, dass Frauen am Ende weniger Kinder bekommen. Die tempobereinigte Geburtenziffer ist eine Schätzgröße aus einem Rechenverfahren, kein gemessener Wert, und das Verfahren ist fachlich umstritten. Eine Bevölkerungsvorausberechnung ist eine Szenarienrechnung unter gesetzten Annahmen, keine Prognose. Haushalt, Familie und Lebensform sind drei verschiedene statistische Konzepte.
+
+Phase 5 — Prüfen und deuten. Gehe unsere Ergebnisse kritisch durch: Steht zu jeder Zahl die vollständige Quellenangabe? Haben wir Ursache und Korrelation verwechselt? Haben wir eine Vorausberechnung als Vorhersage dargestellt? Wo sind unsere Formulierungen fachlich noch ungenau? Hilf uns danach, das Deutungsfeld (höchstens fünf Sätze: Was folgt daraus für Wirtschaft und Gesellschaft?) und das Grenzen-Feld (höchstens drei Sätze: Was sagt unsere Kennzahl nicht aus?) zu schärfen — wir formulieren, du kritisierst.
+
+Phase 6 — Poster strukturieren. Erarbeite mit uns den Aufbau: Reihenfolge der Elemente, Blickführung, welche Aussage das Diagramm tragen soll, welche drei Kennzahlen auf die Kacheln gehören und warum gerade diese. Keine ausformulierten Texte, keine fertigen Formulierungen für das Poster. Du darfst prüfen, ob ein Feld zu voll ist, ob eine Aussage belegt ist und ob die Fachbegriffe korrekt verwendet werden. Prüfe am Ende anhand unserer Beschreibung, ob alle sieben Pflichtelemente vorhanden sind.
+
+Phase 7 — Selbsttest und MC-Fragen. Stelle uns sechs Prüffragen, gestuft über die Anforderungsbereiche I bis III, darunter mindestens zwei Abgrenzungsfragen. Bewerte unsere Antworten ehrlich und benenne Lücken. Prüfe danach unsere fünf selbst erstellten Multiple-Choice-Fragen auf: fachliche Richtigkeit, Eindeutigkeit der richtigen Antwort, Qualität der falschen Antwortmöglichkeiten (bilden sie echte Fehlvorstellungen ab oder sind sie Füllmaterial?), ähnliche Länge und parallelen Bau der vier Optionen, und ob sich die richtige Antwort aus unserer angegebenen Quelle belegen lässt. Verbessere die Fragen nicht selbst — sage uns, was nicht stimmt, und lass uns überarbeiten.
+
+START
+Beginne jetzt mit Phase 0. Frage nach unseren Kürzeln und stelle die Einstiegsfragen — und sonst nichts.</textarea>
+
+  <section class="karte">
+    <h2>4 &middot; So arbeiten Sie damit</h2>
+    <h3>Gruppen-Chat und eigene Fragen</h3>
+    <p>Im Gruppen-Chat werden die Phasen abgearbeitet &mdash; das ist der rote Faden, und der wird auch im Protokoll dokumentiert. Daneben darf jede und jeder von Ihnen jederzeit auf dem eigenen Ger&auml;t nachfragen, wenn etwas unklar ist. Das ist ausdr&uuml;cklich erlaubt und sogar erw&uuml;nscht. Nur eines gilt f&uuml;r beides: Was Sie in Ihr Poster &uuml;bernehmen, muss ins KI-Protokoll. Auch wenn es aus Ihrem Einzelchat stammt.</p>
+
+    <h3>Wann Sie welche Phase bearbeiten</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Woche</th><th>Phase im Chat</th><th>Was dabei herauskommt</th></tr></thead>
+      <tbody>
+        <tr><td>Woche 2, Beginn</td><td>Phase 0 &mdash; Einstieg<br>Phase 1 &mdash; Begriffe kurz kl&auml;ren</td><td>Sie wissen, was Ihre Kennzahlen &uuml;berhaupt messen und in welcher Einheit &mdash; bevor Sie suchen</td></tr>
+        <tr><td>Woche 2 und 3</td><td>Phase 2 &mdash; Daten selbst beschaffen</td><td>Datenblatt mit vollst&auml;ndigen Quellenangaben</td></tr>
+        <tr><td>Woche 3</td><td>Phase 3 &mdash; Auswerten im Dreischritt</td><td>Eigene Auswertungss&auml;tze, von der KI gepr&uuml;ft</td></tr>
+        <tr><td>Woche 4</td><td>Phase 4 &mdash; Begriffe vollst&auml;ndig abgrenzen</td><td>Ihre drei S&auml;tze f&uuml;rs Abgrenzungsfeld</td></tr>
+        <tr><td>Woche 4</td><td>Phase 5 &mdash; Pr&uuml;fen und deuten</td><td>Deutungsfeld und Grenzen-Feld</td></tr>
+        <tr><td>Woche 5</td><td>Phase 6 &mdash; Poster strukturieren</td><td>Aufbau des Posters, Blickf&uuml;hrung</td></tr>
+        <tr><td>Zu Hause</td><td>Phase 7 &mdash; Selbsttest und MC-Fragen</td><td>F&uuml;nf gepr&uuml;fte MC-Fragen, L&uuml;cken erkannt</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Warum die Begriffe zweimal vorkommen:</strong> In Phase 1 kl&auml;ren Sie nur schnell, was Ihre Kennzahl misst und in welcher Einheit &mdash; sonst laden Sie die falsche Zeile herunter. Die eigentliche Abgrenzungsarbeit kommt in Phase 4, nach der Recherche. Dann haben Sie eigene Zahlen vor sich, und der Unterschied zwischen zwei Begriffen ist kein Definitionssatz mehr, sondern etwas, das Sie in Ihren eigenen Daten sehen k&ouml;nnen.</p>
+
+    <h3>Was die KI darf und was nicht</h3>
+    <div class="zwei">
+      <div><b>Darf sie</b><ul>
+        <li>Begriffe erkl&auml;ren, bis Sie sie verstanden haben</li>
+        <li>Ihr Verst&auml;ndnis abfragen und Fehler benennen</li>
+        <li>Ihre eigenen Auswertungss&auml;tze pr&uuml;fen und kritisieren</li>
+        <li>Ihnen zeigen, wo Sie suchen m&uuml;ssen</li>
+        <li>Ihre Gliederung strukturieren</li>
+        <li>Ihre Fachsprache verbessern</li>
+        <li>Ihre MC-Fragen gegenpr&uuml;fen</li></ul></div>
+      <div><b>Darf sie nicht</b><ul>
+        <li>Ihnen Statistikwerte nennen</li>
+        <li>Quellen oder Tabellennummern behaupten</li>
+        <li>Ihren Vortragstext schreiben</li>
+        <li>Ihr Poster f&uuml;llen</li>
+        <li>Ihre Auswertung f&uuml;r Sie formulieren</li></ul></div>
+    </div>
+
+    <h3>Wie Sie mit der KI umgehen sollten</h3>
+    <ul>
+      <li>Stellen Sie pro Phase mindestens eine eigene R&uuml;ckfrage. &bdquo;Erkl&auml;re das nochmal einfacher&ldquo; ist ein vollwertiger Arbeitsschritt, kein Eingest&auml;ndnis.</li>
+      <li>Wenn die KI Ihnen widerspricht: nicht sofort einknicken. Fragen Sie nach der Begr&uuml;ndung und pr&uuml;fen Sie sie an Ihrer Quelle.</li>
+      <li>Wenn die KI Ihnen zustimmt: Das ist noch kein Beweis. Lassen Sie sich sagen, was gegen Ihre Aussage spricht.</li>
+      <li>Wenn die KI trotz der Regeln eine Zahl nennt: Schreiben Sie das ins Protokoll. Das ist kein &Auml;rgernis, sondern ein Fund &mdash; und im Fachgespr&auml;ch etwas wert.</li>
+    </ul>
+  </section>
+
+  <section class="karte" id="protokoll">
+    <h2>5 &middot; Ihr KI-Protokoll</h2>
+    <p>Eine Seite je Gruppe, Teil der Abgabe am Ende von Woche 5. Tragen Sie laufend ein, nicht am Schluss aus dem Ged&auml;chtnis.</p>
+    <div class="tw"><table class="protokoll">
+      <thead><tr><th>System</th><th>Wof&uuml;r genutzt</th><th>&Uuml;bernommen?</th><th>Was verworfen und warum</th><th>In der Prim&auml;rquelle gepr&uuml;ft &mdash; Ergebnis</th></tr></thead>
+      <tbody><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+    </table></div>
+    <div class="note"><b>Pflichteintrag:</b> Mindestens eine Zeile muss dokumentieren, dass Sie eine Aussage der KI in der Prim&auml;rquelle &uuml;berpr&uuml;ft haben &mdash; mit dem Ergebnis dieser Pr&uuml;fung. Ob die KI recht hatte, spielt f&uuml;r die Bewertung keine Rolle. Dass Sie gepr&uuml;ft haben, schon.</div>
+    <h3>Was in die Spalten geh&ouml;rt</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Spalte</th><th>Beispiel f&uuml;r einen guten Eintrag</th></tr></thead>
+      <tbody>
+        <tr><td>System</td><td>Name des tats&auml;chlich benutzten Systems, auch wenn jemand aus der Gruppe ein anderes benutzt hat als der Gruppen-Chat</td></tr>
+        <tr><td>Wof&uuml;r genutzt</td><td>&bdquo;Unterschied TFR und endg&uuml;ltige Kinderzahl erkl&auml;ren lassen, dreimal nachgefragt&ldquo;</td></tr>
+        <tr><td>&Uuml;bernommen?</td><td>&bdquo;Ja, die Struktur unseres Abgrenzungssatzes &mdash; Formulierung ist unsere eigene&ldquo;</td></tr>
+        <tr><td>Was verworfen und warum</td><td>&bdquo;Vorschlag f&uuml;r einen Deutungssatz verworfen: klang gut, konnten wir mit unseren Daten aber nicht belegen&ldquo;</td></tr>
+        <tr><td>Gepr&uuml;ft &mdash; Ergebnis</td><td>&bdquo;KI nannte trotz Verbot eine Geburtenziffer f&uuml;r 2024. In der Destatis-Tabelle nachgesehen: Wert wich ab. Wir haben den Destatis-Wert genommen.&ldquo;</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Warum sich ein ehrliches Protokoll lohnt:</strong> Ein Protokoll, in dem steht &bdquo;alles selbst gemacht, KI nur kurz benutzt&ldquo;, bringt null Punkte &mdash; es zeigt nur, dass nicht dokumentiert wurde. Ein Protokoll, in dem steht, was Sie verworfen haben und warum, zeigt genau das Urteilsverm&ouml;gen, auf das es in diesem Projekt ankommt.</p>
+    <button class="druckknopf" id="drucken" type="button">Protokoll drucken</button>
+  </section>
+
+  <footer>
+    VIP-Projekt Bev&ouml;lkerungsentwicklung und -struktur &middot; Finanzwirtschaftliche Studien, Wirtschaftsgymnasium Baden-W&uuml;rttemberg, Jahrgangsstufe 1.
+    Verbindliche Quelle ist das Statistische Bundesamt &mdash; eine KI kann sich irren. &middot; <a href="index.html" target="_top" style="color:inherit">Zur Themenseite</a>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var raw = document.getElementById("raw");
+  var st  = document.getElementById("status");
+  var felder = Array.prototype.slice.call(document.querySelectorAll("input[data-ph]"));
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function say(t){ st.textContent = t; clearTimeout(say._t); say._t = setTimeout(function(){ st.textContent=""; }, 6000); }
+
+  /* Der Prompt steht nur einmal (textarea#raw). Lesefassung, Kopie und Textdatei werden daraus erzeugt. */
+  function ausgefuellt(){
+    var t = raw.value;
+    felder.forEach(function(f){ var v = f.value.trim(); if (v) t = t.split(f.getAttribute("data-ph")).join(v); });
+    return t;
+  }
+  function leer(){ return felder.filter(function(f){ return !f.value.trim(); }).length; }
+
+  function rendern(){
+    var html = raw.value.split(/\n\s*\n/).map(function(block){
+      return block.split("\n").map(function(z){
+        z = z.trim(); if (!z) return "";
+        if (/^[A-ZÄÖÜ0-9 ,—–-]+$/.test(z) && /[A-ZÄÖÜ]{3}/.test(z)) return '<h4 class="regel">' + esc(z) + "</h4>";
+        var p = esc(z);
+        felder.forEach(function(f){
+          var ph = esc(f.getAttribute("data-ph")), v = f.value.trim();
+          p = p.split(ph).join(v ? '<span class="ph voll">' + esc(v) + "</span>" : '<span class="ph">' + ph + "</span>");
+        });
+        p = p.replace(/^(Phase \d+ — [^.]+\.)/, "<strong>$1</strong>");
+        return "<p>" + p + "</p>";
+      }).join("");
+    }).join("");
+    document.getElementById("rendered").innerHTML = html;
+  }
+  felder.forEach(function(f){ f.addEventListener("input", rendern); });
+  rendern();
+  raw.setAttribute("aria-hidden", "true");
+
+  function hinweis(){ var n = leer(); return n ? " Achtung: " + n + (n === 1 ? " Feld" : " Felder") + " der Themenkarte noch leer — bitte die eckige Klammer im Chat ersetzen." : ""; }
+  function zeigen(){
+    raw.value = ausgefuellt();
+    raw.style.position="static"; raw.style.opacity="1"; raw.style.height="9rem"; raw.style.width="100%";
+    raw.removeAttribute("aria-hidden"); raw.focus(); raw.select();
+  }
+  document.getElementById("copy").addEventListener("click", function(){
+    var text = ausgefuellt();
+    function fallback(){
+      var alt = raw.value; zeigen();
+      var ok = false; try { ok = document.execCommand("copy"); } catch(e) {}
+      raw.value = alt;
+      say((ok ? "Kopiert — jetzt als erste Nachricht an die KI senden." : "Text ist markiert — mit Strg+C bzw. gedrückt halten kopieren.") + hinweis());
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ say("Kopiert — jetzt als erste Nachricht an die KI senden." + hinweis()); }, fallback);
+    } else { fallback(); }
+  });
+  document.getElementById("select").addEventListener("click", function(){ zeigen(); say("Markiert — jetzt kopieren." + hinweis()); });
+  document.getElementById("laden").addEventListener("click", function(){
+    var blob = new Blob([ausgefuellt()], { type: "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "vip-lernbegleiter-prompt.txt";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    say("Textdatei erstellt." + hinweis());
+  });
+  document.getElementById("drucken").addEventListener("click", function(){
+    document.body.classList.add("nur-protokoll");
+    window.print();
+  });
+  window.addEventListener("afterprint", function(){ document.body.classList.remove("nur-protokoll"); });
+})();
+</script>
+</body>
+</html>

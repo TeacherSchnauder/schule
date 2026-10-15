@@ -46,9 +46,12 @@ schule/
 │   │       ├── index.html      Themenseite
 │   │       ├── coach.html      Prompt mit Kopier-Schaltfläche (eigene Adresse)
 │   │       └── README.md
-│   └── awl/
+│   ├── awl/
+│   │   ├── index.html
+│   │   └── lerncoach/          wie oben, zusätzlich lerncoach-awl.txt
+│   └── fws/
 │       ├── index.html
-│       └── lerncoach/          wie oben, zusätzlich lerncoach-awl.txt
+│       └── vip-lernbegleiter/  Themenseite + coach.html (Prompt nur einmal, Themenkarten-Felder)
 │
 ├── awl/  bwl/  vwl/  rechtslehre/
 ├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
