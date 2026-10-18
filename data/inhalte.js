@@ -104,8 +104,9 @@ window.INHALTE = {
       ordner: "ki-coaches/fws", status: "aktiv",
       kurz: "Finanzwirtschaftliche Studien: Projekte begleiten, Daten selbst beschaffen, Statistiken auswerten." },
 
-    { id: "ki-vbwl", fach: "ki-coaches", name: "VBWL", status: "geplant",
-      kurz: "Geplant: Glossar-Coach für sprachsensiblen Unterricht." }
+    { id: "ki-vbwl", fach: "ki-coaches", name: "VBL",
+      ordner: "ki-coaches/vbl", status: "aktiv",
+      kurz: "Volks- und Betriebswirtschaftslehre (WG): Rechenwege verstehen, Statistiken auswerten, begründet urteilen, Fachsprache." }
   ],
 
   /* ---------------- Einzelne Themen (Inhaltsseiten) ----------------- */
@@ -175,6 +176,17 @@ window.INHALTE = {
       kurz: "KI-Prompt für das VIP-Projekt Bevölkerungsentwicklung und -struktur (FWS, J1): keine Zahlen von der KI, Daten selbst bei Destatis beschaffen, Begriffe abgrenzen, Poster vorbereiten.",
       faecher: ["ki-coaches", "vwl"],
       material: ["KI-Prompt", "Themenkarte", "KI-Protokoll"]
+    },
+
+    {
+      id: "lerncoach-vbl",
+      name: "Lerncoach VBL",
+      bereich: "ki-vbwl",
+      pfad: "ki-coaches/vbl/lerncoach",
+      status: "aktiv",
+      kurz: "KI-Prompt für J1 und J2: keine fertigen Hausaufgaben, sondern Leitfragen, Parallelaufgaben, Deutung von Rechenergebnissen, Urteilstraining, Fachsprache und ein Lernpass für die nächste Sitzung.",
+      faecher: ["ki-coaches", "bwl", "vwl", "pruefungsvorbereitung"],
+      material: ["KI-Prompt", "Kopier-Schaltfläche", "Lernpass"]
     }
   ]
 };
