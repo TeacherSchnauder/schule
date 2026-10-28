@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABC/XYZ-Analyse</title>
+<meta name="description" content="ABC/XYZ-Analyse verstehen: Materialien nach Wert und Regelmäßigkeit einordnen, Lorenzkurve deuten, Neun-Felder-Matrix füllen, Handlungsempfehlungen zuordnen und begründen – mit eigener Materialliste.">
+<style>
+:root{
+  --blau-900:#0F2E52; --blau-700:#17518C; --blau-500:#2A72BD; --blau-100:#E3EDF7; --blau-050:#F3F7FC;
+  --grau-900:#23282E; --grau-700:#434A53; --grau-500:#6B747E;
+  --grau-300:#C3CAD2; --grau-150:#E4E8ED; --grau-050:#F5F7F9;
+  --weiss:#FFFFFF;
+  --gruen:#1B7A5A; --gruen-hell:#E4F1EC;
+  --rot:#B33A2B;   --rot-hell:#F8E6E3;
+  --gelb:#B07A08;  --gelb-hell:#FBF1DC;
+  --kA:#0F2E52; --kB:#2A72BD; --kC:#8AA4BF;
+  --kX:#1B7A5A; --kY:#B07A08; --kZ:#B33A2B;
+  --radius:10px;
+  --schatten:0 1px 2px rgba(35,40,46,.06), 0 8px 20px rgba(35,40,46,.07);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;padding:18px 16px 30px;background:var(--grau-050);color:var(--grau-900);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:1160px;margin:0 auto}
+h1{font-family:var(--serif);font-size:clamp(1.4rem,1.1rem + 1.2vw,1.85rem);margin:0 0 6px;letter-spacing:-.015em}
+h2{font-family:var(--serif);font-size:1.12rem;margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:.8rem;margin:0 0 10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+p{margin:0 0 10px}
+.augenbraue{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--blau-700);font-weight:700;margin:0 0 6px}
+.lead{color:var(--grau-700);max-width:76ch;margin:0}
+.kopfzeile{border-bottom:2px solid var(--blau-900);padding-bottom:14px;margin-bottom:18px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--weiss);border:1px solid var(--grau-150);border-radius:var(--radius);padding:16px;box-shadow:var(--schatten)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blau-500);outline-offset:2px}
+.ico{display:inline-block;vertical-align:middle;flex:none}
+
+.reiter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.reiter button{font-size:.9rem;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;background:var(--weiss);color:var(--grau-700);border:1.5px solid var(--grau-300);font-family:inherit;display:inline-flex;gap:8px;align-items:center}
+.reiter button:hover{border-color:var(--blau-700);color:var(--blau-700)}
+.reiter button[aria-pressed="true"]{background:var(--blau-900);color:var(--weiss);border-color:var(--blau-900)}
+.knopf{font-size:.86rem;font-weight:600;cursor:pointer;font-family:inherit;border-radius:7px;padding:9px 14px;background:var(--blau-700);color:var(--weiss);border:1px solid var(--blau-700)}
+.knopf:hover{background:var(--blau-900);border-color:var(--blau-900)}
+.knopf.leise{background:var(--weiss);color:var(--blau-700);border-color:var(--grau-300)}
+.knopf.leise:hover{border-color:var(--blau-500);background:var(--blau-050)}
+.knopf:disabled{opacity:.45;cursor:not-allowed}
+.knopfzeile{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.steuer{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.steuer .gruppe{display:flex;flex-direction:column;gap:4px}
+.steuer label{font-size:.78rem;color:var(--grau-700);font-weight:600}
+.steuer input{font-family:var(--mono);font-size:.9rem;padding:8px 10px;border:1px solid var(--grau-300);border-radius:7px;width:120px}
+.nr{font-family:var(--mono);font-weight:700;color:var(--blau-900)}
+.klein{font-size:.78rem;color:var(--grau-500)}
+.tipp{font-size:.78rem;color:var(--grau-500);margin:8px 0 0}
+
+.schritt{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.schritt-nr{width:30px;height:30px;border-radius:50%;background:var(--blau-900);color:var(--weiss);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;flex:none}
+.schritt h2{margin:0}
+.schritt .ico{color:var(--blau-700)}
+.auftrag{font-size:.9rem;color:var(--grau-700);margin-bottom:10px;max-width:86ch}
+.zwischen{font-size:.98rem;margin:20px 0 8px;font-family:var(--serif);display:flex;align-items:center;gap:8px}
+.regel{display:flex;gap:12px;align-items:flex-start;background:var(--blau-050);border:1px solid var(--blau-100);border-radius:8px;padding:10px 13px;font-size:.86rem;margin-bottom:12px}
+.regel .ico{color:var(--blau-700);margin-top:2px}
+
+.meldung{border-radius:8px;padding:11px 13px;font-size:.88rem;margin-top:12px;border:1px solid var(--grau-150);background:var(--grau-050)}
+.meldung.ok{background:var(--gruen-hell);border-color:#BFDDD1}
+.meldung.warn{background:var(--gelb-hell);border-color:#EBD5A6}
+.meldung.fehler{background:var(--rot-hell);border-color:#EBC3BC}
+.meldung:empty{display:none}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 7px;border-radius:7px;font-weight:800;font-size:.85rem;color:#fff;font-family:var(--sans)}
+.b-A{background:var(--kA)}.b-B{background:var(--kB)}.b-C{background:var(--kC)}
+.b-X{background:var(--kX)}.b-Y{background:var(--kY)}.b-Z{background:var(--kZ)}
+
+/* Materialkarten */
+.karten{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
+@media (max-width:520px){#u-karten{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mkarte{padding:9px}.mkarte .sym{width:32px;height:32px}.mkarte .name{font-size:.84rem}.mkarte .zahlen{font-size:.72rem}}
+.mkarte{position:relative;border:1.5px solid var(--grau-150);border-radius:10px;padding:11px 12px 10px;background:var(--weiss);text-align:left;font-family:inherit;color:inherit;display:flex;flex-direction:column;gap:6px}
+button.mkarte{cursor:pointer}
+button.mkarte:hover:not(:disabled){border-color:var(--blau-500)}
+.mkarte[aria-pressed="true"]{border-color:var(--blau-700);background:var(--blau-050);box-shadow:0 0 0 2px var(--blau-100)}
+.mkarte .kopf{display:flex;align-items:center;gap:9px}
+.mkarte .sym{width:40px;height:40px;border-radius:10px;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center;flex:none}
+.mkarte .name{font-weight:700;font-size:.92rem;line-height:1.2;overflow-wrap:anywhere;hyphens:auto}
+.mkarte .eck + .kopf .name{padding-right:30px}
+.mkarte .zahlen{font-family:var(--mono);font-size:.78rem;color:var(--grau-700);line-height:1.5}
+.mkarte .wert{font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--blau-900)}
+.mkarte.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.mkarte.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.mkarte .eck{position:absolute;top:8px;right:8px}
+
+/* Ranking-Liste */
+.rang{display:flex;flex-direction:column;gap:6px}
+.rzeile{display:grid;grid-template-columns:30px 36px minmax(0,1fr) auto;gap:10px;align-items:center;border:1.5px solid var(--grau-150);border-radius:9px;padding:7px 10px;background:var(--weiss)}
+.rzeile.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.rzeile.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.rzeile .platz{font-family:var(--mono);font-weight:700;color:var(--grau-500);text-align:right}
+.rzeile .sym{width:34px;height:34px;border-radius:9px;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center}
+.rzeile .mitte{min-width:0}
+.rzeile .mitte b{font-size:.9rem}
+.balken{position:relative;height:10px;background:var(--grau-050);border-radius:5px;margin-top:5px;overflow:hidden;border:1px solid var(--grau-150)}
+.balken span{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--blau-500)}
+.rzeile .daten{font-family:var(--mono);font-size:.74rem;color:var(--grau-700);margin-top:3px}
+.wahl{display:flex;gap:4px}
+.wahl button{width:36px;height:34px;border-radius:8px;cursor:pointer;font-weight:800;font-family:inherit;font-size:.92rem;border:1.5px solid var(--grau-300);background:var(--weiss);color:var(--grau-700)}
+.wahl button:disabled{cursor:default}
+.wahl button[aria-pressed="true"].w-A{background:var(--kA);border-color:var(--kA);color:#fff}
+.wahl button[aria-pressed="true"].w-B{background:var(--kB);border-color:var(--kB);color:#fff}
+.wahl button[aria-pressed="true"].w-C{background:var(--kC);border-color:var(--kC);color:#fff}
+.wahl button[aria-pressed="true"].w-X{background:var(--kX);border-color:var(--kX);color:#fff}
+.wahl button[aria-pressed="true"].w-Y{background:var(--kY);border-color:var(--kY);color:#fff}
+.wahl button[aria-pressed="true"].w-Z{background:var(--kZ);border-color:var(--kZ);color:#fff}
+.begr{grid-column:1 / -1;font-size:.8rem;color:var(--grau-700);border-top:1px dotted var(--grau-300);padding-top:5px}
+@media (max-width:560px){.rzeile{grid-template-columns:26px 32px minmax(0,1fr)}.rzeile .wahl{grid-column:3}}
+
+/* XYZ-Karten */
+.xkarte{border:1.5px solid var(--grau-150);border-radius:10px;padding:10px 12px;background:var(--weiss);display:flex;flex-direction:column;gap:8px}
+.xkarte.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.xkarte.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.xkarte .kopf{display:flex;align-items:center;gap:9px}
+.xkarte .sym{width:34px;height:34px;border-radius:9px;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center;flex:none}
+.xkarte svg.spark{width:100%;height:auto;display:block}
+.xkarte .fuss{display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+/* Diagramme */
+.diagramm{background:var(--weiss);border:1px solid var(--grau-150);border-radius:8px;padding:4px}
+svg.kurven{display:block;width:100%;height:auto}
+svg.kurven text{font-family:var(--sans)}
+.zweispaltig{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.zweispaltig{grid-template-columns:minmax(0,1fr)}}
+
+.felder{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.feld2 label{display:block;font-size:.82rem;color:var(--grau-700);font-weight:600;margin-bottom:4px}
+.feld2 input{width:100%;padding:9px 10px;font-family:var(--mono);font-size:.95rem;text-align:right;border:1.5px solid var(--grau-300);border-radius:7px;background:var(--grau-050)}
+.feld2 input.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.feld2 input.falsch{border-color:var(--rot);background:var(--rot-hell)}
+
+/* Aussagen und Fragen */
+.aussage{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--grau-150)}
+.aussage:last-child{border-bottom:none}
+.aussage .sym{width:38px;height:38px;border-radius:10px;background:var(--blau-050);border:1px solid var(--blau-100);color:var(--blau-700);display:flex;align-items:center;justify-content:center}
+.aussage .opts{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.aussage .opts button{padding:6px 10px;font-size:.82rem;font-weight:700;border-radius:7px;cursor:pointer;font-family:inherit;border:1.5px solid var(--grau-300);background:var(--grau-050);color:var(--grau-900);white-space:nowrap}
+.aussage .opts button:hover:not(:disabled){border-color:var(--blau-500)}
+.aussage .opts button:disabled{cursor:default}
+.aussage .erklaerung{grid-column:2 / -1;margin-top:0}
+@media (max-width:620px){.aussage{grid-template-columns:34px minmax(0,1fr)}.aussage .opts{grid-column:2;justify-content:flex-start}}
+.gewaehlt-ok{border-color:var(--gruen) !important;background:var(--gruen-hell) !important}
+.gewaehlt-falsch{border-color:var(--rot) !important;background:var(--rot-hell) !important}
+.loesung{border-color:var(--gruen) !important;border-style:dashed !important}
+.frage{border:1px solid var(--grau-150);border-radius:9px;padding:13px 14px;margin-bottom:12px;background:var(--weiss)}
+.frage:last-child{margin-bottom:0}
+.frage .fkopf{display:flex;gap:11px;align-items:flex-start;margin-bottom:9px}
+.frage .fkopf .sym{width:38px;height:38px;border-radius:10px;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center;flex:none}
+.frage p.ft{font-weight:600;margin:0}
+.optionen{display:flex;flex-direction:column;gap:6px}
+.optionen button{text-align:left;font-family:inherit;font-size:.89rem;padding:9px 12px;border-radius:7px;cursor:pointer;line-height:1.4;background:var(--grau-050);color:var(--grau-900);border:1.5px solid var(--grau-150)}
+.optionen button:hover:not(:disabled){border-color:var(--blau-500)}
+.optionen button:disabled{cursor:default}
+.erklaerung{font-size:.86rem;color:var(--grau-700);margin-top:9px;padding-top:9px;border-top:1px dotted var(--grau-300)}
+
+/* Matrix */
+.matrix-wrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:14px;align-items:start}
+@media (max-width:820px){.matrix-wrap{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:520px){.matrix{grid-template-columns:46px repeat(3,minmax(0,1fr))}.matrix .kopfz{font-size:.62rem}.mzelle{padding:4px}.chip{font-size:.7rem;padding:3px 6px 3px 3px}.chip .sym{width:18px;height:18px}}
+.matrix{display:grid;grid-template-columns:62px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,minmax(96px,auto));gap:5px}
+.matrix .kopfz{display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:.7rem;line-height:1.2;color:var(--grau-700);text-align:center;gap:3px;padding:4px}
+.mzelle{min-width:0;border:2px dashed var(--grau-300);border-radius:10px;padding:6px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;cursor:pointer;background:var(--weiss);position:relative;min-height:96px;font-family:inherit;text-align:left}
+.mzelle .fn{position:absolute;right:7px;bottom:5px;font-weight:800;font-size:.8rem;color:var(--grau-300)}
+.mzelle.ziel{border-color:var(--blau-500);background:var(--blau-050)}
+.mzelle.aktiv{border-style:solid;border-color:var(--blau-700)}
+.mzelle.t1{background:#EEF3F9}.mzelle.t2{background:#F5F8FB}.mzelle.t3{background:#FAFBFC}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 8px 4px 5px;border-radius:999px;max-width:100%;min-width:0;overflow-wrap:anywhere;line-height:1.2;text-align:left;border:1.5px solid var(--grau-300);background:var(--weiss);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--grau-900)}
+.chip .sym{flex:none;width:22px;height:22px;border-radius:50%;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center}
+.chip[aria-pressed="true"]{border-color:var(--blau-700);background:var(--blau-100);box-shadow:0 0 0 2px var(--blau-100)}
+.chip.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.chip.folge{border-color:var(--gelb);background:var(--gelb-hell)}
+.chip.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.ablage{border:1px solid var(--grau-150);border-radius:10px;padding:10px;background:var(--grau-050);display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;min-height:60px}
+.ablage h3{width:100%;margin:0 0 4px}
+.legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--grau-700);margin-top:10px}
+.legende span{display:flex;align-items:center;gap:6px}
+.legende i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1.5px solid}
+
+.ergebnis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden}
+.erg{background:var(--weiss);padding:11px 13px}
+.erg .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.erg .v{font-family:var(--mono);font-size:1.15rem;font-weight:600}
+.erg .d{font-size:.76rem;color:var(--grau-700)}
+
+/* Analyse-Modus */
+.tabwrap{overflow-x:auto;border:1px solid var(--grau-150);border-radius:8px;-webkit-overflow-scrolling:touch}
+table.edit{border-collapse:collapse;width:100%;min-width:720px;font-size:.85rem}
+table.edit th{background:var(--blau-050);color:var(--blau-900);font-size:.72rem;text-align:left;padding:7px 8px;border-bottom:1px solid var(--grau-150)}
+table.edit td{padding:5px 6px;border-bottom:1px solid var(--grau-150);vertical-align:middle}
+table.edit input,table.edit select{width:100%;padding:6px 7px;border:1px solid var(--grau-300);border-radius:6px;font-family:inherit;font-size:.85rem;background:var(--weiss)}
+table.edit input.zahl{font-family:var(--mono);text-align:right}
+table.edit input.fehler{border-color:var(--rot);background:var(--rot-hell)}
+table.edit .symcell{display:flex;align-items:center;gap:6px}
+table.edit .symcell .sym{width:30px;height:30px;border-radius:8px;background:var(--blau-100);color:var(--blau-900);display:flex;align-items:center;justify-content:center;flex:none}
+.weg{background:none;border:1px solid var(--grau-300);border-radius:6px;cursor:pointer;color:var(--rot);font-weight:700;width:30px;height:30px}
+table.erg-tab{border-collapse:collapse;width:100%;min-width:760px;font-size:.84rem}
+table.erg-tab th{background:var(--blau-050);color:var(--blau-900);font-size:.7rem;padding:7px 8px;text-align:right;border-bottom:1px solid var(--grau-150)}
+table.erg-tab th:nth-child(-n+3){text-align:left}
+table.erg-tab td{padding:6px 8px;border-bottom:1px solid var(--grau-150);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.erg-tab td:nth-child(-n+3){text-align:left;font-family:var(--sans)}
+.einst{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.einst .feld label{font-size:.8rem;color:var(--grau-700);display:flex;justify-content:space-between}
+.einst .feld .nr{font-size:.8rem}
+.einst select{font-family:inherit;font-size:.85rem;padding:7px 8px;border:1px solid var(--grau-300);border-radius:6px;width:100%}
+input[type="range"]{width:100%;accent-color:var(--blau-700)}
+.empf{border:1px solid var(--blau-100);background:var(--blau-050);border-radius:10px;padding:12px 14px}
+.empf .ek{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.empf .ek .sym{width:42px;height:42px;border-radius:11px;background:var(--blau-900);color:#fff;display:flex;align-items:center;justify-content:center}
+.empf ul{margin:4px 0 0;padding-left:18px;font-size:.86rem}
+.modellhinweis{border-left:4px solid var(--gelb);background:var(--weiss);border-top:1px solid var(--grau-150);border-right:1px solid var(--grau-150);border-bottom:1px solid var(--grau-150);padding:13px 15px;border-radius:0 8px 8px 0;font-size:.84rem;color:var(--grau-700)}
+[hidden]{display:none !important}
+@media print{body{background:#fff}.reiter,.knopf,.steuer{display:none}.panel{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="kopfzeile">
+    <p class="augenbraue">Beschaffung · Materialbereitstellung</p>
+    <h1>ABC/XYZ-Analyse</h1>
+    <p class="lead">Welche Materialien verdienen die meiste Aufmerksamkeit im Einkauf – und wie sollten sie beschafft werden? Im Modus <b>Üben</b> ordnen Sie Materialien ein, deuten die Lorenzkurve, füllen die Neun-Felder-Matrix und begründen Entscheidungen. Im Modus <b>Eigene Analyse</b> geben Sie eine Materialliste ein, und die Seite sortiert und klassifiziert automatisch.</p>
+  </header>
+
+  <div class="reiter" role="group" aria-label="Modus wählen">
+    <button type="button" data-modus="ueben" aria-pressed="true"></button>
+    <button type="button" data-modus="analyse" aria-pressed="false"></button>
+  </div>
+
+  <!-- ============================== ÜBEN ============================== -->
+  <section id="ansicht-ueben" class="stack">
+    <div class="panel">
+      <div class="steuer">
+        <div class="gruppe"><span class="klein">Aktuelle Aufgabe</span><span class="nr" id="u-nr">–</span></div>
+        <button class="knopf" type="button" id="u-neu">Neue Aufgabe</button>
+        <div class="gruppe">
+          <label for="u-laden-nr">Aufgabe per Nummer laden</label>
+          <div style="display:flex;gap:6px"><input id="u-laden-nr" inputmode="numeric" autocomplete="off" placeholder="z. B. 1001"><button class="knopf leise" type="button" id="u-laden">Laden</button></div>
+        </div>
+      </div>
+      <p class="tipp">Notieren Sie die Aufgabennummer. Eingaben und Ergebnisse werden nirgends gespeichert oder übermittelt. Die Seite rechnet für Sie – es geht ums Einordnen und Begründen.</p>
+    </div>
+
+    <!-- Schritt 1 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">1</span><h2>Wertanteile: Welche Materialien sind A, B oder C?</h2></div>
+      <p class="auftrag" id="u-fall"></p>
+      <h3 class="zwischen" id="s1a-titel"></h3>
+      <p class="auftrag">Schätzen Sie zuerst: Tippen Sie die <b>zwei</b> Artikel an, die vermutlich am meisten Kapital binden. Achten Sie auf Menge <i>und</i> Preis.</p>
+      <div class="karten" id="u-karten"></div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="u-aufloesen" disabled>Auflösen und sortieren</button></div>
+      <div class="meldung" id="m-schaetz"></div>
+
+      <div id="s1b" hidden>
+        <h3 class="zwischen" id="s1b-titel"></h3>
+        <div class="regel" id="u-regel"></div>
+        <div class="rang" id="u-rang"></div>
+        <div class="knopfzeile"><button class="knopf" type="button" id="u-abc-pruefen">Zuordnung prüfen</button></div>
+        <div class="meldung" id="m-abc"></div>
+        <div id="q1" style="margin-top:14px"></div>
+      </div>
+    </div>
+
+    <!-- Schritt 2 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">2</span><h2>Lorenzkurve deuten</h2></div>
+      <p class="auftrag">Die Lorenzkurve verbindet die Materialien in der Reihenfolge ihres Verbrauchswerts: waagerecht der kumulierte <b>Mengenanteil</b>, senkrecht der kumulierte <b>Wertanteil</b>. Die Nummern entsprechen den Plätzen aus Schritt 1. Nach der Prüfung in Schritt 1 wird die Kurve nach A, B und C eingefärbt.</p>
+      <div class="zweispaltig">
+        <div class="diagramm"><svg class="kurven" id="u-lorenz" viewBox="0 0 520 440" role="img" aria-label="Lorenzkurve der Übungsaufgabe"></svg></div>
+        <div>
+          <h3>Ablesen</h3>
+          <div class="felder">
+            <div class="feld2"><label for="l-amenge">Auf welchen Anteil der <b>Menge</b> entfallen die A-Güter? (in %)</label><input id="l-amenge" inputmode="decimal" autocomplete="off"></div>
+            <div class="feld2"><label for="l-cwert">Welchen Anteil am <b>Wert</b> haben die C-Güter? (in %)</label><input id="l-cwert" inputmode="decimal" autocomplete="off"></div>
+          </div>
+          <div class="knopfzeile"><button class="knopf" type="button" id="l-pruefen">Ablesung prüfen</button></div>
+          <div class="meldung" id="m-lorenz"></div>
+        </div>
+      </div>
+      <h3 class="zwischen">Stimmt das?</h3>
+      <div id="l-aussagen"></div>
+    </div>
+
+    <!-- Schritt 3 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">3</span><h2>Regelmäßigkeit: X, Y oder Z?</h2></div>
+      <p class="auftrag">Die Balken zeigen den monatlichen Verbrauch über ein Jahr. Ordnen Sie jedes Material nach der <b>Regelmäßigkeit</b> seines Verbrauchs ein – der Wert spielt hier keine Rolle.</p>
+      <div class="regel" id="u-xyz-regel"></div>
+      <div class="karten" id="u-xyz" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))"></div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="u-xyz-pruefen">Zuordnung prüfen</button></div>
+      <div class="meldung" id="m-xyz"></div>
+      <div id="q3" style="margin-top:14px"></div>
+    </div>
+
+    <!-- Schritt 4 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">4</span><h2>Neun-Felder-Matrix füllen</h2></div>
+      <p class="auftrag">Tippen Sie ein Material an und dann das passende Feld. Grundlage sind Ihre Einordnungen aus den Schritten 1 und 3. Ein platziertes Material lässt sich durch erneutes Antippen wieder auswählen.</p>
+      <div class="matrix-wrap">
+        <div class="matrix" id="u-matrix"></div>
+        <div class="ablage" id="u-ablage"></div>
+      </div>
+      <div class="legende">
+        <span><i style="border-color:var(--gruen);background:var(--gruen-hell)"></i>richtig</span>
+        <span><i style="border-color:var(--gelb);background:var(--gelb-hell)"></i>folgerichtig zu Ihren eigenen Einordnungen</span>
+        <span><i style="border-color:var(--rot);background:var(--rot-hell)"></i>falsch</span>
+      </div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="u-matrix-pruefen">Matrix prüfen</button></div>
+      <div class="meldung" id="m-matrix"></div>
+    </div>
+
+    <!-- Schritt 5 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">5</span><h2>Handlungsempfehlungen zuordnen</h2></div>
+      <p class="auftrag">Wohin gehört die Empfehlung? Die erste Antwort zählt; danach erscheint die Begründung.</p>
+      <h3 class="zwischen" id="e1-titel"></h3>
+      <div id="e-strat"></div>
+      <h3 class="zwischen" id="e2-titel"></h3>
+      <div id="e-wert"></div>
+      <h3 class="zwischen" id="e3-titel"></h3>
+      <div id="e-regel"></div>
+    </div>
+
+    <!-- Schritt 6 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">6</span><h2>Begründen und beurteilen</h2></div>
+      <p class="auftrag">Kolleginnen und Kollegen machen Vorschläge oder Aussagen zu den Materialien Ihrer Aufgabe. Welche Beurteilung ist fachlich am besten begründet?</p>
+      <div id="u-faelle"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Ihr Ergebnis</h2>
+      <div class="ergebnis" id="u-ergebnis"></div>
+      <p class="tipp" id="u-zeit"></p>
+      <div class="knopfzeile"><button class="knopf leise" type="button" id="u-zu-analyse">Diese Materialliste in der eigenen Analyse öffnen</button></div>
+    </div>
+  </section>
+
+  <!-- ============================== ANALYSE ============================== -->
+  <section id="ansicht-analyse" class="stack" hidden>
+    <div class="panel">
+      <h2>Materialliste</h2>
+      <p class="auftrag">Geben Sie für jedes Material Preis und Verbrauch ein. Beim Verbrauch genügt die <b>Jahresmenge</b>; für die XYZ-Einordnung tragen Sie stattdessen <b>12 Monatswerte</b> ein, getrennt durch Leerzeichen oder Semikolon.</p>
+      <div class="knopfzeile" style="margin:0 0 10px">
+        <button class="knopf leise" type="button" id="a-beispiel">Beispiel Fahrrad-Großhandel</button>
+        <button class="knopf leise" type="button" id="a-baeckerei">Beispiel Bäckerei</button>
+        <button class="knopf leise" type="button" id="a-leer">Leere Liste</button>
+      </div>
+      <div class="tabwrap"><table class="edit" id="a-tabelle"></table></div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="a-zeile">+ Material hinzufügen</button></div>
+      <p class="tipp" id="a-fehler"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Einstellungen</h2>
+      <div class="einst">
+        <div class="feld"><label for="a-ga">A-Güter bis kumuliert <span class="nr" id="a-ga-w"></span></label><input type="range" id="a-ga" min="50" max="90" step="1"></div>
+        <div class="feld"><label for="a-gb">B-Güter bis kumuliert <span class="nr" id="a-gb-w"></span></label><input type="range" id="a-gb" min="80" max="99" step="1"></div>
+        <div class="feld"><label for="a-gx">X bis Variationskoeffizient <span class="nr" id="a-gx-w"></span></label><input type="range" id="a-gx" min="5" max="50" step="1"></div>
+        <div class="feld"><label for="a-gy">Y bis Variationskoeffizient <span class="nr" id="a-gy-w"></span></label><input type="range" id="a-gy" min="20" max="100" step="1"></div>
+        <div class="feld"><label for="a-xachse">Waagerechte Achse der Lorenzkurve</label><select id="a-xachse"><option value="menge">kumulierter Mengenanteil</option><option value="pos">kumulierter Anteil der Materialpositionen</option></select></div>
+      </div>
+      <p class="tipp">Die Grenzen sind Konventionen und unterscheiden sich je nach Lehrbuch. Übliche Werte: A bis 80 %, B bis 95 % des kumulierten Wertes; X bis 25 %, Y bis 50 % Variationskoeffizient.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Ergebnis: automatisch sortiert</h2>
+      <div class="tabwrap"><table class="erg-tab" id="a-ergebnis"></table></div>
+    </div>
+
+    <div class="zweispaltig">
+      <div class="panel">
+        <h2>Lorenzkurve</h2>
+        <div class="diagramm"><svg class="kurven" id="a-lorenz" viewBox="0 0 520 440" role="img" aria-label="Lorenzkurve der eigenen Materialliste"></svg></div>
+      </div>
+      <div class="panel">
+        <h2>Neun-Felder-Matrix</h2>
+        <p class="tipp" style="margin-top:0">Tippen Sie auf ein Feld, um die typischen Handlungsempfehlungen zu sehen.</p>
+        <div class="matrix" id="a-matrix" style="margin-top:8px"></div>
+        <div id="a-empf" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <div class="modellhinweis"><b>Hinweis:</b> Die Handlungsempfehlungen sind typische Lehrbuchempfehlungen, keine festen Regeln. In der Praxis zählen auch Versorgungsrisiko, Lieferzeit, Haltbarkeit und Lagerplatz. Ein C-Teil kann kritisch sein, wenn ohne es Produktion oder Kundendienst stillstehen.</div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================ Hilfsfunktionen ============================ */
+  function $(id){ return document.getElementById(id); }
+  function fz(n, d){ if(n === null || n === undefined || !isFinite(n)) return "–"; d = d || 0; return n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function eur(n){ var d = (n >= 100 || Math.abs(n - Math.round(n)) < 1e-9) ? 0 : (Math.abs(n * 100 - Math.round(n * 100)) < 1e-6 ? 2 : 3); return fz(n, d) + " €"; }
+  function lies(s){
+    if(s === null || s === undefined) return null;
+    s = String(s).replace(/\s|€|%/g, ""); if(s === "") return null;
+    if(s.indexOf(",") >= 0) s = s.replace(/\./g, "").replace(",", "."); else if(/^-?\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+    var n = Number(s); return isFinite(n) ? n : NaN;
+  }
+  function zufall(seed){ var a = seed >>> 0; return function(){ a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function wahl(r, l){ return l[Math.floor(r() * l.length)]; }
+  function mische(r, l){ var a = l.slice(); for(var i = a.length - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, a, txt){ var n = document.createElementNS(NS, tag); for(var k in a) n.setAttribute(k, a[k]); if(txt !== undefined) n.textContent = txt; return n; }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+
+  /* ============================ Symbole ============================ */
+  var ICONS = {
+    akku:'<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M11.5 9l-2.5 3.5h4L10.5 15"/>',
+    motor:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    display:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M7 12l3-3 2 2 4-4"/>',
+    reifen:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 3v4.5M12 16.5V21M3 12h4.5M16.5 12H21"/>',
+    kette:'<rect x="2" y="8.5" width="11" height="7" rx="3.5"/><rect x="11" y="8.5" width="11" height="7" rx="3.5"/>',
+    schraube:'<path d="M8 3h8l2 3-2 3H8L6 6z"/><path d="M10 9v10l2 2 2-2V9"/><path d="M10 12.5l4-1M10 15.5l4-1"/>',
+    licht:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>',
+    karton:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+    kabel:'<path d="M7 3v4M11 3v4"/><rect x="5" y="7" width="8" height="6" rx="1"/><path d="M9 13v3a4 4 0 0 0 4 4h7"/>',
+    oel:'<path d="M10 3h4v3h-4z"/><path d="M8 6h8l1 4v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10z"/><path d="M12 11.5c-1.4 1.9-2 3-2 4a2 2 0 0 0 4 0c0-1-.6-2.1-2-4z"/>',
+    klingel:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+    schaltwerk:'<circle cx="8" cy="8" r="4.5"/><circle cx="8" cy="8" r="1.2"/><circle cx="16.5" cy="16.5" r="3"/><path d="M11.2 11.2l2.6 2.6"/>',
+    sattel:'<path d="M3 9c3-3 13-3 18 0-2 3-6 4-9 4S5 12 3 9z"/><path d="M12 13v7M9 20h6"/>',
+    werkzeug:'<path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L3 18l3 3 6.2-6.2a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.5-.5-.5-2.5z"/>',
+    bremse:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2"/><path d="M5 7.5c2-1 3.5-1 5 0M19 16.5c-2 1-3.5 1-5 0"/>',
+    lenker:'<path d="M2 9h5l3 3h4l3-3h5"/><path d="M12 12v8"/>',
+    mehl:'<path d="M6 8l2-5h8l2 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z"/><path d="M6 8h12M10 13h4M10 16h4"/>',
+    butter:'<path d="M3 13l5-5h13l-5 5z"/><path d="M3 13v4h13v-4M16 13l5-5v4l-5 5"/>',
+    ei:'<path d="M12 3c-3.5 0-6 5.5-6 10a6 6 0 0 0 12 0c0-4.5-2.5-10-6-10z"/>',
+    schoko:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M5 9h14M5 15h14M12 3v18"/>',
+    nuss:'<path d="M12 4c4 0 7 3 7 7 0 5-4 9-7 9s-7-4-7-9c0-4 3-7 7-7z"/><path d="M12 4v16M8 9c1.5 1 6.5 1 8 0"/>',
+    zucker:'<rect x="5" y="9" width="8" height="8" rx="1"/><rect x="11" y="5" width="8" height="8" rx="1"/>',
+    hefe:'<circle cx="8" cy="9" r="3"/><circle cx="15" cy="8" r="2.5"/><circle cx="14" cy="15.5" r="3.5"/><circle cx="7.5" cy="16" r="2"/>',
+    papier:'<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/>',
+    reiniger:'<path d="M9 7h6v14H9z"/><path d="M10 7V4h5l2 2"/><path d="M5 5l2 1M5 9h2M5 13l2-1"/>',
+    tuete:'<path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+    // Empfehlungen / allgemein
+    jit:'<path d="M2 7h11v9H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/><path d="M6 9.5v2.5l1.5 1"/>',
+    einzel:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M9 10h6M9 14h6M9 18h3"/>',
+    lager:'<path d="M3 21V9l9-5 9 5v12"/><path d="M7 21v-7h10v7M7 17.5h10"/>',
+    kanban:'<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>',
+    verhandeln:'<circle cx="10" cy="10" r="6.5"/><path d="M14.8 14.8L20.5 20.5"/><path d="M12.3 7.6a2.6 2.6 0 1 0 0 4.8M7.3 9.3h3.4M7.3 10.8h3.4"/>',
+    prognose:'<path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M16 6h4v4"/>',
+    schild:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    sammeln:'<rect x="3.5" y="13" width="7.5" height="7.5" rx="1"/><rect x="13" y="13" width="7.5" height="7.5" rx="1"/><rect x="8.25" y="4" width="7.5" height="7.5" rx="1"/>',
+    kalender:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17.5h2"/>',
+    waage:'<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>',
+    warnung:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+    euro:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 11h6M7 13.5h6"/>',
+    kurve:'<path d="M3 21h18M3 21V3"/><path d="M3 21C5 10 9 6 21 4"/><path d="M3 21L21 4" stroke-dasharray="2 2"/>',
+    wellen:'<path d="M3 17l3-6 3 3 3-8 3 10 3-5 3 4"/>',
+    raster:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>',
+    gluehbirne:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/><path d="M12 7v3"/>',
+    sprechblase:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+    stift:'<path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M13.5 6.5l4 4"/>',
+    ziel:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/>'
+  };
+  function ic(name, size){ size = size || 22; return "<svg class='ico' width='" + size + "' height='" + size + "' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>" + (ICONS[name] || ICONS.karton) + "</svg>"; }
+  function icSvg(parent, name, x, y, size, farbe){
+    var g = el("g", {transform:"translate(" + x + "," + y + ") scale(" + (size / 24) + ")", fill:"none", stroke:farbe, "stroke-width":1.9, "stroke-linecap":"round", "stroke-linejoin":"round"});
+    g.innerHTML = ICONS[name] || ICONS.karton; parent.appendChild(g);
+  }
+  var SYMBOL_NAMEN = [["akku","Akku"],["motor","Motor / Zahnrad"],["display","Display"],["reifen","Reifen"],["kette","Kette"],["schraube","Schraube"],["licht","Lampe"],["karton","Karton"],["kabel","Kabel"],["oel","Öl / Flüssigkeit"],["klingel","Klingel"],["schaltwerk","Schaltung"],["sattel","Sattel"],["werkzeug","Werkzeug"],["bremse","Bremse"],["lenker","Lenker"],["mehl","Mehl / Sack"],["butter","Butter"],["ei","Ei"],["schoko","Schokolade"],["nuss","Nuss"],["zucker","Zucker"],["hefe","Hefe"],["papier","Papier"],["reiniger","Reinigungsmittel"],["tuete","Tüte"]];
+
+  // Modus-Reiter mit Symbolen
+  document.querySelector("[data-modus='ueben']").innerHTML = ic("ziel", 18) + "Üben";
+  document.querySelector("[data-modus='analyse']").innerHTML = ic("stift", 18) + "Eigene Analyse";
+
+  /* ============================ Fachlogik ============================ */
+  function mittel(a){ return a.reduce(function(s, x){ return s + x; }, 0) / a.length; }
+  function vk(a){ var m = mittel(a); if(m <= 0) return null; var v = a.reduce(function(s, x){ return s + (x - m) * (x - m); }, 0) / a.length; return Math.sqrt(v) / m; }
+
+  // items: [{name, icon, preis, menge, monate|null}] ; g: {a, b, x, y} in %
+  function analysiere(items, g){
+    var liste = items.map(function(it, i){ var o = {}; for(var k in it) o[k] = it[k]; o.idx = i; o.wert = it.preis * it.menge; return o; })
+      .filter(function(o){ return o.wert > 0; })
+      .sort(function(p, q){ return q.wert - p.wert; });
+    var W = liste.reduce(function(s, o){ return s + o.wert; }, 0), M = liste.reduce(function(s, o){ return s + o.menge; }, 0);
+    var kw = 0, km = 0;
+    liste.forEach(function(o, i){
+      o.rang = i + 1; o.anteil = o.wert / W * 100; o.mAnteil = o.menge / M * 100;
+      kw += o.anteil; km += o.mAnteil; o.kum = kw; o.kumM = km; o.kumP = (i + 1) / liste.length * 100;
+      o.abc = (o.kum <= g.a + 1e-9 || i === 0) ? "A" : (o.kum <= g.b + 1e-9 ? "B" : "C");
+      if(o.monate && o.monate.length === 12){ var v = vk(o.monate); o.vk = v === null ? null : v * 100; o.xyz = o.vk === null ? null : (o.vk <= g.x + 1e-9 ? "X" : (o.vk <= g.y + 1e-9 ? "Y" : "Z")); }
+      else { o.vk = null; o.xyz = null; }
+    });
+    return {liste:liste, W:W, M:M};
+  }
+
+  var FELDER = {
+    AX:{icon:"jit", titel:"Just in time / Just in sequence", p:["fertigungssynchrone Anlieferung, kaum eigener Lagerbestand","enge, langfristige Zusammenarbeit mit wenigen zuverlässigen Lieferanten","genaue, programmgesteuerte Bedarfsplanung"]},
+    AY:{icon:"prognose", titel:"Knapper Vorrat, genaue Prognose", p:["Bestellpunktverfahren mit niedrigem Sicherheitsbestand","häufig kleine Mengen bestellen, Bedarf laufend prognostizieren","intensive Preisverhandlungen"]},
+    AZ:{icon:"einzel", titel:"Einzelbeschaffung im Bedarfsfall", p:["erst bei konkretem Auftrag beschaffen (Delivery on demand)","kein Vorrat „auf Verdacht“ – zu viel Kapital wäre gebunden","Lieferzeiten vertraglich absichern"]},
+    BX:{icon:"kalender", titel:"Bestellrhythmus oder Just in time", p:["feste Lieferrhythmen, Rahmenverträge mit Abrufen","Just in time möglich, wenn der Lieferant zuverlässig ist"]},
+    BY:{icon:"waage", titel:"Bestellpunktverfahren", p:["Vorrat mit mittlerem Sicherheitsbestand","Bestand laufend überwachen"]},
+    BZ:{icon:"warnung", titel:"Einzelfall prüfen", p:["Einzelbeschaffung oder Vorrat mit Sicherheitsbestand – je nach Lieferzeit und Risiko"]},
+    CX:{icon:"kanban", titel:"Kanban / Rahmenvertrag", p:["automatisierter Nachschub, z. B. Kanban-Regelkreis","Rahmenverträge, geringer Dispositionsaufwand","größere Mengen seltener bestellen"]},
+    CY:{icon:"sammeln", titel:"Vorrat mit Puffer", p:["Bestellpunktverfahren mit großzügigem Sicherheitsbestand","Sammelbestellungen, vereinfachte Abwicklung"]},
+    CZ:{icon:"lager", titel:"Großzügiger Vorrat", p:["hoher Sicherheitsbestand vertretbar – bindet kaum Kapital","selten, in großen Mengen bestellen; Aufwand minimal halten"]}
+  };
+
+  /* ============================ Diagramme ============================ */
+  function lorenz(svg, erg, opt){
+    svg.textContent = "";
+    var W = 520, H = 440, L = 56, R = 30, T = 16, B = 50, bw = W - L - R, bh = H - T - B;
+    function X(x){ return L + x / 100 * bw; } function Y(y){ return T + bh - y / 100 * bh; }
+    var g = opt.grenzen;
+    // Zonen
+    [[0, g.a, "A", "#0F2E52"], [g.a, g.b, "B", "#2A72BD"], [g.b, 100, "C", "#8AA4BF"]].forEach(function(z){
+      svg.appendChild(el("rect", {x:L, y:Y(z[1]), width:bw, height:Y(z[0]) - Y(z[1]), fill:z[3], opacity:.07}));
+    });
+    for(var t = 0; t <= 100; t += 20){
+      svg.appendChild(el("line", {x1:X(t), x2:X(t), y1:T, y2:T + bh, stroke:"#E4E8ED"}));
+      svg.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(t), y2:Y(t), stroke:"#E4E8ED"}));
+      svg.appendChild(el("text", {x:X(t), y:T + bh + 16, "text-anchor":t === 100 ? "end" : "middle", "font-size":11, fill:"#6B747E"}, t + " %"));
+      svg.appendChild(el("text", {x:L - 6, y:Y(t) + 4, "text-anchor":"end", "font-size":11, fill:"#6B747E"}, t + " %"));
+    }
+    [[g.a, "A bis " + g.a + " %"], [g.b, "B bis " + g.b + " %"]].forEach(function(z){
+      svg.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(z[0]), y2:Y(z[0]), stroke:"#434A53", "stroke-width":1, "stroke-dasharray":"5 4"}));
+    });
+    svg.appendChild(el("line", {x1:L, x2:L + bw, y1:T + bh, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("line", {x1:L, x2:L, y1:T, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("line", {x1:X(0), y1:Y(0), x2:X(100), y2:Y(100), stroke:"#C3CAD2", "stroke-width":1.5, "stroke-dasharray":"4 4"}));
+    var dg = el("text", {x:X(62), y:Y(62) + 18, "font-size":11, fill:"#6B747E", transform:"rotate(" + (-Math.atan(bh / bw) * 180 / Math.PI) + " " + X(62) + " " + (Y(62) + 18) + ")"}, "Gleichverteilung");
+    svg.appendChild(dg);
+    svg.appendChild(el("text", {x:L + bw / 2, y:H - 10, "text-anchor":"middle", "font-size":12, fill:"#434A53"}, opt.xPos ? "kumulierter Anteil der Positionen" : "kumulierter Mengenanteil"));
+    svg.appendChild(el("text", {x:14, y:T + bh / 2, "text-anchor":"middle", "font-size":12, fill:"#434A53", transform:"rotate(-90 14 " + (T + bh / 2) + ")"}, "kumulierter Wertanteil"));
+    // Zonenlabels
+    var zl = [["A", (0 + g.a) / 2, "#0F2E52"], ["B", (g.a + g.b) / 2, "#2A72BD"], ["C", (g.b + 100) / 2, "#6E8AA8"]];
+    zl.forEach(function(z){ svg.appendChild(el("text", {x:L + bw + 8, y:Y(z[1]) + 5, "font-size":14, "font-weight":800, fill:z[2]}, z[0])); });
+    // Kurve, farbig nach Klasse
+    var px = 0, py = 0, farben = {A:"#0F2E52", B:"#2A72BD", C:"#8AA4BF", N:"#434A53"};
+    var pts = [];
+    erg.liste.forEach(function(o){
+      var x = opt.xPos ? o.kumP : o.kumM, y = o.kum, k = opt.klasse ? opt.klasse(o) : o.abc;
+      svg.appendChild(el("line", {x1:X(px), y1:Y(py), x2:X(x), y2:Y(y), stroke:farben[k] || "#0F2E52", "stroke-width":3, "stroke-linecap":"round"}));
+      pts.push({x:x, y:y, o:o, k:k}); px = x; py = y;
+    });
+    pts.forEach(function(p){
+      svg.appendChild(el("circle", {cx:X(p.x), cy:Y(p.y), r:9, fill:"#fff", stroke:farben[p.k] || "#0F2E52", "stroke-width":2.2}));
+      svg.appendChild(el("text", {x:X(p.x), y:Y(p.y) + 4, "text-anchor":"middle", "font-size":10.5, "font-weight":700, fill:"#23282E"}, String(p.o.rang)));
+    });
+    if(opt.markierung){
+      opt.markierung.forEach(function(m){
+        svg.appendChild(el("line", {x1:X(m.x), x2:X(m.x), y1:Y(m.y), y2:T + bh, stroke:"#1B7A5A", "stroke-width":1.4, "stroke-dasharray":"3 3"}));
+        svg.appendChild(el("line", {x1:L, x2:X(m.x), y1:Y(m.y), y2:Y(m.y), stroke:"#1B7A5A", "stroke-width":1.4, "stroke-dasharray":"3 3"}));
+        svg.appendChild(el("text", {x:X(m.x) + 6, y:T + bh - 6, "font-size":11, "font-weight":700, fill:"#1B7A5A", stroke:"#fff", "stroke-width":3, "paint-order":"stroke"}, m.text));
+      });
+    }
+  }
+
+  function sparkline(werte, farbe){
+    var W = 200, H = 54, max = Math.max.apply(null, werte.concat([1])), bw = W / 12;
+    var s = "<svg class='spark' viewBox='0 0 " + W + " " + (H + 12) + "' role='img' aria-label='Monatsverbrauch'>";
+    var m = mittel(werte);
+    werte.forEach(function(v, i){ var h = v / max * H; s += "<rect x='" + (i * bw + 2).toFixed(1) + "' y='" + (H - h).toFixed(1) + "' width='" + (bw - 4).toFixed(1) + "' height='" + Math.max(h, 0.8).toFixed(1) + "' rx='1.5' fill='" + (farbe || "#2A72BD") + "'/>"; });
+    s += "<line x1='0' x2='" + W + "' y1='" + (H - m / max * H).toFixed(1) + "' y2='" + (H - m / max * H).toFixed(1) + "' stroke='#434A53' stroke-width='1' stroke-dasharray='3 3'/>";
+    "JFMAMJJASOND".split("").forEach(function(c, i){ s += "<text x='" + (i * bw + bw / 2).toFixed(1) + "' y='" + (H + 11) + "' text-anchor='middle' font-size='8.5' fill='#6B747E'>" + c + "</text>"; });
+    return s + "</svg>";
+  }
+
+  /* ============================ Aufgabengenerator ============================ */
+  var MATERIAL = [
+    {icon:"akku", n:"Akkupack", p:[380, 520]}, {icon:"motor", n:"Mittelmotor", p:[260, 380]}, {icon:"display", n:"Display", p:[45, 90]},
+    {icon:"reifen", n:"Reifen", p:[14, 28]}, {icon:"kette", n:"Kette", p:[9, 18]}, {icon:"schraube", n:"Schrauben-Set", p:[0.8, 2.5]},
+    {icon:"licht", n:"Beleuchtungsset", p:[18, 35]}, {icon:"karton", n:"Versandkarton", p:[2, 4.5]}, {icon:"kabel", n:"Kabelbaum", p:[6, 14]},
+    {icon:"oel", n:"Kettenöl", p:[3, 7]}, {icon:"klingel", n:"Klingel", p:[1.5, 4]}, {icon:"schaltwerk", n:"Schaltwerk", p:[40, 85]},
+    {icon:"sattel", n:"Sattel", p:[12, 30]}, {icon:"werkzeug", n:"Bordwerkzeug", p:[25, 60]}, {icon:"bremse", n:"Bremsscheibe", p:[10, 24]}, {icon:"lenker", n:"Lenker", p:[15, 40]}
+  ];
+  var G_STD = {a:80, b:95, x:25, y:50};
+
+  function preisRunden(p){ return p >= 20 ? Math.round(p) : Math.round(p * 20) / 20; }
+  function mengeRunden(q){ q = Math.max(240, q); return q > 10000 ? Math.round(q / 100) * 100 : (q > 1000 ? Math.round(q / 10) * 10 : Math.round(q / 12) * 12); }
+
+  function reihe(r, muster, menge){
+    var w = [], i;
+    for(var versuch = 0; versuch < 60; versuch++){
+      w = [];
+      if(muster === "X") for(i = 0; i < 12; i++) w.push(1 + 0.16 * (2 * r() - 1));
+      else if(muster === "Y"){ var ph = r() * 2; for(i = 0; i < 12; i++) w.push(Math.max(0.05, 1 + 0.55 * Math.sin(2 * Math.PI * (i - 1.5 - ph) / 12) + 0.1 * (2 * r() - 1))); }
+      else { var k = 3 + Math.floor(r() * 3), monate = mische(r, [0,1,2,3,4,5,6,7,8,9,10,11]).slice(0, k); for(i = 0; i < 12; i++) w.push(monate.indexOf(i) >= 0 ? 1 + r() * 2.5 : (r() < 0.5 ? 0 : 0.06 * r())); }
+      var s = w.reduce(function(a, b){ return a + b; }, 0);
+      var m = w.map(function(x){ return Math.round(x / s * menge); });
+      var diff = menge - m.reduce(function(a, b){ return a + b; }, 0);
+      var gi = m.indexOf(Math.max.apply(null, m)); m[gi] += diff;
+      if(m.some(function(x){ return x < 0; })) continue;
+      var v = vk(m) * 100;
+      if((muster === "X" && v <= 17) || (muster === "Y" && v >= 30 && v <= 44) || (muster === "Z" && v >= 65)) return m;
+    }
+    return null;
+  }
+
+  function erzeuge(seed){
+    var r = zufall(seed * 2654435761 + 97);
+    for(var versuch = 0; versuch < 3000; versuch++){
+      var pool = mische(r, MATERIAL).slice(0, 10).map(function(m){ return {icon:m.icon, name:m.n, preis:preisRunden(m.p[0] + r() * (m.p[1] - m.p[0]))}; });
+      pool.forEach(function(m){ m.key = Math.log(m.preis) + (r() - 0.5) * 2.6; });
+      pool.sort(function(p, q){ return q.key - p.key; });
+      var a1 = 38 + r() * 12, a2 = 70 + r() * 8 - a1; if(a2 < 14 || a2 >= a1) continue;
+      var cumB = 92.6 + r() * 1.8, bs = cumB - a1 - a2;
+      var bp = [0.46 + r() * 0.06, 0.32 + r() * 0.04]; bp.push(1 - bp[0] - bp[1]);
+      var cs = 100 - cumB, cp = [0.31, 0.24, 0.19, 0.14, 0.12].map(function(x){ return x * (0.9 + r() * 0.2); }); var cps = cp.reduce(function(a, b){ return a + b; }, 0);
+      var anteile = [a1, a2].concat(bp.map(function(x){ return x * bs; })).concat(cp.map(function(x){ return x / cps * cs; }));
+      var V = 400000 + r() * 500000;
+      pool.forEach(function(m, i){ m.menge = mengeRunden(anteile[i] / 100 * V / m.preis); });
+      var erg = analysiere(pool.map(function(m){ return {name:m.name, icon:m.icon, preis:m.preis, menge:m.menge, monate:null}; }), G_STD);
+      var L = erg.liste, kl = L.map(function(o){ return o.abc; }).join("");
+      if(kl !== "AABBBCCCCC") continue;
+      if(L[1].kum > 79.3 || L[2].kum < 80.7 || L[4].kum > 94.3 || L[5].kum < 95.7) continue;
+      if(L[1].kumM > 22 || 100 - L[4].kumM < 45) continue;
+      // Überraschung: ein A- oder B-Gut ist billiger als ein C-Gut
+      var maxPreisC = Math.max.apply(null, L.slice(5).map(function(o){ return o.preis; }));
+      var billigAB = L.slice(0, 5).filter(function(o){ return o.preis * 2 <= maxPreisC; }).sort(function(p, q){ return p.preis - q.preis; });
+      if(!billigAB.length) continue;
+      // XYZ-Muster
+      var muster = [wahl(r, ["X"]), wahl(r, ["Y", "Z"])];
+      if(r() < 0.5) muster.reverse();
+      var rest = mische(r, ["X","X","Y","Z","X","Y","Z","Z"]);
+      muster = muster.concat(rest);
+      var ok = true;
+      L.forEach(function(o, i){ o.muster = muster[i]; o.monate = reihe(r, muster[i], o.menge); if(!o.monate) ok = false; });
+      if(!ok) continue;
+      var items = L.map(function(o){ return {name:o.name, icon:o.icon, preis:o.preis, menge:o.menge, monate:o.monate}; });
+      var ana = analysiere(items, G_STD);
+      if(ana.liste.some(function(o, i){ return o.xyz !== muster[i]; })) continue;
+      return {seed:seed, items:items, ana:ana, r:r, teuerC:L.slice(5).filter(function(o){ return o.preis === maxPreisC; })[0].name, billigAB:billigAB[0].name};
+    }
+    return null;
+  }
+
+  /* ============================ Fragenpools ============================ */
+  var LORENZ_AUSSAGEN = [
+    ["Hätten alle Materialien denselben Verbrauchswert je Stück, verliefe die Kurve auf der Diagonalen.", true, "Dann brächte jeder Mengenanteil den gleichen Wertanteil – genau das zeigt die gestrichelte Diagonale."],
+    ["Je stärker die Kurve nach oben gewölbt ist, desto stärker konzentriert sich der Wert auf wenige Materialien.", true, "Eine starke Wölbung heißt: Ein kleiner Mengenanteil bringt einen großen Wertanteil."],
+    ["Die A-Güter machen den größten Teil der verbrauchten Menge aus.", false, "Umgekehrt: A-Güter haben einen großen Wertanteil, aber meist nur einen kleinen Mengenanteil – deshalb ist der erste Abschnitt so steil."],
+    ["Ein steiler Abschnitt bedeutet: wenig Menge, viel Wert.", true, "Die Steigung ist Wertanteil geteilt durch Mengenanteil – also ein hoher Wert je Stück."],
+    ["Die C-Güter liegen im steilen Anfangsabschnitt der Kurve.", false, "C-Güter liegen im flachen Endabschnitt: viel Menge, wenig Wert."],
+    ["Die Kurve endet immer bei 100 % Menge und 100 % Wert.", true, "Am Ende sind alle Materialien erfasst – ihre gesamte Menge und ihr gesamter Wert."],
+    ["Die Reihenfolge auf der Kurve richtet sich nach dem Preis je Stück.", false, "Die Reihenfolge richtet sich nach dem Verbrauchswert (Menge · Preis), nicht nach dem Stückpreis."]
+  ];
+  var EMPF_STRAT = [
+    {i:"jit", t:"Fertigungssynchrone Anlieferung (Just in time): Das Material kommt genau dann, wenn es verbaut wird.", z:"AX", erk:"Hoher Wert → der Bestand soll klein sein. Gleichmäßiger Verbrauch → die Liefertermine sind genau planbar."},
+    {i:"einzel", t:"Einzelbeschaffung im Bedarfsfall: Erst bestellen, wenn ein konkreter Auftrag vorliegt.", z:"AZ", erk:"Hoher Wert verbietet einen Vorrat „auf Verdacht“. Weil der Bedarf unregelmäßig ist, wird erst bei konkretem Bedarf beschafft."},
+    {i:"kanban", t:"Rahmenvertrag mit automatischem Nachschub (z. B. Kanban), kaum Dispositionsaufwand.", z:"CX", erk:"Geringer Wert → Aufwand klein halten. Gleichmäßiger Verbrauch → der Nachschub lässt sich automatisieren."},
+    {i:"lager", t:"Großzügiger Vorrat mit hohem Sicherheitsbestand; selten und in großen Mengen bestellen.", z:"CZ", erk:"Geringer Wert → die Kapitalbindung fällt kaum ins Gewicht. Unregelmäßiger Bedarf → ein Puffer schützt vor Engpässen."}
+  ];
+  var EMPF_WERT = [
+    {i:"verhandeln", t:"Intensive Marktanalyse, Lieferantenbewertung und Preisverhandlungen lohnen sich.", z:"A", erk:"Schon wenige Prozent Preisvorteil bringen bei hohem Verbrauchswert viel Geld."},
+    {i:"schild", t:"Möglichst niedriger Sicherheitsbestand, weil jedes Stück auf Lager viel Kapital bindet.", z:"A", erk:"Hoher Wert je Stück → hohe Kapitalbindung und Lagerzinsen."},
+    {i:"prognose", t:"Genaue, programmgesteuerte Bedarfsermittlung auf Basis des Produktionsplans.", z:"A", erk:"Der Aufwand einer genauen Planung rechnet sich nur, wenn viel Wert betroffen ist."},
+    {i:"sammeln", t:"Vereinfachte Bestellabwicklung: Sammelbestellungen, Bestellung über Katalog oder Onlineshop.", z:"C", erk:"Der Verwaltungsaufwand soll nicht größer sein als der Wert der Ware."},
+    {i:"lager", t:"Ein höherer Sicherheitsbestand ist vertretbar, weil er kaum Kapital bindet.", z:"C", erk:"Bei geringem Wert kostet ein Puffer wenig, schützt aber vor Engpässen."},
+    {i:"kalender", t:"Selten und in großen Mengen bestellen, um Bestellkosten zu sparen.", z:"C", erk:"Die Lagerkosten großer Mengen sind bei geringwertigen Gütern niedrig; die eingesparten Bestellkosten überwiegen."}
+  ];
+  var EMPF_REGEL = [
+    {i:"kalender", t:"Feste Lieferrhythmen mit dem Lieferanten vereinbaren.", z:"X", erk:"Bei gleichmäßigem Verbrauch passen feste Termine zum Bedarf."},
+    {i:"prognose", t:"Der Bedarf lässt sich gut vorhersagen; Bestände können knapp kalkuliert werden.", z:"X", erk:"Geringe Schwankung → geringe Prognosefehler → wenig Puffer nötig."},
+    {i:"warnung", t:"Der Bedarf ist kaum planbar; nötig sind ein Vorrat oder eine kurzfristige Beschaffung im Bedarfsfall.", z:"Z", erk:"Bei stark schwankendem, sporadischem Verbrauch versagen feste Rhythmen und Prognosen."},
+    {i:"schild", t:"Ein Sicherheitsbestand muss vor allem unerwartete Bedarfsspitzen abfangen.", z:"Z", erk:"Je unregelmäßiger der Verbrauch, desto wichtiger ist ein Puffer – sofern nicht auftragsbezogen beschafft wird."}
+  ];
+
+  /* ============================ Üben ============================ */
+  var U = null;
+
+  function neueAufgabe(seed){
+    var a = erzeuge(seed);
+    if(!a){ neueAufgabe(seed + 1); return; }
+    var r = a.r, L = a.ana.liste;
+    U = {a:a, seed:seed, tipp:[], aufgeloest:false, abc:{}, abcErst:null, xyz:{}, xyzErst:null, matrix:{}, matrixErst:null, gewaehlt:null,
+         antw:{}, lorenzErst:null, start:new Date(), fragen:{}};
+    $("u-nr").textContent = "Nr. " + seed;
+    $("u-fall").innerHTML = "Ein Fahrrad-Großhändler beliefert Werkstätten mit Ersatzteilen und Zubehör. Für zehn Artikel will der Einkauf wissen, welche er besonders sorgfältig steuern muss und wie sie beschafft werden sollten. Die Seite rechnet die Verbrauchswerte aus – Ihre Aufgabe ist das <b>Einordnen und Begründen</b>.";
+    $("s1a-titel").innerHTML = ic("gluehbirne", 20) + "Schätzen";
+    $("s1b-titel").innerHTML = ic("euro", 20) + "Automatisch sortiert: Jetzt A, B oder C zuordnen";
+    $("u-regel").innerHTML = ic("waage", 22) + "<div><b>Regel dieser Aufgabe:</b> Materialien nach Verbrauchswert (Menge · Preis) absteigend sortieren und die Wertanteile aufsummieren. <span class='badge b-A'>A</span> bis " + G_STD.a + " % kumuliert · <span class='badge b-B'>B</span> bis " + G_STD.b + " % · <span class='badge b-C'>C</span> der Rest.</div>";
+    $("u-xyz-regel").innerHTML = ic("wellen", 22) + "<div><span class='badge b-X'>X</span> gleichmäßiger Verbrauch, kaum Schwankung · <span class='badge b-Y'>Y</span> schwankend, z. B. saisonal oder mit Trend · <span class='badge b-Z'>Z</span> unregelmäßig, sporadisch, kaum vorhersagbar. Gemessen wird das mit dem Variationskoeffizienten.</div>";
+
+    // Schritt 1a
+    U.reihenfolge = mische(r, L.map(function(o){ return o.rang; }));
+    zeichneKarten();
+    $("u-aufloesen").disabled = true; $("m-schaetz").textContent = ""; $("m-schaetz").className = "meldung";
+    $("s1b").hidden = true;
+    // Schritt 1b
+    zeichneRang();
+    $("m-abc").textContent = ""; $("m-abc").className = "meldung";
+    var billig = L.filter(function(o){ return o.name === a.billigAB; })[0], teuer = L.filter(function(o){ return o.name === a.teuerC; })[0];
+    U.fragen.q1 = mc(r, {icon:"euro", text:"„" + billig.name + "“ kostet nur " + eur(billig.preis) + " je Stück und ist ein " + billig.abc + "-Gut. „" + teuer.name + "“ kostet " + eur(teuer.preis) + " und ist nur ein C-Gut. Wie ist das zu erklären?",
+      opt:[["Entscheidend ist der Verbrauchswert = Menge · Preis. „" + billig.name + "“ wird so oft verbraucht (" + fz(billig.menge) + " Stück), dass sein Verbrauchswert höher ist.", 1],
+           ["Die ABC-Analyse ordnet nach dem Stückpreis; hier liegt ein Rechenfehler vor.", 0],
+           ["Teure Materialien sind immer C-Güter, weil sie selten gebraucht werden.", 0]],
+      erk:"Verbrauchswert „" + billig.name + "“: " + fz(billig.menge) + " · " + eur(billig.preis) + " = " + eur(billig.wert) + ". „" + teuer.name + "“: " + fz(teuer.menge) + " · " + eur(teuer.preis) + " = " + eur(teuer.wert) + ". Ein niedriger Stückpreis macht ein Material also nicht automatisch zum C-Gut."});
+    $("q1").innerHTML = frageHtml("q1");
+
+    // Schritt 2
+    var aLetzt = L.filter(function(o){ return o.abc === "A"; }).pop(), bLetzt = L.filter(function(o){ return o.abc === "B"; }).pop();
+    U.lsoll = {amenge:aLetzt.kumM, cwert:100 - bLetzt.kum};
+    ["l-amenge","l-cwert"].forEach(function(id){ $(id).value = ""; $(id).className = ""; });
+    $("m-lorenz").textContent = ""; $("m-lorenz").className = "meldung";
+    zeichneLorenzUeben(false);
+    var la = mische(r, LORENZ_AUSSAGEN).slice(0, 4);
+    U.lorenzAussagen = la;
+    $("l-aussagen").innerHTML = la.map(function(s, i){
+      return "<div class='aussage'><span class='sym'>" + ic("kurve", 22) + "</span><span>" + s[0] + "</span><div class='opts'>" +
+        "<button type='button' data-la='" + i + "' data-w='1'>stimmt</button><button type='button' data-la='" + i + "' data-w='0'>stimmt nicht</button></div><div class='erklaerung' id='la-" + i + "' hidden></div></div>";
+    }).join("");
+
+    // Schritt 3
+    U.xyzReihenfolge = mische(r, L.map(function(o){ return o.rang; }));
+    zeichneXyz();
+    $("m-xyz").textContent = ""; $("m-xyz").className = "meldung";
+    U.fragen.q3 = mc(r, {icon:"wellen", text:"Mit welcher Kennzahl wird die Regelmäßigkeit des Verbrauchs gemessen – und was sagt sie aus?",
+      opt:[["Mit dem Variationskoeffizienten: Standardabweichung geteilt durch den Durchschnittsverbrauch. Je größer er ist, desto stärker schwankt der Verbrauch im Verhältnis zu seiner Höhe.", 1],
+           ["Mit dem Jahresverbrauch: Je größer die Menge, desto regelmäßiger der Verbrauch.", 0],
+           ["Mit der Standardabweichung allein: Je größer sie ist, desto unregelmäßiger ist der Verbrauch – egal wie hoch der Durchschnitt ist.", 0]],
+      erk:"Die Standardabweichung allein reicht nicht: Eine Schwankung von 100 Stück ist bei 10.000 Stück im Monat klein, bei 150 Stück riesig. Deshalb wird sie durch den Durchschnitt geteilt – so lassen sich Materialien mit sehr unterschiedlichen Mengen vergleichen."});
+    $("q3").innerHTML = frageHtml("q3");
+
+    // Schritt 4
+    zeichneMatrixUeben();
+    $("m-matrix").textContent = ""; $("m-matrix").className = "meldung";
+
+    // Schritt 5
+    $("e1-titel").innerHTML = ic("raster", 20) + "Strategien: in welches Eckfeld der Matrix?";
+    $("e2-titel").innerHTML = ic("euro", 20) + "Nach dem Wert: A-Güter oder C-Güter?";
+    $("e3-titel").innerHTML = ic("wellen", 20) + "Nach der Regelmäßigkeit: X-Güter oder Z-Güter?";
+    U.empf = {
+      strat:mische(r, EMPF_STRAT),
+      wert:mische(r, mische(r, EMPF_WERT.filter(function(e){ return e.z === "A"; })).slice(0, 2).concat(mische(r, EMPF_WERT.filter(function(e){ return e.z === "C"; })).slice(0, 2))),
+      regel:mische(r, EMPF_REGEL)
+    };
+    zeichneEmpf("e-strat", "strat", ["AX","AZ","CX","CZ"]);
+    zeichneEmpf("e-wert", "wert", ["A","C"]);
+    zeichneEmpf("e-regel", "regel", ["X","Z"]);
+
+    // Schritt 6
+    baueFaelle(r);
+    ergebnis(); setzeUrl(); meldeHoehe();
+  }
+
+  function mc(r, f){ return {f:f, opt:mische(r, f.opt.map(function(o){ return {text:o[0], ok:!!o[1]}; }))}; }
+  function frageHtml(key){
+    var q = U.fragen[key];
+    return "<div class='frage'><div class='fkopf'><span class='sym'>" + ic(q.f.icon || "sprechblase", 22) + "</span><p class='ft'>" + q.f.text + "</p></div><div class='optionen'>" +
+      q.opt.map(function(o, oi){ return "<button type='button' data-fk='" + key + "' data-o='" + oi + "'>" + o.text + "</button>"; }).join("") +
+      "</div><div class='erklaerung' id='erk-" + key + "' hidden></div></div>";
+  }
+  function markiere(selektor, gewaehlt, richtigFn){
+    Array.prototype.forEach.call(document.querySelectorAll(selektor), function(b){
+      b.disabled = true;
+      if(b === gewaehlt) b.classList.add(richtigFn(b) ? "gewaehlt-ok" : "gewaehlt-falsch");
+      else if(richtigFn(b)) b.classList.add("loesung");
+    });
+  }
+  function erkl(id, ok, text){ var e = $(id); e.innerHTML = (ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> ") + text; e.hidden = false; }
+
+  document.addEventListener("click", function(e){
+    var b = e.target.closest ? e.target.closest("button") : null; if(!b || !U) return;
+    if(b.hasAttribute("data-fk")){
+      var key = b.getAttribute("data-fk"); if(U.antw[key] !== undefined) return;
+      var q = U.fragen[key], o = q.opt[parseInt(b.getAttribute("data-o"), 10)];
+      U.antw[key] = o.ok;
+      markiere("button[data-fk='" + key + "']", b, function(x){ return q.opt[parseInt(x.getAttribute("data-o"), 10)].ok; });
+      erkl("erk-" + key, o.ok, (o.ok ? "" : "Die richtige Antwort ist gestrichelt markiert. ") + q.f.erk);
+      ergebnis(); meldeHoehe();
+    }
+    if(b.hasAttribute("data-la")){
+      var i = b.getAttribute("data-la"), k2 = "la" + i; if(U.antw[k2] !== undefined) return;
+      var s = U.lorenzAussagen[i], ok = (b.getAttribute("data-w") === "1") === s[1];
+      U.antw[k2] = ok;
+      markiere("button[data-la='" + i + "']", b, function(x){ return (x.getAttribute("data-w") === "1") === s[1]; });
+      erkl("la-" + i, ok, s[2]); ergebnis(); meldeHoehe();
+    }
+    if(b.hasAttribute("data-em")){
+      var gr = b.getAttribute("data-em"), idx = b.getAttribute("data-i"), k3 = "em-" + gr + idx; if(U.antw[k3] !== undefined) return;
+      var em = U.empf[gr][idx], ok3 = b.getAttribute("data-w") === em.z;
+      U.antw[k3] = ok3;
+      markiere("button[data-em='" + gr + "'][data-i='" + idx + "']", b, function(x){ return x.getAttribute("data-w") === em.z; });
+      erkl("em-" + gr + "-" + idx, ok3, em.erk); ergebnis(); meldeHoehe();
+    }
+  });
+
+  /* ----- Schritt 1 ----- */
+  function liste(){ return U.a.ana.liste; }
+  function nachRang(rg){ return liste()[rg - 1]; }
+  function zeichneKarten(){
+    $("u-karten").innerHTML = U.reihenfolge.map(function(rg){
+      var o = nachRang(rg), gew = U.tipp.indexOf(rg) >= 0, kl = "";
+      if(U.aufgeloest && gew) kl = rg <= 2 ? " richtig" : " falsch";
+      return "<button type='button' class='mkarte" + kl + "' data-karte='" + rg + "' aria-pressed='" + (gew ? "true" : "false") + "'" + (U.aufgeloest ? " disabled" : "") + ">" +
+        (U.aufgeloest ? "<span class='eck'><span class='badge b-" + o.abc + "'>" + o.abc + "</span></span>" : "") +
+        "<span class='kopf'><span class='sym'>" + ic(o.icon, 24) + "</span><span class='name'>" + esc(o.name) + "</span></span>" +
+        "<span class='zahlen'>" + fz(o.menge) + " Stück/Jahr<br>" + eur(o.preis) + " je Stück</span>" +
+        (U.aufgeloest ? "<span class='wert'>= " + eur(o.wert) + "</span>" : "") + "</button>";
+    }).join("");
+  }
+  $("u-karten").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-karte]"); if(!b || U.aufgeloest) return;
+    var rg = parseInt(b.getAttribute("data-karte"), 10), i = U.tipp.indexOf(rg);
+    if(i >= 0) U.tipp.splice(i, 1); else { if(U.tipp.length >= 2) U.tipp.shift(); U.tipp.push(rg); }
+    $("u-aufloesen").disabled = U.tipp.length !== 2;
+    zeichneKarten();
+  });
+  $("u-aufloesen").addEventListener("click", function(){
+    U.aufgeloest = true; zeichneKarten();
+    var treffer = U.tipp.filter(function(rg){ return rg <= 2; }).length, L = liste();
+    var m = $("m-schaetz");
+    m.className = "meldung " + (treffer === 2 ? "ok" : treffer === 1 ? "warn" : "fehler");
+    m.innerHTML = "<b>" + treffer + " von 2 getroffen.</b> Die meisten Mittel binden „" + L[0].name + "“ (" + eur(L[0].wert) + ") und „" + L[1].name + "“ (" + eur(L[1].wert) + "). Zusammen sind das " + fz(L[1].kum, 1) + " % des gesamten Verbrauchswerts, obwohl sie nur " + fz(L[1].kumM, 1) + " % der Menge ausmachen.";
+    $("s1b").hidden = false; ergebnis(); meldeHoehe();
+  });
+
+  function zeichneRang(){
+    var L = liste(), max = L[0].anteil;
+    $("u-rang").innerHTML = L.map(function(o){
+      var st = U.abcStatus ? U.abcStatus[o.rang] : null;
+      return "<div class='rzeile" + (st ? " " + st : "") + "'><span class='platz'>" + o.rang + ".</span><span class='sym'>" + ic(o.icon, 22) + "</span>" +
+        "<div class='mitte'><b>" + esc(o.name) + "</b><div class='balken'><span style='width:" + (o.anteil / max * 100).toFixed(1) + "%'></span></div>" +
+        "<div class='daten'>" + eur(o.wert) + " · Anteil " + fz(o.anteil, 1) + " % · kumuliert " + fz(o.kum, 1) + " %</div></div>" +
+        "<div class='wahl' role='group' aria-label='Klasse für " + esc(o.name) + "'>" + ["A","B","C"].map(function(k){ return "<button type='button' class='w-" + k + "' data-abc='" + o.rang + "' data-w='" + k + "' aria-pressed='" + (U.abc[o.rang] === k ? "true" : "false") + "'>" + k + "</button>"; }).join("") + "</div>" +
+        (st && U.abcBegr ? "<div class='begr'>" + U.abcBegr[o.rang] + "</div>" : "") + "</div>";
+    }).join("");
+  }
+  $("u-rang").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-abc]"); if(!b) return;
+    U.abc[b.getAttribute("data-abc")] = b.getAttribute("data-w"); U.abcStatus = null; zeichneRang(); zeichneMatrixUeben();
+  });
+  $("u-abc-pruefen").addEventListener("click", function(){
+    var L = liste(), richtig = 0, leer = 0; U.abcStatus = {}; U.abcBegr = {};
+    L.forEach(function(o){
+      var w = U.abc[o.rang];
+      if(!w){ leer++; return; }
+      var ok = w === o.abc; if(ok) richtig++;
+      U.abcStatus[o.rang] = ok ? "richtig" : "falsch";
+      var grenze = o.abc === "A" ? (o.rang === 1 ? "das wertvollste Material" : "kumuliert " + fz(o.kum, 1) + " % ≤ " + G_STD.a + " %") : (o.abc === "B" ? "kumuliert " + fz(o.kum, 1) + " % liegt über " + G_STD.a + " % und bis " + G_STD.b + " %" : "kumuliert " + fz(o.kum, 1) + " % liegt über " + G_STD.b + " %");
+      U.abcBegr[o.rang] = (ok ? "✓ " : "✗ Richtig ist " + o.abc + ": ") + grenze + (o.abc === "C" ? " – Wertanteil nur " + fz(o.anteil, 1) + " %, Mengenanteil " + fz(o.mAnteil, 1) + " %." : ".");
+    });
+    if(!U.abcErst) U.abcErst = {richtig:richtig, leer:leer};
+    var m = $("m-abc");
+    if(richtig === 10){ m.className = "meldung ok"; m.innerHTML = "<b>Alle 10 richtig eingeordnet.</b> 2 A-Güter mit " + fz(L[1].kum, 1) + " % des Wertes, 3 B-Güter und 5 C-Güter mit zusammen nur " + fz(100 - L[4].kum, 1) + " % des Wertes."; }
+    else { m.className = "meldung " + (leer ? "warn" : "fehler"); m.innerHTML = "<b>" + richtig + " von 10 richtig</b>" + (leer ? ", " + leer + " noch offen" : "") + ". Die Begründung steht unter jeder Zeile. Sie können umentscheiden und erneut prüfen."; }
+    zeichneRang(); zeichneMatrixUeben(); zeichneLorenzUeben(U.lorenzErst && U.lorenzErst.a); ergebnis(); meldeHoehe();
+  });
+
+  /* ----- Schritt 2 ----- */
+  function zeichneLorenzUeben(loesung){
+    var mark = loesung ? [{x:U.lsoll.amenge, y:liste().filter(function(o){ return o.abc === "A"; }).pop().kum, text:"A: " + fz(U.lsoll.amenge, 1) + " % der Menge"}] : null;
+    lorenz($("u-lorenz"), U.a.ana, {grenzen:G_STD, markierung:mark, klasse:U.abcErst ? null : function(){ return "N"; }});
+  }
+  $("l-pruefen").addEventListener("click", function(){
+    var am = lies($("l-amenge").value), cw = lies($("l-cwert").value), s = U.lsoll;
+    var okA = am !== null && !isNaN(am) && Math.abs(am - s.amenge) <= Math.max(2, s.amenge * 0.25);
+    var okC = cw !== null && !isNaN(cw) && Math.abs(cw - s.cwert) <= 1.5;
+    $("l-amenge").className = am === null ? "" : (okA ? "richtig" : "falsch");
+    $("l-cwert").className = cw === null ? "" : (okC ? "richtig" : "falsch");
+    if(!U.lorenzErst) U.lorenzErst = {a:okA, c:okC};
+    var h = [], m = $("m-lorenz");
+    if(okA && okC){ m.className = "meldung ok"; var Ls = liste(), cMenge = 100 - Ls[4].kumM; h.push("<b>Gut abgelesen.</b> Die A-Güter stellen nur rund " + fz(s.amenge, 1) + " % der Menge, aber " + fz(Ls[1].kum, 1) + " % des Wertes. Bei den C-Gütern ist es umgekehrt: " + fz(cMenge, 1) + " % der Menge, aber nur " + fz(s.cwert, 1) + " % des Wertes."); }
+    else {
+      m.className = "meldung fehler";
+      if(!okA) h.push(am !== null && Math.abs(am - liste()[1].kum) < 3 ? "Beim Mengenanteil der A-Güter haben Sie den <b>Wert</b>anteil abgelesen. Gesucht ist der Wert auf der <b>waagerechten</b> Achse beim letzten A-Punkt." : "Mengenanteil der A-Güter: beim letzten A-Punkt (Nummer 2) senkrecht nach unten auf die waagerechte Achse.");
+      if(!okC) h.push(cw !== null && Math.abs(cw - liste()[4].kum) < 2 ? "Das ist der kumulierte Wert bis zum letzten B-Gut. Der Anteil der C-Güter ist der Rest bis 100 %." : "Wertanteil der C-Güter: 100 % minus den kumulierten Wertanteil beim letzten B-Gut.");
+    }
+    m.innerHTML = h.join(" ");
+    zeichneLorenzUeben(okA); ergebnis(); meldeHoehe();
+  });
+
+  /* ----- Schritt 3 ----- */
+  var XFARBE = {X:"#1B7A5A", Y:"#B07A08", Z:"#B33A2B"};
+  function zeichneXyz(){
+    $("u-xyz").innerHTML = U.xyzReihenfolge.map(function(rg){
+      var o = nachRang(rg), st = U.xyzStatus ? U.xyzStatus[rg] : null;
+      return "<div class='xkarte" + (st ? " " + st : "") + "'><div class='kopf'><span class='sym'>" + ic(o.icon, 22) + "</span><b>" + esc(o.name) + "</b></div>" + sparkline(o.monate, st ? XFARBE[o.xyz] : "#2A72BD") +
+        "<div class='fuss'><span class='klein'>" + (st ? "VK " + fz(o.vk, 0) + " %" : "Ø " + fz(mittel(o.monate)) + "/Monat") + "</span><div class='wahl'>" +
+        ["X","Y","Z"].map(function(k){ return "<button type='button' class='w-" + k + "' data-xyz='" + rg + "' data-w='" + k + "' aria-pressed='" + (U.xyz[rg] === k ? "true" : "false") + "'>" + k + "</button>"; }).join("") +
+        "</div></div>" + (st ? "<div class='klein' style='color:var(--grau-700)'>" + U.xyzBegr[rg] + "</div>" : "") + "</div>";
+    }).join("");
+  }
+  $("u-xyz").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-xyz]"); if(!b) return;
+    U.xyz[b.getAttribute("data-xyz")] = b.getAttribute("data-w"); U.xyzStatus = null; zeichneXyz(); zeichneMatrixUeben();
+  });
+  var XYZ_TEXT = {X:"gleichmäßiger Verbrauch, die Balken sind fast gleich hoch", Y:"deutliche Schwankung mit erkennbarem Muster (Saison)", Z:"sporadisch: einzelne Spitzen, dazwischen kaum Verbrauch"};
+  $("u-xyz-pruefen").addEventListener("click", function(){
+    var L = liste(), richtig = 0, leer = 0; U.xyzStatus = {}; U.xyzBegr = {};
+    L.forEach(function(o){
+      var w = U.xyz[o.rang]; if(!w){ leer++; return; }
+      var ok = w === o.xyz; if(ok) richtig++;
+      U.xyzStatus[o.rang] = ok ? "richtig" : "falsch";
+      U.xyzBegr[o.rang] = (ok ? "✓ " : "✗ Richtig ist " + o.xyz + ": ") + XYZ_TEXT[o.xyz] + ".";
+    });
+    if(!U.xyzErst) U.xyzErst = {richtig:richtig, leer:leer};
+    var m = $("m-xyz");
+    if(richtig === 10){ m.className = "meldung ok"; m.innerHTML = "<b>Alle 10 richtig.</b> Die Prozentzahl auf jeder Karte ist der Variationskoeffizient (VK): X bis " + G_STD.x + " %, Y bis " + G_STD.y + " %, Z darüber."; }
+    else { m.className = "meldung " + (leer ? "warn" : "fehler"); m.innerHTML = "<b>" + richtig + " von 10 richtig</b>" + (leer ? ", " + leer + " offen" : "") + ". Achten Sie darauf, wie stark die Balken um die gestrichelte Durchschnittslinie schwanken – nicht auf ihre absolute Höhe."; }
+    zeichneXyz(); zeichneMatrixUeben(); ergebnis(); meldeHoehe();
+  });
+
+  /* ----- Schritt 4: Matrix ----- */
+  function matrixGeruest(container, inhaltFn, aktivFeld){
+    var h = "<div></div>" + ["X","Y","Z"].map(function(k){ return "<div class='kopfz'><span class='badge b-" + k + "'>" + k + "</span>" + {X:"gleichmäßig",Y:"schwankend",Z:"unregelmäßig"}[k] + "</div>"; }).join("");
+    ["A","B","C"].forEach(function(a, ri){
+      h += "<div class='kopfz'><span class='badge b-" + a + "'>" + a + "</span>" + {A:"hoher Wert",B:"mittel",C:"geringer Wert"}[a] + "</div>";
+      ["X","Y","Z"].forEach(function(x, ci){
+        var f = a + x, t = "t" + Math.min(3, ri + ci === 0 ? 1 : (ri + ci <= 2 ? 2 : 3));
+        h += "<div class='mzelle " + t + (aktivFeld === f ? " aktiv" : "") + "' role='button' tabindex='0' data-feld='" + f + "' aria-label='Feld " + f + "'>" + inhaltFn(f) + "<span class='fn'>" + f + "</span></div>";
+      });
+    });
+    $(container).innerHTML = h;
+  }
+  function chipHtml(o, attr, kl){ return "<span class='chip" + (kl ? " " + kl : "") + "' " + attr + "><span class='sym'>" + ic(o.icon, 15) + "</span>" + esc(o.name) + "</span>"; }
+  function zeichneMatrixUeben(){
+    if(!U) return;
+    var L = liste();
+    matrixGeruest("u-matrix", function(f){
+      return L.filter(function(o){ return U.matrix[o.rang] === f; }).map(function(o){
+        var st = U.matrixStatus ? U.matrixStatus[o.rang] : "";
+        return chipHtml(o, "data-chip='" + o.rang + "' role='button' tabindex='0' aria-pressed='" + (U.gewaehlt === o.rang ? "true" : "false") + "'", st);
+      }).join("");
+    });
+    var frei = L.filter(function(o){ return !U.matrix[o.rang]; });
+    $("u-ablage").innerHTML = "<h3>Noch einzuordnen</h3>" + (frei.length ? frei.map(function(o){
+      return "<button type='button' class='chip' data-chip='" + o.rang + "' aria-pressed='" + (U.gewaehlt === o.rang ? "true" : "false") + "'><span class='sym'>" + ic(o.icon, 15) + "</span>" + esc(o.name) + "</button>";
+    }).join("") : "<span class='klein'>Alle Materialien sind platziert.</span>");
+    Array.prototype.forEach.call(document.querySelectorAll("#u-matrix .mzelle"), function(z){ if(U.gewaehlt) z.classList.add("ziel"); });
+  }
+  function matrixKlick(e){
+    var chip = e.target.closest("[data-chip]");
+    if(chip){ e.stopPropagation(); var rg = parseInt(chip.getAttribute("data-chip"), 10); U.gewaehlt = U.gewaehlt === rg ? null : rg; zeichneMatrixUeben(); return; }
+    var zelle = e.target.closest(".mzelle");
+    if(zelle && U.gewaehlt){ U.matrix[U.gewaehlt] = zelle.getAttribute("data-feld"); U.gewaehlt = null; U.matrixStatus = null; zeichneMatrixUeben(); meldeHoehe(); }
+  }
+  $("u-matrix").addEventListener("click", matrixKlick);
+  $("u-ablage").addEventListener("click", matrixKlick);
+  $("u-matrix-pruefen").addEventListener("click", function(){
+    var L = liste(), st = {richtig:0, folge:0, falsch:0, leer:0}; U.matrixStatus = {};
+    L.forEach(function(o){
+      var f = U.matrix[o.rang]; if(!f){ st.leer++; return; }
+      var s = f === o.abc + o.xyz ? "richtig" : ((U.abc[o.rang] && U.xyz[o.rang] && f === U.abc[o.rang] + U.xyz[o.rang]) ? "folge" : "falsch");
+      U.matrixStatus[o.rang] = s; st[s]++;
+    });
+    if(!U.matrixErst) U.matrixErst = st;
+    var m = $("m-matrix");
+    if(st.richtig === 10){ m.className = "meldung ok"; m.innerHTML = "<b>Matrix vollständig richtig.</b> Die Ecken zeigen die Extreme: oben links hoher Wert und gut planbar, unten rechts geringer Wert und kaum planbar."; }
+    else { m.className = "meldung " + (st.falsch ? "fehler" : "warn"); m.innerHTML = "<b>" + st.richtig + " von 10 richtig</b>" + (st.folge ? ", " + st.folge + " folgerichtig zu Ihren eigenen Einordnungen" : "") + (st.falsch ? ", " + st.falsch + " falsch" : "") + (st.leer ? ", " + st.leer + " noch nicht platziert" : "") + ". Zeile = Wert (A, B, C), Spalte = Regelmäßigkeit (X, Y, Z)."; }
+    zeichneMatrixUeben(); ergebnis(); meldeHoehe();
+  });
+
+  /* ----- Schritt 5 ----- */
+  var ZIELNAMEN = {AX:"AX", AZ:"AZ", CX:"CX", CZ:"CZ", A:"A-Güter", C:"C-Güter", X:"X-Güter", Z:"Z-Güter"};
+  function zeichneEmpf(container, gruppe, ziele){
+    $(container).innerHTML = U.empf[gruppe].map(function(em, i){
+      return "<div class='aussage'><span class='sym'>" + ic(em.i, 22) + "</span><span>" + em.t + "</span><div class='opts'>" +
+        ziele.map(function(z){ return "<button type='button' data-em='" + gruppe + "' data-i='" + i + "' data-w='" + z + "'>" + ZIELNAMEN[z] + "</button>"; }).join("") +
+        "</div><div class='erklaerung' id='em-" + gruppe + "-" + i + "' hidden></div></div>";
+    }).join("");
+  }
+
+  /* ----- Schritt 6 ----- */
+  function baueFaelle(r){
+    var L = liste(), q = [];
+    var ax = L.filter(function(o){ return o.abc === "A" && o.xyz === "X"; })[0] || L[0];
+    q.push({icon:"sprechblase", text:"Der Einkaufsleiter schlägt vor, „" + ax.name + "“ (" + ax.abc + ax.xyz + ") künftig für ein halbes Jahr im Voraus zu kaufen, weil der Lieferant dann 3 % Rabatt gewährt. Wie beurteilen Sie den Vorschlag?",
+      opt:[["Kritisch: Bei einem A-Gut bindet ein Halbjahresvorrat sehr viel Kapital, und weil der Verbrauch gleichmäßig ist, wäre eine bedarfsgenaue Anlieferung möglich. Der Rabatt lohnt sich nur, wenn er die zusätzlichen Lagerkosten übersteigt – das muss man rechnen.", 1],
+           ["Zustimmen, denn ein Rabatt senkt immer die Kosten.", 0],
+           ["Zustimmen, denn A-Güter sind besonders wichtig und dürfen nie ausgehen – je mehr auf Lager, desto besser.", 0]],
+      erk:"Halbjahresvorrat von „" + ax.name + "“: rund " + eur(ax.wert / 2) + " gebunden. Bei z. B. 10 % Lagerhaltungskostensatz kostet das Lagern viel mehr als 3 % Rabatt auf den Einkauf. Die Handlungsempfehlung für AX lautet deshalb: geringe Bestände, fertigungssynchrone Anlieferung."});
+    var cMat = L.filter(function(o){ return o.abc === "C"; })[Math.floor(r() * 5)];
+    q.push({icon:"verhandeln", text:"Eine Kollegin will für „" + cMat.name + "“ (C-Gut, " + eur(cMat.wert) + " im Jahr) künftig vor jeder Bestellung drei Angebote einholen und den Preis nachverhandeln. Ist das sinnvoll?",
+      opt:[["Eher nicht: Der Aufwand für Angebote und Verhandlungen kostet mehr, als ein paar Prozent Preisnachlass bei so geringem Verbrauchswert einbringen. Besser: Rahmenvertrag, Sammelbestellung, vereinfachte Abwicklung.", 1],
+           ["Ja, denn Preisvergleiche lohnen sich bei jedem Material gleichermaßen.", 0],
+           ["Ja, denn C-Güter werden in großen Mengen gekauft, deshalb ist der Preis dort am wichtigsten.", 0]],
+      erk:"5 % Preisnachlass auf „" + cMat.name + "“ brächten nur rund " + eur(cMat.wert * 0.05) + " im Jahr. Die ABC-Analyse soll den Aufwand im Einkauf dorthin lenken, wo viel Geld im Spiel ist."});
+    var z = L.filter(function(o){ return o.xyz === "Z" && o.abc !== "C"; })[0] || L.filter(function(o){ return o.xyz === "Z"; })[0];
+    q.push({icon:"kalender", text:"Für „" + z.name + "“ (" + z.abc + z.xyz + ") soll ein fester Lieferrhythmus vereinbart werden: jeden Monat die gleiche Menge. Passt das?",
+      opt:[["Nein: Der Verbrauch ist sporadisch. Eine feste Monatsmenge wäre in vielen Monaten zu viel (unnötiger Bestand) und in Spitzenmonaten zu wenig (Engpass).", 1],
+           ["Ja: Feste Rhythmen vereinfachen die Planung und passen zu jedem Material.", 0],
+           ["Ja, sofern der Jahresverbrauch insgesamt richtig geschätzt ist.", 0]],
+      erk:"Z-Güter haben einen hohen Variationskoeffizienten. " + (z.abc === "A" ? "Bei einem A-Gut wird deshalb oft im Bedarfsfall einzeln beschafft." : "Hier helfen eher ein Bestellpunktverfahren mit Sicherheitsbestand oder die Beschaffung im Bedarfsfall.")});
+    var billig = L.filter(function(o){ return o.name === U.a.billigAB; })[0];
+    q.push({icon:"warnung", text:"Ein Mitschüler sagt: „" + billig.name + " ist ein C-Gut, weil das Teil nur " + eur(billig.preis) + " kostet.“ Was ist an der Aussage falsch?",
+      opt:[["Der Stückpreis allein entscheidet nicht. Maßgeblich ist der Verbrauchswert: " + fz(billig.menge) + " Stück · " + eur(billig.preis) + " = " + eur(billig.wert) + ". Damit ist es ein " + billig.abc + "-Gut.", 1],
+           ["Nichts – billige Materialien sind per Definition C-Güter.", 0],
+           ["Die Aussage ist falsch, weil die ABC-Analyse nur die Menge betrachtet.", 0]],
+      erk:"Die ABC-Analyse betrachtet den Wert des Verbrauchs, also Menge und Preis zusammen. Genau deshalb muss man sortieren und kumulieren, statt nur auf den Preis zu schauen."});
+    var krit = L.filter(function(o){ return o.abc === "C" && o !== cMat; })[Math.floor(r() * 4)];
+    q.push({icon:"schild", text:"„" + krit.name + " ist ein C-Gut. Ob es mal fehlt, ist also egal.“ Wie beurteilen Sie diese Aussage?",
+      opt:[["Falsch: Die ABC-Analyse misst nur den Wert, nicht die Bedeutung für die Produktion. Fehlt das Teil, können Werkstätten Reparaturen nicht abschließen, und Kunden wandern ab. Gerade bei C-Gütern ist ein großzügiger Sicherheitsbestand günstig.", 1],
+           ["Richtig: C-Güter haben einen so geringen Anteil am Wert, dass ihr Fehlen kaum Folgen hat.", 0],
+           ["Richtig, solange die A-Güter vorhanden sind.", 0]],
+      erk:"Das ist eine Grenze der ABC-Analyse: Sie sagt nichts über das Versorgungsrisiko. Deshalb ergänzen Unternehmen sie oft um weitere Kriterien wie Kritikalität oder Lieferrisiko."});
+    U.faelle = q.map(function(f, i){ U.fragen["f" + i] = mc(r, f); return "f" + i; });
+    $("u-faelle").innerHTML = U.faelle.map(function(k){ return frageHtml(k); }).join("");
+  }
+
+  /* ----- Ergebnis ----- */
+  function ergebnis(){
+    if(!U) return;
+    function z(prefix){ var k = Object.keys(U.antw).filter(function(x){ return x.indexOf(prefix) === 0; }); return {ok:k.filter(function(x){ return U.antw[x]; }).length, n:k.length}; }
+    var la = z("la"), em = z("em-"), fa = z("f"), q = ["q1","q3"].filter(function(k){ return U.antw[k]; }).length;
+    var me = U.matrixErst;
+    var k = [
+      ["Aufgabe", "Nr. " + U.seed, ""],
+      ["Schätzung", U.aufgeloest ? U.tipp.filter(function(rg){ return rg <= 2; }).length + " / 2" : "–", "Top 2 getroffen"],
+      ["ABC zuordnen", U.abcErst ? U.abcErst.richtig + " / 10" : "–", "erste Prüfung"],
+      ["Lorenzkurve", (U.lorenzErst ? (U.lorenzErst.a ? 1 : 0) + (U.lorenzErst.c ? 1 : 0) : 0) + la.ok + " / 6", la.n + " / 4 Aussagen beantwortet"],
+      ["XYZ zuordnen", U.xyzErst ? U.xyzErst.richtig + " / 10" : "–", "erste Prüfung"],
+      ["Matrix", me ? me.richtig + " / 10" : "–", me ? (me.folge ? me.folge + " folgerichtig" : "erste Prüfung") : "noch nicht geprüft"],
+      ["Empfehlungen", em.ok + " / 12", em.n + " beantwortet"],
+      ["Begründen", fa.ok + " / 5", fa.n + " beantwortet"],
+      ["Verständnisfragen", q + " / 2", ["q1","q3"].filter(function(k2){ return U.antw[k2] !== undefined; }).length + " beantwortet"]
+    ];
+    $("u-ergebnis").innerHTML = k.map(function(x){ return "<div class='erg'><div class='k'>" + x[0] + "</div><div class='v'>" + x[1] + "</div><div class='d'>" + x[2] + "</div></div>"; }).join("");
+    $("u-zeit").textContent = "Begonnen am " + U.start.toLocaleDateString("de-DE") + " um " + U.start.toLocaleTimeString("de-DE", {hour:"2-digit", minute:"2-digit"}) + " Uhr. Die Übersicht dient Ihrer Selbstkontrolle; sie wird nicht übermittelt.";
+  }
+
+  $("u-neu").addEventListener("click", function(){ neueAufgabe(1000 + Math.floor(Math.random() * 9000)); window.scrollTo(0, 0); });
+  $("u-laden").addEventListener("click", function(){
+    var n = parseInt(String($("u-laden-nr").value).replace(/\D/g, ""), 10);
+    if(!(n >= 1000 && n <= 9999)){ window.alert("Bitte eine Aufgabennummer zwischen 1000 und 9999 eingeben."); return; }
+    neueAufgabe(n); $("u-laden-nr").value = "";
+  });
+  $("u-laden-nr").addEventListener("keydown", function(e){ if(e.key === "Enter") $("u-laden").click(); });
+  $("u-zu-analyse").addEventListener("click", function(){
+    A.items = U.a.items.map(function(it){ return {name:it.name, icon:it.icon, preis:it.preis, verbrauch:it.monate.join(" ")}; });
+    A.feld = null; setzeModus("analyse"); window.scrollTo(0, 0);
+  });
+
+  /* ============================ Eigene Analyse ============================ */
+  var BAECKEREI = [
+    {name:"Weizenmehl", icon:"mehl", preis:0.62, verbrauch:"9800 9500 10100 9900 9700 9600 9400 9800 10000 10300 10600 11200"},
+    {name:"Butter", icon:"butter", preis:6.8, verbrauch:"1000 960 1020 980 950 900 880 920 990 1090 1220 1490"},
+    {name:"Eier (Stück)", icon:"ei", preis:0.24, verbrauch:"14200 13800 16900 15100 13900 13500 13200 13600 14100 14800 16200 19800"},
+    {name:"Kuvertüre", icon:"schoko", preis:11.5, verbrauch:"160 200 170 140 120 100 95 100 130 170 240 330"},
+    {name:"Haselnüsse", icon:"nuss", preis:13.9, verbrauch:"20 10 0 0 15 0 0 10 40 90 210 260"},
+    {name:"Zucker", icon:"zucker", preis:0.95, verbrauch:"1430 1400 1500 1460 1420 1360 1350 1400 1450 1540 1700 1990"},
+    {name:"Frischhefe", icon:"hefe", preis:2.1, verbrauch:"310 300 315 305 300 295 290 300 305 310 320 330"},
+    {name:"Backpapier", icon:"papier", preis:0.035, verbrauch:"18000 17500 18500 18000 17800 17600 17400 17900 18100 18400 19000 20500"},
+    {name:"Brötchentüten", icon:"tuete", preis:0.018, verbrauch:"52000 50000 54000 53000 52000 51000 50500 51500 52500 53500 54000 58000"},
+    {name:"Reinigungsmittel", icon:"reiniger", preis:4.2, verbrauch:"60 0 0 90 0 0 70 0 0 80 0 60"}
+  ];
+  var A = {items:null, g:{a:80, b:95, x:25, y:50}, xPos:false, feld:null};
+  function beispielEbike(){ var a = erzeuge(1001); return a.items.map(function(it){ return {name:it.name, icon:it.icon, preis:it.preis, verbrauch:it.monate.join(" ")}; }); }
+
+  function zahlenListe(s){ return String(s || "").split(/[;\s]+/).filter(function(x){ return x !== ""; }).map(lies); }
+  function zeichneEditor(){
+    $("a-tabelle").innerHTML = "<thead><tr><th style='width:150px'>Symbol</th><th>Material</th><th style='width:110px'>Preis je Stück (€)</th><th>Verbrauch: Jahresmenge oder 12 Monatswerte</th><th style='width:90px'>Jahresmenge</th><th style='width:40px'></th></tr></thead><tbody>" +
+      A.items.map(function(it, i){
+        return "<tr><td><div class='symcell'><span class='sym'>" + ic(it.icon, 18) + "</span><select data-i='" + i + "' data-f='icon' aria-label='Symbol'>" + SYMBOL_NAMEN.map(function(s){ return "<option value='" + s[0] + "'" + (s[0] === it.icon ? " selected" : "") + ">" + s[1] + "</option>"; }).join("") + "</select></div></td>" +
+          "<td><input data-i='" + i + "' data-f='name' value='" + esc(it.name) + "' aria-label='Material'></td>" +
+          "<td><input class='zahl' data-i='" + i + "' data-f='preis' inputmode='decimal' value='" + fz(it.preis, it.preis % 1 ? (it.preis < 1 ? 3 : 2) : 0).replace(/\./g, "") + "' aria-label='Preis'></td>" +
+          "<td><input class='zahl' data-i='" + i + "' data-f='verbrauch' value='" + esc(it.verbrauch) + "' aria-label='Verbrauch' style='text-align:left'></td>" +
+          "<td class='nr' id='a-jm-" + i + "' style='text-align:right'></td><td><button class='weg' type='button' data-weg='" + i + "' aria-label='Zeile löschen'>×</button></td></tr>";
+      }).join("") + "</tbody>";
+  }
+  $("a-tabelle").addEventListener("input", function(e){
+    var t = e.target, i = t.getAttribute("data-i"), f = t.getAttribute("data-f"); if(i === null) return;
+    if(f === "preis") A.items[i].preis = lies(t.value); else A.items[i][f] = t.value;
+    if(f === "icon"){ t.previousElementSibling.innerHTML = ic(t.value, 18); }
+    rechneAnalyse();
+  });
+  $("a-tabelle").addEventListener("change", function(e){ if(e.target.getAttribute("data-f") === "icon"){ A.items[e.target.getAttribute("data-i")].icon = e.target.value; e.target.previousElementSibling.innerHTML = ic(e.target.value, 18); rechneAnalyse(); } });
+  $("a-tabelle").addEventListener("click", function(e){ var b = e.target.closest("[data-weg]"); if(!b) return; A.items.splice(parseInt(b.getAttribute("data-weg"), 10), 1); zeichneEditor(); rechneAnalyse(); });
+  $("a-zeile").addEventListener("click", function(){ A.items.push({name:"Neues Material", icon:"karton", preis:1, verbrauch:"1000"}); zeichneEditor(); rechneAnalyse(); });
+  $("a-beispiel").addEventListener("click", function(){ A.items = beispielEbike(); A.feld = null; zeichneEditor(); rechneAnalyse(); });
+  $("a-baeckerei").addEventListener("click", function(){ A.items = JSON.parse(JSON.stringify(BAECKEREI)); A.feld = null; zeichneEditor(); rechneAnalyse(); });
+  $("a-leer").addEventListener("click", function(){ A.items = [{name:"Material 1", icon:"karton", preis:1, verbrauch:""}]; A.feld = null; zeichneEditor(); rechneAnalyse(); });
+
+  [["a-ga","a"],["a-gb","b"],["a-gx","x"],["a-gy","y"]].forEach(function(p){
+    $(p[0]).addEventListener("input", function(){
+      A.g[p[1]] = parseInt(this.value, 10);
+      if(A.g.b <= A.g.a){ A.g.b = Math.min(99, A.g.a + 1); }
+      if(A.g.y <= A.g.x){ A.g.y = Math.min(100, A.g.x + 1); }
+      rechneAnalyse();
+    });
+  });
+  $("a-xachse").addEventListener("change", function(){ A.xPos = this.value === "pos"; rechneAnalyse(); });
+
+  function rechneAnalyse(){
+    $("a-ga").value = A.g.a; $("a-gb").value = A.g.b; $("a-gx").value = A.g.x; $("a-gy").value = A.g.y;
+    $("a-ga-w").textContent = A.g.a + " %"; $("a-gb-w").textContent = A.g.b + " %"; $("a-gx-w").textContent = A.g.x + " %"; $("a-gy-w").textContent = A.g.y + " %";
+    var fehler = [], items = [];
+    A.items.forEach(function(it, i){
+      var z = zahlenListe(it.verbrauch), inp = document.querySelector("input[data-i='" + i + "'][data-f='verbrauch']"), pin = document.querySelector("input[data-i='" + i + "'][data-f='preis']");
+      var okZ = (z.length === 1 || z.length === 12) && z.every(function(x){ return x !== null && !isNaN(x) && x >= 0; });
+      var okP = it.preis !== null && !isNaN(it.preis) && it.preis > 0;
+      if(inp) inp.classList.toggle("fehler", !okZ && String(it.verbrauch).trim() !== "");
+      if(pin) pin.classList.toggle("fehler", !okP);
+      var menge = okZ ? z.reduce(function(a, b){ return a + b; }, 0) : null;
+      var jm = $("a-jm-" + i); if(jm) jm.textContent = menge === null ? "–" : fz(menge);
+      if(!okZ){ if(String(it.verbrauch).trim() !== "") fehler.push("„" + it.name + "“: Verbrauch bitte als eine Zahl oder genau 12 Zahlen eingeben."); return; }
+      if(!okP){ fehler.push("„" + it.name + "“: Preis fehlt."); return; }
+      items.push({name:it.name, icon:it.icon, preis:it.preis, menge:menge, monate:z.length === 12 ? z : null});
+    });
+    $("a-fehler").textContent = fehler.join(" ");
+    var erg = analysiere(items, A.g);
+    $("a-ergebnis").innerHTML = "<thead><tr><th>Platz</th><th></th><th>Material</th><th>Jahresmenge</th><th>Preis</th><th>Verbrauchswert</th><th>Wertanteil</th><th>kumuliert</th><th>Mengenanteil</th><th>VK</th><th>Klasse</th></tr></thead><tbody>" +
+      erg.liste.map(function(o){
+        return "<tr><td>" + o.rang + ".</td><td style='color:var(--blau-900)'>" + ic(o.icon, 20) + "</td><td><b>" + esc(o.name) + "</b></td><td>" + fz(o.menge) + "</td><td>" + eur(o.preis) + "</td><td>" + eur(o.wert) + "</td><td>" + fz(o.anteil, 1) + " %</td><td>" + fz(o.kum, 1) + " %</td><td>" + fz(o.mAnteil, 1) + " %</td><td>" + (o.vk === null ? "–" : fz(o.vk, 0) + " %") + "</td>" +
+          "<td><span class='badge b-" + o.abc + "'>" + o.abc + "</span> " + (o.xyz ? "<span class='badge b-" + o.xyz + "'>" + o.xyz + "</span>" : "") + "</td></tr>";
+      }).join("") + "</tbody>" + (erg.liste.length ? "<tfoot><tr><td></td><td></td><td><b>Summe</b></td><td>" + fz(erg.M) + "</td><td></td><td>" + eur(erg.W) + "</td><td>100 %</td><td></td><td>100 %</td><td></td><td></td></tr></tfoot>" : "");
+    if(erg.liste.length) lorenz($("a-lorenz"), erg, {grenzen:A.g, xPos:A.xPos}); else $("a-lorenz").textContent = "";
+    matrixGeruest("a-matrix", function(f){
+      return erg.liste.filter(function(o){ return o.xyz && o.abc + o.xyz === f; }).map(function(o){ return chipHtml(o, ""); }).join("");
+    }, A.feld);
+    var ohneXyz = erg.liste.filter(function(o){ return !o.xyz; }).length;
+    var fe = A.feld ? FELDER[A.feld] : null;
+    $("a-empf").innerHTML = (fe ? "<div class='empf'><div class='ek'><span class='sym'>" + ic(fe.icon, 24) + "</span><div><span class='badge b-" + A.feld[0] + "'>" + A.feld[0] + "</span> <span class='badge b-" + A.feld[1] + "'>" + A.feld[1] + "</span> <b>" + fe.titel + "</b></div></div><ul>" + fe.p.map(function(x){ return "<li>" + x + "</li>"; }).join("") + "</ul></div>" : "") +
+      (ohneXyz ? "<p class='tipp'>" + ohneXyz + " Material(ien) ohne Monatswerte erscheinen nicht in der Matrix.</p>" : "");
+    meldeHoehe();
+  }
+  $("a-matrix").addEventListener("click", function(e){ var z = e.target.closest(".mzelle"); if(!z) return; A.feld = z.getAttribute("data-feld"); rechneAnalyse(); });
+
+  /* ============================ Modus, Adresse, Höhe ============================ */
+  var modus = "ueben";
+  function setzeModus(m){
+    modus = m;
+    $("ansicht-ueben").hidden = m !== "ueben"; $("ansicht-analyse").hidden = m !== "analyse";
+    Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-modus") === m ? "true" : "false"); });
+    if(m === "analyse"){ if(!A.items) A.items = beispielEbike(); zeichneEditor(); rechneAnalyse(); }
+    setzeUrl(); meldeHoehe();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){ b.addEventListener("click", function(){ setzeModus(b.getAttribute("data-modus")); }); });
+  function setzeUrl(){
+    try{ var u = new URL(window.location.href); u.searchParams.set("modus", modus); if(modus === "ueben" && U) u.searchParams.set("aufgabe", U.seed); else u.searchParams.delete("aufgabe"); window.history.replaceState(null, "", u.toString()); }catch(e){}
+  }
+  var letzteHoehe = 0;
+  function meldeHoehe(){
+    if(window.parent === window) return;
+    window.requestAnimationFrame(function(){ var h = document.documentElement.scrollHeight; if(Math.abs(h - letzteHoehe) > 4){ letzteHoehe = h; try{ window.parent.postMessage({typ:"rechner-hoehe", hoehe:h}, "*"); }catch(e){} } });
+  }
+  window.addEventListener("resize", meldeHoehe);
+
+  var q = {}; try{ q = Object.fromEntries(new URL(window.location.href).searchParams.entries()); }catch(e){}
+  if(q.test === "1") window.__abc = function(){ return U; };
+  var startNr = parseInt(q.aufgabe, 10);
+  neueAufgabe(startNr >= 1000 && startNr <= 9999 ? startNr : 1000 + Math.floor(Math.random() * 9000));
+  setzeModus(q.modus === "analyse" ? "analyse" : "ueben");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator Bestellverfahren</title>
+<meta name="description" content="Lagerbestandssimulator: Bestellpunkt- und Bestellrhythmusverfahren berechnen, Lagerverläufe einzeichnen und ablesen, beide Verfahren vergleichen und unterscheiden.">
+<style>
+:root{
+  --blau-900:#0F2E52; --blau-700:#17518C; --blau-500:#2A72BD; --blau-100:#E3EDF7; --blau-050:#F3F7FC;
+  --grau-900:#23282E; --grau-700:#434A53; --grau-500:#6B747E;
+  --grau-300:#C3CAD2; --grau-150:#E4E8ED; --grau-050:#F5F7F9;
+  --weiss:#FFFFFF;
+  --gruen:#1B7A5A; --gruen-hell:#E4F1EC;
+  --rot:#B33A2B;   --rot-hell:#F8E6E3;
+  --gelb:#B07A08;  --gelb-hell:#FBF1DC;
+  --lila:#6B4FA0;
+  --radius:10px;
+  --schatten:0 1px 2px rgba(35,40,46,.06), 0 8px 20px rgba(35,40,46,.07);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;padding:18px 16px 30px;background:var(--grau-050);color:var(--grau-900);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:1160px;margin:0 auto}
+h1{font-family:var(--serif);font-size:clamp(1.4rem,1.1rem + 1.2vw,1.85rem);margin:0 0 6px;letter-spacing:-.015em}
+h2{font-family:var(--serif);font-size:1.12rem;margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:.8rem;margin:0 0 10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+p{margin:0 0 10px}
+.augenbraue{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--blau-700);font-weight:700;margin:0 0 6px}
+.lead{color:var(--grau-700);max-width:74ch;margin:0}
+.kopfzeile{border-bottom:2px solid var(--blau-900);padding-bottom:14px;margin-bottom:18px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--weiss);border:1px solid var(--grau-150);border-radius:var(--radius);padding:16px;box-shadow:var(--schatten)}
+.layout{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);grid-template-areas:"a b";gap:18px;align-items:start}
+.ber-a{grid-area:a}.ber-b{grid-area:b}
+@media (max-width:760px){.layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"b" "a"}}
+.feld select{min-width:0}
+
+.reiter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.reiter button,.chips button{
+  font-size:.88rem;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;
+  background:var(--weiss);color:var(--grau-700);border:1.5px solid var(--grau-300);font-family:inherit;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.reiter button:hover,.chips button:hover{border-color:var(--blau-700);color:var(--blau-700)}
+.reiter button[aria-pressed="true"]{background:var(--blau-900);color:var(--weiss);border-color:var(--blau-900)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chips button[aria-pressed="true"]{border-color:var(--blau-900);background:var(--blau-050);color:var(--grau-900)}
+.chips i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.chips .zahl{font-family:var(--mono);font-size:.76rem;color:var(--grau-500);font-weight:400}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blau-500);outline-offset:2px}
+
+.knopf{font-size:.86rem;font-weight:600;cursor:pointer;font-family:inherit;border-radius:7px;padding:9px 14px;background:var(--blau-700);color:var(--weiss);border:1px solid var(--blau-700)}
+.knopf:hover{background:var(--blau-900);border-color:var(--blau-900)}
+.knopf.leise{background:var(--weiss);color:var(--blau-700);border-color:var(--grau-300)}
+.knopf.leise:hover{border-color:var(--blau-500);background:var(--blau-050)}
+.knopf:disabled{opacity:.45;cursor:not-allowed}
+.knopfzeile{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+.steuer{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.steuer .gruppe{display:flex;flex-direction:column;gap:4px}
+.steuer label{font-size:.78rem;color:var(--grau-700);font-weight:600}
+.steuer input{font-family:var(--mono);font-size:.9rem;padding:8px 10px;border:1px solid var(--grau-300);border-radius:7px;width:120px}
+.nr{font-family:var(--mono);font-weight:700;color:var(--blau-900)}
+.klein{font-size:.78rem;color:var(--grau-500)}
+.tipp{font-size:.78rem;color:var(--grau-500);margin:8px 0 0}
+
+.fall{font-size:.95rem;max-width:80ch}
+.daten{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden;margin-top:12px}
+.datum{background:var(--blau-050);padding:10px 12px}
+.datum .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.datum .v{font-family:var(--mono);font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+
+.schritt{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.schritt-nr{width:28px;height:28px;border-radius:50%;background:var(--blau-900);color:var(--weiss);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex:none}
+.schritt h2{margin:0}
+.auftrag{font-size:.9rem;color:var(--grau-700);margin-bottom:10px;max-width:84ch}
+.zwischen{font-size:.98rem;margin:18px 0 8px;font-family:var(--serif)}
+
+.felder{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.feld2 label{display:block;font-size:.82rem;color:var(--grau-700);font-weight:600;margin-bottom:4px;min-height:2.4em}
+.feld2 input{width:100%;padding:9px 10px;font-family:var(--mono);font-size:.95rem;text-align:right;border:1.5px solid var(--grau-300);border-radius:7px;background:var(--grau-050);color:var(--grau-900)}
+.feld2 input.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.feld2 input.folge{border-color:var(--gelb);background:var(--gelb-hell)}
+.feld2 input.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.feld2 .hinw{font-size:.76rem;color:var(--rot);margin-top:4px}
+.feld2 .hinw.gelb{color:var(--gelb)}
+.feld2 .loes{font-family:var(--mono);font-size:.76rem;color:var(--blau-700);margin-top:3px;text-align:right}
+.legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--grau-700);margin-top:10px}
+.legende span{display:flex;align-items:center;gap:6px}
+.legende i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1.5px solid}
+
+.meldung{border-radius:8px;padding:11px 13px;font-size:.88rem;margin-top:12px;border:1px solid var(--grau-150);background:var(--grau-050)}
+.meldung.ok{background:var(--gruen-hell);border-color:#BFDDD1}
+.meldung.warn{background:var(--gelb-hell);border-color:#EBD5A6}
+.meldung.fehler{background:var(--rot-hell);border-color:#EBC3BC}
+.meldung:empty{display:none}
+
+.frage{border:1px solid var(--grau-150);border-radius:8px;padding:13px 14px;margin-bottom:12px;background:var(--weiss)}
+.frage:last-child{margin-bottom:0}
+.frage p.ft{font-weight:600;margin-bottom:9px}
+.optionen{display:flex;flex-direction:column;gap:6px}
+.optionen.reihe{flex-direction:row;flex-wrap:wrap}
+.optionen button{text-align:left;font-family:inherit;font-size:.89rem;padding:9px 12px;border-radius:7px;cursor:pointer;line-height:1.4;background:var(--grau-050);color:var(--grau-900);border:1.5px solid var(--grau-150)}
+.optionen button:hover:not(:disabled){border-color:var(--blau-500)}
+.optionen button:disabled{cursor:default}
+.optionen button.gewaehlt-ok{border-color:var(--gruen);background:var(--gruen-hell);font-weight:600}
+.optionen button.gewaehlt-falsch{border-color:var(--rot);background:var(--rot-hell)}
+.optionen button.loesung{border-color:var(--gruen);border-style:dashed}
+.erklaerung{font-size:.86rem;color:var(--grau-700);margin-top:9px;padding-top:9px;border-top:1px dotted var(--grau-300)}
+
+.diagramm{background:var(--weiss);border:1px solid var(--grau-150);border-radius:8px;padding:4px}
+svg.kurven{display:block;width:100%;height:auto}
+svg.kurven text{font-family:var(--sans)}
+svg.tippbar{touch-action:none;cursor:crosshair}
+.dleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--grau-700);margin-top:8px}
+.dleg span{display:flex;align-items:center;gap:6px}
+.dleg i{width:18px;height:0;border-top:3px solid;display:inline-block}
+.dleg i.gestr{border-top-style:dashed}
+.dleg b.dot{width:10px;height:10px;border-radius:50%;display:inline-block;border:2px solid var(--lila);background:#fff}
+
+.mini-raster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.mini-raster{grid-template-columns:1fr}}
+.mini{border:1px solid var(--grau-150);border-radius:8px;padding:10px;background:var(--weiss)}
+.mini h4{margin:0 0 6px;font-size:.9rem}
+
+.aussage{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--grau-150)}
+.aussage:last-child{border-bottom:none}
+.aussage .optionen{flex-direction:row;gap:5px}
+.aussage .optionen button{padding:6px 10px;font-size:.8rem;white-space:nowrap}
+.aussage .erklaerung{grid-column:1 / -1;margin-top:0}
+@media (max-width:640px){.aussage{grid-template-columns:1fr}}
+
+.ergebnis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden}
+.erg{background:var(--weiss);padding:11px 13px}
+.erg .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.erg .v{font-family:var(--mono);font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}
+.erg .d{font-size:.76rem;color:var(--grau-700)}
+
+/* Erkunden */
+.feld{display:grid;gap:4px;margin-bottom:13px}
+.feld:last-child{margin-bottom:0}
+.feld .kopf{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.feld label{font-size:.82rem;color:var(--grau-700)}
+.feld input[type="number"]{width:104px;padding:5px 7px;text-align:right;font-family:var(--mono);font-size:.86rem;border:1px solid var(--grau-300);border-radius:6px;background:var(--grau-050);color:var(--grau-900)}
+.feld select{font-family:inherit;font-size:.85rem;padding:7px 8px;border:1px solid var(--grau-300);border-radius:6px;background:var(--weiss);width:100%}
+.feld .abgeleitet{font-family:var(--mono);font-size:.76rem;color:var(--grau-500)}
+input[type="range"]{width:100%;accent-color:var(--blau-700);background:transparent}
+.gruppenkopf{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blau-700);font-weight:700;margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--grau-150)}
+.gruppenkopf:first-child{margin-top:0;padding-top:0;border-top:none}
+.szenarien{display:grid;gap:6px}
+.szenarien button{text-align:left;font-family:inherit;font-size:.86rem;padding:9px 11px;border-radius:7px;cursor:pointer;background:var(--grau-050);border:1.5px solid var(--grau-150);color:var(--grau-900)}
+.szenarien button[aria-pressed="true"]{border-color:var(--blau-700);background:var(--blau-050);font-weight:600}
+.auftragbox{border-left:4px solid var(--blau-700);background:var(--blau-050);padding:10px 13px;border-radius:0 8px 8px 0;font-size:.88rem;margin-bottom:12px}
+.zeitleiste{display:flex;gap:10px;align-items:center;margin:4px 0 10px}
+.zeitleiste input{flex:1}
+.zeitleiste .nr{min-width:64px;text-align:right}
+.verlauf-titel{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:4px 0 4px}
+.verlauf-titel h3{margin:0;color:var(--blau-900)}
+.tabwrap{overflow-x:auto;border:1px solid var(--grau-150);border-radius:8px}
+table.kpi{border-collapse:collapse;width:100%;font-size:.86rem}
+table.kpi th,table.kpi td{padding:8px 10px;border-bottom:1px solid var(--grau-150);text-align:right}
+table.kpi th:first-child,table.kpi td:first-child{text-align:left}
+table.kpi thead th{background:var(--blau-050);color:var(--blau-900);font-size:.74rem;letter-spacing:.03em}
+table.kpi tr:last-child td{border-bottom:none}
+table.kpi td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.kpi td:first-child{font-family:var(--sans)}
+td.schlecht{color:var(--rot);font-weight:700}
+td.gut{color:var(--gruen);font-weight:700}
+details{border:1px solid var(--grau-150);border-radius:8px;background:var(--weiss)}
+summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--grau-500)}
+details[open] summary::after{content:"–"}
+.details-inhalt{padding:0 14px 14px;font-size:.84rem;color:var(--grau-700)}
+.protokolle{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.protokolle{grid-template-columns:1fr}}
+.protokoll{font-family:var(--mono);font-size:.76rem;line-height:1.6;max-height:220px;overflow:auto;background:var(--grau-050);border-radius:6px;padding:8px}
+.protokoll .b{color:var(--lila)}.protokoll .l{color:var(--gruen)}.protokoll .f{color:var(--rot)}
+.modellhinweis{border-left:4px solid var(--gelb);background:var(--weiss);border-top:1px solid var(--grau-150);border-right:1px solid var(--grau-150);border-bottom:1px solid var(--grau-150);padding:13px 15px;border-radius:0 8px 8px 0;font-size:.84rem;color:var(--grau-700)}
+.modellhinweis ul{margin:6px 0 0;padding-left:18px}
+[hidden]{display:none !important}
+@media print{body{background:#fff}.reiter,.knopf,.steuer{display:none}.panel{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="kopfzeile">
+    <p class="augenbraue">Beschaffung · Materialbereitstellung</p>
+    <h1>Bestellpunkt- und Bestellrhythmusverfahren</h1>
+    <p class="lead">Wann muss bestellt werden – und wie viel? Im <b>Prüfmodus</b> rechnen Sie eine eigene Aufgabe, zeichnen in den Lagerverlauf ein, lesen eine Grafik ab und unterscheiden die beiden Verfahren. Im Modus <b>Erkunden</b> laufen beide Verfahren nebeneinander, und Sie sehen, was bei schwankendem Verbrauch oder einer verspäteten Lieferung passiert.</p>
+  </header>
+
+  <div class="reiter" role="group" aria-label="Modus wählen">
+    <button type="button" data-modus="pruefen" aria-pressed="true">Üben mit Prüfmodus</button>
+    <button type="button" data-modus="erkunden" aria-pressed="false">Simulation erkunden</button>
+  </div>
+
+  <!-- ============================== PRÜFMODUS ============================== -->
+  <section id="ansicht-pruefen" class="stack">
+    <div class="panel">
+      <div class="steuer">
+        <div class="gruppe"><span class="klein">Aktuelle Aufgabe</span><span class="nr" id="p-nr">–</span></div>
+        <button class="knopf" type="button" id="p-neu">Neue Aufgabe</button>
+        <div class="gruppe">
+          <label for="p-laden-nr">Aufgabe per Nummer laden</label>
+          <div style="display:flex;gap:6px"><input id="p-laden-nr" inputmode="numeric" autocomplete="off" placeholder="z. B. 1001"><button class="knopf leise" type="button" id="p-laden">Laden</button></div>
+        </div>
+      </div>
+      <p class="tipp">Notieren Sie die Aufgabennummer. Damit lässt sich genau diese Aufgabe später wieder aufrufen. Eingaben und Ergebnisse werden nirgends gespeichert oder übermittelt. Rechnen Sie zuerst im Heft und tragen Sie dann ein.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Ausgangssituation</h2>
+      <p class="fall" id="p-fall"></p>
+      <div class="daten" id="p-daten"></div>
+    </div>
+
+    <!-- Schritt 1 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">1</span><h2>Bestellpunktverfahren berechnen</h2></div>
+      <p class="auftrag">Berechnen Sie aus Sicht des Unternehmens die Kennzahlen des Bestellpunktverfahrens. Es muss so bestellt werden, dass die Lieferzeit überbrückt und der Sicherheitsbestand nicht angegriffen wird.</p>
+      <div class="felder" id="f1"></div>
+      <div class="legende">
+        <span><i style="border-color:var(--gruen);background:var(--gruen-hell)"></i>richtig</span>
+        <span><i style="border-color:var(--gelb);background:var(--gelb-hell)"></i>Folgefehler: richtig weitergerechnet mit einem eigenen falschen Wert</span>
+        <span><i style="border-color:var(--rot);background:var(--rot-hell)"></i>falsch</span>
+      </div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" data-pruefe="1">Prüfen</button>
+        <button class="knopf leise" type="button" data-loesung="1" disabled>Lösungswerte einblenden</button>
+      </div>
+      <div class="meldung" id="m1"></div>
+    </div>
+
+    <!-- Schritt 2 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">2</span><h2>Der Verbrauch steigt</h2></div>
+      <p class="auftrag" id="a2"></p>
+      <div class="felder" id="f2"></div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" data-pruefe="2">Prüfen</button>
+        <button class="knopf leise" type="button" data-loesung="2" disabled>Lösungswerte einblenden</button>
+      </div>
+      <div class="meldung" id="m2"></div>
+    </div>
+
+    <!-- Schritt 3 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">3</span><h2>Lagerverlauf deuten: einzeichnen</h2></div>
+      <p class="auftrag">Das Diagramm zeigt den Lagerbestand aus Schritt 1 bei gleichbleibendem Verbrauch. Zeichnen Sie Sicherheitsbestand, Meldebestand und Höchstbestand ein und markieren Sie alle <b>Bestellzeitpunkte</b>. Element wählen, dann ins Diagramm tippen. Eine Linie wird beim erneuten Tippen versetzt; einen Bestellzeitpunkt entfernen Sie, indem Sie ihn noch einmal antippen.</p>
+      <div class="chips" id="g3-werkzeuge" role="group" aria-label="Element wählen"></div>
+      <div class="diagramm"><svg class="kurven tippbar" id="g3" viewBox="0 0 640 380" role="img" aria-label="Lagerverlauf zum Einzeichnen"></svg></div>
+      <p class="tipp" id="g3-info">Tippen Sie in das Diagramm.</p>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" id="g3-pruefen">Einzeichnung prüfen</button>
+        <button class="knopf leise" type="button" id="g3-loeschen">Alles löschen</button>
+        <button class="knopf leise" type="button" id="g3-loesung" disabled>Lösung einblenden</button>
+      </div>
+      <div class="meldung" id="m3"></div>
+    </div>
+
+    <!-- Schritt 4 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">4</span><h2>Lagerverlauf ablesen</h2></div>
+      <p class="auftrag">Die Grafik zeigt den geplanten Lagerverlauf eines anderen Artikels nach dem Bestellpunktverfahren. Ermitteln Sie daraus so genau wie möglich die folgenden Daten. Die gestrichelten Linien markieren zwei der gesuchten Bestände.</p>
+      <div class="diagramm"><svg class="kurven" id="g4" viewBox="0 0 640 380" role="img" aria-label="Lagerverlauf zum Ablesen"></svg></div>
+      <div class="felder" id="f4" style="margin-top:14px"></div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" data-pruefe="4">Prüfen</button>
+        <button class="knopf leise" type="button" data-loesung="4" disabled>Lösungswerte einblenden</button>
+      </div>
+      <div class="meldung" id="m4"></div>
+    </div>
+
+    <!-- Schritt 5 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">5</span><h2>Bestellrhythmusverfahren berechnen und vergleichen</h2></div>
+      <p class="auftrag" id="a5"></p>
+      <div class="felder" id="f5"></div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" data-pruefe="5">Prüfen</button>
+        <button class="knopf leise" type="button" data-loesung="5" disabled>Lösungswerte einblenden</button>
+      </div>
+      <div class="meldung" id="m5"></div>
+      <h3 class="zwischen">Vergleich deuten</h3>
+      <div id="q5"></div>
+    </div>
+
+    <!-- Schritt 6 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">6</span><h2>Verfahren unterscheiden</h2></div>
+      <p class="auftrag">Die vier Lagerverläufe stammen aus Simulationen. Lila Punkte markieren die Bestellzeitpunkte. Ordnen Sie jedem Verlauf das Verfahren zu. Woran erkennen Sie es?</p>
+      <div class="mini-raster" id="g6"></div>
+      <h3 class="zwischen">Aussagen zuordnen</h3>
+      <p class="auftrag">Trifft die Aussage auf das Bestellpunktverfahren, auf das Bestellrhythmusverfahren oder auf beide zu?</p>
+      <div id="s6"></div>
+      <h3 class="zwischen">Sicherheitsbestand und Servicegrad</h3>
+      <div id="q6"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Ihr Ergebnis</h2>
+      <div class="ergebnis" id="p-ergebnis"></div>
+      <p class="tipp" id="p-zeit"></p>
+      <div class="knopfzeile"><button class="knopf leise" type="button" id="p-zu-erkunden">Diese Aufgabe in der Simulation untersuchen</button></div>
+    </div>
+  </section>
+
+  <!-- ============================== ERKUNDEN ============================== -->
+  <section id="ansicht-erkunden" hidden>
+    <div class="layout">
+      <div class="stack ber-a">
+        <section class="panel">
+          <h2>Szenarien</h2>
+          <div class="szenarien" id="e-szenarien"></div>
+        </section>
+        <section class="panel" id="e-felder"></section>
+      </div>
+      <div class="stack ber-b">
+        <section class="panel">
+          <div class="auftragbox" id="e-auftrag"></div>
+          <div class="zeitleiste">
+            <button class="knopf" type="button" id="e-play" aria-label="Simulation abspielen">▶ Abspielen</button>
+            <input type="range" id="e-tag" min="0" max="60" step="1" value="60" aria-label="Tag der Simulation">
+            <span class="nr" id="e-tag-wert"></span>
+          </div>
+          <div class="verlauf-titel"><h3>Bestellpunktverfahren</h3><span class="klein" id="e-bp-info"></span></div>
+          <div class="diagramm"><svg class="kurven" id="e-bp" viewBox="0 0 640 260" role="img" aria-label="Lagerverlauf beim Bestellpunktverfahren"></svg></div>
+          <div class="verlauf-titel" style="margin-top:12px"><h3>Bestellrhythmusverfahren</h3><span class="klein" id="e-br-info"></span></div>
+          <div class="diagramm"><svg class="kurven" id="e-br" viewBox="0 0 640 260" role="img" aria-label="Lagerverlauf beim Bestellrhythmusverfahren"></svg></div>
+          <div class="dleg">
+            <span><i style="border-color:var(--blau-900)"></i>Lagerbestand</span>
+            <span><b class="dot"></b>Bestellung</span>
+            <span><i class="gestr" style="border-color:var(--rot)"></i>Sicherheitsbestand</span>
+            <span><i class="gestr" style="border-color:var(--lila)"></i>Meldebestand</span>
+            <span><i class="gestr" style="border-color:var(--gruen)"></i>Höchstbestand</span>
+            <span><i style="border-color:var(--rot);border-top-width:5px"></i>Fehlmenge (Lager leer)</span>
+          </div>
+        </section>
+        <section class="panel">
+          <h2 id="e-kpi-titel">Kennzahlen im Vergleich</h2>
+          <div class="tabwrap"><table class="kpi" id="e-kpi"></table></div>
+          <p class="tipp">Servicegrad hier: Anteil des Verbrauchs, der sofort aus dem Lager gedeckt werden konnte. Schulbücher definieren den Servicegrad teils anders, etwa als Anteil der Tage ohne Fehlmenge – beide Werte stehen in der Tabelle.</p>
+        </section>
+        <details>
+          <summary>Protokoll: Bestellungen und Lieferungen</summary>
+          <div class="details-inhalt"><div class="protokolle">
+            <div><h3>Bestellpunktverfahren</h3><div class="protokoll" id="e-log-bp"></div></div>
+            <div><h3>Bestellrhythmusverfahren</h3><div class="protokoll" id="e-log-br"></div></div>
+          </div></div>
+        </details>
+        <div class="modellhinweis">
+          <b>Modellannahmen:</b>
+          <ul>
+            <li>Der Verbrauch verteilt sich gleichmäßig über jeden Tag. Das Bestellpunktverfahren bestellt genau in dem Moment, in dem der Meldebestand erreicht ist; die Lieferung trifft genau eine Lieferzeit später ein. Das Bestellrhythmusverfahren bestellt jeweils zu Tagesbeginn.</li>
+            <li>Meldebestand, Sicherheitsbestand und Höchstbestand werden mit dem <b>geplanten</b> Tagesverbrauch berechnet. Der tatsächliche Verbrauch kann davon abweichen – genau das macht den Unterschied zwischen den Verfahren sichtbar.</li>
+            <li>Beim Bestellpunktverfahren wird geprüft, ob Lagerbestand plus bereits bestellte, noch nicht gelieferte Menge den Meldebestand erreicht. So wird während der Lieferzeit nicht doppelt bestellt.</li>
+            <li>Was nicht aus dem Lager gedeckt werden kann, ist Fehlmenge; es wird nicht nachgeliefert.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================ Hilfsfunktionen ============================ */
+  function $(id){ return document.getElementById(id); }
+  function fz(n, d){ if(n === null || n === undefined || !isFinite(n)) return "–"; d = d || 0; return n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function fzk(n){ return fz(n, Math.abs(n - Math.round(n)) < 1e-9 ? 0 : 1); }
+  function lies(s){
+    if(s === null || s === undefined) return null;
+    s = String(s).replace(/\s|€|%|Stück|Stk\.?|Tage?|Tonnen|Sets|t\b/gi, "");
+    if(s === "") return null;
+    if(s.indexOf(",") >= 0){ s = s.replace(/\./g, "").replace(",", "."); }
+    else if(/^-?\d{1,3}(\.\d{3})+$/.test(s)){ s = s.replace(/\./g, ""); }
+    var n = Number(s);
+    return isFinite(n) ? n : NaN;
+  }
+  function zufall(seed){
+    var a = seed >>> 0;
+    return function(){ a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  function wahl(r, l){ return l[Math.floor(r() * l.length)]; }
+  function mische(r, l){ var a = l.slice(); for(var i = a.length - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function schritte(max, anzahl){
+    var roh = max / anzahl, pot = Math.pow(10, Math.floor(Math.log10(roh))), f = roh / pot;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * pot;
+  }
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, a, txt){ var n = document.createElementNS(NS, tag); for(var k in a) n.setAttribute(k, a[k]); if(txt !== undefined) n.textContent = txt; return n; }
+  var FARBE = {bestand:"#0F2E52", sb:"#B33A2B", mb:"#6B4FA0", hb:"#1B7A5A", bestellung:"#6B4FA0", fehl:"#B33A2B"};
+
+  /* ============================ Simulation ============================ */
+  // cfg: {tage, v, L, SB, verfahren:"bp"|"br", regel:"fest"|"auffuellen", Q (bp), T (br), start, nachfrage[], verspaetung (Tage, 2. Lieferung)}
+  // Kontinuierliche Zeit: Verbrauch gleichmäßig über den Tag; das Bestellpunktverfahren bestellt genau beim Erreichen des Meldebestands.
+  function tagText(x){ return fz(x, Math.abs(x - Math.round(x)) < 0.05 ? 0 : 1); }
+  function simuliere(cfg){
+    var v = cfg.v, L = cfg.L, SB = cfg.SB, MB = SB + v * L, EPS = 1e-7;
+    var HB = cfg.verfahren === "bp" ? SB + cfg.Q : SB + v * cfg.T;
+    var bestand = cfg.start !== undefined ? cfg.start : HB;
+    var offen = [], nr = 0, pfad = [[0, bestand]], bestellungen = [], lieferungen = [], tage = [], log = [];
+    var QR = v * (cfg.T || 1);
+    function offeneMenge(){ return offen.reduce(function(s, o){ return s + o.menge; }, 0); }
+    function bestelle(x){
+      var menge = cfg.regel === "auffuellen" ? Math.max(0, Math.round(HB - (bestand + offeneMenge()) + v * L)) : (cfg.verfahren === "bp" ? cfg.Q : QR);
+      nr++;
+      var lx = x + L + (nr === 2 && cfg.verspaetung ? cfg.verspaetung : 0);
+      offen.push({x:x, lx:lx, menge:menge, nr:nr});
+      bestellungen.push({x:x, y:bestand, menge:menge, lx:lx, nr:nr});
+      log.push({x:x, typ:"b", text:"Bestellung " + nr + ": " + fz(menge) + " (Bestand " + fz(bestand) + ")" + (lx - x > L + EPS ? " – Lieferung verspätet sich" : "")});
+    }
+    var brBestelltage = [];
+    if(cfg.verfahren === "br"){
+      for(var j = 1; j * cfg.T - L <= cfg.tage; j++) brBestelltage.push(j * cfg.T - L);
+      brBestelltage.filter(function(x){ return x < 0; }).forEach(function(x){ nr++; var lx = x + L + (nr === 2 && cfg.verspaetung ? cfg.verspaetung : 0); offen.push({x:x, lx:lx, menge:QR, nr:nr}); });
+    }
+    function liefere(tau){
+      var ein = offen.filter(function(o){ return o.lx <= tau + EPS; });
+      if(!ein.length) return;
+      var vor = bestand;
+      ein.forEach(function(o){ bestand += o.menge; log.push({x:o.lx, typ:"l", text:"Lieferung " + o.nr + ": +" + fz(o.menge) + " → Bestand " + fz(bestand)}); });
+      offen = offen.filter(function(o){ return o.lx > tau + EPS; });
+      lieferungen.push({x:tau, vor:vor, nach:bestand});
+      pfad.push([tau, bestand]);
+    }
+    for(var t = 0; t < cfg.tage; t++){
+      var d = cfg.nachfrage[t], tau = t, rec = {b0:null, bend:0, d:d, fehl:0, flaeche:0, max:0};
+      liefere(tau);
+      if(cfg.verfahren === "br" && brBestelltage.indexOf(t) >= 0) bestelle(t);
+      if(cfg.verfahren === "bp" && bestand + offeneMenge() <= MB + EPS) bestelle(t);
+      rec.b0 = bestand; rec.max = bestand;
+      while(tau < t + 1 - EPS){
+        var naechste = t + 1;
+        offen.forEach(function(o){ if(o.lx > tau + EPS && o.lx < naechste) naechste = o.lx; });
+        var tNull = (bestand > EPS && d > 0) ? tau + bestand / d : Infinity;
+        var disp = bestand + offeneMenge();
+        var tMB = (cfg.verfahren === "bp" && d > 0 && disp > MB + EPS) ? tau + (disp - MB) / d : Infinity;
+        var tn = Math.min(naechste, tNull, tMB);
+        var dt = tn - tau, vor = bestand;
+        if(bestand > EPS){ bestand = Math.max(0, bestand - d * dt); if(tn === tNull){ bestand = 0; if(!offen.some(function(o){ return Math.abs(o.lx - tn) < EPS; })) log.push({x:tn, typ:"f", text:"Lager leer – ab jetzt entstehen Fehlmengen"}); } }
+        else rec.fehl += d * dt;
+        rec.flaeche += (vor + bestand) / 2 * dt;
+        pfad.push([tn, bestand]);
+        tau = tn;
+        if(tn === tMB) bestelle(tau);
+        if(tau < t + 1 - EPS){ liefere(tau); rec.max = Math.max(rec.max, bestand); }
+      }
+      rec.fehl = Math.round(rec.fehl);
+      rec.bend = bestand; tage.push(rec);
+    }
+    return {pfad:pfad, bestellungen:bestellungen, lieferungen:lieferungen, tage:tage, log:log, SB:SB, MB:MB, HB:HB, v:v, L:L, verfahren:cfg.verfahren, tageGesamt:cfg.tage};
+  }
+
+  function kennzahlen(sim, bis){
+    var k = {bestellungen:0, flaeche:0, fehl:0, fehlTage:0, unterSB:0, bedarf:0, max:0, n:0};
+    sim.bestellungen.forEach(function(b){ if(b.x < bis || (bis === sim.tageGesamt && b.x <= bis)) k.bestellungen++; });
+    for(var t = 0; t < Math.min(bis, sim.tage.length); t++){
+      var d = sim.tage[t];
+      k.flaeche += d.flaeche; k.fehl += d.fehl; k.bedarf += d.d; k.n++;
+      if(d.fehl > 0) k.fehlTage++;
+      if(d.bend < sim.SB - 1e-6) k.unterSB++;
+      k.max = Math.max(k.max, d.max);
+    }
+    k.schnitt = k.n ? k.flaeche / k.n : 0;
+    k.service = k.bedarf ? (1 - k.fehl / k.bedarf) * 100 : 100;
+    k.serviceTage = k.n ? (1 - k.fehlTage / k.n) * 100 : 100;
+    return k;
+  }
+
+  /* ============================ Diagramm ============================ */
+  // o: {sim, xMax, yMax, xTick, yTick, linien:[{y,farbe,text,dash}], bis, bestellpunkte, zahlen, minor, klein, hoehe}
+  function zeichne(svg, o){
+    svg.textContent = "";
+    var breite = svg.getBoundingClientRect().width || 640, eng = breite < 480 || o.klein;
+    var W = eng ? 400 : 640, H = o.hoehe ? (eng ? o.hoehe * 0.8 : o.hoehe) : (eng ? 330 : 380);
+    var L = o.zahlen === false ? 30 : (eng ? 54 : 68), R = o.aussen ? (eng ? 34 : 122) : (o.rechts !== undefined ? o.rechts : (eng ? 12 : 18)), T = 14, B = o.zahlen === false ? 30 : (eng ? 44 : 48);
+    var fs = eng ? 12 : 11, fsl = eng ? 12 : 12;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var bw = W - L - R, bh = H - T - B;
+    function X(x){ return L + x / o.xMax * bw; }
+    function Y(y){ return T + bh - y / o.yMax * bh; }
+    var geo = {L:L, T:T, bw:bw, bh:bh, W:W, H:H, xMax:o.xMax, yMax:o.yMax, X:X, Y:Y, fsl:fsl, eng:eng};
+    // Raster
+    if(o.minor){
+      for(var mx = 0; mx <= o.xMax + 1e-9; mx += o.minor) svg.appendChild(el("line", {x1:X(mx), x2:X(mx), y1:T, y2:T + bh, stroke:"#F0F2F5"}));
+    }
+    for(var gy = 0; gy <= o.yMax + 1e-9; gy += o.yTick){
+      svg.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(gy), y2:Y(gy), stroke:"#E4E8ED"}));
+      if(o.zahlen !== false) svg.appendChild(el("text", {x:L - 6, y:Y(gy) + 4, "text-anchor":"end", "font-size":fs, fill:"#6B747E"}, fz(gy)));
+    }
+    for(var gx = 0; gx <= o.xMax + 1e-9; gx += o.xTick){
+      svg.appendChild(el("line", {x1:X(gx), x2:X(gx), y1:T, y2:T + bh, stroke:"#E4E8ED"}));
+      if(o.zahlen !== false) svg.appendChild(el("text", {x:X(gx), y:T + bh + 16, "text-anchor":(gx + o.xTick > o.xMax + 1e-9 && gx > 0 ? "end" : "middle"), "font-size":fs, fill:"#6B747E"}, fz(gx)));
+    }
+    svg.appendChild(el("line", {x1:L, x2:L + bw, y1:T + bh, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("line", {x1:L, x2:L, y1:T, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    if(o.zahlen !== false){
+      svg.appendChild(el("text", {x:L + bw / 2, y:H - 8, "text-anchor":"middle", "font-size":fsl, fill:"#434A53"}, "Zeit (Tage)"));
+      svg.appendChild(el("text", {x:13, y:T + bh / 2, "text-anchor":"middle", "font-size":fsl, fill:"#434A53", transform:"rotate(-90 13 " + (T + bh / 2) + ")"}, o.yTitel || "Bestand (Stück)"));
+    } else {
+      svg.appendChild(el("text", {x:L + bw, y:H - 10, "text-anchor":"end", "font-size":fs, fill:"#6B747E"}, "Zeit"));
+      svg.appendChild(el("text", {x:L + 4, y:T + 10, "font-size":fs, fill:"#6B747E"}, "Bestand"));
+    }
+    // Hilfslinien
+    var beschr = [];
+    (o.linien || []).forEach(function(li){
+      svg.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(li.y), y2:Y(li.y), stroke:li.farbe, "stroke-width":1.6, "stroke-dasharray":li.dash || "6 4"}));
+      if(li.text) beschr.push({y:Y(li.y) + 4, farbe:li.farbe, text:(eng && o.aussen) ? (li.kurz || li.text) : li.text});
+    });
+    if(o.aussen){
+      // Beschriftungen rechts neben dem Diagramm, Überlappungen auseinanderschieben
+      beschr.sort(function(a, b){ return a.y - b.y; });
+      for(var bi = 1; bi < beschr.length; bi++) if(beschr[bi].y - beschr[bi - 1].y < 13) beschr[bi].y = beschr[bi - 1].y + 13;
+      beschr.forEach(function(b){ svg.appendChild(el("text", {x:L + bw + 6, y:b.y, "font-size":fs, "font-weight":600, fill:b.farbe}, b.text)); });
+    } else {
+      beschr.forEach(function(b){ svg.appendChild(el("text", {x:L + bw - 4, y:b.y - 9, "text-anchor":"end", "font-size":fs, "font-weight":600, fill:b.farbe, stroke:"#fff", "stroke-width":3.5, "paint-order":"stroke", "stroke-linejoin":"round"}, b.text)); });
+    }
+    if(o.sim){
+      var bis = o.bis === undefined ? o.xMax : o.bis;
+      var pts = [], p = o.sim.pfad;
+      for(var i = 0; i < p.length; i++){
+        if(p[i][0] <= bis + 1e-9){ pts.push(p[i]); }
+        else {
+          var a = p[i - 1], b = p[i];
+          if(a && b[0] > a[0]){ var f = (bis - a[0]) / (b[0] - a[0]); pts.push([bis, a[1] + f * (b[1] - a[1])]); }
+          break;
+        }
+      }
+      svg.appendChild(el("polyline", {points:pts.map(function(q){ return X(Math.min(q[0], o.xMax)).toFixed(1) + "," + Y(q[1]).toFixed(1); }).join(" "), fill:"none", stroke:FARBE.bestand, "stroke-width":o.klein ? 2 : 2.4, "stroke-linejoin":"round"}));
+      // Fehlmengen
+      for(var fi = 1; fi < p.length; fi++){
+        var pa = p[fi - 1], pb = p[fi];
+        if(pa[1] < 1e-6 && pb[1] < 1e-6 && pb[0] > pa[0] && pa[0] < bis){
+          svg.appendChild(el("line", {x1:X(pa[0]), x2:X(Math.min(pb[0], bis, o.xMax)), y1:Y(0) - 1, y2:Y(0) - 1, stroke:FARBE.fehl, "stroke-width":5, "stroke-linecap":"round"}));
+        }
+      }
+      if(o.bestellpunkte){
+        o.sim.bestellungen.forEach(function(b){
+          if(b.x <= bis && b.x <= o.xMax) svg.appendChild(el("circle", {cx:X(b.x), cy:Y(b.y), r:o.klein ? 4 : 5, fill:"#fff", stroke:FARBE.bestellung, "stroke-width":2.4}));
+        });
+      }
+      if(o.bis !== undefined && o.bis < o.xMax){
+        svg.appendChild(el("line", {x1:X(bis), x2:X(bis), y1:T, y2:T + bh, stroke:"#2A72BD", "stroke-width":1.2, "stroke-dasharray":"2 3"}));
+      }
+    }
+    return geo;
+  }
+
+  function koordinaten(svg, geo, e){
+    var ctm = svg.getScreenCTM(); if(!ctm || !geo) return null;
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var q = pt.matrixTransform(ctm.inverse());
+    if(q.x < geo.L - 8 || q.x > geo.L + geo.bw + 8 || q.y < geo.T - 8 || q.y > geo.T + geo.bh + 8) return null;
+    return {x:Math.max(0, Math.min(geo.xMax, (q.x - geo.L) / geo.bw * geo.xMax)), y:Math.max(0, (geo.T + geo.bh - q.y) / geo.bh * geo.yMax)};
+  }
+
+  function konstanteNachfrage(v, n){ var a = []; for(var i = 0; i < n; i++) a.push(v); return a; }
+
+  /* ============================ Aufgabengenerator ============================ */
+  var KONTEXTE = [
+    {e:"Sets", satz:function(v){ return "Ein Geländewagenhersteller fertigt täglich " + fz(v) + " Fahrzeuge. In jedes Fahrzeug wird ein Dichtungs-Set eines Zulieferers eingebaut."; }, gut:"Dichtungs-Sets"},
+    {e:"Tonnen", satz:function(v){ return "Ein Baustoffgroßhandel setzt täglich " + fz(v) + " Tonnen Zement ab."; }, gut:"Zement"},
+    {e:"Sack", satz:function(v){ return "Eine Großbäckerei verarbeitet täglich " + fz(v) + " Sack Mehl."; }, gut:"Mehl"},
+    {e:"Akkus", satz:function(v){ return "Ein E-Bike-Hersteller montiert täglich " + fz(v) + " Räder. Jedes Rad erhält einen Akku, der zugekauft wird."; }, gut:"Akkus"},
+    {e:"Stück", satz:function(v){ return "Ein Möbelhersteller verbaut täglich " + fz(v) + " Scharniere."; }, gut:"Scharniere"}
+  ];
+
+  function erzeuge(seed){
+    var r = zufall(seed * 2654435761 + 31);
+    var a = null;
+    for(var i = 0; i < 4000 && !a; i++){
+      var v = wahl(r, [50, 60, 80, 100, 120, 150, 200, 250, 300, 400, 500]);
+      var k = 8 + Math.floor(r() * 13);
+      var L = 2 + Math.floor(r() * Math.min(9, k - 4));
+      var s = 3 + Math.floor(r() * 8);
+      var Q = v * k, SB = v * s;
+      var k2s = [];
+      for(var k2 = L + 2; k2 < k; k2++){ if(Q % k2 === 0){ var vv = Q / k2; if(vv >= 1.2 * v && vv <= 1.6 * v && vv % 10 === 0) k2s.push(k2); } }
+      if(!k2s.length) continue;
+      var k2w = wahl(r, k2s), v2 = Q / k2w;
+      var Ts = [];
+      for(var T = L + 2; T <= 30; T++){ var ang = (v2 - v) * T; if(T !== k && ang < SB * 0.9 && ang > SB * 0.25) Ts.push(T); }
+      if(!Ts.length) continue;
+      a = {v:v, k:k, L:L, s:s, Q:Q, SB:SB, MB:SB + v * L, HB:SB + Q, k2:k2w, v2:v2, T:wahl(r, Ts)};
+    }
+    if(!a) a = {v:200, k:18, L:4, s:8, Q:3600, SB:1600, MB:2400, HB:5200, k2:12, v2:300, T:6};
+    a.SB2 = a.v2 * a.s; a.MB2 = a.SB2 + a.v2 * a.L; a.HB2 = a.SB2 + a.Q;
+    a.QR = a.v * a.T; a.HBR = a.SB + a.QR; a.bt = a.T - a.L;
+    a.brVor = a.SB - (a.v2 - a.v) * a.T; a.bpVor = a.SB - (a.v2 - a.v) * a.L;
+    a.ktx = wahl(r, KONTEXTE);
+    // Grafik zum Ablesen (Schritt 4)
+    var g = null;
+    for(var j = 0; j < 500 && !g; j++){
+      var m = wahl(r, [2, 5]), gv, gL, gs, gk;
+      if(m === 5){ gv = wahl(r, [100, 200, 300, 400, 500]); gL = wahl(r, [5, 10]); gs = wahl(r, [5, 10]); gk = wahl(r, [10, 15, 20]); if(gk < gL + 5) continue; }
+      else { gv = wahl(r, [50, 100, 150, 200, 250]); gL = wahl(r, [2, 4, 6, 8]); gs = wahl(r, [2, 4, 6]); gk = wahl(r, [8, 10, 12, 14, 16]); if(gk < gL + 4) continue; }
+      var o = m * Math.floor(r() * ((gk - gL) / m + 1));
+      var gSB = gv * gs, gMB = gSB + gv * gL, gHB = gSB + gv * gk;
+      var bz1 = (gk - gL) - o, bz2 = bz1 + gk;
+      var xMax = Math.ceil((bz2 + gL + Math.max(m * 2, gk * 0.5)) / m) * m;
+      g = {m:m, v:gv, L:gL, s:gs, k:gk, o:o, SB:gSB, MB:gMB, HB:gHB, Q:gv * gk, start:gHB - gv * o, bz1:bz1, bz2:bz2, xMax:xMax};
+    }
+    a.g = g;
+    a.r = r;
+    return a;
+  }
+
+  /* ============================ Feldgruppen ============================ */
+  var P = null;
+  var GRUPPEN = {};
+
+  function gruppe(nr, felder){
+    GRUPPEN[nr] = felder;
+    $("f" + nr).innerHTML = felder.map(function(f){
+      return "<div class='feld2'><label for='i-" + f.id + "'>" + f.label + "</label><input id='i-" + f.id + "' inputmode='decimal' autocomplete='off'><div class='hinw' id='h-" + f.id + "' hidden></div><div class='loes' id='l-" + f.id + "' hidden></div></div>";
+    }).join("");
+    $("m" + nr).textContent = ""; $("m" + nr).className = "meldung";
+    var lb = document.querySelector("[data-loesung='" + nr + "']"); if(lb) lb.disabled = true;
+  }
+  function eigen(){
+    var e = {};
+    Object.keys(GRUPPEN).forEach(function(g){ GRUPPEN[g].forEach(function(f){ var v = lies($("i-" + f.id).value); e[f.id] = (v === null || isNaN(v)) ? null : v; }); });
+    return e;
+  }
+  function nahe(a, b, tol){ return a !== null && b !== null && b !== undefined && isFinite(b) && Math.abs(a - b) <= tol; }
+
+  function pruefeGruppe(nr){
+    var e = eigen(), stand = {richtig:0, folge:0, falsch:0, leer:0};
+    GRUPPEN[nr].forEach(function(f){
+      var inp = $("i-" + f.id), h = $("h-" + f.id), ist = e[f.id];
+      inp.className = ""; h.hidden = true; h.className = "hinw";
+      if(ist === null){ stand.leer++; return; }
+      var tol = f.tol !== undefined ? f.tol : 0.5;
+      if(nahe(ist, f.soll, tol)){ inp.className = "richtig"; stand.richtig++; return; }
+      var fw = f.folge ? f.folge(e) : null;
+      if(fw !== null && fw !== undefined && !Array.isArray(fw)) fw = [fw];
+      if(fw && fw.some(function(w){ return w !== null && isFinite(w) && nahe(ist, w, tol); })){
+        inp.className = "folge"; stand.folge++;
+        h.textContent = "Rechenweg passt zu Ihren eigenen Werten."; h.className = "hinw gelb"; h.hidden = false; return;
+      }
+      inp.className = "falsch"; stand.falsch++;
+      var spez = f.hinweis ? f.hinweis(ist, e) : null;
+      h.textContent = spez || f.tipp || ""; h.hidden = !h.textContent;
+    });
+    var gs = P.gruppen[nr] || (P.gruppen[nr] = {versuche:0, erst:null, loesung:false});
+    gs.versuche++; gs.stand = stand; if(!gs.erst) gs.erst = JSON.parse(JSON.stringify(stand));
+    var lb = document.querySelector("[data-loesung='" + nr + "']"); if(lb && !gs.loesung) lb.disabled = false;
+    var n = GRUPPEN[nr].length, m = $("m" + nr);
+    if(stand.richtig === n){ m.className = "meldung ok"; m.innerHTML = "<b>Alle " + n + " Werte sind richtig.</b>" + (P.lob[nr] ? " " + P.lob[nr] : ""); }
+    else {
+      m.className = "meldung " + (stand.falsch ? "fehler" : "warn");
+      m.innerHTML = "<b>" + stand.richtig + " von " + n + " richtig</b>" + (stand.folge ? ", " + stand.folge + " Folgefehler" : "") + (stand.falsch ? ", " + stand.falsch + " falsch" : "") + (stand.leer ? ", " + stand.leer + " offen" : "") + ". Korrigieren Sie und prüfen Sie erneut (Versuch " + gs.versuche + ").";
+    }
+    ergebnis();
+  }
+  function zeigeLoesung(nr){
+    var gs = P.gruppen[nr];
+    if(!gs || !gs.loesung){ if(!window.confirm("Lösungswerte einblenden? Im Ergebnis wird vermerkt, dass die Lösung angesehen wurde.")) return; }
+    P.gruppen[nr].loesung = true;
+    GRUPPEN[nr].forEach(function(f){ var l = $("l-" + f.id); l.textContent = "Lösung: " + fzk(f.soll); l.hidden = false; });
+    document.querySelector("[data-loesung='" + nr + "']").disabled = true;
+    ergebnis(); meldeHoehe();
+  }
+
+  /* ============================ Fragen ============================ */
+  function frageHtml(key, q, kopf){
+    return "<div class='frage'><p class='ft'>" + (kopf || q.f.text) + "</p><div class='optionen'>" +
+      q.opt.map(function(o, oi){ return "<button type='button' data-fk='" + key + "' data-o='" + oi + "'>" + o.text + "</button>"; }).join("") +
+      "</div><div class='erklaerung' id='erk-" + key + "' hidden></div></div>";
+  }
+  function mcVorbereiten(r, f){ return {f:f, opt:mische(r, f.opt.map(function(o){ return {text:o[0], ok:!!o[1]}; }))}; }
+  function beantworte(key, oi){
+    if(P.antworten[key] !== undefined) return;
+    var q = P.fragen[key], o = q.opt[oi];
+    P.antworten[key] = o.ok;
+    Array.prototype.forEach.call(document.querySelectorAll("button[data-fk='" + key + "']"), function(b, bi){
+      b.disabled = true;
+      if(bi === oi) b.classList.add(o.ok ? "gewaehlt-ok" : "gewaehlt-falsch");
+      else if(q.opt[bi].ok) b.classList.add("loesung");
+    });
+    var e = $("erk-" + key);
+    e.innerHTML = (o.ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> Die richtige Antwort ist gestrichelt markiert. ") + q.f.erk;
+    e.hidden = false;
+    ergebnis(); meldeHoehe();
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest ? e.target.closest("button[data-fk]") : null;
+    if(b) beantworte(b.getAttribute("data-fk"), parseInt(b.getAttribute("data-o"), 10));
+  });
+
+  var AUSSAGEN = [
+    ["Bestellt wird, sobald der Lagerbestand den Meldebestand erreicht.", "bp", "Der Meldebestand ist der Auslöser des Bestellpunktverfahrens."],
+    ["Bestellt wird in festen Zeitabständen.", "br", "Der feste Rhythmus kennzeichnet das Bestellrhythmusverfahren; der Bestand zum Bestellzeitpunkt kann unterschiedlich sein."],
+    ["Der Lagerbestand muss laufend überwacht werden, damit der Bestellzeitpunkt nicht verpasst wird.", "bp", "Nur wer den Bestand ständig kennt, merkt, wann der Meldebestand erreicht ist."],
+    ["Die Bestelltermine stehen im Voraus fest und lassen sich mit dem Lieferanten verbindlich planen.", "br", "Beim Bestellpunktverfahren hängt der Termin vom tatsächlichen Verbrauch ab und ist vorher nicht bekannt."],
+    ["Das Verfahren eignet sich besonders bei regelmäßigem, gut vorhersehbarem Verbrauch.", "br", "Bei gleichmäßigem Verbrauch passt ein fester Rhythmus; bei Schwankungen drohen Engpässe oder zu hohe Bestände."],
+    ["Steigt der Verbrauch, wird automatisch früher bestellt.", "bp", "Der Meldebestand wird schneller erreicht, also wird früher bestellt – der Bestellabstand passt sich an."],
+    ["Bei unerwartet hohem Verbrauch kann es bis zum nächsten festen Bestelltermin zu einem Engpass kommen.", "br", "Der Mehrverbrauch wirkt über den ganzen Rhythmus, nicht nur während der Lieferzeit."],
+    ["Ein Sicherheitsbestand soll Verbrauchsschwankungen und Lieferverzögerungen abfangen.", "beide", "Beide Verfahren halten einen Sicherheitsbestand (auch Mindestbestand genannt)."],
+    ["Bei gleichbleibendem Verbrauch ergeben sich immer gleich lange Bestellintervalle.", "beide", "Bei konstantem Verbrauch sehen beide Verfahren im Diagramm gleich aus – erst Schwankungen machen den Unterschied sichtbar."],
+    ["Mehrere Artikel desselben Lieferanten lassen sich leicht zu gemeinsamen Bestellungen bündeln.", "br", "Feste, gleiche Bestelltermine für mehrere Artikel erleichtern das Bündeln."]
+  ];
+
+  var FRAGEN_FEST = {
+    q5:{text:"Was zeigt der Vergleich Ihrer letzten beiden Ergebnisse?",
+      opt:[["Beim Bestellpunktverfahren wirkt der Mehrverbrauch nur während der Lieferzeit auf den Sicherheitsbestand, weil der Meldebestand früher erreicht und deshalb früher bestellt wird. Beim Bestellrhythmusverfahren wirkt er über den ganzen Rhythmus.",1],
+           ["Beide Verfahren greifen den Sicherheitsbestand gleich stark an, weil derselbe Mehrverbrauch entsteht.",0],
+           ["Das Bestellrhythmusverfahren ist sicherer, weil die Liefertermine feststehen.",0]],
+      erk:"Bestellpunkt: Sicherheitsbestand − (neuer − alter Verbrauch) · Lieferzeit. Bestellrhythmus: Sicherheitsbestand − (neuer − alter Verbrauch) · Rhythmus. Da der Rhythmus länger ist als die Lieferzeit, reagiert das Bestellpunktverfahren auf Verbrauchsschwankungen robuster. Dafür muss der Bestand laufend überwacht werden."},
+    q6:{text:"Ein Unternehmen erhöht den Sicherheitsbestand von 4 auf 8 Tagesverbräuche. Welche Folgen hat das?",
+      opt:[["Fehlmengen werden seltener, der Servicegrad steigt. Dafür steigen der durchschnittliche Lagerbestand, die Kapitalbindung und die Lagerkosten.",1],
+           ["Der Servicegrad steigt, und die Lagerkosten sinken, weil seltener bestellt wird.",0],
+           ["Es wird seltener bestellt, weil der Meldebestand sinkt.",0]],
+      erk:"Ein höherer Sicherheitsbestand erhöht Meldebestand und Höchstbestand um denselben Betrag. Die Bestellabstände bleiben gleich, aber im Durchschnitt liegt mehr Ware auf Lager. Mehr Lieferbereitschaft kostet also mehr Lagerkosten – ein Zielkonflikt. Probieren Sie es im Modus „Simulation erkunden“ aus."}
+  };
+
+  /* ============================ Prüfmodus aufbauen ============================ */
+  function neueAufgabe(seed){
+    var a = erzeuge(seed), e = a.ktx.e;
+    P = {seed:seed, a:a, gruppen:{}, fragen:{}, antworten:{}, lob:{}, start:new Date(),
+         g3:{werkzeug:"sb", linien:{}, punkte:[], status:{}, punktStatus:[], erst:null, loesung:false},
+         mini:{}, aussagen:{}};
+    $("p-nr").textContent = "Nr. " + seed;
+    $("p-fall").innerHTML = a.ktx.satz(a.v) + " Das Unternehmen bestellt nach dem <b>Bestellpunktverfahren</b>. Mit dem Lieferanten sind eine feste Bestellmenge von " + fz(a.Q) + " " + e + " je Lieferung und eine Lieferzeit von " + a.L + " Tagen vereinbart. Der Sicherheitsbestand soll den Verbrauch von " + a.s + " Tagen abdecken.";
+    $("p-daten").innerHTML = [["Tagesverbrauch", fz(a.v) + " " + e], ["Bestellmenge", fz(a.Q) + " " + e], ["Lieferzeit", a.L + " Tage"], ["Sicherheitsbestand", a.s + " Tagesverbräuche"]]
+      .map(function(x){ return "<div class='datum'><div class='k'>" + x[0] + "</div><div class='v'>" + x[1] + "</div></div>"; }).join("");
+
+    gruppe(1, [
+      {id:"sb", label:"Sicherheitsbestand (" + e + ")", soll:a.SB, tipp:"Tagesverbrauch · Anzahl der Tage, die abgedeckt werden sollen."},
+      {id:"mb", label:"Meldebestand (" + e + ")", soll:a.MB, folge:function(x){ return x.sb === null ? null : x.sb + a.v * a.L; }, tipp:"Sicherheitsbestand + Tagesverbrauch · Lieferzeit.",
+        hinweis:function(ist){ return Math.abs(ist - a.v * a.L) < 0.5 ? "Das ist nur der Verbrauch während der Lieferzeit – der Sicherheitsbestand gehört dazu." : null; }},
+      {id:"hb", label:"Höchstbestand (" + e + ")", soll:a.HB, folge:function(x){ return x.sb === null ? null : x.sb + a.Q; }, tipp:"Sicherheitsbestand + Bestellmenge (Liefermenge).",
+        hinweis:function(ist, x){ return x.mb !== null && Math.abs(ist - (x.mb + a.Q)) < 0.5 ? "Die Lieferung trifft ein, wenn der Bestand auf den Sicherheitsbestand gesunken ist – nicht beim Meldebestand." : null; }},
+      {id:"int", label:"Bestellintervall = Reichweite der Bestellmenge (Tage)", soll:a.k, tipp:"Bestellmenge ÷ Tagesverbrauch."},
+      {id:"zmb", label:"Zeit von einer Lieferung bis zum Erreichen des Meldebestands (Tage)", soll:a.k - a.L, folge:function(x){ return (x.hb === null || x.mb === null) ? null : (x.hb - x.mb) / a.v; }, tipp:"(Höchstbestand − Meldebestand) ÷ Tagesverbrauch."}
+    ]);
+    P.lob[1] = "Kontrolle: Zeit bis zum Meldebestand + Lieferzeit = " + (a.k - a.L) + " + " + a.L + " = " + a.k + " Tage = Bestellintervall.";
+
+    $("a2").innerHTML = "Wegen eines Großauftrags steigt der Verbrauch dauerhaft auf <b>" + fz(a.v2) + " " + e + " pro Tag</b>. Bestellmenge und Lieferzeit bleiben gleich, der Sicherheitsbestand soll weiterhin " + a.s + " Tage abdecken. Berechnen Sie die neuen Werte und den Zeitabstand, in dem das Unternehmen jetzt bestellt.";
+    gruppe(2, [
+      {id:"sb2", label:"Sicherheitsbestand neu (" + e + ")", soll:a.SB2, tipp:"Neuer Tagesverbrauch · Anzahl der Tage.",
+        hinweis:function(ist){ return Math.abs(ist - a.SB) < 0.5 ? "Der Sicherheitsbestand ist in Tagen festgelegt. Steigt der Tagesverbrauch, steigt er mit." : null; }},
+      {id:"mb2", label:"Meldebestand neu (" + e + ")", soll:a.MB2, folge:function(x){ return x.sb2 === null ? null : x.sb2 + a.v2 * a.L; }, tipp:"Neuer Sicherheitsbestand + neuer Tagesverbrauch · Lieferzeit."},
+      {id:"hb2", label:"Höchstbestand neu (" + e + ")", soll:a.HB2, folge:function(x){ return x.sb2 === null ? null : x.sb2 + a.Q; }, tipp:"Neuer Sicherheitsbestand + Bestellmenge."},
+      {id:"abst", label:"Zeitabstand zwischen zwei Bestellungen (Tage)", soll:a.k2, folge:function(x){ return (x.hb2 === null || x.mb2 === null) ? null : (x.hb2 - x.mb2) / a.v2 + a.L; },
+        tipp:"Zeit bis zum Meldebestand + Lieferzeit – oder kürzer: Bestellmenge ÷ neuer Tagesverbrauch.",
+        hinweis:function(ist, x){ return (x.hb2 !== null && x.mb2 !== null && Math.abs(ist - (x.hb2 - x.mb2) / a.v2) < 0.5) ? "Das ist nur die Zeit bis zum Meldebestand. Von dort bis zur nächsten Bestellung vergeht zusätzlich die Lieferzeit." : null; }}
+    ]);
+    P.lob[2] = "Der Bestellabstand sinkt von " + a.k + " auf " + a.k2 + " Tage: Bei höherem Verbrauch wird der Meldebestand schneller erreicht.";
+
+    // Schritt 3
+    P.g3.xMax = Math.ceil(a.k * 2.4 / 2) * 2;
+    P.g3.sim = simuliere({tage:P.g3.xMax, v:a.v, L:a.L, SB:a.SB, verfahren:"bp", regel:"fest", Q:a.Q, nachfrage:konstanteNachfrage(a.v, P.g3.xMax)});
+    var ys = schritte(a.HB * 1.12, 6); P.g3.yMax = Math.ceil(a.HB * 1.12 / ys) * ys; P.g3.yTick = ys;
+    P.g3.xTick = schritte(P.g3.xMax, 10);
+    P.g3.bestellX = P.g3.sim.bestellungen.map(function(b){ return b.x; }).filter(function(x){ return x <= P.g3.xMax; });
+    P.g3.lieferX = P.g3.sim.lieferungen.map(function(l){ return l.x; });
+    $("m3").textContent = ""; $("m3").className = "meldung"; $("g3-loesung").disabled = true;
+    werkzeuge(); zeichne3();
+
+    // Schritt 4
+    var g = a.g;
+    P.g4 = {sim:simuliere({tage:g.xMax, v:g.v, L:g.L, SB:g.SB, verfahren:"bp", regel:"fest", Q:g.Q, start:g.start, nachfrage:konstanteNachfrage(g.v, g.xMax)})};
+    zeichne4();
+    var tolM = g.v * g.m * 0.08;
+    gruppe(4, [
+      {id:"r_sb", label:"Sicherheitsbestand (Stück)", soll:g.SB, tol:tolM, tipp:"Untere gestrichelte Linie: Auf diesen Bestand sinkt das Lager, bevor die Lieferung eintrifft."},
+      {id:"r_hb", label:"Höchstbestand (Stück)", soll:g.HB, tol:tolM, tipp:"Höchster Punkt des Verlaufs direkt nach einer Lieferung."},
+      {id:"r_mb", label:"Meldebestand (Stück)", soll:g.MB, tol:tolM, tipp:"Obere gestrichelte Linie: Bei diesem Bestand wird bestellt.",
+        hinweis:function(ist){ return Math.abs(ist - g.SB) < tolM ? "Das ist der Sicherheitsbestand. Der Meldebestand liegt darüber." : null; }},
+      {id:"r_lz", label:"Lieferzeit (Tage)", soll:g.L, tol:0.5, tipp:"Abstand zwischen dem Tag, an dem der Meldebestand erreicht wird, und dem Tag der Lieferung."},
+      {id:"r_v", label:"Tagesbedarf (Stück)", soll:g.v, tol:g.v * 0.03, tipp:"Abnahme des Bestands geteilt durch die Zahl der Tage, z. B. vom Höchstbestand bis zum Sicherheitsbestand.",
+        folge:function(x){ return (x.r_hb !== null && x.r_sb !== null && x.r_int !== null && x.r_int > 0) ? (x.r_hb - x.r_sb) / x.r_int : null; }},
+      {id:"r_q", label:"Bestellmenge (Stück)", soll:g.Q, tol:tolM, folge:function(x){ return (x.r_hb !== null && x.r_sb !== null) ? x.r_hb - x.r_sb : null; }, tipp:"Höhe des senkrechten Sprungs bei einer Lieferung = Höchstbestand − Sicherheitsbestand."},
+      {id:"r_bz1", label:"Erster Bestellzeitpunkt (Tag)", soll:g.bz1, tol:0.5, tipp:"Tag, an dem der Bestand zum ersten Mal den Meldebestand erreicht.",
+        hinweis:function(ist){ return Math.abs(ist - (g.bz1 + g.L)) < 0.6 ? "Das ist der Tag der Lieferung. Bestellt wird eine Lieferzeit früher – beim Meldebestand." : null; }},
+      {id:"r_bz2", label:"Zweiter Bestellzeitpunkt (Tag)", soll:g.bz2, tol:0.5, folge:function(x){ return (x.r_bz1 !== null && x.r_int !== null) ? x.r_bz1 + x.r_int : null; }, tipp:"Erster Bestellzeitpunkt + Bestellintervall."},
+      {id:"r_int", label:"Bestellintervall (Tage)", soll:g.k, tol:0.5, folge:function(x){ return (x.r_q !== null && x.r_v) ? x.r_q / x.r_v : null; }, tipp:"Bestellmenge ÷ Tagesbedarf, oder Abstand zweier Bestellzeitpunkte."}
+    ]);
+
+    // Schritt 5
+    $("a5").innerHTML = "Die Geschäftsleitung prüft zum Vergleich das <b>Bestellrhythmusverfahren</b>: Geliefert wird alle <b>" + a.T + " Tage</b> eine feste Menge, die bei einem Verbrauch von " + fz(a.v) + " " + e + " pro Tag genau bis zur nächsten Lieferung reicht. Sicherheitsbestand (" + a.s + " Tage) und Lieferzeit (" + a.L + " Tage) bleiben wie in Schritt 1; die erste Lieferung soll an Tag " + a.T + " eintreffen.<br><br>Danach wird angenommen: Unmittelbar nach einer Lieferung steigt der Verbrauch <b>unerwartet</b> auf " + fz(a.v2) + " " + e + " pro Tag. Diesmal werden weder Meldebestand noch Bestellmenge angepasst.";
+    gruppe(5, [
+      {id:"qr", label:"Bestellrhythmus: Liefermenge je Lieferung (" + e + ")", soll:a.QR, tipp:"Tagesverbrauch · Lieferrhythmus in Tagen."},
+      {id:"hbr", label:"Bestellrhythmus: Höchstbestand (" + e + ")", soll:a.HBR, folge:function(x){ var l = []; if(x.qr !== null) l.push(a.SB + x.qr); if(x.qr !== null && x.sb !== null) l.push(x.sb + x.qr); return l; }, tipp:"Sicherheitsbestand + Liefermenge."},
+      {id:"bt", label:"Bestellrhythmus: Bestelltag für die Lieferung an Tag " + a.T, soll:a.bt, tipp:"Liefertag − Lieferzeit.",
+        hinweis:function(ist){ return Math.abs(ist - (a.T + a.L)) < 0.5 ? "Die Lieferzeit liegt vor dem Liefertermin, nicht danach." : null; }},
+      {id:"brv", label:"Bestellrhythmus: Bestand unmittelbar vor der nächsten Lieferung (" + e + ")", soll:a.brVor, folge:function(x){ return x.hbr === null ? null : x.hbr - a.v2 * a.T; }, tipp:"Höchstbestand − neuer Tagesverbrauch · Rhythmus."},
+      {id:"bpv", label:"Bestellpunkt (Meldebestand unverändert): Bestand beim Eintreffen der Lieferung (" + e + ")", soll:a.bpVor, folge:function(x){ var l = []; if(x.mb !== null) l.push(x.mb - a.v2 * a.L); return l; }, tipp:"Bestellt wird beim alten Meldebestand; bis zur Lieferung wird Lieferzeit · neuer Tagesverbrauch entnommen."}
+    ]);
+    P.lob[5] = "Der Sicherheitsbestand von " + fz(a.SB) + " wird beim Bestellrhythmusverfahren um " + fz(a.SB - a.brVor) + " angegriffen, beim Bestellpunktverfahren nur um " + fz(a.SB - a.bpVor) + ".";
+    P.fragen.q5 = mcVorbereiten(a.r, FRAGEN_FEST.q5);
+    $("q5").innerHTML = frageHtml("q5", P.fragen.q5);
+
+    // Schritt 6
+    baueMinis(a.r);
+    var ausw = mische(a.r, AUSSAGEN.filter(function(s){ return s[1] !== "beide"; })).slice(0, 5).concat([wahl(a.r, AUSSAGEN.filter(function(s){ return s[1] === "beide"; }))]);
+    P.aussagenListe = mische(a.r, ausw);
+    $("s6").innerHTML = P.aussagenListe.map(function(s, i){
+      return "<div class='aussage'><span>" + s[0] + "</span><div class='optionen'>" +
+        [["bp","Bestellpunkt"],["br","Bestellrhythmus"],["beide","beide"]].map(function(o){ return "<button type='button' data-aus='" + i + "' data-w='" + o[0] + "'>" + o[1] + "</button>"; }).join("") +
+        "</div><div class='erklaerung' id='aus-" + i + "' hidden></div></div>";
+    }).join("");
+    P.fragen.q6 = mcVorbereiten(a.r, FRAGEN_FEST.q6);
+    $("q6").innerHTML = frageHtml("q6", P.fragen.q6);
+
+    ergebnis(); setzeUrl(); meldeHoehe();
+  }
+
+  /* ----- Schritt 3: einzeichnen ----- */
+  var WERKZEUGE = [
+    {k:"sb", t:"Sicherheitsbestand", farbe:FARBE.sb, art:"linie"},
+    {k:"mb", t:"Meldebestand", farbe:FARBE.mb, art:"linie"},
+    {k:"hb", t:"Höchstbestand", farbe:FARBE.hb, art:"linie"},
+    {k:"bz", t:"Bestellzeitpunkt", farbe:"#2A72BD", art:"punkt"}
+  ];
+  function werkzeuge(){
+    $("g3-werkzeuge").innerHTML = WERKZEUGE.map(function(w){
+      var z = w.art === "punkt" ? " <span class='zahl'>" + P.g3.punkte.length + "</span>" : (P.g3.linien[w.k] !== undefined ? " <span class='zahl'>✓</span>" : "");
+      return "<button type='button' data-wz='" + w.k + "' aria-pressed='" + (P.g3.werkzeug === w.k ? "true" : "false") + "'><i style='background:" + w.farbe + "'></i>" + w.t + z + "</button>";
+    }).join("");
+  }
+  $("g3-werkzeuge").addEventListener("click", function(e){ var b = e.target.closest("button[data-wz]"); if(!b) return; P.g3.werkzeug = b.getAttribute("data-wz"); werkzeuge(); });
+  var STAT = {richtig:"#1B7A5A", folge:"#B07A08", falsch:"#B33A2B"};
+  function zeichne3(){
+    var a = P.a, g = P.g3, svg = $("g3");
+    var linien = g.loesung ? [{y:a.SB, farbe:FARBE.sb, text:"Lösung SB", dash:"3 4"}, {y:a.MB, farbe:FARBE.mb, text:"Lösung MB", dash:"3 4"}, {y:a.HB, farbe:FARBE.hb, text:"Lösung HB", dash:"3 4"}] : [];
+    g.geo = zeichne(svg, {sim:g.sim, xMax:g.xMax, yMax:g.yMax, xTick:g.xTick, yTick:g.yTick, minor:1, linien:linien, bestellpunkte:g.loesung, yTitel:"Bestand (" + a.ktx.e + ")"});
+    var X = g.geo.X, Y = g.geo.Y;
+    WERKZEUGE.forEach(function(w){
+      if(w.art !== "linie" || g.linien[w.k] === undefined) return;
+      var y = g.linien[w.k], st = g.status[w.k];
+      svg.appendChild(el("line", {x1:g.geo.L, x2:g.geo.L + g.geo.bw, y1:Y(y), y2:Y(y), stroke:w.farbe, "stroke-width":2.4}));
+      svg.appendChild(el("text", {x:g.geo.L + 6, y:Y(y) - 6, "font-size":g.geo.fsl, "font-weight":700, fill:w.farbe, stroke:"#fff", "stroke-width":3.5, "paint-order":"stroke"}, w.t + (st ? (st === "richtig" ? " ✓" : st === "folge" ? " (Folgefehler)" : " ✗") : "")));
+    });
+    g.punkte.forEach(function(px, i){
+      var st = g.punktStatus[i];
+      var yk = interpoliere(g.sim.pfad, px);
+      svg.appendChild(el("line", {x1:X(px), x2:X(px), y1:Y(yk), y2:g.geo.T + g.geo.bh, stroke:"#2A72BD", "stroke-width":1.4, "stroke-dasharray":"2 3"}));
+      if(st) svg.appendChild(el("circle", {cx:X(px), cy:Y(yk), r:9, fill:"none", stroke:STAT[st], "stroke-width":3}));
+      svg.appendChild(el("circle", {cx:X(px), cy:Y(yk), r:5, fill:"#2A72BD", stroke:"#fff", "stroke-width":1.5}));
+    });
+    if(g.loesung){
+      // Lieferzeit-Klammern
+      g.sim.bestellungen.forEach(function(b){
+        if(b.lx > g.xMax) return;
+        var yy = Y(a.MB) - 14;
+        svg.appendChild(el("line", {x1:X(b.x), x2:X(b.lx), y1:yy, y2:yy, stroke:FARBE.mb, "stroke-width":1.5}));
+        svg.appendChild(el("text", {x:(X(b.x) + X(b.lx)) / 2, y:yy - 4, "text-anchor":"middle", "font-size":10.5, fill:FARBE.mb, stroke:"#fff", "stroke-width":3, "paint-order":"stroke"}, "Lieferzeit"));
+      });
+    }
+  }
+  function interpoliere(pfad, x){
+    for(var i = 1; i < pfad.length; i++){
+      if(pfad[i][0] >= x && pfad[i - 1][0] <= x){
+        if(pfad[i][0] === pfad[i - 1][0]) continue;
+        var f = (x - pfad[i - 1][0]) / (pfad[i][0] - pfad[i - 1][0]); return pfad[i - 1][1] + f * (pfad[i][1] - pfad[i - 1][1]);
+      }
+    }
+    return pfad[pfad.length - 1][1];
+  }
+  $("g3").addEventListener("pointerdown", function(e){
+    var g = P.g3, k = koordinaten($("g3"), g.geo, e); if(!k) return;
+    e.preventDefault();
+    var w = WERKZEUGE.filter(function(x){ return x.k === g.werkzeug; })[0];
+    if(w.art === "linie"){ g.linien[w.k] = k.y; delete g.status[w.k]; $("g3-info").textContent = w.t + " bei etwa " + fz(k.y) + " eingezeichnet."; }
+    else {
+      var x = Math.round(k.x * 2) / 2, idx = -1;
+      g.punkte.forEach(function(p, i){ if(Math.abs(p - x) <= 0.6) idx = i; });
+      if(idx >= 0){ g.punkte.splice(idx, 1); g.punktStatus.splice(idx, 1); $("g3-info").textContent = "Bestellzeitpunkt entfernt."; }
+      else { g.punkte.push(x); g.punkte.sort(function(p, q){ return p - q; }); g.punktStatus = []; $("g3-info").textContent = "Bestellzeitpunkt bei Tag " + fz(x, x % 1 ? 1 : 0) + " gesetzt."; }
+    }
+    werkzeuge(); zeichne3();
+  });
+  $("g3-loeschen").addEventListener("click", function(){ P.g3.linien = {}; P.g3.punkte = []; P.g3.status = {}; P.g3.punktStatus = []; werkzeuge(); zeichne3(); });
+  $("g3-pruefen").addEventListener("click", function(){
+    var a = P.a, g = P.g3, tol = g.yMax * 0.03, e = eigen(), stand = {richtig:0, folge:0, falsch:0, fehlt:0}, hinw = [];
+    [["sb", a.SB, e.sb], ["mb", a.MB, e.mb], ["hb", a.HB, e.hb]].forEach(function(z){
+      var y = g.linien[z[0]];
+      if(y === undefined){ stand.fehlt++; return; }
+      var st = Math.abs(y - z[1]) <= tol ? "richtig" : (z[2] !== null && Math.abs(y - z[2]) <= tol ? "folge" : "falsch");
+      g.status[z[0]] = st; stand[st]++;
+    });
+    if(g.status.mb === "falsch" && g.linien.mb !== undefined && Math.abs(g.linien.mb - a.SB) <= tol) hinw.push("Der Meldebestand liegt nicht beim Sicherheitsbestand: Bestellt wird eine Lieferzeit, bevor das Lager auf den Sicherheitsbestand sinkt.");
+    var getroffen = {};
+    g.punktStatus = g.punkte.map(function(px){
+      var treffer = g.bestellX.filter(function(bx){ return Math.abs(bx - px) <= 1; })[0];
+      if(treffer !== undefined && !getroffen[treffer]){ getroffen[treffer] = true; stand.richtig++; return "richtig"; }
+      if(g.lieferX.some(function(lx){ return Math.abs(lx - px) <= 1; })) hinw.push("Bei Tag " + fz(px, px % 1 ? 1 : 0) + " trifft die Lieferung ein. Bestellt wurde " + a.L + " Tage vorher – beim Meldebestand.");
+      stand.falsch++; return "falsch";
+    });
+    var fehlendeBz = g.bestellX.filter(function(bx){ return !getroffen[bx]; }).length;
+    stand.fehlt += fehlendeBz;
+    if(!g.erst) g.erst = JSON.parse(JSON.stringify(stand));
+    g.stand = stand; if(!g.loesung) $("g3-loesung").disabled = false;
+    var n = 3 + g.bestellX.length, m = $("m3");
+    if(stand.richtig === n && !stand.falsch){ m.className = "meldung ok"; m.innerHTML = "<b>Alles richtig eingezeichnet.</b> Zwischen Bestellung und Lieferung liegt jeweils die Lieferzeit von " + a.L + " Tagen; in dieser Zeit sinkt der Bestand vom Meldebestand auf den Sicherheitsbestand."; }
+    else {
+      m.className = "meldung " + (stand.falsch ? "fehler" : "warn");
+      m.innerHTML = "<b>" + stand.richtig + " von " + n + " Elementen richtig</b>" + (stand.folge ? ", " + stand.folge + " Folgefehler" : "") + (stand.falsch ? ", " + stand.falsch + " falsch" : "") + (stand.fehlt ? ", " + stand.fehlt + " fehlen" : "") + "." +
+        (fehlendeBz ? " Im Diagramm liegen " + g.bestellX.length + " Bestellzeitpunkte." : "") + (hinw.length ? "<br>" + hinw.join("<br>") : "");
+    }
+    werkzeuge(); zeichne3(); ergebnis();
+  });
+  $("g3-loesung").addEventListener("click", function(){
+    if(!P.g3.loesung && !window.confirm("Lösung einblenden? Im Ergebnis wird vermerkt, dass die Lösung angesehen wurde.")) return;
+    P.g3.loesung = true; this.disabled = true; zeichne3(); ergebnis();
+    $("g3-info").textContent = "Gestrichelt: Lösung. Lila Kreise: Bestellzeitpunkte.";
+  });
+
+  /* ----- Schritt 4: ablesen ----- */
+  function zeichne4(){
+    var g = P.a.g, yMax = Math.ceil((g.HB + g.v * g.m) / (g.v * g.m)) * g.v * g.m;
+    zeichne($("g4"), {sim:P.g4.sim, xMax:g.xMax, yMax:yMax, xTick:g.m === 5 ? 5 : 2, yTick:g.v * g.m, minor:1,
+      linien:[{y:g.SB, farbe:"#434A53", dash:"5 4"}, {y:g.MB, farbe:"#434A53", dash:"5 4"}]});
+  }
+
+  /* ----- Schritt 6: Verläufe unterscheiden ----- */
+  function baueMinis(r){
+    var basis = {tage:64, v:100, L:4, SB:400};
+    var nf = []; var rr = zufall(P.seed * 7 + 3);
+    for(var i = 0; i < 64; i++) nf.push(Math.round(100 * (1 + 0.55 * (2 * rr() - 1))));
+    var defs = [
+      {k:"bp", cfg:{verfahren:"bp", regel:"fest", Q:1200, nachfrage:nf}, loes:"bp", erk:"Alle Bestellungen liegen auf <b>derselben Höhe</b> (Meldebestand), die Abstände zwischen den Bestellungen sind aber unterschiedlich lang: Bestellpunktverfahren."},
+      {k:"brf", cfg:{verfahren:"br", regel:"fest", T:12, nachfrage:nf}, loes:"br", erk:"Die Bestellungen kommen in <b>gleichen Zeitabständen</b>, der Bestand zum Bestellzeitpunkt ist unterschiedlich hoch, die Liefermenge bleibt gleich: Bestellrhythmusverfahren mit fester Liefermenge."},
+      {k:"bra", cfg:{verfahren:"br", regel:"auffuellen", T:12, nachfrage:nf}, loes:"br", erk:"Gleiche Zeitabstände, aber unterschiedlich große Lieferungen, die das Lager ungefähr bis zum Höchstbestand auffüllen: Bestellrhythmusverfahren mit Auffüllen."},
+      {k:"konst", cfg:{verfahren:wahl(r, ["bp", "br"]), regel:"fest", Q:1200, T:12, nachfrage:konstanteNachfrage(100, 64)}, loes:"beide", erk:"Bei gleichbleibendem Verbrauch liegen die Bestellungen auf gleicher Höhe <b>und</b> in gleichen Abständen. Bestellpunkt- und Bestellrhythmusverfahren führen dann zum selben Bild – man kann sie nicht unterscheiden."}
+    ];
+    P.minis = mische(r, defs).map(function(d, i){
+      var c = {}; for(var k in basis) c[k] = basis[k]; for(var k2 in d.cfg) c[k2] = d.cfg[k2];
+      return {k:d.k, loes:d.loes, erk:d.erk, sim:simuliere(c), buchstabe:"ABCD"[i]};
+    });
+    $("g6").innerHTML = P.minis.map(function(m, i){
+      return "<div class='mini'><h4>Verlauf " + m.buchstabe + "</h4><div class='diagramm'><svg class='kurven' id='mini-" + i + "' viewBox='0 0 400 200' role='img' aria-label='Lagerverlauf " + m.buchstabe + "'></svg></div>" +
+        "<div class='optionen reihe' style='margin-top:8px'>" + [["bp","Bestellpunkt"],["br","Bestellrhythmus"],["beide","nicht unterscheidbar"]].map(function(o){ return "<button type='button' data-mini='" + i + "' data-w='" + o[0] + "'>" + o[1] + "</button>"; }).join("") +
+        "</div><div class='erklaerung' id='mini-erk-" + i + "' hidden></div></div>";
+    }).join("");
+    zeichneMinis();
+  }
+  function zeichneMinis(){
+    if(!P || !P.minis) return;
+    P.minis.forEach(function(m, i){
+      zeichne($("mini-" + i), {sim:m.sim, xMax:64, yMax:2000, xTick:8, yTick:400, zahlen:false, klein:true, hoehe:200, bestellpunkte:true, rechts:8,
+        linien:[{y:400, farbe:FARBE.sb, dash:"4 4"}]});
+    });
+  }
+  $("g6").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-mini]"); if(!b) return;
+    var i = parseInt(b.getAttribute("data-mini"), 10); if(P.mini[i] !== undefined) return;
+    var m = P.minis[i], ok = b.getAttribute("data-w") === m.loes; P.mini[i] = ok;
+    Array.prototype.forEach.call(document.querySelectorAll("button[data-mini='" + i + "']"), function(x){
+      x.disabled = true;
+      if(x === b) x.classList.add(ok ? "gewaehlt-ok" : "gewaehlt-falsch"); else if(x.getAttribute("data-w") === m.loes) x.classList.add("loesung");
+    });
+    var er = $("mini-erk-" + i); er.innerHTML = (ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> ") + m.erk; er.hidden = false;
+    ergebnis(); meldeHoehe();
+  });
+  $("s6").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-aus]"); if(!b) return;
+    var i = parseInt(b.getAttribute("data-aus"), 10); if(P.aussagen[i] !== undefined) return;
+    var s = P.aussagenListe[i], ok = b.getAttribute("data-w") === s[1]; P.aussagen[i] = ok;
+    Array.prototype.forEach.call(document.querySelectorAll("button[data-aus='" + i + "']"), function(x){
+      x.disabled = true;
+      if(x === b) x.classList.add(ok ? "gewaehlt-ok" : "gewaehlt-falsch"); else if(x.getAttribute("data-w") === s[1]) x.classList.add("loesung");
+    });
+    var er = $("aus-" + i); er.innerHTML = (ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> ") + s[2]; er.hidden = false;
+    ergebnis(); meldeHoehe();
+  });
+
+  /* ----- Ergebnis ----- */
+  function ergebnis(){
+    if(!P) return;
+    function grp(nr, titel){
+      var g = P.gruppen[nr], n = GRUPPEN[nr].length;
+      return [titel, g ? g.erst.richtig + " / " + n : "–", g ? (g.erst.folge ? g.erst.folge + " Folgefehler" : "erster Versuch") + (g.loesung ? ", Lösung angesehen" : "") : "noch nicht geprüft"];
+    }
+    var g3 = P.g3, n3 = 3 + g3.bestellX.length;
+    var miniOk = Object.keys(P.mini).filter(function(k){ return P.mini[k]; }).length;
+    var ausOk = Object.keys(P.aussagen).filter(function(k){ return P.aussagen[k]; }).length;
+    var fragOk = Object.keys(P.antworten).filter(function(k){ return P.antworten[k]; }).length;
+    var k = [
+      ["Aufgabe", "Nr. " + P.seed, ""],
+      grp(1, "1 · Bestellpunkt"),
+      grp(2, "2 · Verbrauch steigt"),
+      ["3 · Einzeichnen", g3.erst ? g3.erst.richtig + " / " + n3 : "–", g3.erst ? "erster Versuch" + (g3.loesung ? ", Lösung angesehen" : "") : "noch nicht geprüft"],
+      grp(4, "4 · Ablesen"),
+      grp(5, "5 · Rhythmus"),
+      ["6 · Unterscheiden", (miniOk + ausOk) + " / " + (P.minis.length + P.aussagenListe.length), Object.keys(P.mini).length + Object.keys(P.aussagen).length + " beantwortet"],
+      ["Deutungsfragen", fragOk + " / 2", Object.keys(P.antworten).length + " beantwortet"]
+    ];
+    $("p-ergebnis").innerHTML = k.map(function(x){ return "<div class='erg'><div class='k'>" + x[0] + "</div><div class='v'>" + x[1] + "</div><div class='d'>" + x[2] + "</div></div>"; }).join("");
+    $("p-zeit").textContent = "Begonnen am " + P.start.toLocaleDateString("de-DE") + " um " + P.start.toLocaleTimeString("de-DE", {hour:"2-digit", minute:"2-digit"}) + " Uhr. Die Übersicht dient Ihrer Selbstkontrolle; sie wird nicht übermittelt.";
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-pruefe]"), function(b){ b.addEventListener("click", function(){ pruefeGruppe(b.getAttribute("data-pruefe")); meldeHoehe(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-loesung]"), function(b){ b.addEventListener("click", function(){ zeigeLoesung(b.getAttribute("data-loesung")); }); });
+  $("p-neu").addEventListener("click", function(){ neueAufgabe(1000 + Math.floor(Math.random() * 9000)); window.scrollTo(0, 0); });
+  $("p-laden").addEventListener("click", function(){
+    var n = parseInt(String($("p-laden-nr").value).replace(/\D/g, ""), 10);
+    if(!(n >= 1000 && n <= 9999)){ window.alert("Bitte eine Aufgabennummer zwischen 1000 und 9999 eingeben."); return; }
+    neueAufgabe(n); $("p-laden-nr").value = "";
+  });
+  $("p-laden-nr").addEventListener("keydown", function(e){ if(e.key === "Enter") $("p-laden").click(); });
+  $("p-zu-erkunden").addEventListener("click", function(){
+    var a = P.a;
+    E.v = a.v; E.L = a.L; E.s = a.s; E.Q = a.Q; E.T = a.k; E.muster = "steigt"; E.X = 12; E.faktor = Math.round((a.v2 / a.v - 1) * 100); E.szenario = null;
+    setzeModus("erkunden"); window.scrollTo(0, 0);
+  });
+
+  /* ============================ Erkunden ============================ */
+  var E_STANDARD = {tage:60, v:200, L:4, s:8, Q:3600, regelBP:"fest", T:18, regelBR:"fest", muster:"konstant", X:20, faktor:50, verspaetung:0, seed:7, szenario:"konstant"};
+  var E = JSON.parse(JSON.stringify(E_STANDARD)), tag = null, timer = null;
+
+  var SZENARIEN = [
+    {k:"konstant", t:"1 · Konstanter Verbrauch", set:{muster:"konstant", verspaetung:0},
+      auftrag:"Beide Verfahren sind so eingestellt, dass sie bei konstantem Verbrauch gleich arbeiten. Vergleichen Sie die beiden Verläufe. Kann man erkennen, welches Verfahren welches ist?"},
+    {k:"steigt", t:"2 · Verbrauch steigt dauerhaft", set:{muster:"steigt", X:20, faktor:50, verspaetung:0},
+      auftrag:"Ab Tag 20 steigt der Verbrauch um 50 %. Meldebestand und Rhythmus werden nicht angepasst. Welches Verfahren gerät in Schwierigkeiten – und warum? Achten Sie auf den Abstand zwischen den Bestellungen."},
+    {k:"spitze", t:"3 · Kurzfristige Nachfragespitze", set:{muster:"spitze", X:22, verspaetung:0},
+      auftrag:"Fünf Tage lang wird doppelt so viel verbraucht. Vergleichen Sie, wann die beiden Verfahren das nächste Mal bestellen und wie tief der Bestand sinkt."},
+    {k:"schwankend", t:"4 · Stark schwankender Verbrauch", set:{muster:"stark", verspaetung:0},
+      auftrag:"Der Verbrauch schwankt täglich um bis zu ±50 %. Vergleichen Sie Servicegrad und Ø Lagerbestand. Erhöhen Sie danach den Sicherheitsbestand: Was gewinnen Sie, was kostet es?"},
+    {k:"verspaetung", t:"5 · Lieferung verspätet sich", set:{muster:"konstant", verspaetung:6},
+      auftrag:"Die zweite Lieferung kommt 6 Tage zu spät. Wie lange reicht der Sicherheitsbestand? Ab welcher Verspätung entsteht eine Fehlmenge?"}
+  ];
+  $("e-szenarien").innerHTML = SZENARIEN.map(function(s){ return "<button type='button' data-sz='" + s.k + "'>" + s.t + "</button>"; }).join("");
+  $("e-szenarien").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-sz]"); if(!b) return;
+    var s = SZENARIEN.filter(function(x){ return x.k === b.getAttribute("data-sz"); })[0];
+    Object.keys(E_STANDARD).forEach(function(k){ if(k !== "seed") E[k] = E_STANDARD[k]; });
+    for(var k in s.set) E[k] = s.set[k];
+    E.szenario = s.k; tag = null; stopp(); zeichneErkunden();
+  });
+
+  var E_FELDER = [
+    {kopf:"Planung"},
+    {k:"v", t:"Geplanter Tagesverbrauch", u:"Stück", min:10, max:1000, step:10},
+    {k:"L", t:"Lieferzeit", u:"Tage", min:1, max:20, step:1},
+    {k:"s", t:"Sicherheitsbestand", u:"Tage", min:0, max:20, step:1, abgeleitet:function(){ return "= " + fz(E.v * E.s) + " Stück"; }},
+    {kopf:"Bestellpunktverfahren"},
+    {k:"Q", t:"Bestellmenge", u:"Stück", min:50, max:30000, step:50, abgeleitet:function(){ return "Meldebestand " + fz(E.v * (E.s + E.L)) + " · Höchstbestand " + fz(E.v * E.s + E.Q); }},
+    {k:"regelBP", t:"Bestellmenge", sel:[["fest","feste Bestellmenge"],["auffuellen","auffüllen auf Höchstbestand"]]},
+    {kopf:"Bestellrhythmusverfahren"},
+    {k:"T", t:"Bestellrhythmus", u:"Tage", min:2, max:60, step:1, abgeleitet:function(){ return "Liefermenge " + fz(E.v * E.T) + " · Höchstbestand " + fz(E.v * (E.s + E.T)); }},
+    {k:"regelBR", t:"Liefermenge", sel:[["fest","feste Liefermenge"],["auffuellen","auffüllen auf Höchstbestand"]]},
+    {kopf:"Tatsächlicher Verbrauch und Störungen"},
+    {k:"muster", t:"Verbrauchsmuster", sel:[["konstant","konstant wie geplant"],["leicht","schwankend (± 20 %)"],["stark","stark schwankend (± 50 %)"],["steigt","steigt dauerhaft ab Tag X"],["spitze","Nachfragespitze ab Tag X (5 Tage doppelt)"]]},
+    {k:"X", t:"Tag X", u:"", min:1, max:100, step:1, nur:function(){ return E.muster === "steigt" || E.muster === "spitze"; }},
+    {k:"faktor", t:"Steigerung ab Tag X", u:"%", min:10, max:150, step:10, nur:function(){ return E.muster === "steigt"; }},
+    {k:"verspaetung", t:"Verspätung der 2. Lieferung", u:"Tage", min:0, max:15, step:1},
+    {k:"tage", t:"Dauer der Simulation", u:"Tage", min:30, max:120, step:10}
+  ];
+  function baueFelder(){
+    $("e-felder").innerHTML = E_FELDER.map(function(f){
+      if(f.kopf) return "<div class='gruppenkopf'>" + f.kopf + "</div>";
+      if(f.sel) return "<div class='feld' data-feld='" + f.k + "'><label for='e-" + f.k + "'>" + f.t + "</label><select id='e-" + f.k + "'>" + f.sel.map(function(o){ return "<option value='" + o[0] + "'>" + o[1] + "</option>"; }).join("") + "</select></div>";
+      return "<div class='feld' data-feld='" + f.k + "'><div class='kopf'><label for='e-" + f.k + "-z'>" + f.t + (f.u ? " (" + f.u + ")" : "") + "</label><input type='number' id='e-" + f.k + "-z' min='" + f.min + "' max='" + f.max + "' step='" + f.step + "'></div>" +
+        "<input type='range' id='e-" + f.k + "-r' min='" + f.min + "' max='" + f.max + "' step='" + f.step + "' aria-label='" + f.t + "'>" + (f.abgeleitet ? "<span class='abgeleitet' id='e-" + f.k + "-a'></span>" : "") + "</div>";
+    }).join("") + "<div class='knopfzeile'><button class='knopf leise' type='button' id='e-neu-zufall'>Neuer Zufallsverlauf</button><button class='knopf leise' type='button' id='e-reset'>Standardwerte</button></div>";
+    E_FELDER.forEach(function(f){
+      if(f.kopf) return;
+      if(f.sel){ $("e-" + f.k).addEventListener("change", function(){ E[f.k] = this.value; E.szenario = null; tag = null; zeichneErkunden(); }); return; }
+      function setze(v){ if(isNaN(v)) return; E[f.k] = Math.min(f.max, Math.max(f.min, v)); E.szenario = null; tag = null; zeichneErkunden(); }
+      $("e-" + f.k + "-r").addEventListener("input", function(){ setze(parseFloat(this.value)); });
+      $("e-" + f.k + "-z").addEventListener("change", function(){ setze(parseFloat(this.value)); });
+    });
+    $("e-neu-zufall").addEventListener("click", function(){ E.seed = Math.floor(Math.random() * 100000); tag = null; zeichneErkunden(); });
+    $("e-reset").addEventListener("click", function(){ E = JSON.parse(JSON.stringify(E_STANDARD)); tag = null; stopp(); zeichneErkunden(); });
+  }
+  baueFelder();
+
+  function nachfrageReihe(){
+    var r = zufall(E.seed * 97 + 11), a = [];
+    for(var t = 0; t < E.tage; t++){
+      var d = E.v, z = r();
+      if(E.muster === "leicht") d = E.v * (1 + 0.2 * (2 * z - 1));
+      else if(E.muster === "stark") d = E.v * (1 + 0.5 * (2 * z - 1));
+      else if(E.muster === "steigt" && t >= E.X) d = E.v * (1 + E.faktor / 100);
+      else if(E.muster === "spitze" && t >= E.X && t < E.X + 5) d = E.v * 2;
+      a.push(Math.max(0, Math.round(d)));
+    }
+    return a;
+  }
+
+  function zeichneErkunden(){
+    E_FELDER.forEach(function(f){
+      if(f.kopf) return;
+      var box = document.querySelector("[data-feld='" + f.k + "']");
+      if(f.nur) box.hidden = !f.nur();
+      if(f.sel){ $("e-" + f.k).value = E[f.k]; return; }
+      $("e-" + f.k + "-z").value = E[f.k]; $("e-" + f.k + "-r").value = E[f.k];
+      if(f.abgeleitet) $("e-" + f.k + "-a").textContent = f.abgeleitet();
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-sz]"), function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-sz") === E.szenario ? "true" : "false"); });
+    var sz = SZENARIEN.filter(function(s){ return s.k === E.szenario; })[0];
+    $("e-auftrag").innerHTML = sz ? "<b>Beobachtungsauftrag:</b> " + sz.auftrag : "<b>Eigene Einstellung.</b> Verändern Sie möglichst nur einen Wert auf einmal und beobachten Sie, wie beide Verfahren reagieren.";
+
+    var nf = nachfrageReihe(), SB = E.v * E.s;
+    var bp = simuliere({tage:E.tage, v:E.v, L:E.L, SB:SB, verfahren:"bp", regel:E.regelBP, Q:E.Q, nachfrage:nf, verspaetung:E.verspaetung});
+    var br = simuliere({tage:E.tage, v:E.v, L:E.L, SB:SB, verfahren:"br", regel:E.regelBR, T:E.T, nachfrage:nf, verspaetung:E.verspaetung});
+    var maxB = 0;
+    [bp, br].forEach(function(s){ s.pfad.forEach(function(p){ maxB = Math.max(maxB, p[1]); }); maxB = Math.max(maxB, s.HB); });
+    var yt = schritte(maxB * 1.1, 5), yMax = Math.ceil(maxB * 1.1 / yt) * yt, xt = schritte(E.tage, 10);
+    var bis = tag === null ? E.tage : tag;
+    $("e-tag").max = E.tage; $("e-tag").value = bis; $("e-tag-wert").textContent = "Tag " + bis;
+    zeichne($("e-bp"), {sim:bp, xMax:E.tage, yMax:yMax, xTick:xt, yTick:yt, bis:bis, bestellpunkte:true, hoehe:260, aussen:true,
+      linien:[{y:bp.SB, farbe:FARBE.sb, text:"Sicherheitsbestand", kurz:"SB"}, {y:bp.MB, farbe:FARBE.mb, text:"Meldebestand", kurz:"MB"}, {y:bp.HB, farbe:FARBE.hb, text:"Höchstbestand", kurz:"HB"}]});
+    zeichne($("e-br"), {sim:br, xMax:E.tage, yMax:yMax, xTick:xt, yTick:yt, bis:bis, bestellpunkte:true, hoehe:260, aussen:true,
+      linien:[{y:br.SB, farbe:FARBE.sb, text:"Sicherheitsbestand", kurz:"SB"}, {y:br.HB, farbe:FARBE.hb, text:"Höchstbestand", kurz:"HB"}]});
+    $("e-bp-info").textContent = "bestellt bei Meldebestand " + fz(bp.MB) + " · " + (E.regelBP === "fest" ? "je " + fz(E.Q) + " Stück" : "auffüllen");
+    $("e-br-info").textContent = "bestellt alle " + E.T + " Tage · " + (E.regelBR === "fest" ? "je " + fz(E.v * E.T) + " Stück" : "auffüllen");
+
+    var kb = kennzahlen(bp, bis), kr = kennzahlen(br, bis);
+    function zeile(t, a, b, fmt, besser){
+      var ca = "", cb = "";
+      if(besser && Math.abs(a - b) > 1e-6){ var aGut = besser === "klein" ? a < b : a > b; ca = aGut ? "gut" : "schlecht"; cb = aGut ? "schlecht" : "gut"; }
+      return "<tr><td>" + t + "</td><td class='" + ca + "'>" + fmt(a) + "</td><td class='" + cb + "'>" + fmt(b) + "</td></tr>";
+    }
+    var f0 = function(x){ return fz(x); }, f1p = function(x){ return fz(x, 1) + " %"; };
+    $("e-kpi-titel").textContent = bis < E.tage ? "Kennzahlen bis Tag " + bis : "Kennzahlen nach " + E.tage + " Tagen";
+    $("e-kpi").innerHTML = "<thead><tr><th>Kennzahl</th><th>Bestellpunkt</th><th>Bestellrhythmus</th></tr></thead><tbody>" +
+      zeile("Bestellungen", kb.bestellungen, kr.bestellungen, f0) +
+      zeile("Ø Lagerbestand (Stück)", kb.schnitt, kr.schnitt, f0, "klein") +
+      zeile("Höchster Bestand (Stück)", kb.max, kr.max, f0) +
+      zeile("Tage unter dem Sicherheitsbestand", kb.unterSB, kr.unterSB, f0, "klein") +
+      zeile("Tage mit Fehlmenge", kb.fehlTage, kr.fehlTage, f0, "klein") +
+      zeile("Fehlmenge (Stück)", kb.fehl, kr.fehl, f0, "klein") +
+      zeile("Servicegrad (mengenbezogen)", kb.service, kr.service, f1p, "gross") +
+      zeile("Servicegrad (Tage ohne Fehlmenge)", kb.serviceTage, kr.serviceTage, f1p, "gross") + "</tbody>";
+
+    function protokoll(s){
+      var l = s.log.filter(function(x){ return x.x <= bis; });
+      return l.length ? l.map(function(x){ return "<div class='" + x.typ + "'>Tag " + tagText(x.x) + ": " + x.text + "</div>"; }).join("") : "<div>noch keine Ereignisse</div>";
+    }
+    $("e-log-bp").innerHTML = protokoll(bp); $("e-log-br").innerHTML = protokoll(br);
+    meldeHoehe();
+  }
+
+  $("e-tag").addEventListener("input", function(){ stopp(); tag = parseInt(this.value, 10); if(tag >= E.tage) tag = null; zeichneErkunden(); });
+  function stopp(){ if(timer){ clearInterval(timer); timer = null; } $("e-play").textContent = "▶ Abspielen"; }
+  $("e-play").addEventListener("click", function(){
+    if(timer){ stopp(); return; }
+    tag = (tag === null || tag >= E.tage) ? 0 : tag;
+    this.textContent = "❚❚ Anhalten";
+    timer = setInterval(function(){
+      tag++;
+      if(tag >= E.tage){ tag = null; stopp(); }
+      zeichneErkunden();
+    }, 140);
+    zeichneErkunden();
+  });
+
+  /* ============================ Modus, Adresse, Höhe ============================ */
+  var modus = "pruefen";
+  function setzeModus(m){
+    modus = m;
+    $("ansicht-pruefen").hidden = m !== "pruefen"; $("ansicht-erkunden").hidden = m !== "erkunden";
+    Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-modus") === m ? "true" : "false"); });
+    if(m === "erkunden") zeichneErkunden(); else { stopp(); if(P){ zeichne3(); zeichne4(); zeichneMinis(); } }
+    setzeUrl(); meldeHoehe();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){ b.addEventListener("click", function(){ setzeModus(b.getAttribute("data-modus")); }); });
+  function setzeUrl(){
+    try{
+      var u = new URL(window.location.href); u.searchParams.set("modus", modus);
+      if(modus === "pruefen" && P) u.searchParams.set("aufgabe", P.seed); else u.searchParams.delete("aufgabe");
+      window.history.replaceState(null, "", u.toString());
+    }catch(e){}
+  }
+  var letzteHoehe = 0;
+  function meldeHoehe(){
+    if(window.parent === window) return;
+    window.requestAnimationFrame(function(){
+      var h = document.documentElement.scrollHeight;
+      if(Math.abs(h - letzteHoehe) > 4){ letzteHoehe = h; try{ window.parent.postMessage({typ:"rechner-hoehe", hoehe:h}, "*"); }catch(e){} }
+    });
+  }
+  var rs = null;
+  window.addEventListener("resize", function(){ clearTimeout(rs); rs = setTimeout(function(){ if(modus === "erkunden") zeichneErkunden(); else if(P){ zeichne3(); zeichne4(); zeichneMinis(); } meldeHoehe(); }, 120); });
+  document.addEventListener("toggle", meldeHoehe, true);
+
+  var q = {}; try{ q = Object.fromEntries(new URL(window.location.href).searchParams.entries()); }catch(e){}
+  if(q.test === "1") window.__bv = function(){ return P; };
+  var startNr = parseInt(q.aufgabe, 10);
+  neueAufgabe(startNr >= 1000 && startNr <= 9999 ? startNr : 1000 + Math.floor(Math.random() * 9000));
+  setzeModus(q.modus === "erkunden" ? "erkunden" : "pruefen");
+  if(q.modus === "erkunden") zeichneErkunden();
+})();
+</script>
+</body>
+</html>

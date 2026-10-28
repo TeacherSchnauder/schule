@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechner optimale Bestellmenge</title>
+<meta name="description" content="Optimale Bestellmenge üben und erkunden: Tabellenverfahren mit Prüfmodus und Folgefehler-Erkennung, Formel nach Andler, Verständnisfragen und interaktives Kostendiagramm.">
+<style>
+:root{
+  --blau-900:#0F2E52; --blau-700:#17518C; --blau-500:#2A72BD; --blau-100:#E3EDF7; --blau-050:#F3F7FC;
+  --grau-900:#23282E; --grau-700:#434A53; --grau-500:#6B747E;
+  --grau-300:#C3CAD2; --grau-150:#E4E8ED; --grau-050:#F5F7F9;
+  --weiss:#FFFFFF;
+  --gruen:#1B7A5A; --gruen-hell:#E4F1EC;
+  --rot:#B33A2B;   --rot-hell:#F8E6E3;
+  --gelb:#B07A08;  --gelb-hell:#FBF1DC;
+  --radius:10px;
+  --schatten:0 1px 2px rgba(35,40,46,.06), 0 8px 20px rgba(35,40,46,.07);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;padding:18px 16px 30px;background:var(--grau-050);color:var(--grau-900);
+  font-family:var(--sans);font-size:15px;line-height:1.5;
+}
+.wrap{max-width:1160px;margin:0 auto}
+h1{font-family:var(--serif);font-size:clamp(1.4rem,1.1rem + 1.2vw,1.85rem);margin:0 0 6px;letter-spacing:-.015em}
+h2{font-family:var(--serif);font-size:1.12rem;margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:.8rem;margin:0 0 10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+p{margin:0 0 10px}
+.augenbraue{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--blau-700);font-weight:700;margin:0 0 6px}
+.lead{color:var(--grau-700);max-width:72ch;margin:0}
+.kopfzeile{border-bottom:2px solid var(--blau-900);padding-bottom:14px;margin-bottom:18px}
+
+.stack{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--weiss);border:1px solid var(--grau-150);border-radius:var(--radius);padding:16px;box-shadow:var(--schatten)}
+.layout{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);grid-template-areas:"a b" "a c";gap:18px;align-items:start}
+.ber-a{grid-area:a}.ber-b{grid-area:b}.ber-c{grid-area:c}
+@media (max-width:720px){.layout{grid-template-columns:1fr;grid-template-areas:"b" "a" "c"}}
+
+/* Modus-Reiter */
+.reiter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.reiter button{
+  font-size:.9rem;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;
+  background:var(--weiss);color:var(--grau-700);border:1px solid var(--grau-300);font-family:inherit;
+}
+.reiter button:hover{border-color:var(--blau-700);color:var(--blau-700)}
+.reiter button[aria-pressed="true"]{background:var(--blau-900);color:var(--weiss);border-color:var(--blau-900)}
+
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blau-500);outline-offset:2px}
+
+.knopf{
+  font-size:.86rem;font-weight:600;cursor:pointer;font-family:inherit;border-radius:7px;padding:9px 14px;
+  background:var(--blau-700);color:var(--weiss);border:1px solid var(--blau-700);
+}
+.knopf:hover{background:var(--blau-900);border-color:var(--blau-900)}
+.knopf.leise{background:var(--weiss);color:var(--blau-700);border-color:var(--grau-300)}
+.knopf.leise:hover{border-color:var(--blau-500);background:var(--blau-050)}
+.knopf:disabled{opacity:.45;cursor:not-allowed}
+.knopfzeile{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+/* Steuerleiste Prüfmodus */
+.steuer{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.steuer .gruppe{display:flex;flex-direction:column;gap:4px}
+.steuer label{font-size:.78rem;color:var(--grau-700);font-weight:600}
+.steuer input,.steuer select{
+  font-family:inherit;font-size:.9rem;padding:8px 10px;border:1px solid var(--grau-300);border-radius:7px;background:var(--weiss);color:var(--grau-900)
+}
+.steuer input{width:120px;font-family:var(--mono)}
+.nr{font-family:var(--mono);font-weight:700;color:var(--blau-900)}
+
+/* Aufgabe */
+.fall{font-size:.95rem;color:var(--grau-900);max-width:78ch}
+.daten{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden;margin-top:12px}
+.datum{background:var(--blau-050);padding:10px 12px}
+.datum .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.datum .v{font-family:var(--mono);font-size:1.08rem;font-weight:600;font-variant-numeric:tabular-nums}
+
+.schritt{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.schritt-nr{width:28px;height:28px;border-radius:50%;background:var(--blau-900);color:var(--weiss);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex:none}
+.schritt h2{margin:0}
+.auftrag{font-size:.9rem;color:var(--grau-700);margin-bottom:10px}
+
+/* Übungstabelle */
+.tabwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--grau-150);border-radius:8px}
+table.ueb{border-collapse:collapse;width:100%;min-width:760px;font-size:.84rem}
+table.ueb th{background:var(--blau-050);color:var(--blau-900);font-size:.72rem;letter-spacing:.03em;text-align:center;padding:8px 6px;border-bottom:1px solid var(--grau-150);vertical-align:bottom;line-height:1.3}
+table.ueb th small{display:block;font-weight:400;color:var(--grau-500);letter-spacing:0;text-transform:none}
+table.ueb td{padding:5px 5px;border-bottom:1px solid var(--grau-150);text-align:center}
+table.ueb tr:last-child td{border-bottom:none}
+table.ueb td.n{font-family:var(--mono);font-weight:700;color:var(--blau-900);width:70px}
+.zelle{position:relative}
+.zelle input{
+  width:100%;min-width:0;padding:7px 6px;text-align:right;font-family:var(--mono);font-size:.86rem;
+  font-variant-numeric:tabular-nums;background:var(--grau-050);color:var(--grau-900);
+  border:1.5px solid var(--grau-300);border-radius:6px;
+}
+.zelle input.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.zelle input.folge{border-color:var(--gelb);background:var(--gelb-hell)}
+.zelle input.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.zelle .loes{display:block;font-family:var(--mono);font-size:.72rem;color:var(--blau-700);text-align:right;margin-top:2px}
+.legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.78rem;color:var(--grau-700);margin-top:10px}
+.legende span{display:flex;align-items:center;gap:6px}
+.legende i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1.5px solid}
+
+.meldung{border-radius:8px;padding:11px 13px;font-size:.88rem;margin-top:12px;border:1px solid var(--grau-150);background:var(--grau-050)}
+.meldung.ok{background:var(--gruen-hell);border-color:#BFDDD1}
+.meldung.warn{background:var(--gelb-hell);border-color:#EBD5A6}
+.meldung.fehler{background:var(--rot-hell);border-color:#EBC3BC}
+.meldung:empty{display:none}
+
+/* Auswahl optimale Zeile */
+.wahl{display:flex;flex-wrap:wrap;gap:8px}
+.wahl button{
+  font-family:var(--mono);font-size:.88rem;padding:9px 13px;border-radius:7px;cursor:pointer;
+  background:var(--weiss);color:var(--grau-900);border:1.5px solid var(--grau-300);
+}
+.wahl button[aria-pressed="true"]{border-color:var(--blau-700);background:var(--blau-100);font-weight:700}
+
+/* Formelschritt */
+.felder{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.feld2 label{display:block;font-size:.82rem;color:var(--grau-700);font-weight:600;margin-bottom:4px}
+.feld2 input{
+  width:100%;padding:9px 10px;font-family:var(--mono);font-size:.95rem;text-align:right;
+  border:1.5px solid var(--grau-300);border-radius:7px;background:var(--grau-050);
+}
+.feld2 input.richtig{border-color:var(--gruen);background:var(--gruen-hell)}
+.feld2 input.falsch{border-color:var(--rot);background:var(--rot-hell)}
+.formel{font-family:var(--serif);font-size:1.08rem;background:var(--blau-050);border:1px solid var(--blau-100);border-radius:8px;padding:12px 14px;margin-top:10px;overflow-x:auto}
+.formel .bruch{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 4px}
+.formel .bruch span:first-child{border-bottom:1.5px solid var(--grau-900);padding:0 4px 2px}
+.formel .bruch span:last-child{padding:2px 4px 0}
+.wurzel{display:inline-flex;align-items:center}
+.wurzel::before{content:"√";font-size:1.9em;line-height:1;margin-right:1px}
+.wurzel>.inner{border-top:1.5px solid var(--grau-900);padding-top:3px}
+
+/* Fragen */
+.frage{border:1px solid var(--grau-150);border-radius:8px;padding:13px 14px;margin-bottom:12px;background:var(--weiss)}
+.frage:last-child{margin-bottom:0}
+.frage p.ft{font-weight:600;margin-bottom:9px}
+.optionen{display:flex;flex-direction:column;gap:6px}
+.optionen button{
+  text-align:left;font-family:inherit;font-size:.89rem;padding:9px 12px;border-radius:7px;cursor:pointer;line-height:1.4;
+  background:var(--grau-050);color:var(--grau-900);border:1.5px solid var(--grau-150);
+}
+.optionen button:hover:not(:disabled){border-color:var(--blau-500)}
+.optionen button:disabled{cursor:default}
+.optionen button.gewaehlt-ok{border-color:var(--gruen);background:var(--gruen-hell);font-weight:600}
+.optionen button.gewaehlt-falsch{border-color:var(--rot);background:var(--rot-hell)}
+.optionen button.loesung{border-color:var(--gruen);border-style:dashed}
+.erklaerung{font-size:.86rem;color:var(--grau-700);margin-top:9px;padding-top:9px;border-top:1px dotted var(--grau-300)}
+
+/* Ergebnis */
+.ergebnis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden}
+.erg{background:var(--weiss);padding:11px 13px}
+.erg .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.erg .v{font-family:var(--mono);font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums}
+.erg .d{font-size:.76rem;color:var(--grau-700)}
+.klein{font-size:.78rem;color:var(--grau-500)}
+
+/* Erkunden */
+.feld{display:grid;gap:4px;margin-bottom:14px}
+.feld:last-child{margin-bottom:0}
+.feld .kopf{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.feld label{font-size:.82rem;color:var(--grau-700)}
+.feld input[type="number"]{
+  width:118px;padding:5px 7px;text-align:right;font-family:var(--mono);font-size:.86rem;
+  border:1px solid var(--grau-300);border-radius:6px;background:var(--grau-050);color:var(--grau-900)
+}
+input[type="range"]{width:100%;accent-color:var(--blau-700);background:transparent}
+.tipp{font-size:.78rem;color:var(--grau-500);margin:8px 0 0}
+
+.kennzahlen{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden;margin-top:14px}
+.kennzahl{background:var(--weiss);padding:11px 13px}
+.kennzahl .k{font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
+.kennzahl .v{font-family:var(--mono);font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:2px}
+.kennzahl .d{font-size:.74rem;color:var(--grau-700)}
+.besser{color:var(--gruen);font-weight:600}
+.schlechter{color:var(--rot);font-weight:600}
+
+.diagramm{background:var(--weiss);border:1px solid var(--grau-150);border-radius:8px;padding:4px}
+svg.kurven{display:block;width:100%;height:auto}
+svg.kurven text{font-family:var(--sans)}
+.dleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--grau-700);margin-top:8px}
+.dleg span{display:flex;align-items:center;gap:6px}
+.dleg i{width:18px;height:0;border-top:3px solid;display:inline-block}
+.dleg i.gestr{border-top-style:dashed}
+
+details{border:1px solid var(--grau-150);border-radius:8px;background:var(--weiss);box-shadow:var(--schatten)}
+summary{cursor:pointer;padding:12px 14px;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--grau-500);font-weight:600}
+details[open] summary::after{content:"–"}
+.details-inhalt{padding:0 14px 14px;font-size:.86rem;color:var(--grau-700)}
+.rechnung{font-family:var(--mono);font-size:.8rem;font-variant-numeric:tabular-nums;line-height:1.7}
+.rechenzeile{display:flex;justify-content:space-between;gap:14px;padding:3px 0;border-bottom:1px dotted var(--grau-150)}
+.rechenzeile:last-child{border-bottom:none}
+.rechenzeile b{color:var(--grau-900)}
+
+table.tv{border-collapse:collapse;width:100%;min-width:640px;font-size:.8rem;font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.tv th{font-family:var(--sans);font-size:.7rem;text-align:right;padding:6px 8px;color:var(--blau-900);background:var(--blau-050);border-bottom:1px solid var(--grau-150)}
+table.tv td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--grau-150)}
+table.tv tr.min td{background:var(--gruen-hell);font-weight:700}
+
+.modellhinweis{
+  border-left:4px solid var(--gelb);background:var(--weiss);
+  border-top:1px solid var(--grau-150);border-right:1px solid var(--grau-150);border-bottom:1px solid var(--grau-150);
+  padding:13px 15px;border-radius:0 8px 8px 0;font-size:.84rem;color:var(--grau-700);
+}
+.modellhinweis ul{margin:6px 0 0;padding-left:18px}
+.serienwahl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.serienwahl button{
+  display:flex;align-items:center;gap:7px;font-size:.86rem;font-weight:600;padding:8px 13px;border-radius:999px;cursor:pointer;
+  background:var(--weiss);color:var(--grau-700);border:1.5px solid var(--grau-300);font-family:inherit;
+}
+.serienwahl button i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.serienwahl button[aria-pressed="true"]{border-color:var(--blau-900);background:var(--blau-050);color:var(--grau-900)}
+.serienwahl .zahl{font-family:var(--mono);font-size:.76rem;color:var(--grau-500);font-weight:400}
+svg#g-svg{touch-action:none;cursor:crosshair}
+.zwischen{font-size:.95rem;margin:18px 0 8px;font-family:var(--serif)}
+[hidden]{display:none !important}
+@media print{
+  body{background:#fff}
+  .reiter,.knopf,.steuer{display:none}
+  .panel,details{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="kopfzeile">
+    <p class="augenbraue">Beschaffung · Materialbereitstellung</p>
+    <h1>Optimale Bestellmenge</h1>
+    <p class="lead">Große Mengen selten bestellen oder kleine Mengen häufig? Im <b>Prüfmodus</b> rechnen Sie eine Aufgabe selbst und erhalten erst danach eine Rückmeldung. Im Modus <b>Erkunden</b> verändern Sie die Werte und beobachten, wie sich Kosten und optimale Bestellmenge verschieben.</p>
+  </header>
+
+  <div class="reiter" role="group" aria-label="Modus wählen">
+    <button type="button" data-modus="pruefen" aria-pressed="true">Üben mit Prüfmodus</button>
+    <button type="button" data-modus="erkunden" aria-pressed="false">Frei erkunden</button>
+  </div>
+
+  <!-- ============================== PRÜFMODUS ============================== -->
+  <section id="ansicht-pruefen" class="stack">
+
+    <div class="panel">
+      <div class="steuer">
+        <div class="gruppe">
+          <span class="klein">Aktuelle Aufgabe</span>
+          <span class="nr" id="p-nr">–</span>
+        </div>
+        <div class="gruppe">
+          <label for="p-stufe">Schwierigkeit</label>
+          <select id="p-stufe">
+            <option value="0">Grundaufgabe</option>
+            <option value="1">mit Mindestbestand</option>
+          </select>
+        </div>
+        <button class="knopf" type="button" id="p-neu">Neue Aufgabe</button>
+        <div class="gruppe">
+          <label for="p-laden-nr">Aufgabe per Nummer laden</label>
+          <div style="display:flex;gap:6px">
+            <input id="p-laden-nr" inputmode="text" autocomplete="off" placeholder="z. B. 1001">
+            <button class="knopf leise" type="button" id="p-laden">Laden</button>
+          </div>
+        </div>
+      </div>
+      <p class="tipp">Notieren Sie die Aufgabennummer. Damit lässt sich genau diese Aufgabe später wieder aufrufen – auch von Ihrer Lehrkraft. Eingaben und Ergebnisse werden nirgends gespeichert oder übermittelt.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Ausgangssituation</h2>
+      <p class="fall" id="p-fall"></p>
+      <div class="daten" id="p-daten"></div>
+    </div>
+
+    <!-- Schritt 1 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">1</span><h2>Tabellarisches Verfahren</h2></div>
+      <p class="auftrag">Berechnen Sie für jede Bestellhäufigkeit die Werte und tragen Sie sie ein. Euro-Beträge auf zwei Nachkommastellen, Stückzahlen ganzzahlig. Komma oder Punkt als Dezimalzeichen sind beide möglich.</p>
+      <div class="tabwrap">
+        <table class="ueb">
+          <thead id="p-thead"></thead>
+          <tbody id="p-tbody"></tbody>
+        </table>
+      </div>
+      <div class="legende">
+        <span><i style="border-color:var(--gruen);background:var(--gruen-hell)"></i>richtig</span>
+        <span><i style="border-color:var(--gelb);background:var(--gelb-hell)"></i>Folgefehler: Rechenweg richtig, aber mit einem falschen Wert aus Ihrer Zeile weitergerechnet</span>
+        <span><i style="border-color:var(--rot);background:var(--rot-hell)"></i>falsch</span>
+      </div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" id="p-pruefen">Tabelle prüfen</button>
+        <button class="knopf leise" type="button" id="p-tipps-btn" aria-expanded="false">Tipps zu den Spalten</button>
+        <button class="knopf leise" type="button" id="p-loesung" disabled>Lösungswerte einblenden</button>
+      </div>
+      <div class="meldung" id="p-tipps" hidden></div>
+      <div class="meldung" id="p-tab-meldung"></div>
+    </div>
+
+    <!-- Schritt 2 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">2</span><h2>Optimum aus der Tabelle</h2></div>
+      <p class="auftrag">Bei welcher Bestellhäufigkeit sind die Gesamtkosten am niedrigsten? Wählen Sie die Zeile aus.</p>
+      <div class="wahl" id="p-wahl" role="group" aria-label="Bestellhäufigkeit auswählen"></div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="p-wahl-pruefen">Auswahl prüfen</button></div>
+      <div class="meldung" id="p-wahl-meldung"></div>
+    </div>
+
+    <!-- Schritt 3 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">3</span><h2>Grafisches Verfahren</h2></div>
+      <p class="auftrag">Zeichnen Sie zuerst im Heft ein Diagramm: waagerecht die Bestellmenge in Stück, senkrecht die Kosten je Jahr in €. Tragen Sie für jede Tabellenzeile die Bestellkosten, die Lagerhaltungskosten und die Gesamtkosten ein und verbinden Sie die Punkte jeder Kostenart zu einer Kurve. Übertragen Sie die Punkte anschließend hier: Kostenart wählen, dann an die passende Stelle tippen. Tippen Sie erneut in der Nähe derselben Bestellmenge, wird der Punkt versetzt.</p>
+      <div class="serienwahl" id="g-serien" role="group" aria-label="Kostenart wählen"></div>
+      <div class="diagramm"><svg class="kurven" id="g-svg" viewBox="0 0 640 400" role="img" aria-label="Koordinatensystem zum Eintragen der Kostenpunkte"></svg></div>
+      <p class="tipp" id="g-info">Tippen Sie in das Diagramm, um einen Punkt der gewählten Kostenart zu setzen.</p>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" id="g-pruefen">Punkte prüfen</button>
+        <button class="knopf leise" type="button" id="g-loeschen">Punkte dieser Kostenart löschen</button>
+        <button class="knopf leise" type="button" id="g-kurven" disabled>Lösungskurven einblenden</button>
+      </div>
+      <div class="meldung" id="g-meldung"></div>
+
+      <h3 class="zwischen">Ablesen</h3>
+      <p class="auftrag">Lesen Sie aus Ihrem Diagramm ab. Genauer als auf etwa 5 bis 10 % lässt sich eine Zeichnung nicht ablesen – das ist hier auch nicht verlangt.</p>
+      <div class="felder">
+        <div class="feld2"><label for="g-min">Optimale Bestellmenge laut Diagramm (Stück)</label><input id="g-min" inputmode="decimal" autocomplete="off"></div>
+        <div class="feld2"><label for="g-schnitt">Bestellmenge am Schnittpunkt von Bestell- und Lagerkostenkurve (Stück)</label><input id="g-schnitt" inputmode="decimal" autocomplete="off"></div>
+      </div>
+      <div class="knopfzeile"><button class="knopf" type="button" id="g-ablesen-pruefen">Ablesung prüfen</button></div>
+      <div class="meldung" id="g-ablesen-meldung"></div>
+
+      <h3 class="zwischen">Kurven deuten</h3>
+      <div id="g-fragen"></div>
+    </div>
+
+    <!-- Schritt 4 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">4</span><h2>Formel nach Andler</h2></div>
+      <p class="auftrag">Berechnen Sie die optimale Bestellmenge mit der Formel und die zugehörige Bestellhäufigkeit (jeweils auf zwei Nachkommastellen gerundet).</p>
+      <div class="felder">
+        <div class="feld2"><label for="p-xopt">Optimale Bestellmenge (Stück)</label><input id="p-xopt" inputmode="decimal" autocomplete="off"></div>
+        <div class="feld2"><label for="p-nopt">Bestellhäufigkeit je Jahr</label><input id="p-nopt" inputmode="decimal" autocomplete="off"></div>
+      </div>
+      <div class="knopfzeile">
+        <button class="knopf" type="button" id="p-formel-pruefen">Formelergebnis prüfen</button>
+        <button class="knopf leise" type="button" id="p-formel-zeigen" aria-expanded="false">Formel anzeigen</button>
+      </div>
+      <div id="p-formel-box" hidden>
+        <div class="formel" aria-label="x opt gleich Wurzel aus 200 mal Jahresbedarf mal bestellfixe Kosten geteilt durch Einstandspreis mal Lagerhaltungskostensatz">
+          x<sub>opt</sub> =
+          <span class="wurzel"><span class="inner"><span class="bruch"><span>200 · Jahresbedarf · bestellfixe Kosten</span><span>Einstandspreis · Lagerhaltungskostensatz (in %)</span></span></span></span>
+        </div>
+        <p class="tipp">Die 200 entsteht aus 2 · 100: Die 2 stammt aus dem durchschnittlichen Lagerbestand (Bestellmenge ÷ 2), die 100, weil der Lagerhaltungskostensatz in Prozent eingesetzt wird.</p>
+      </div>
+      <div class="meldung" id="p-formel-meldung"></div>
+    </div>
+
+    <!-- Schritt 5 -->
+    <div class="panel">
+      <div class="schritt"><span class="schritt-nr">5</span><h2>Verstehen und deuten</h2></div>
+      <p class="auftrag">Beantworten Sie die Fragen. Es zählt die erste Antwort; danach erscheint die Begründung.</p>
+      <div id="p-fragen"></div>
+    </div>
+
+    <!-- Ergebnis -->
+    <div class="panel">
+      <h2>Ihr Ergebnis</h2>
+      <div class="ergebnis" id="p-ergebnis"></div>
+      <p class="tipp" id="p-ergebnis-zeit"></p>
+      <div class="knopfzeile">
+        <button class="knopf leise" type="button" id="p-zu-erkunden">Diese Aufgabe im Diagramm untersuchen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ERKUNDEN ============================== -->
+  <section id="ansicht-erkunden" hidden>
+    <div class="layout">
+      <div class="stack ber-a">
+        <section class="panel">
+          <h2>Ausgangsdaten</h2>
+          <div id="e-felder"></div>
+          <div class="knopfzeile">
+            <button class="knopf leise" type="button" id="e-reset">Standardwerte</button>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Vergleich</h2>
+          <p class="tipp" style="margin-top:0">Merken Sie sich die aktuelle Situation und verändern Sie dann genau <b>einen</b> Wert (ceteris paribus). Das Diagramm zeigt die Ausgangslage gestrichelt.</p>
+          <div class="knopfzeile">
+            <button class="knopf" type="button" id="e-merken">Ausgangslage merken</button>
+            <button class="knopf leise" type="button" id="e-vergessen" disabled>Vergleich löschen</button>
+          </div>
+          <div class="meldung" id="e-vergleich"></div>
+        </section>
+      </div>
+
+      <div class="stack ber-b">
+        <section class="panel">
+          <h2>Kostenverlauf je Jahr</h2>
+          <div class="diagramm">
+            <svg class="kurven" id="e-svg" viewBox="0 0 640 380" role="img" aria-label="Diagramm der Bestellkosten, Lagerhaltungskosten und Gesamtkosten in Abhängigkeit von der Bestellmenge"></svg>
+          </div>
+          <div class="dleg">
+            <span><i style="border-color:var(--blau-500)"></i>Bestellkosten</span>
+            <span><i style="border-color:var(--gelb)"></i>Lagerhaltungskosten</span>
+            <span><i style="border-color:var(--blau-900)"></i>Gesamtkosten (bestell- und lagerabhängig)</span>
+            <span id="e-leg-alt" hidden><i class="gestr" style="border-color:var(--grau-500)"></i>Gesamtkosten der gemerkten Ausgangslage</span>
+          </div>
+          <div class="feld" style="margin-top:14px">
+            <div class="kopf"><label for="e-probe">Bestellmenge ausprobieren</label><span class="nr" id="e-probe-wert"></span></div>
+            <input type="range" id="e-probe" min="1" max="100" step="1" value="50">
+          </div>
+          <div class="kennzahlen" id="e-kpis"></div>
+        </section>
+      </div>
+
+      <div class="stack ber-c">
+
+        <details>
+          <summary>Tabellarisches Verfahren zu diesen Werten</summary>
+          <div class="details-inhalt">
+            <div class="tabwrap"><table class="tv" id="e-tabelle"></table></div>
+            <p class="tipp">Grün: niedrigste Gesamtkosten unter den aufgeführten Bestellhäufigkeiten. Die Tabelle prüft nur ausgewählte Häufigkeiten – das genaue Optimum kann zwischen zwei Zeilen liegen.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Rechenweg mit der Formel</summary>
+          <div class="details-inhalt"><div class="rechnung" id="e-rechnung"></div></div>
+        </details>
+
+        <div class="modellhinweis">
+          <b>Modellannahmen (Andler-Modell):</b>
+          <ul>
+            <li>Der Jahresbedarf ist bekannt und wird gleichmäßig verbraucht.</li>
+            <li>Bestellfixe Kosten, Einstandspreis und Lagerhaltungskostensatz sind konstant; Mengenrabatte gibt es nicht.</li>
+            <li>Die Ware trifft rechtzeitig und vollständig ein; Fehlmengen und Lagerplatzgrenzen werden nicht betrachtet.</li>
+          </ul>
+          <p style="margin:8px 0 0">Das Modell ist eine Vereinfachung. Es liefert einen Richtwert für die Entscheidung, keine exakte Vorgabe. Weil die Gesamtkostenkurve um das Optimum flach verläuft, wird in der Praxis meist auf Verpackungs- oder Liefereinheiten gerundet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================================ Hilfsfunktionen ================================ */
+  function $(id){ return document.getElementById(id); }
+  function fz(n, d){
+    if(n === null || n === undefined || !isFinite(n)) return "–";
+    return n.toLocaleString("de-DE",{minimumFractionDigits:d,maximumFractionDigits:d});
+  }
+  function eur(n){ return fz(n,2) + " €"; }
+  function stk(n){ return fz(n, Math.abs(n - Math.round(n)) < 1e-9 ? 0 : 2) + " Stück"; }
+  function r2(n){ return Math.round(n*100)/100; }
+
+  // Deutsche und englische Schreibweise einlesen: "1.234,50", "1234,5", "1234.5", "1.200" (= 1200)
+  function lies(s){
+    if(s === null || s === undefined) return null;
+    s = String(s).replace(/\s|€|%|Stück|Stk\.?/gi, "");
+    if(s === "") return null;
+    if(s.indexOf(",") >= 0){ s = s.replace(/\./g, "").replace(",", "."); }
+    else if(/^-?\d{1,3}(\.\d{3})+$/.test(s)){ s = s.replace(/\./g, ""); }
+    var n = Number(s);
+    return isFinite(n) ? n : NaN;
+  }
+  function gleich(a, b, tol){ return a !== null && !isNaN(a) && Math.abs(a - b) <= (tol === undefined ? 0.011 : tol); }
+
+  // reproduzierbarer Zufallsgenerator (mulberry32)
+  function zufall(seed){
+    var a = seed >>> 0;
+    return function(){
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function wahl(r, liste){ return liste[Math.floor(r() * liste.length)]; }
+  function mische(r, liste){
+    var a = liste.slice();
+    for(var i = a.length - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /* ================================ Modell ================================ */
+  // J Jahresbedarf, F bestellfixe Kosten je Bestellung, p Einstandspreis je Stück, l Lagerhaltungskostensatz in %, mb Mindestbestand
+  function zeile(t, n){
+    var x = t.J / n;
+    var bestand = x / 2 + t.mb;
+    var lagerwert = bestand * t.p;
+    var lagerkosten = lagerwert * t.l / 100;
+    var bestellkosten = n * t.F;
+    return { n:n, x:x, bestand:bestand, lagerwert:lagerwert, lagerkosten:lagerkosten,
+             bestellkosten:bestellkosten, gesamt:lagerkosten + bestellkosten };
+  }
+  function xopt(t){ return Math.sqrt(200 * t.J * t.F / (t.p * t.l)); }
+  function kostenBeiMenge(t, x){
+    var bk = t.J / x * t.F;
+    var lk = (x / 2 + t.mb) * t.p * t.l / 100;
+    return { bk:bk, lk:lk, gk:bk + lk };
+  }
+
+  /* ================================ Aufgabengenerator ================================ */
+  var J_LISTE = [2400, 3600, 4800, 6000, 7200, 9600, 12000, 14400];     // Vielfache von 240
+  var P_LISTE = [250, 400, 500, 800, 1000, 1250, 1600, 2000, 2500, 4000]; // Cent
+  var L_LISTE = [8, 10, 12, 15, 16, 20, 25];                             // Prozent
+  var N_LISTE = [1, 2, 3, 4, 5, 6, 8, 10, 12];
+  var GUETER = [
+    {g:"Akkupacks", w:"Akkupack"}, {g:"Bremsscheiben", w:"Bremsscheibe"},
+    {g:"Display-Einheiten", w:"Display-Einheit"}, {g:"Kettenblätter", w:"Kettenblatt"},
+    {g:"Speichen-Sets", w:"Speichen-Set"}, {g:"Motorsteuerungen", w:"Motorsteuerung"},
+    {g:"Sattelstützen", w:"Sattelstütze"}, {g:"Ladegeräte", w:"Ladegerät"}
+  ];
+
+  function erzeuge(seed, mitMb){
+    var r = zufall(seed * 2654435761 + (mitMb ? 977 : 0));
+    for(var versuch = 0; versuch < 800; versuch++){
+      var J = wahl(r, J_LISTE), pc = wahl(r, P_LISTE), l = wahl(r, L_LISTE);
+      var p = pc / 100;
+      var nZiel = 2.6 + r() * 5.6;
+      var F = Math.round((J * p * l / (200 * nZiel * nZiel)) / 5) * 5;
+      if(F < 10 || F > 600) continue;
+      var nStern = Math.sqrt(J * p * l / (200 * F));
+      if(nStern < 2.4 || nStern > 9.5) continue;
+      var mb = 0;
+      if(mitMb){ mb = Math.max(20, Math.round((J / 12) * (0.1 + 0.3 * r()) / 20) * 20); }
+      // sechs aufeinanderfolgende Häufigkeiten, das Optimum möglichst in der Mitte
+      var i = 0;
+      while(i + 1 < N_LISTE.length && N_LISTE[i + 1] <= nStern) i++;
+      var s = Math.max(0, Math.min(i - 2, N_LISTE.length - 6));
+      var ns = N_LISTE.slice(s, s + 6);
+      var t = {J:J, F:F, p:p, l:l, mb:mb};
+      var ok = true, zeilen = [];
+      for(var k = 0; k < ns.length; k++){
+        var z = zeile(t, ns[k]);
+        // alle Werte müssen exakt in Cent darstellbar sein
+        var lkCent = (J / ns[k] / 2 + mb) * pc * l / 100;
+        if(Math.abs(lkCent - Math.round(lkCent)) > 1e-6){ ok = false; break; }
+        zeilen.push(z);
+      }
+      if(!ok) continue;
+      var sortiert = zeilen.map(function(z){ return z.gesamt; }).sort(function(a,b){ return a - b; });
+      if(sortiert[1] - sortiert[0] < 1) continue;               // eindeutiges Minimum
+      var minIdx = 0;
+      zeilen.forEach(function(z, j){ if(z.gesamt < zeilen[minIdx].gesamt) minIdx = j; });
+      if(minIdx === 0 || minIdx === zeilen.length - 1) continue; // Minimum nicht am Rand
+      t.seed = seed; t.mitMb = mitMb; t.zeilen = zeilen; t.minIdx = minIdx;
+      t.gut = GUETER[Math.floor(r() * GUETER.length)];
+      t.r = r;
+      return t;
+    }
+    // Rückfall (sollte praktisch nie eintreten)
+    var f = {J:3600, F:150, p:20, l:15, mb:mitMb ? 100 : 0, seed:seed, mitMb:mitMb, gut:GUETER[0], r:zufall(seed)};
+    f.zeilen = [2,3,4,5,6,8].map(function(n){ return zeile(f, n); });
+    f.minIdx = 4;
+    return f;
+  }
+
+  function nrText(seed, mitMb){ return (mitMb ? "M" : "") + seed; }
+  function nrLesen(s){
+    s = String(s || "").trim().toUpperCase().replace(/\s/g, "");
+    var m = s.match(/^(M)?-?(\d{3,5})$/);
+    if(!m) return null;
+    return { seed: parseInt(m[2], 10), mitMb: !!m[1] };
+  }
+
+  /* ================================ Verständnisfragen ================================ */
+  var FRAGEN = [
+    { id:"fix", text:"Die bestellfixen Kosten je Bestellung steigen, alle anderen Größen bleiben gleich. Wie verändert sich die optimale Bestellmenge?",
+      opt:[["Sie steigt.",1],["Sie sinkt.",0],["Sie bleibt gleich.",0]],
+      erk:"Jede einzelne Bestellung wird teurer. Es lohnt sich deshalb, seltener und dafür größere Mengen zu bestellen. Die optimale Menge steigt aber nur mit der Wurzel: Verdoppeln sich die bestellfixen Kosten, steigt sie um den Faktor √2 ≈ 1,41." },
+    { id:"lhks", text:"Der Lagerhaltungskostensatz steigt, zum Beispiel wegen höherer Zinsen. Alle anderen Größen bleiben gleich. Wie verändert sich die optimale Bestellmenge?",
+      opt:[["Sie steigt.",0],["Sie sinkt.",1],["Sie bleibt gleich.",0]],
+      erk:"Jedes Stück auf Lager kostet nun mehr. Das Unternehmen hält den durchschnittlichen Lagerbestand niedriger, indem es kleinere Mengen häufiger bestellt." },
+    { id:"bedarf", text:"Der Jahresbedarf verdoppelt sich, alle anderen Größen bleiben gleich. Was gilt für die optimale Bestellmenge?",
+      opt:[["Sie verdoppelt sich.",0],["Sie steigt um rund 41 %.",1],["Sie bleibt gleich, nur die Bestellhäufigkeit verdoppelt sich.",0],["Sie halbiert sich.",0]],
+      erk:"Der Jahresbedarf steht unter der Wurzel. Eine Verdopplung erhöht die optimale Bestellmenge um den Faktor √2 ≈ 1,41. Der Mehrbedarf verteilt sich also auf etwas größere Bestellungen und zugleich auf mehr Bestellungen – auch die Bestellhäufigkeit steigt um den Faktor 1,41." },
+    { id:"preis", text:"Der Lieferant erhöht den Einstandspreis je Stück, alle anderen Größen bleiben gleich. Wie verändert sich die optimale Bestellmenge?",
+      opt:[["Sie steigt, weil teure Ware seltener bestellt werden sollte.",0],["Sie sinkt, weil jedes gelagerte Stück mehr Kapital bindet.",1],["Sie bleibt gleich, weil der Preis nur die Einstandskosten betrifft.",0]],
+      erk:"Die Lagerhaltungskosten werden auf den Lagerwert berechnet. Ein höherer Preis erhöht den Wert des durchschnittlichen Lagerbestands und damit Kapitalbindung und Lagerkosten je Stück. Deshalb sinkt die optimale Menge." },
+    { id:"flach", text:"Die Gesamtkostenkurve verläuft in der Nähe des Optimums sehr flach. Was folgt daraus für die Praxis?",
+      opt:[["Kleine Abweichungen von der optimalen Menge, etwa durch Runden auf Verpackungseinheiten, verursachen nur geringe Mehrkosten.",1],["Das Unternehmen muss exakt die berechnete Menge bestellen, sonst steigen die Kosten stark.",0],["Die Bestellmenge hat auf die Kosten praktisch keinen Einfluss.",0]],
+      erk:"Im Modell erhöht eine Abweichung von 20 % nach oben oder unten die bestell- und lagerabhängigen Kosten nur um rund 2 bis 3 %. Darum ist es vertretbar, auf ganze Paletten oder Liefereinheiten zu runden. Bei großen Abweichungen steigen die Kosten dagegen deutlich – das zeigt die Kurve an ihren Rändern." },
+    { id:"annahme", text:"Welche Aussage ist KEINE Annahme des Modells der optimalen Bestellmenge (Andler)?",
+      opt:[["Der Verbrauch verteilt sich gleichmäßig über das Jahr.",0],["Es werden keine Mengenrabatte gewährt.",0],["Bestellfixe Kosten und Lagerhaltungskostensatz sind konstant.",0],["Die Nachfrage schwankt stark von Monat zu Monat.",1]],
+      erk:"Das Modell setzt einen bekannten, gleichmäßigen Verbrauch voraus. Bei stark schwankender Nachfrage ist es nur eingeschränkt anwendbar; dann braucht es zum Beispiel einen Sicherheitsbestand oder ein anderes Bereitstellungsverfahren." },
+    { id:"rabatt", text:"Ein Lieferant gewährt 3 % Rabatt, wenn deutlich mehr als die optimale Bestellmenge abgenommen wird. Wie gehen Sie vor?",
+      opt:[["Die Formel berücksichtigt keine Rabatte. Man vergleicht die Gesamtkosten einschließlich der Einstandskosten für beide Mengen.",1],["Man lehnt den Rabatt ab, weil die Formel die richtige Menge bereits vorgibt.",0],["Man nimmt den Rabatt immer an, weil der Einkaufspreis wichtiger ist als die Lagerkosten.",0]],
+      erk:"Ohne Rabatt sind die Einstandskosten (Preis · Jahresbedarf) unabhängig von der Bestellmenge und spielen für die Entscheidung keine Rolle. Mit Rabatt ändern sie sich – dann muss man die Ersparnis beim Einkauf mit den höheren Lagerkosten vergleichen. Welche Menge günstiger ist, entscheidet die Rechnung, nicht eine Faustregel." },
+    { id:"oeko", text:"Ein Unternehmen stellt darauf um, sehr kleine Mengen sehr häufig zu bestellen. Welche Folge ist aus ökologischer Sicht zu bedenken?",
+      opt:[["Es entstehen mehr Lieferfahrten und mehr Verpackung je Stück.",1],["Es entstehen weniger Lieferfahrten.",0],["Die Bestellhäufigkeit hat keine ökologischen Folgen.",0]],
+      erk:"Mehr Bestellungen bedeuten in der Regel mehr Transporte und oft mehr Verpackungsmaterial. Dem stehen weniger Lagerfläche und weniger Schwund gegenüber. Die Kostenformel bildet solche Folgen nicht ab – sie müssen zusätzlich abgewogen werden." },
+    { id:"schnitt", nurOhneMb:true, text:"Im Diagramm schneiden sich die Kurve der Bestellkosten und die Kurve der Lagerhaltungskosten. Was bedeutet dieser Schnittpunkt?",
+      opt:[["Hier sind Bestell- und Lagerhaltungskosten gleich hoch; im Andler-Modell liegt hier zugleich das Minimum der Gesamtkosten.",1],["Hier sind die Gesamtkosten am höchsten.",0],["Hier ist der Lagerbestand aufgebraucht.",0]],
+      erk:"Im Grundmodell sind Bestell- und Lagerhaltungskosten im Optimum genau gleich hoch. Das ist eine Eigenschaft dieses Modells, keine allgemeine Regel: Kommt zum Beispiel ein Mindestbestand hinzu, liegt der Schnittpunkt nicht mehr beim Kostenminimum." },
+    { id:"mb", nurMitMb:true, text:"Der Mindestbestand wird erhöht, alle anderen Größen bleiben gleich. Wie verändert sich die optimale Bestellmenge?",
+      opt:[["Sie steigt.",0],["Sie sinkt.",0],["Sie bleibt gleich.",1]],
+      erk:"Der Mindestbestand erhöht die Lagerhaltungskosten um einen festen Betrag – unabhängig davon, wie viel je Bestellung geordert wird. Die Gesamtkostenkurve verschiebt sich parallel nach oben, ihr Minimum bleibt an derselben Stelle. Deshalb enthält die Formel den Mindestbestand nicht. Achtung: Der Schnittpunkt von Bestell- und Lagerkostenkurve fällt dann nicht mehr mit dem Optimum zusammen." },
+    { id:"gross", text:"Welches Argument spricht dafür, größere Mengen seltener zu bestellen?",
+      opt:[["Die Bestellkosten im Jahr sinken, und ein größerer Vorrat schützt eher vor Lieferengpässen.",1],["Die Kapitalbindung im Lager sinkt.",0],["Es wird weniger Lagerfläche benötigt.",0]],
+      erk:"Seltenere Bestellungen sparen bestellfixe Kosten und erhöhen den Puffer gegen Lieferstörungen. Kapitalbindung und Lagerflächenbedarf steigen dagegen – genau das ist der Zielkonflikt, den das Modell auflöst." }
+  ];
+
+  /* ================================ Prüfmodus ================================ */
+  var SPALTEN = [
+    {k:"x",            t:"Bestellmenge",             u:"Stück", tol:0.011, tipp:"Jahresbedarf ÷ Anzahl der Bestellungen"},
+    {k:"bestand",      t:"Ø Lagerbestand",           u:"Stück", tol:0.011, tipp:"Bestellmenge ÷ 2"},
+    {k:"lagerwert",    t:"Ø Lagerwert",              u:"€",     tol:0.011, tipp:"Ø Lagerbestand · Einstandspreis je Stück"},
+    {k:"lagerkosten",  t:"Lagerhaltungs­kosten",      u:"€",     tol:0.011, tipp:"Ø Lagerwert · Lagerhaltungskostensatz (z. B. 15 % → · 0,15)"},
+    {k:"bestellkosten",t:"Bestellkosten",            u:"€",     tol:0.011, tipp:"Anzahl der Bestellungen · bestellfixe Kosten je Bestellung"},
+    {k:"gesamt",       t:"Gesamtkosten",             u:"€",     tol:0.011, tipp:"Lagerhaltungskosten + Bestellkosten"}
+  ];
+
+  var P = null; // Zustand des Prüfmodus
+
+  function neueAufgabe(seed, mitMb){
+    var t = erzeuge(seed, mitMb);
+    var fr = FRAGEN.filter(function(f){ return f.id !== "schnitt" && !(f.nurOhneMb && mitMb) && !(f.nurMitMb && !mitMb); });
+    var pflicht = mitMb ? fr.filter(function(f){ return f.id === "mb"; }) : [];
+    var rest = mische(t.r, fr.filter(function(f){ return f.id !== "mb"; }));
+    var auswahl = pflicht.concat(rest).slice(0, 4);
+    auswahl = auswahl.map(function(f){ return { f:f, opt: mische(t.r, f.opt.map(function(o, i){ return {text:o[0], ok:!!o[1], i:i}; })) }; });
+    P = { t:t, versuche:0, geprueft:false, loesungGezeigt:false, tabStand:null,
+          wahl:null, wahlErgebnis:null, formelErgebnis:null, formelHilfe:false,
+          fragen:auswahl, antworten:{}, start:new Date(),
+          g:{ serie:"gesamt", punkte:{bestellkosten:{}, lagerkosten:{}, gesamt:{}}, status:{bestellkosten:{}, lagerkosten:{}, gesamt:{}},
+              erst:null, stand:null, kurven:false, ablesen:null, fragen:grafikFragen(t, mitMb), antworten:{} } };
+    $("p-stufe").value = mitMb ? "1" : "0";
+    zeichnePruefung();
+    setzeUrl();
+  }
+
+  function zeichnePruefung(){
+    var t = P.t;
+    $("p-nr").textContent = "Nr. " + nrText(t.seed, t.mitMb);
+    var mbSatz = t.mitMb ? " Aus Sicherheitsgründen soll stets ein Mindestbestand von " + fz(t.mb,0) + " Stück auf Lager liegen." : "";
+    $("p-fall").innerHTML = "Ein Hersteller von E-Bikes bezieht " + t.gut.g + " von einem Zulieferer. Der Verbrauch verteilt sich gleichmäßig über das Jahr." + mbSatz +
+      " Die Einkaufsleitung möchte wissen, wie oft im Jahr bestellt werden soll, damit die bestell- und lagerabhängigen Kosten möglichst niedrig sind.";
+    var d = [
+      ["Jahresbedarf", fz(t.J,0) + " Stück"],
+      ["Einstandspreis", eur(t.p) + " je " + t.gut.w],
+      ["Bestellfixe Kosten", eur(t.F) + " je Bestellung"],
+      ["Lagerhaltungs­kostensatz", fz(t.l,0) + " %"]
+    ];
+    if(t.mitMb) d.push(["Mindestbestand", fz(t.mb,0) + " Stück"]);
+    $("p-daten").innerHTML = d.map(function(x){ return '<div class="datum"><div class="k">'+x[0]+'</div><div class="v">'+x[1]+'</div></div>'; }).join("");
+
+    // Tabellenkopf
+    var tippBestand = t.mitMb ? "Bestellmenge ÷ 2 + Mindestbestand" : "Bestellmenge ÷ 2";
+    SPALTEN[1].tipp = tippBestand;
+    $("p-thead").innerHTML = "<tr><th>Bestellungen<small>je Jahr</small></th>" +
+      SPALTEN.map(function(s){ return "<th>" + s.t + "<small>in " + s.u + "</small></th>"; }).join("") + "</tr>";
+    // Tabellenkörper
+    $("p-tbody").innerHTML = t.zeilen.map(function(z, zi){
+      return "<tr><td class='n'>" + z.n + "</td>" + SPALTEN.map(function(s, si){
+        return "<td class='zelle'><input id='c-"+zi+"-"+si+"' inputmode='decimal' autocomplete='off' aria-label='"+s.t+" bei "+z.n+" Bestellungen'><span class='loes' id='l-"+zi+"-"+si+"' hidden></span></td>";
+      }).join("") + "</tr>";
+    }).join("");
+    $("p-tipps").innerHTML = "<b>So rechnen Sie je Zeile:</b><br>" + SPALTEN.map(function(s){ return "<b>" + s.t.replace("­","") + ":</b> " + s.tipp; }).join("<br>");
+    $("p-tipps").hidden = true; $("p-tipps-btn").setAttribute("aria-expanded","false");
+    $("p-tab-meldung").textContent = ""; $("p-tab-meldung").className = "meldung";
+    $("p-loesung").disabled = true;
+
+    // Auswahl
+    $("p-wahl").innerHTML = t.zeilen.map(function(z, zi){
+      return "<button type='button' data-zi='"+zi+"' aria-pressed='false'>" + z.n + " × im Jahr</button>";
+    }).join("");
+    $("p-wahl-meldung").textContent = ""; $("p-wahl-meldung").className = "meldung";
+
+    // Formel
+    ["p-xopt","p-nopt"].forEach(function(id){ $(id).value = ""; $(id).className = ""; });
+    $("p-formel-box").hidden = true; $("p-formel-zeigen").setAttribute("aria-expanded","false");
+    $("p-formel-meldung").textContent = ""; $("p-formel-meldung").className = "meldung";
+
+    // Grafik
+    gSerienKnoepfe();
+    $("g-meldung").textContent = ""; $("g-meldung").className = "meldung";
+    $("g-ablesen-meldung").textContent = ""; $("g-ablesen-meldung").className = "meldung";
+    ["g-min","g-schnitt"].forEach(function(id){ $(id).value = ""; $(id).className = ""; });
+    $("g-kurven").disabled = true;
+    $("g-info").textContent = "Tippen Sie in das Diagramm, um einen Punkt der gewählten Kostenart zu setzen.";
+    $("g-fragen").innerHTML = P.g.fragen.map(function(q, qi){
+      return "<div class='frage'><p class='ft'>" + q.f.text + "</p><div class='optionen'>" +
+        q.opt.map(function(o, oi){ return "<button type='button' data-gq='"+qi+"' data-o='"+oi+"'>" + o.text + "</button>"; }).join("") +
+        "</div><div class='erklaerung' id='gerk-"+qi+"' hidden></div></div>";
+    }).join("");
+    gZeichne();
+
+    // Fragen
+    $("p-fragen").innerHTML = P.fragen.map(function(q, qi){
+      return "<div class='frage'><p class='ft'>" + (qi+1) + ". " + q.f.text + "</p><div class='optionen'>" +
+        q.opt.map(function(o, oi){ return "<button type='button' data-q='"+qi+"' data-o='"+oi+"'>" + o.text + "</button>"; }).join("") +
+        "</div><div class='erklaerung' id='erk-"+qi+"' hidden></div></div>";
+    }).join("");
+
+    ergebnis();
+  }
+
+  function zellwert(zi, si){ return lies($("c-"+zi+"-"+si).value); }
+
+  function pruefeTabelle(){
+    var t = P.t, stand = {richtig:0, folge:0, falsch:0, leer:0};
+    t.zeilen.forEach(function(z, zi){
+      var e = SPALTEN.map(function(s, si){ return zellwert(zi, si); });
+      // Erwartung bei Folgefehlern: aus den eigenen Werten der Zeile weitergerechnet
+      var folge = [
+        null,
+        e[0] !== null && !isNaN(e[0]) ? e[0] / 2 + t.mb : null,
+        e[1] !== null && !isNaN(e[1]) ? e[1] * t.p : null,
+        e[2] !== null && !isNaN(e[2]) ? e[2] * t.l / 100 : null,
+        null,
+        (e[3] !== null && !isNaN(e[3]) && e[4] !== null && !isNaN(e[4])) ? e[3] + e[4] : null
+      ];
+      SPALTEN.forEach(function(s, si){
+        var inp = $("c-"+zi+"-"+si), soll = z[s.k], ist = e[si];
+        inp.classList.remove("richtig","folge","falsch");
+        if(ist === null){ stand.leer++; return; }
+        if(gleich(ist, soll, s.tol)){ inp.classList.add("richtig"); stand.richtig++; }
+        else if(folge[si] !== null && gleich(ist, r2(folge[si]), 0.011)){ inp.classList.add("folge"); stand.folge++; }
+        else { inp.classList.add("falsch"); stand.falsch++; }
+      });
+    });
+    P.versuche++; P.geprueft = true; P.tabStand = stand;
+    if(P.versuche === 1) P.tabErsterVersuch = JSON.parse(JSON.stringify(stand));
+    $("p-loesung").disabled = false;
+    var gesamt = t.zeilen.length * SPALTEN.length;
+    var m = $("p-tab-meldung");
+    if(stand.richtig === gesamt){
+      m.className = "meldung ok";
+      m.innerHTML = "<b>Alle " + gesamt + " Werte sind richtig.</b> Weiter mit Schritt 2.";
+    } else {
+      m.className = "meldung " + (stand.falsch ? "fehler" : "warn");
+      m.innerHTML = "<b>" + stand.richtig + " von " + gesamt + " Werten richtig</b>" +
+        (stand.folge ? ", " + stand.folge + " Folgefehler" : "") +
+        (stand.falsch ? ", " + stand.falsch + " falsch" : "") +
+        (stand.leer ? ", " + stand.leer + " noch leer" : "") + ". " +
+        (stand.folge ? "Orange Felder sind richtig gerechnet – suchen Sie den Fehler weiter links in derselben Zeile. " : "") +
+        "Korrigieren Sie und prüfen Sie erneut (Versuch " + P.versuche + ").";
+    }
+    ergebnis();
+  }
+
+  function zeigeLoesung(){
+    if(!P.loesungGezeigt){
+      if(!window.confirm("Lösungswerte einblenden? Im Ergebnis wird dann vermerkt, dass die Lösung angesehen wurde.")) return;
+    }
+    P.loesungGezeigt = true;
+    P.t.zeilen.forEach(function(z, zi){
+      SPALTEN.forEach(function(s, si){
+        var el = $("l-"+zi+"-"+si);
+        el.textContent = s.u === "€" ? fz(z[s.k],2) : fz(z[s.k],0);
+        el.hidden = false;
+      });
+    });
+    $("p-loesung").disabled = true;
+    ergebnis();
+  }
+
+  function pruefeWahl(){
+    var m = $("p-wahl-meldung"), t = P.t;
+    if(P.wahl === null){ m.className = "meldung warn"; m.textContent = "Bitte zuerst eine Zeile auswählen."; return; }
+    var richtig = P.wahl === t.minIdx;
+    // folgerichtig: Minimum der eigenen Gesamtkosten-Spalte
+    var eigene = t.zeilen.map(function(z, zi){ return zellwert(zi, 5); });
+    var vollst = eigene.every(function(v){ return v !== null && !isNaN(v); });
+    var eigenesMin = vollst ? eigene.indexOf(Math.min.apply(null, eigene)) : -1;
+    var z = t.zeilen[t.minIdx];
+    if(P.wahlErgebnis === null) P.wahlErgebnis = richtig ? "richtig" : (P.wahl === eigenesMin ? "folge" : "falsch");
+    if(richtig){
+      m.className = "meldung ok";
+      m.innerHTML = "<b>Richtig.</b> Bei " + z.n + " Bestellungen je Jahr zu je " + fz(z.x,0) + " Stück sind die Gesamtkosten mit " + eur(z.gesamt) +
+        " am niedrigsten. Vergleichen Sie in dieser Zeile die Bestellkosten (" + eur(z.bestellkosten) + ") mit den Lagerhaltungskosten (" + eur(z.lagerkosten) + "): Sie liegen nahe beieinander." +
+        (t.mitMb ? " Mit Mindestbestand sind sie allerdings nicht gleich hoch – das sehen Sie in Schritt 3 im Diagramm." : "");
+    } else if(P.wahl === eigenesMin){
+      m.className = "meldung warn";
+      m.innerHTML = "<b>Folgerichtig, aber nicht das tatsächliche Optimum.</b> Nach Ihren eigenen Gesamtkosten wäre diese Zeile die günstigste. Prüfen Sie Ihre Tabelle in Schritt 1.";
+    } else {
+      m.className = "meldung fehler";
+      m.innerHTML = "<b>Nicht richtig.</b> Gesucht ist die Zeile mit den <i>niedrigsten Gesamtkosten</i> – nicht die mit den niedrigsten Bestell- oder Lagerkosten allein.";
+    }
+    ergebnis();
+  }
+
+  function pruefeFormel(){
+    var t = P.t, xo = xopt(t), no = t.J / xo;
+    var ex = lies($("p-xopt").value), en = lies($("p-nopt").value);
+    var okX = ex !== null && !isNaN(ex) && Math.abs(ex - xo) <= Math.max(1, xo * 0.002);
+    var okN = en !== null && !isNaN(en) && Math.abs(en - no) <= 0.02;
+    // Folgefehler: Häufigkeit aus der eigenen Menge richtig berechnet
+    var folgeN = !okN && okX === false && ex && en !== null && Math.abs(en - t.J / ex) <= 0.02;
+    $("p-xopt").className = ex === null ? "" : (okX ? "richtig" : "falsch");
+    $("p-nopt").className = en === null ? "" : (okN || folgeN ? "richtig" : "falsch");
+    if(P.formelErgebnis === null) P.formelErgebnis = {x:okX, n:okN};
+    var m = $("p-formel-meldung"), zTab = t.zeilen[t.minIdx];
+    if(okX && okN){
+      m.className = "meldung ok";
+      var abw = Math.abs(xo - zTab.x) < 0.5;
+      m.innerHTML = "<b>Richtig:</b> x<sub>opt</sub> ≈ " + fz(xo,2) + " Stück, also rund " + fz(no,2) + " Bestellungen im Jahr. " +
+        (abw ? "Hier trifft die Tabelle das Optimum genau." :
+         "Die Tabelle hat " + fz(zTab.x,0) + " Stück ergeben. Der Unterschied entsteht, weil die Tabelle nur ganze, ausgewählte Bestellhäufigkeiten prüft – das genaue Optimum liegt dazwischen. In der Praxis wird ohnehin auf ganze Bestellungen oder Liefereinheiten gerundet.");
+    } else {
+      m.className = "meldung fehler";
+      var h = [];
+      if(!okX) h.push(ex === null ? "Die optimale Bestellmenge fehlt." : "Die optimale Bestellmenge stimmt nicht. Häufige Fehler: den Lagerhaltungskostensatz als Dezimalzahl statt in Prozent eingesetzt oder die Wurzel vergessen.");
+      if(!okN && !folgeN) h.push(en === null ? "Die Bestellhäufigkeit fehlt." : "Die Bestellhäufigkeit ergibt sich aus Jahresbedarf ÷ optimale Bestellmenge.");
+      if(folgeN) h.push("Die Bestellhäufigkeit ist aus Ihrer Menge folgerichtig berechnet.");
+      m.innerHTML = h.join(" ");
+    }
+    ergebnis();
+  }
+
+  function beantworte(qi, oi){
+    if(P.antworten[qi] !== undefined) return;
+    var q = P.fragen[qi], o = q.opt[oi];
+    P.antworten[qi] = o.ok;
+    var knoepfe = document.querySelectorAll("button[data-q='"+qi+"']");
+    Array.prototype.forEach.call(knoepfe, function(b, bi){
+      b.disabled = true;
+      if(bi === oi) b.classList.add(o.ok ? "gewaehlt-ok" : "gewaehlt-falsch");
+      else if(q.opt[bi].ok) b.classList.add("loesung");
+    });
+    var e = $("erk-"+qi);
+    e.innerHTML = (o.ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> Die richtige Antwort ist gestrichelt markiert. ") + q.f.erk;
+    e.hidden = false;
+    ergebnis();
+  }
+
+  function ergebnis(){
+    if(!P) return;
+    var gesamt = P.t.zeilen.length * SPALTEN.length;
+    var tab = P.tabErsterVersuch, akt = P.tabStand;
+    var fragenRichtig = 0, fragenBeantwortet = 0;
+    Object.keys(P.antworten).forEach(function(k){ fragenBeantwortet++; if(P.antworten[k]) fragenRichtig++; });
+    var kacheln = [
+      ["Aufgabe", nrText(P.t.seed, P.t.mitMb), P.t.mitMb ? "mit Mindestbestand" : "Grundaufgabe"],
+      ["Tabelle · 1. Versuch", tab ? tab.richtig + " / " + gesamt : "–", tab ? (tab.folge ? tab.folge + " Folgefehler" : "ohne Folgefehler") : "noch nicht geprüft"],
+      ["Tabelle · aktuell", akt ? akt.richtig + " / " + gesamt : "–", P.versuche ? P.versuche + " Prüfung(en)" + (P.loesungGezeigt ? ", Lösung angesehen" : "") : ""],
+      ["Optimum gewählt", P.wahlErgebnis === null ? "–" : (P.wahlErgebnis === "richtig" ? "richtig" : (P.wahlErgebnis === "folge" ? "folgerichtig" : "falsch")), "erste Prüfung"],
+      ["Diagramm · 1. Prüfung", P.g.erst ? P.g.erst.richtig + " / " + (P.t.zeilen.length * 3) : "–", P.g.erst ? (P.g.erst.folge ? P.g.erst.folge + " Folgefehler" : "ohne Folgefehler") + (P.g.kurven ? ", Lösung angesehen" : "") : "noch nicht geprüft"],
+      ["Ablesen und Kurven", (P.g.ablesen ? (P.g.ablesen.min ? 1 : 0) + (P.g.ablesen.schnitt ? 1 : 0) : 0) + Object.keys(P.g.antworten).filter(function(k){ return P.g.antworten[k]; }).length + " / 4", (P.g.ablesen ? "abgelesen" : "noch nicht abgelesen") + ", " + Object.keys(P.g.antworten).length + " / 2 Fragen"],
+      ["Formel", P.formelErgebnis === null ? "–" : ((P.formelErgebnis.x ? 1 : 0) + (P.formelErgebnis.n ? 1 : 0)) + " / 2", (P.formelHilfe ? "Formel angezeigt" : "ohne Formelhilfe")],
+      ["Verständnisfragen", fragenRichtig + " / " + P.fragen.length, fragenBeantwortet + " beantwortet"]
+    ];
+    $("p-ergebnis").innerHTML = kacheln.map(function(k){ return "<div class='erg'><div class='k'>"+k[0]+"</div><div class='v'>"+k[1]+"</div><div class='d'>"+k[2]+"</div></div>"; }).join("");
+    $("p-ergebnis-zeit").textContent = "Begonnen am " + P.start.toLocaleDateString("de-DE") + " um " + P.start.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}) + " Uhr. Die Übersicht dient Ihrer Selbstkontrolle; sie wird nicht übermittelt.";
+  }
+
+  /* ================================ Grafisches Verfahren ================================ */
+  var G_SERIEN = [
+    {k:"bestellkosten", t:"Bestellkosten",       farbe:"#2A72BD", col:4},
+    {k:"lagerkosten",   t:"Lagerhaltungskosten", farbe:"#B07A08", col:3},
+    {k:"gesamt",        t:"Gesamtkosten",        farbe:"#0F2E52", col:5}
+  ];
+  var G_STATUS = {richtig:"#1B7A5A", folge:"#B07A08", falsch:"#B33A2B"};
+
+  function grafikFragen(t, mitMb){
+    var form = { text:"Welche Beschreibung der drei Kurven ist richtig?",
+      opt:[["Die Bestellkosten fallen mit wachsender Bestellmenge immer flacher (Hyperbel), die Lagerhaltungskosten steigen gleichmäßig (Gerade), die Gesamtkosten fallen erst und steigen dann (U-Form mit Minimum).",1],
+           ["Die Bestellkosten steigen gleichmäßig (Gerade), die Lagerhaltungskosten fallen immer flacher (Hyperbel), die Gesamtkosten haben ein Maximum.",0],
+           ["Alle drei Kurven sind Geraden; die Gesamtkosten sind dort am niedrigsten, wo die Bestellmenge am kleinsten ist.",0]],
+      erk:"Die Bestellkosten sind Jahresbedarf ÷ Bestellmenge · bestellfixe Kosten: Verdoppelt sich die Menge, halbieren sie sich – das ergibt eine Hyperbel. Die Lagerhaltungskosten wachsen proportional mit dem durchschnittlichen Bestand, also als Gerade. Die Summe fällt zunächst, weil die Bestellkosten stark sinken, und steigt dann, weil die Lagerkosten überwiegen." };
+    var zweite = mitMb ? { text:"In Ihrem Diagramm liegen der Schnittpunkt von Bestell- und Lagerkostenkurve und das Minimum der Gesamtkosten nicht übereinander. Woran liegt das?",
+      opt:[["Der Mindestbestand verschiebt die Lagerkostengerade um einen festen Betrag nach oben. Sie schneidet die Bestellkostenkurve dadurch weiter links; das Minimum der Gesamtkosten bleibt, wo es ist.",1],
+           ["Die Zeichnung ist ungenau – rechnerisch fallen Schnittpunkt und Minimum immer zusammen.",0],
+           ["Der Mindestbestand senkt die Bestellkosten, deshalb verschiebt sich das Minimum nach rechts.",0]],
+      erk:"Die Lagerkostengerade beginnt nicht im Ursprung, sondern bei Mindestbestand · Einstandspreis · Satz. Ein fester Betrag verändert die Steigung der Gesamtkostenkurve nicht und damit auch nicht die Lage ihres Minimums. Gleich hoch sind im Optimum nur die Bestellkosten und der mengenabhängige Teil der Lagerkosten. Merke: „Optimum = Schnittpunkt“ gilt nur im Grundmodell." }
+      : FRAGEN.filter(function(f){ return f.id === "schnitt"; })[0];
+    return [form, zweite].map(function(f){ return { f:f, opt: mische(t.r, f.opt.map(function(o, i){ return {text:o[0], ok:!!o[1], i:i}; })) }; });
+  }
+
+  function gSerienKnoepfe(){
+    $("g-serien").innerHTML = G_SERIEN.map(function(se){
+      var n = Object.keys(P.g.punkte[se.k]).length;
+      return "<button type='button' data-serie='"+se.k+"' aria-pressed='"+(P.g.serie === se.k ? "true" : "false")+"'><i style='background:"+se.farbe+"'></i>"+se.t+" <span class='zahl'>"+n+"/"+P.t.zeilen.length+"</span></button>";
+    }).join("");
+  }
+
+  function gSkala(){
+    var z = P.t.zeilen;
+    var maxX = Math.max.apply(null, z.map(function(r){ return r.x; })) * 1.08;
+    var maxY = Math.max.apply(null, z.map(function(r){ return Math.max(r.gesamt, r.lagerkosten, r.bestellkosten); })) * 1.08;
+    var sx = schoeneSchritte(maxX, 5), sy = schoeneSchritte(maxY, 5);
+    return {xMax:Math.ceil(maxX / sx) * sx, sx:sx, yMax:Math.ceil(maxY / sy) * sy, sy:sy};
+  }
+
+  function gZeichne(){
+    var svg = $("g-svg"); svg.textContent = "";
+    var breite = svg.getBoundingClientRect().width || 640, eng = breite < 480;
+    var W = eng ? 400 : 640, H = eng ? 340 : 400, L = eng ? 58 : 76, R = eng ? 12 : 18, T = 16, B = eng ? 48 : 52;
+    var fs = eng ? 12 : 11, fsl = eng ? 12.5 : 12;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var sk = gSkala(), bw = W - L - R, bh = H - T - B;
+    P.g.geo = {L:L, T:T, bw:bw, bh:bh, xMax:sk.xMax, yMax:sk.yMax};
+    function X(x){ return L + x / sk.xMax * bw; }
+    function Y(y){ return T + bh - y / sk.yMax * bh; }
+    // Hilfsraster
+    var g0 = el("g", {});
+    for(var mx = 0; mx <= sk.xMax + 1e-9; mx += sk.sx / 5) g0.appendChild(el("line", {x1:X(mx), x2:X(mx), y1:T, y2:T + bh, stroke:"#F0F2F5", "stroke-width":1}));
+    for(var my = 0; my <= sk.yMax + 1e-9; my += sk.sy / 5) g0.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(my), y2:Y(my), stroke:"#F0F2F5", "stroke-width":1}));
+    svg.appendChild(g0);
+    for(var gy = 0; gy <= sk.yMax + 1e-9; gy += sk.sy){
+      svg.appendChild(el("line", {x1:L, x2:L + bw, y1:Y(gy), y2:Y(gy), stroke:"#DDE2E8", "stroke-width":1}));
+      svg.appendChild(el("text", {x:L - 7, y:Y(gy) + 4, "text-anchor":"end", "font-size":fs, fill:"#6B747E"}, fz(gy, 0)));
+    }
+    for(var gx = 0; gx <= sk.xMax + 1e-9; gx += sk.sx){
+      svg.appendChild(el("line", {x1:X(gx), x2:X(gx), y1:T, y2:T + bh, stroke:"#DDE2E8", "stroke-width":1}));
+      svg.appendChild(el("text", {x:X(gx), y:T + bh + 18, "text-anchor":(gx + sk.sx > sk.xMax + 1e-9 ? "end" : "middle"), "font-size":fs, fill:"#6B747E"}, fz(gx, 0)));
+    }
+    svg.appendChild(el("line", {x1:L, x2:L + bw, y1:T + bh, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("line", {x1:L, x2:L, y1:T, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("text", {x:L + bw / 2, y:H - 9, "text-anchor":"middle", "font-size":fsl, fill:"#434A53"}, "Bestellmenge (Stück)"));
+    svg.appendChild(el("text", {x:15, y:T + bh / 2, "text-anchor":"middle", "font-size":fsl, fill:"#434A53", transform:"rotate(-90 15 "+(T + bh / 2)+")"}, "Kosten je Jahr (€)"));
+
+    // Lösungskurven (nach dem Einblenden)
+    if(P.g.kurven){
+      var t = P.t, x0 = sk.xMax / 300;
+      var clip = el("clipPath", {id:"g-clip"}); clip.appendChild(el("rect", {x:L, y:T, width:bw, height:bh})); svg.appendChild(clip);
+      var gk = el("g", {"clip-path":"url(#g-clip)"}); svg.appendChild(gk);
+      [["bk","#2A72BD"],["lk","#B07A08"],["gk","#0F2E52"]].forEach(function(a){
+        var d = "";
+        for(var i = 0; i <= 300; i++){ var x = x0 + (sk.xMax - x0) * i / 300, k = kostenBeiMenge(t, x)[a[0]]; d += (i ? "L" : "M") + X(x).toFixed(1) + " " + Y(Math.min(k, sk.yMax * 1.2)).toFixed(1) + " "; }
+        gk.appendChild(el("path", {d:d, fill:"none", stroke:a[1], "stroke-width":1.6, "stroke-dasharray":"5 4", opacity:.85}));
+      });
+    }
+
+    // Eigene Punkte und Verbindungslinien
+    G_SERIEN.forEach(function(se){
+      var pts = Object.keys(P.g.punkte[se.k]).map(function(zi){ return {zi:+zi, x:P.g.punkte[se.k][zi].x, y:P.g.punkte[se.k][zi].y}; })
+        .sort(function(a, b){ return a.x - b.x; });
+      if(pts.length > 1){
+        svg.appendChild(el("polyline", {points:pts.map(function(p){ return X(p.x).toFixed(1) + "," + Y(p.y).toFixed(1); }).join(" "), fill:"none", stroke:se.farbe, "stroke-width":1.8, opacity:.75}));
+      }
+      pts.forEach(function(p){
+        var st = P.g.status[se.k][p.zi];
+        if(st) svg.appendChild(el("circle", {cx:X(p.x), cy:Y(p.y), r:8, fill:"none", stroke:G_STATUS[st], "stroke-width":3}));
+        svg.appendChild(el("circle", {cx:X(p.x), cy:Y(p.y), r:4.5, fill:se.farbe, stroke:"#fff", "stroke-width":1.5}));
+      });
+    });
+
+    // Markierungen der Lösung über allem
+    if(P.g.kurven){
+      var xo = xopt(P.t), ko = kostenBeiMenge(P.t, xo), xs = gSchnitt(P.t), ks = kostenBeiMenge(P.t, xs);
+      var halo = {stroke:"#fff", "stroke-width":4, "paint-order":"stroke", "stroke-linejoin":"round"};
+      function txt(x, y, s, anker){ var a = {x:x, y:y, "text-anchor":anker, "font-size":fsl, "font-weight":700, fill:"#1B7A5A"}; for(var k in halo) a[k] = halo[k]; svg.appendChild(el("text", a, s)); }
+      svg.appendChild(el("line", {x1:X(xo), x2:X(xo), y1:Y(ko.gk), y2:T + bh, stroke:"#1B7A5A", "stroke-width":1.3, "stroke-dasharray":"3 4"}));
+      svg.appendChild(el("circle", {cx:X(xo), cy:Y(ko.gk), r:5.5, fill:"#1B7A5A", stroke:"#fff", "stroke-width":2}));
+      txt(Math.min(L + bw - 4, X(xo) + 8), Y(ko.gk) - 12, "Minimum ≈ " + fz(xo, 0), X(xo) + 8 > L + bw - 110 ? "end" : "start");
+      svg.appendChild(el("circle", {cx:X(xs), cy:Y(ks.bk), r:5.5, fill:"#fff", stroke:"#1B7A5A", "stroke-width":2.5}));
+      var links = X(xs) - L > (eng ? 125 : 140);
+      txt(links ? X(xs) - 10 : X(xs) + 10, Y(ks.bk) + 22, "Schnittpunkt ≈ " + fz(xs, 0), links ? "end" : "start");
+    }
+  }
+
+  function gSchnitt(t){
+    var a = t.p * t.l / 200, b = t.mb * t.p * t.l / 100;
+    return (-b + Math.sqrt(b * b + 4 * a * t.J * t.F)) / (2 * a);
+  }
+
+  function gDatenpunkt(e){
+    var svg = $("g-svg"), ctm = svg.getScreenCTM(); if(!ctm || !P.g.geo) return null;
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var q = pt.matrixTransform(ctm.inverse()), g = P.g.geo;
+    if(q.x < g.L - 6 || q.x > g.L + g.bw + 6 || q.y < g.T - 6 || q.y > g.T + g.bh + 6) return null;
+    return { x: Math.max(0, (q.x - g.L) / g.bw * g.xMax), y: Math.max(0, (g.T + g.bh - q.y) / g.bh * g.yMax) };
+  }
+
+  $("g-svg").addEventListener("pointerdown", function(e){
+    var d = gDatenpunkt(e); if(!d) return;
+    e.preventDefault();
+    var z = P.t.zeilen, zi = 0;
+    z.forEach(function(r, i){ if(Math.abs(r.x - d.x) < Math.abs(z[zi].x - d.x)) zi = i; });
+    var se = P.g.serie;
+    P.g.punkte[se][zi] = {x:d.x, y:d.y};
+    delete P.g.status[se][zi];
+    var name = G_SERIEN.filter(function(s){ return s.k === se; })[0].t;
+    $("g-info").textContent = name + ": Punkt bei etwa " + fz(d.x, 0) + " Stück und " + fz(d.y, 0) + " € gesetzt.";
+    gSerienKnoepfe(); gZeichne();
+  });
+  $("g-svg").addEventListener("pointermove", function(e){
+    if(e.pointerType !== "mouse") return;
+    var d = gDatenpunkt(e); if(!d) return;
+    $("g-info").textContent = "Zeiger bei etwa " + fz(d.x, 0) + " Stück und " + fz(d.y, 0) + " €.";
+  });
+  $("g-serien").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-serie]"); if(!b) return;
+    P.g.serie = b.getAttribute("data-serie"); gSerienKnoepfe();
+  });
+  $("g-loeschen").addEventListener("click", function(){
+    P.g.punkte[P.g.serie] = {}; P.g.status[P.g.serie] = {}; gSerienKnoepfe(); gZeichne();
+  });
+
+  function gPruefen(){
+    var t = P.t, geo = P.g.geo, tolX = geo.xMax * 0.025, tolY = geo.yMax * 0.03;
+    var stand = {richtig:0, folge:0, falsch:0, fehlt:0}, xFalsch = 0;
+    G_SERIEN.forEach(function(se){
+      t.zeilen.forEach(function(r, zi){
+        var p = P.g.punkte[se.k][zi];
+        if(!p){ stand.fehlt++; delete P.g.status[se.k][zi]; return; }
+        var eigen = zellwert(zi, se.col);
+        var xOk = Math.abs(p.x - r.x) <= tolX;
+        var st;
+        if(xOk && Math.abs(p.y - r[se.k]) <= tolY) st = "richtig";
+        else if(xOk && eigen !== null && !isNaN(eigen) && Math.abs(p.y - eigen) <= tolY) st = "folge";
+        else { st = "falsch"; if(!xOk) xFalsch++; }
+        P.g.status[se.k][zi] = st; stand[st]++;
+      });
+    });
+    P.g.stand = stand;
+    if(!P.g.erst) P.g.erst = JSON.parse(JSON.stringify(stand));
+    $("g-kurven").disabled = false;
+    var gesamt = t.zeilen.length * 3, m = $("g-meldung");
+    if(stand.richtig === gesamt){
+      m.className = "meldung ok";
+      m.innerHTML = "<b>Alle " + gesamt + " Punkte liegen richtig.</b> Lesen Sie jetzt ab.";
+    } else {
+      m.className = "meldung " + (stand.falsch ? "fehler" : "warn");
+      m.innerHTML = "<b>" + stand.richtig + " von " + gesamt + " Punkten richtig</b>" +
+        (stand.folge ? ", " + stand.folge + " Folgefehler (Punkt passt zu Ihrem eigenen Tabellenwert)" : "") +
+        (stand.falsch ? ", " + stand.falsch + " falsch" : "") + (stand.fehlt ? ", " + stand.fehlt + " fehlen" : "") + ". " +
+        (xFalsch ? "Bei " + xFalsch + " Punkt(en) stimmt schon die Bestellmenge auf der waagerechten Achse nicht. " : "") +
+        "Die Ringe zeigen den Stand: grün richtig, orange Folgefehler, rot falsch.";
+    }
+    gZeichne(); ergebnis();
+  }
+  $("g-pruefen").addEventListener("click", gPruefen);
+  $("g-kurven").addEventListener("click", function(){
+    if(!P.g.kurven && !window.confirm("Lösungskurven einblenden? Im Ergebnis wird vermerkt, dass die Lösung angesehen wurde.")) return;
+    P.g.kurven = true; this.disabled = true; gZeichne(); ergebnis();
+    $("g-info").textContent = "Gestrichelt: Lösungskurven. Grüner Punkt: Minimum der Gesamtkosten, grüner Ring: Schnittpunkt von Bestell- und Lagerkostenkurve.";
+  });
+
+  $("g-ablesen-pruefen").addEventListener("click", function(){
+    var t = P.t, xo = xopt(t), xs = gSchnitt(t), tabX = t.zeilen[t.minIdx].x;
+    var vMin = lies($("g-min").value), vS = lies($("g-schnitt").value);
+    var okMin = vMin !== null && !isNaN(vMin) && (Math.abs(vMin - xo) <= 0.1 * xo || Math.abs(vMin - tabX) <= 1);
+    var okS = vS !== null && !isNaN(vS) && Math.abs(vS - xs) <= 0.1 * xs;
+    $("g-min").className = vMin === null ? "" : (okMin ? "richtig" : "falsch");
+    $("g-schnitt").className = vS === null ? "" : (okS ? "richtig" : "falsch");
+    if(P.g.ablesen === null) P.g.ablesen = {min:okMin, schnitt:okS};
+    var m = $("g-ablesen-meldung"), h = [];
+    if(okMin && okS){
+      m.className = "meldung ok";
+      h.push("<b>Gut abgelesen.</b> Das Minimum der Gesamtkosten liegt bei rund " + fz(xo, 0) + " Stück, der Schnittpunkt bei rund " + fz(xs, 0) + " Stück.");
+      h.push(t.mitMb ? "Der Schnittpunkt liegt links vom Minimum – im Grundmodell ohne Mindestbestand würden beide zusammenfallen." :
+                       "Beide Stellen fallen zusammen: Im Grundmodell sind Bestell- und Lagerhaltungskosten im Optimum gleich hoch.");
+      h.push("Die Grafik liefert eine Näherung; den genauen Wert berechnen Sie in Schritt 4 mit der Formel.");
+    } else {
+      m.className = "meldung fehler";
+      if(!okMin) h.push(vMin === null ? "Die optimale Bestellmenge fehlt." : "Die optimale Bestellmenge liegt am <b>tiefsten Punkt der Gesamtkostenkurve</b> – lesen Sie dort senkrecht nach unten auf der Mengenachse ab.");
+      if(!okS){
+        if(vS === null) h.push("Der Schnittpunkt fehlt.");
+        else if(t.mitMb && Math.abs(vS - xo) <= 0.05 * xo) h.push("Das ist die Menge im Minimum. Mit Mindestbestand schneiden sich Bestell- und Lagerkostenkurve an einer anderen Stelle – schauen Sie genau, wo die beiden Kurven sich kreuzen.");
+        else h.push("Für den Schnittpunkt lesen Sie die Bestellmenge ab, bei der sich Bestellkosten- und Lagerkostenkurve kreuzen.");
+      }
+    }
+    m.innerHTML = h.join(" ");
+    ergebnis();
+  });
+
+  $("g-fragen").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-gq]"); if(!b) return;
+    var qi = parseInt(b.getAttribute("data-gq"), 10), oi = parseInt(b.getAttribute("data-o"), 10);
+    if(P.g.antworten[qi] !== undefined) return;
+    var q = P.g.fragen[qi], o = q.opt[oi];
+    P.g.antworten[qi] = o.ok;
+    Array.prototype.forEach.call(document.querySelectorAll("button[data-gq='"+qi+"']"), function(x, xi){
+      x.disabled = true;
+      if(xi === oi) x.classList.add(o.ok ? "gewaehlt-ok" : "gewaehlt-falsch");
+      else if(q.opt[xi].ok) x.classList.add("loesung");
+    });
+    var er = $("gerk-"+qi);
+    er.innerHTML = (o.ok ? "<b style='color:var(--gruen)'>Richtig.</b> " : "<b style='color:var(--rot)'>Nicht richtig.</b> Die richtige Antwort ist gestrichelt markiert. ") + q.f.erk;
+    er.hidden = false;
+    ergebnis();
+  });
+
+  // Ereignisse Prüfmodus
+  $("p-neu").addEventListener("click", function(){ neueAufgabe(1000 + Math.floor(Math.random() * 9000), $("p-stufe").value === "1"); });
+  $("p-stufe").addEventListener("change", function(){ neueAufgabe(P.t.seed, $("p-stufe").value === "1"); });
+  $("p-laden").addEventListener("click", function(){
+    var n = nrLesen($("p-laden-nr").value);
+    if(!n){ window.alert("Bitte eine Aufgabennummer wie 1001 oder M1001 eingeben."); return; }
+    neueAufgabe(n.seed, n.mitMb); $("p-laden-nr").value = "";
+  });
+  $("p-laden-nr").addEventListener("keydown", function(e){ if(e.key === "Enter") $("p-laden").click(); });
+  $("p-pruefen").addEventListener("click", pruefeTabelle);
+  $("p-loesung").addEventListener("click", zeigeLoesung);
+  $("p-tipps-btn").addEventListener("click", function(){
+    var b = $("p-tipps"); b.hidden = !b.hidden; this.setAttribute("aria-expanded", b.hidden ? "false" : "true");
+  });
+  $("p-wahl").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-zi]"); if(!b) return;
+    P.wahl = parseInt(b.getAttribute("data-zi"), 10);
+    Array.prototype.forEach.call(this.querySelectorAll("button"), function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+  });
+  $("p-wahl-pruefen").addEventListener("click", pruefeWahl);
+  $("p-formel-pruefen").addEventListener("click", pruefeFormel);
+  $("p-formel-zeigen").addEventListener("click", function(){
+    var b = $("p-formel-box"); b.hidden = !b.hidden; this.setAttribute("aria-expanded", b.hidden ? "false" : "true");
+    if(!b.hidden) P.formelHilfe = true;
+    ergebnis(); meldeHoehe();
+  });
+  $("p-fragen").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-q]"); if(!b) return;
+    beantworte(parseInt(b.getAttribute("data-q"),10), parseInt(b.getAttribute("data-o"),10));
+  });
+  $("p-zu-erkunden").addEventListener("click", function(){
+    var t = P.t;
+    E.J = t.J; E.F = t.F; E.p = t.p; E.l = t.l; E.mb = t.mb; E.probe = null;
+    setzeModus("erkunden");
+    window.scrollTo(0, 0);
+  });
+
+  /* ================================ Erkunden ================================ */
+  var E_STANDARD = {J:3600, F:150, p:20, l:15, mb:0};
+  var E = JSON.parse(JSON.stringify(E_STANDARD)); E.probe = null;
+  var ALT = null;
+  var E_FELDER = [
+    {k:"J",  t:"Jahresbedarf", u:"Stück", min:120, max:30000, step:120, d:0},
+    {k:"F",  t:"Bestellfixe Kosten je Bestellung", u:"€", min:5, max:1000, step:5, d:2},
+    {k:"p",  t:"Einstandspreis je Stück", u:"€", min:0.5, max:500, step:0.5, d:2},
+    {k:"l",  t:"Lagerhaltungskostensatz", u:"%", min:1, max:50, step:0.5, d:1},
+    {k:"mb", t:"Mindestbestand", u:"Stück", min:0, max:5000, step:10, d:0}
+  ];
+
+  $("e-felder").innerHTML = E_FELDER.map(function(f){
+    return "<div class='feld'><div class='kopf'><label for='e-"+f.k+"-z'>"+f.t+" ("+f.u+")</label>" +
+      "<input type='number' id='e-"+f.k+"-z' min='"+f.min+"' max='"+f.max+"' step='"+f.step+"'></div>" +
+      "<input type='range' id='e-"+f.k+"-r' min='"+f.min+"' max='"+f.max+"' step='"+f.step+"' aria-label='"+f.t+"'></div>";
+  }).join("") + "<p class='tipp'>Werte lassen sich mit dem Regler oder direkt im Zahlenfeld einstellen.</p>";
+
+  E_FELDER.forEach(function(f){
+    var z = $("e-"+f.k+"-z"), r = $("e-"+f.k+"-r");
+    function setze(v){
+      if(isNaN(v)) return;
+      v = Math.min(f.max, Math.max(f.min, v));
+      E[f.k] = v; E.probe = null; zeichneErkunden(false);
+    }
+    r.addEventListener("input", function(){ setze(parseFloat(r.value)); });
+    z.addEventListener("change", function(){ setze(parseFloat(z.value)); });
+  });
+  $("e-reset").addEventListener("click", function(){
+    Object.keys(E_STANDARD).forEach(function(k){ E[k] = E_STANDARD[k]; }); E.probe = null; zeichneErkunden(false);
+  });
+  $("e-merken").addEventListener("click", function(){
+    ALT = {J:E.J, F:E.F, p:E.p, l:E.l, mb:E.mb};
+    $("e-vergessen").disabled = false; zeichneErkunden(true);
+  });
+  $("e-vergessen").addEventListener("click", function(){ ALT = null; this.disabled = true; zeichneErkunden(true); });
+  $("e-probe").addEventListener("input", function(){ E.probe = parseFloat(this.value); zeichneErkunden(true); });
+
+  function schoeneSchritte(max, anzahl){
+    var roh = max / anzahl, pot = Math.pow(10, Math.floor(Math.log10(roh))), f = roh / pot;
+    var schritt = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * pot;
+    return schritt;
+  }
+
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, a, txt){ var n = document.createElementNS(NS, tag); for(var k in a) n.setAttribute(k, a[k]); if(txt !== undefined) n.textContent = txt; return n; }
+
+  function zeichneErkunden(probeBehalten){
+    // Felder synchronisieren
+    E_FELDER.forEach(function(f){ $("e-"+f.k+"-z").value = E[f.k]; $("e-"+f.k+"-r").value = E[f.k]; });
+    var t = {J:E.J, F:E.F, p:E.p, l:E.l, mb:E.mb};
+    var xo = xopt(t), ko = kostenBeiMenge(t, xo);
+    var xoAlt = ALT ? xopt(ALT) : null;
+
+    // Achsen
+    var xMax = Math.max(xo, xoAlt || 0) * 2.6;
+    var sx = schoeneSchritte(xMax, ($("e-svg").getBoundingClientRect().width || 640) < 480 ? 4 : 5); xMax = Math.ceil(xMax / sx) * sx;
+    var yMaxRoh = Math.max(ko.gk, ALT ? kostenBeiMenge(ALT, xoAlt).gk : 0) * 2.1;
+    var sy = schoeneSchritte(yMaxRoh, 5), yMax = Math.ceil(yMaxRoh / sy) * sy;
+
+    // Probe-Regler
+    var probe = $("e-probe");
+    probe.min = Math.max(1, Math.round(xMax / 60)); probe.max = Math.round(xMax); probe.step = Math.max(1, Math.round(xMax / 400));
+    if(E.probe === null || !probeBehalten){ E.probe = Math.round(xo); }
+    probe.value = E.probe;
+    var xp = E.probe, kp = kostenBeiMenge(t, xp);
+    $("e-probe-wert").textContent = fz(xp,0) + " Stück";
+
+    var breite = $("e-svg").getBoundingClientRect().width || 640;
+    var eng = breite < 480;
+    var W = eng ? 400 : 640, H = eng ? 330 : 380, L = eng ? 58 : 74, R = eng ? 12 : 18, T = 18, B = eng ? 48 : 52;
+    var fs = eng ? 12 : 11, fsl = eng ? 12.5 : 12;
+    $("e-svg").setAttribute("viewBox", "0 0 " + W + " " + H);
+    var bw = W - L - R, bh = H - T - B;
+    function X(x){ return L + x / xMax * bw; }
+    function Y(y){ return T + bh - Math.min(y, yMax * 1.05) / yMax * bh; }
+
+    var svg = $("e-svg"); svg.textContent = "";
+    var clip = el("clipPath", {id:"e-clip"}); clip.appendChild(el("rect", {x:L, y:T, width:bw, height:bh})); svg.appendChild(clip);
+    // Raster
+    for(var gy = 0; gy <= yMax + 1e-9; gy += sy){
+      svg.appendChild(el("line", {x1:L, x2:W - R, y1:Y(gy), y2:Y(gy), stroke:"#E4E8ED", "stroke-width":1}));
+      svg.appendChild(el("text", {x:L - 8, y:Y(gy) + 4, "text-anchor":"end", "font-size":fs, fill:"#6B747E"}, fz(gy, 0)));
+    }
+    for(var gx = 0; gx <= xMax + 1e-9; gx += sx){
+      svg.appendChild(el("line", {x1:X(gx), x2:X(gx), y1:T + bh, y2:T + bh + 5, stroke:"#C3CAD2"}));
+      svg.appendChild(el("text", {x:X(gx), y:T + bh + 19, "text-anchor":(gx + sx > xMax + 1e-9 ? "end" : "middle"), "font-size":fs, fill:"#6B747E"}, fz(gx, 0)));
+    }
+    svg.appendChild(el("line", {x1:L, x2:W - R, y1:T + bh, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("line", {x1:L, x2:L, y1:T, y2:T + bh, stroke:"#434A53", "stroke-width":1.2}));
+    svg.appendChild(el("text", {x:L + bw / 2, y:H - 10, "text-anchor":"middle", "font-size":fsl, fill:"#434A53"}, "Bestellmenge (Stück)"));
+    var yl = el("text", {x:16, y:T + bh / 2, "text-anchor":"middle", "font-size":fsl, fill:"#434A53", transform:"rotate(-90 16 "+(T + bh / 2)+")"}, "Kosten je Jahr (€)");
+    svg.appendChild(yl);
+
+    function pfad(f, tt){
+      var d = "", n = 260;
+      for(var i = 1; i <= n; i++){
+        var x = xMax * i / n, y = f(tt, x);
+        d += (i === 1 ? "M" : "L") + X(x).toFixed(1) + " " + Y(y).toFixed(1) + " ";
+      }
+      return d;
+    }
+    var g = el("g", {"clip-path":"url(#e-clip)"}); svg.appendChild(g);
+    if(ALT){
+      g.appendChild(el("path", {d:pfad(function(tt, x){ return kostenBeiMenge(tt, x).gk; }, ALT), fill:"none", stroke:"#6B747E", "stroke-width":2, "stroke-dasharray":"6 5"}));
+    }
+    g.appendChild(el("path", {d:pfad(function(tt, x){ return kostenBeiMenge(tt, x).bk; }, t), fill:"none", stroke:"#2A72BD", "stroke-width":2.2}));
+    g.appendChild(el("path", {d:pfad(function(tt, x){ return kostenBeiMenge(tt, x).lk; }, t), fill:"none", stroke:"#B07A08", "stroke-width":2.2}));
+    g.appendChild(el("path", {d:pfad(function(tt, x){ return kostenBeiMenge(tt, x).gk; }, t), fill:"none", stroke:"#0F2E52", "stroke-width":3}));
+
+    // Optimum
+    svg.appendChild(el("line", {x1:X(xo), x2:X(xo), y1:Y(ko.gk), y2:T + bh, stroke:"#1B7A5A", "stroke-width":1.4, "stroke-dasharray":"4 4"}));
+    svg.appendChild(el("circle", {cx:X(xo), cy:Y(ko.gk), r:5.5, fill:"#1B7A5A", stroke:"#fff", "stroke-width":2}));
+    var halb = eng ? 66 : 76;
+    var lblX = Math.min(W - R - halb, Math.max(L + halb, X(xo))), anchor = "middle";
+    svg.appendChild(el("text", {x:lblX, y:Y(ko.gk) - 16, "text-anchor":anchor, "font-size":fsl, "font-weight":700, fill:"#1B7A5A", stroke:"#fff", "stroke-width":4, "paint-order":"stroke", "stroke-linejoin":"round"}, "Optimum ≈ " + fz(xo, 0) + " Stück"));
+    if(ALT){
+      var ka = kostenBeiMenge(ALT, xoAlt);
+      svg.appendChild(el("circle", {cx:X(xoAlt), cy:Y(ka.gk), r:4.5, fill:"#fff", stroke:"#6B747E", "stroke-width":2}));
+    }
+    // Probe
+    if(Math.abs(xp - xo) > xMax / 200){
+      svg.appendChild(el("line", {x1:X(xp), x2:X(xp), y1:T, y2:T + bh, stroke:"#B33A2B", "stroke-width":1.2, "stroke-dasharray":"2 4"}));
+      svg.appendChild(el("circle", {cx:X(xp), cy:Y(kp.gk), r:4.5, fill:"#B33A2B", stroke:"#fff", "stroke-width":1.5}));
+    }
+
+    // Kennzahlen
+    var mehr = kp.gk - ko.gk, mehrPct = ko.gk ? mehr / ko.gk * 100 : 0;
+    var vk = "";
+    if(ALT){
+      var dx = (xo - xoAlt) / xoAlt * 100;
+      vk = "<span class='d " + (Math.abs(dx) < 0.05 ? "" : "") + "'>gemerkt: " + fz(xoAlt, 0) + " Stück (" + (dx >= 0 ? "+" : "−") + fz(Math.abs(dx), 1) + " %)</span>";
+    }
+    $("e-kpis").innerHTML =
+      "<div class='kennzahl'><div class='k'>Optimale Bestellmenge</div><div class='v'>" + fz(xo, 0) + "</div><span class='d'>Stück je Bestellung (" + fz(xo, 2) + ")</span>" + (vk ? "<br>" + vk : "") + "</div>" +
+      "<div class='kennzahl'><div class='k'>Bestellhäufigkeit</div><div class='v'>" + fz(t.J / xo, 2) + "</div><span class='d'>Bestellungen je Jahr</span></div>" +
+      "<div class='kennzahl'><div class='k'>Kosten im Optimum</div><div class='v'>" + eur(ko.gk) + "</div><span class='d'>Bestellung " + eur(ko.bk) + " · Lager " + eur(ko.lk) + "</span></div>" +
+      "<div class='kennzahl'><div class='k'>Bei " + fz(xp, 0) + " Stück</div><div class='v'>" + eur(kp.gk) + "</div><span class='d " + (mehr > 0.005 ? "schlechter" : "") + "'>" +
+        (mehr > 0.005 ? "+ " + eur(mehr) + " (+" + fz(mehrPct, 1) + " %) ggü. Optimum" : "entspricht dem Optimum") + "</span></div>";
+
+    var vm = $("e-vergleich");
+    if(ALT){
+      var geaendert = E_FELDER.filter(function(f){ return Math.abs(ALT[f.k] - E[f.k]) > 1e-9; });
+      var dxp = (xo - xoAlt) / xoAlt * 100;
+      vm.className = "meldung";
+      vm.innerHTML = geaendert.length === 0 ? "Ausgangslage gemerkt. Verändern Sie jetzt einen Wert." :
+        "<b>Geändert:</b> " + geaendert.map(function(f){ return f.t + " " + fz(ALT[f.k], f.d) + " → " + fz(E[f.k], f.d) + " " + f.u; }).join("; ") +
+        ".<br><b>Optimale Bestellmenge:</b> " + fz(xoAlt, 0) + " → " + fz(xo, 0) + " Stück (" + (dxp >= 0 ? "+" : "−") + fz(Math.abs(dxp), 1) + " %)" +
+        (geaendert.length > 1 ? "<br><span class='schlechter'>Mehr als ein Wert geändert – die Wirkung lässt sich so keinem einzelnen Faktor zuordnen.</span>" : "");
+    } else { vm.textContent = ""; vm.className = "meldung"; }
+    $("e-leg-alt").hidden = !ALT;
+
+    // Tabelle
+    var ns = [1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 24].filter(function(n){ return n <= Math.max(12, Math.ceil(t.J / xo * 2)); });
+    var zeilen = ns.map(function(n){ return zeile(t, n); });
+    var mi = 0; zeilen.forEach(function(z, i){ if(z.gesamt < zeilen[mi].gesamt) mi = i; });
+    $("e-tabelle").innerHTML = "<thead><tr><th>Bestellungen</th><th>Bestellmenge</th><th>Ø Lagerbestand</th><th>Ø Lagerwert</th><th>Lagerhaltungskosten</th><th>Bestellkosten</th><th>Gesamtkosten</th></tr></thead><tbody>" +
+      zeilen.map(function(z, i){
+        return "<tr" + (i === mi ? " class='min'" : "") + "><td>" + z.n + "</td><td>" + fz(z.x, z.x % 1 ? 2 : 0) + "</td><td>" + fz(z.bestand, z.bestand % 1 ? 2 : 0) + "</td><td>" + fz(z.lagerwert, 2) + "</td><td>" + fz(z.lagerkosten, 2) + "</td><td>" + fz(z.bestellkosten, 2) + "</td><td>" + fz(z.gesamt, 2) + "</td></tr>";
+      }).join("") + "</tbody>";
+
+    // Rechenweg
+    function rz(a, b){ return "<div class='rechenzeile'><span>" + a + "</span><b>" + b + "</b></div>"; }
+    $("e-rechnung").innerHTML =
+      rz("x<sub>opt</sub> = √(200 · " + fz(t.J, 0) + " · " + fz(t.F, 2) + " ÷ (" + fz(t.p, 2) + " · " + fz(t.l, 1) + "))", "") +
+      rz("= √(" + fz(200 * t.J * t.F, 0) + " ÷ " + fz(t.p * t.l, 2) + ")", "") +
+      rz("= √" + fz(200 * t.J * t.F / (t.p * t.l), 2), fz(xo, 2) + " Stück") +
+      rz("Bestellhäufigkeit = " + fz(t.J, 0) + " ÷ " + fz(xo, 2), fz(t.J / xo, 2) + " × im Jahr") +
+      rz("Bestellkosten = " + fz(t.J / xo, 2) + " · " + eur(t.F), eur(ko.bk)) +
+      rz("Ø Lagerbestand = " + fz(xo, 2) + " ÷ 2" + (t.mb ? " + " + fz(t.mb, 0) : ""), fz(xo / 2 + t.mb, 2) + " Stück") +
+      rz("Lagerhaltungskosten = " + fz(xo / 2 + t.mb, 2) + " · " + eur(t.p) + " · " + fz(t.l, 1) + " %", eur(ko.lk)) +
+      rz("Gesamtkosten (bestell- und lagerabhängig)", eur(ko.gk)) +
+      (t.mb ? "<p class='tipp'>Mit Mindestbestand sind Bestell- und Lagerhaltungskosten im Optimum nicht gleich hoch: Der Mindestbestand verursacht feste Lagerkosten von " + eur(t.mb * t.p * t.l / 100) + ", die das Optimum nicht verschieben.</p>" : "");
+    meldeHoehe();
+  }
+
+  /* ================================ Modus & Adresse ================================ */
+  var modus = "pruefen";
+  function setzeModus(m){
+    modus = m;
+    $("ansicht-pruefen").hidden = m !== "pruefen";
+    $("ansicht-erkunden").hidden = m !== "erkunden";
+    Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-modus") === m ? "true" : "false");
+    });
+    if(m === "erkunden") zeichneErkunden(false);
+    else if(P) gZeichne();
+    setzeUrl(); meldeHoehe();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".reiter button"), function(b){
+    b.addEventListener("click", function(){ setzeModus(b.getAttribute("data-modus")); });
+  });
+
+  function setzeUrl(){
+    if(!window.history || !window.history.replaceState) return;
+    try{
+      var u = new URL(window.location.href);
+      u.searchParams.set("modus", modus);
+      if(modus === "pruefen" && P) u.searchParams.set("aufgabe", nrText(P.t.seed, P.t.mitMb)); else u.searchParams.delete("aufgabe");
+      window.history.replaceState(null, "", u.toString());
+    }catch(e){ /* z. B. in einer Vorschau ohne veränderbare Adresse */ }
+  }
+
+  // Höhe an eine einbettende Seite melden (iframe)
+  var letzteHoehe = 0;
+  function meldeHoehe(){
+    if(window.parent === window) return;
+    window.requestAnimationFrame(function(){
+      var h = document.documentElement.scrollHeight;
+      if(Math.abs(h - letzteHoehe) > 4){ letzteHoehe = h; try{ window.parent.postMessage({typ:"rechner-hoehe", hoehe:h}, "*"); }catch(e){} }
+    });
+  }
+  var rsTimer = null;
+  window.addEventListener("resize", function(){
+    meldeHoehe();
+    clearTimeout(rsTimer);
+    rsTimer = setTimeout(function(){ if(modus === "erkunden") zeichneErkunden(true); else if(P) gZeichne(); }, 120);
+  });
+  document.addEventListener("click", function(){ setTimeout(meldeHoehe, 30); });
+  document.addEventListener("toggle", meldeHoehe, true);
+
+  // Start
+  var q = {};
+  try{ q = Object.fromEntries(new URL(window.location.href).searchParams.entries()); }catch(e){}
+  var start = nrLesen(q.aufgabe) || {seed: 1000 + Math.floor(Math.random() * 9000), mitMb:false};
+  neueAufgabe(start.seed, start.mitMb);
+  setzeModus(q.modus === "erkunden" ? "erkunden" : "pruefen");
+})();
+</script>
+</body>
+</html>

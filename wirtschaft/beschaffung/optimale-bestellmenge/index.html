@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimale Bestellmenge · Lernplattform</title>
+<meta name="description" content="Optimale Bestellmenge verständlich erklärt: Zielkonflikt zwischen Bestell- und Lagerhaltungskosten, tabellarisches und grafisches Verfahren, Formel nach Andler, Modellgrenzen und ein Rechner mit Prüfmodus.">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<style>
+  .formel{font-family:var(--serif);font-size:1.15rem;background:var(--blau-050);border:1px solid var(--blau-100);border-radius:var(--radius);padding:16px 18px;margin:6px 0 14px;overflow-x:auto;white-space:nowrap}
+  .formel .bruch{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 4px}
+  .formel .bruch span:first-child{border-bottom:1.5px solid var(--grau-900);padding:0 6px 3px}
+  .formel .bruch span:last-child{padding:3px 6px 0}
+  .formel .wurzel{display:inline-flex;align-items:center}
+  .formel .wurzel::before{content:"√";font-size:2em;line-height:1;margin-right:2px}
+  .formel .wurzel>span{border-top:1.5px solid var(--grau-900);padding-top:4px}
+  table.daten td.zahl,table.daten th.zahl{text-align:right;font-variant-numeric:tabular-nums}
+  table.daten tr.optimum td{background:#E4F1EC;font-weight:700}
+  ol.schritte{padding-left:22px;margin:0 0 14px}
+  ol.schritte li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div id="kopf"></div>
+<div id="krumen"></div>
+
+<main class="inhalt">
+
+  <div class="titelblock">
+    <p class="augenbraue">Beschaffung · Materialbereitstellung</p>
+    <h1>Optimale Bestellmenge</h1>
+    <p class="lead">Wer selten große Mengen bestellt, spart Bestellkosten, bindet aber viel Kapital im Lager. Wer häufig kleine Mengen bestellt, hat es genau umgekehrt. Die optimale Bestellmenge ist die Menge je Bestellung, bei der die Summe aus beiden Kostenarten am niedrigsten ist. Auf dieser Seite finden Sie die drei Lösungswege – tabellarisch, grafisch und mit der Formel –, die Grenzen des Modells und einen Rechner zum Üben und Erkunden.</p>
+    <div class="knopfzeile">
+      <a class="knopf primaer" href="rechner.html?modus=pruefen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>
+        Üben mit Prüfmodus
+      </a>
+      <a class="knopf sekundaer" href="rechner.html?modus=erkunden">Rechner frei erkunden</a>
+    </div>
+  </div>
+
+  <!-- ============================ Zielkonflikt ============================ -->
+  <section>
+    <h2 id="zielkonflikt">Der Zielkonflikt</h2>
+    <div class="schmal">
+      <p>Ein Unternehmen weiß, wie viel es von einem Material im Jahr braucht. Offen ist, in welchen Portionen es diesen Jahresbedarf bestellt. Die Entscheidung wirkt auf zwei Kostenarten in entgegengesetzter Richtung:</p>
+    </div>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th style="width:34%">Merkmal</th><th>Große Mengen, selten bestellt</th><th>Kleine Mengen, häufig bestellt</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bestellkosten je Jahr</strong></td><td>niedrig – wenige Bestellvorgänge</td><td>hoch – viele Bestellvorgänge</td></tr>
+          <tr><td><strong>Durchschnittlicher Lagerbestand</strong></td><td>hoch</td><td>niedrig</td></tr>
+          <tr><td><strong>Kapitalbindung und Lagerhaltungskosten</strong></td><td>hoch</td><td>niedrig</td></tr>
+          <tr><td><strong>Puffer bei Lieferstörungen</strong></td><td>groß</td><td>klein</td></tr>
+          <tr><td><strong>Transporte und Verpackung</strong></td><td>wenige Lieferungen</td><td>viele Lieferungen</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ Kostenarten ============================ -->
+  <section>
+    <h2 id="kostenarten">Die beiden entscheidenden Kostenarten</h2>
+    <ul class="karten" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <li class="karte">
+        <div class="karte-kopf">
+          <span class="karte-symbol" style="background:var(--blau-100);color:var(--blau-700)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+          <h3>Bestellfixe Kosten</h3>
+        </div>
+        <p>Kosten, die bei <strong>jeder Bestellung</strong> anfallen – unabhängig von der bestellten Menge: Angebote einholen, Bestellung schreiben, Wareneingang prüfen, Rechnung prüfen und buchen, ggf. Transportpauschale.</p>
+        <p><strong>Bestellkosten je Jahr</strong> = Anzahl der Bestellungen · bestellfixe Kosten je Bestellung</p>
+      </li>
+      <li class="karte">
+        <div class="karte-kopf">
+          <span class="karte-symbol" style="background:#FBF1DC;color:var(--gelb)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M7 21v-8h10v8M7 17h10"/></svg></span>
+          <h3>Lagerhaltungskosten</h3>
+        </div>
+        <p>Kosten, die durch den <strong>gelagerten Bestand</strong> entstehen: Zinsen für das gebundene Kapital, Raum-, Personal- und Versicherungskosten, Schwund und Veralterung. Sie werden mit dem <strong>Lagerhaltungskostensatz</strong> in Prozent des durchschnittlichen Lagerwerts angesetzt.</p>
+        <p><strong>Lagerhaltungskosten</strong> = Ø Lagerbestand · Einstandspreis · Lagerhaltungskostensatz</p>
+      </li>
+    </ul>
+    <p class="hinweis" style="margin-top:14px"><strong>Warum spielt der Einkaufspreis der gesamten Jahresmenge keine Rolle?</strong> Ohne Mengenrabatt kostet der Jahresbedarf immer gleich viel – egal, in wie vielen Portionen er bestellt wird. Diese Einstandskosten ändern sich durch die Entscheidung nicht und werden deshalb im Modell nicht verglichen. Der Einstandspreis je Stück zählt aber trotzdem: Er bestimmt den Wert des Lagerbestands und damit die Lagerhaltungskosten.</p>
+  </section>
+
+  <!-- ============================ Tabellenverfahren ============================ -->
+  <section>
+    <h2 id="tabelle">Das tabellarische Verfahren</h2>
+    <div class="schmal">
+      <p>Man rechnet für mehrere mögliche Bestellhäufigkeiten die Kosten durch und sucht die Zeile mit den niedrigsten Gesamtkosten. Je Zeile gilt:</p>
+      <ol class="schritte">
+        <li><strong>Bestellmenge</strong> = Jahresbedarf ÷ Anzahl der Bestellungen</li>
+        <li><strong>Ø Lagerbestand</strong> = Bestellmenge ÷ 2 – weil der Bestand vom vollen Lager nach der Lieferung gleichmäßig bis auf null sinkt</li>
+        <li><strong>Ø Lagerwert</strong> = Ø Lagerbestand · Einstandspreis je Stück</li>
+        <li><strong>Lagerhaltungskosten</strong> = Ø Lagerwert · Lagerhaltungskostensatz</li>
+        <li><strong>Bestellkosten</strong> = Anzahl der Bestellungen · bestellfixe Kosten</li>
+        <li><strong>Gesamtkosten</strong> = Lagerhaltungskosten + Bestellkosten</li>
+      </ol>
+      <p><strong>Beispiel:</strong> Jahresbedarf 3.600 Stück, Einstandspreis 20,00 € je Stück, bestellfixe Kosten 150,00 € je Bestellung, Lagerhaltungskostensatz 15 %.</p>
+    </div>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead>
+          <tr><th class="zahl">Bestellungen</th><th class="zahl">Bestellmenge (Stück)</th><th class="zahl">Ø Lagerbestand (Stück)</th><th class="zahl">Ø Lagerwert (€)</th><th class="zahl">Lagerhaltungs­kosten (€)</th><th class="zahl">Bestellkosten (€)</th><th class="zahl">Gesamtkosten (€)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="zahl">2</td><td class="zahl">1.800</td><td class="zahl">900</td><td class="zahl">18.000,00</td><td class="zahl">2.700,00</td><td class="zahl">300,00</td><td class="zahl">3.000,00</td></tr>
+          <tr><td class="zahl">3</td><td class="zahl">1.200</td><td class="zahl">600</td><td class="zahl">12.000,00</td><td class="zahl">1.800,00</td><td class="zahl">450,00</td><td class="zahl">2.250,00</td></tr>
+          <tr><td class="zahl">4</td><td class="zahl">900</td><td class="zahl">450</td><td class="zahl">9.000,00</td><td class="zahl">1.350,00</td><td class="zahl">600,00</td><td class="zahl">1.950,00</td></tr>
+          <tr><td class="zahl">5</td><td class="zahl">720</td><td class="zahl">360</td><td class="zahl">7.200,00</td><td class="zahl">1.080,00</td><td class="zahl">750,00</td><td class="zahl">1.830,00</td></tr>
+          <tr class="optimum"><td class="zahl">6</td><td class="zahl">600</td><td class="zahl">300</td><td class="zahl">6.000,00</td><td class="zahl">900,00</td><td class="zahl">900,00</td><td class="zahl">1.800,00</td></tr>
+          <tr><td class="zahl">8</td><td class="zahl">450</td><td class="zahl">225</td><td class="zahl">4.500,00</td><td class="zahl">675,00</td><td class="zahl">1.200,00</td><td class="zahl">1.875,00</td></tr>
+          <tr><td class="zahl">10</td><td class="zahl">360</td><td class="zahl">180</td><td class="zahl">3.600,00</td><td class="zahl">540,00</td><td class="zahl">1.500,00</td><td class="zahl">2.040,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p>Am günstigsten sind <strong>6 Bestellungen zu je 600 Stück</strong> mit Gesamtkosten von 1.800,00 €. Die Tabelle prüft allerdings nur die aufgeführten Häufigkeiten. Liegt das tatsächliche Optimum zwischen zwei Zeilen, findet man es nur ungefähr – genau berechnen lässt es sich mit der Formel.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Grafisches Verfahren ============================ -->
+  <section>
+    <h2 id="grafik">Das grafische Verfahren</h2>
+    <div class="schmal">
+      <p>Die Tabellenwerte lassen sich in ein Diagramm übertragen. Dort sieht man den Zielkonflikt auf einen Blick – und das Optimum als tiefsten Punkt der Gesamtkostenkurve.</p>
+      <ol class="schritte">
+        <li><strong>Achsen anlegen:</strong> waagerecht die Bestellmenge in Stück, senkrecht die Kosten je Jahr in €. Den Maßstab so wählen, dass die größten Werte der Tabelle noch hineinpassen.</li>
+        <li><strong>Punkte eintragen:</strong> Für jede Tabellenzeile drei Punkte bei der zugehörigen Bestellmenge – Bestellkosten, Lagerhaltungskosten und Gesamtkosten.</li>
+        <li><strong>Punkte verbinden:</strong> Die Bestellkosten ergeben eine fallende, immer flacher werdende Kurve (Hyperbel), die Lagerhaltungskosten eine steigende Gerade durch den Ursprung, die Gesamtkosten als Summe beider eine U-förmige Kurve.</li>
+        <li><strong>Optimum ablesen:</strong> Vom tiefsten Punkt der Gesamtkostenkurve senkrecht nach unten auf die Mengenachse.</li>
+      </ol>
+      <p>Für das Beispiel oben:</p>
+    </div>
+    <div class="ablauf">
+      <svg viewBox="0 0 700 400" role="img" aria-label="Diagramm zum Beispiel: Bestellkosten fallen als Hyperbel, Lagerhaltungskosten steigen als Gerade, die Gesamtkosten sind bei 600 Stück mit 1.800 Euro am niedrigsten; dort schneiden sich Bestell- und Lagerkostenkurve.">
+        <defs><clipPath id="gv-clip"><rect x="78" y="18" width="598" height="328"/></clipPath></defs>
+        <line x1="78" x2="676" y1="346.0" y2="346.0" stroke="#E4E8ED"/>
+        <text x="70" y="350.0" text-anchor="end" font-size="12" fill="#6B747E">0</text>
+        <line x1="78" x2="676" y1="299.1" y2="299.1" stroke="#E4E8ED"/>
+        <text x="70" y="303.1" text-anchor="end" font-size="12" fill="#6B747E">500</text>
+        <line x1="78" x2="676" y1="252.3" y2="252.3" stroke="#E4E8ED"/>
+        <text x="70" y="256.3" text-anchor="end" font-size="12" fill="#6B747E">1.000</text>
+        <line x1="78" x2="676" y1="205.4" y2="205.4" stroke="#E4E8ED"/>
+        <text x="70" y="209.4" text-anchor="end" font-size="12" fill="#6B747E">1.500</text>
+        <line x1="78" x2="676" y1="158.6" y2="158.6" stroke="#E4E8ED"/>
+        <text x="70" y="162.6" text-anchor="end" font-size="12" fill="#6B747E">2.000</text>
+        <line x1="78" x2="676" y1="111.7" y2="111.7" stroke="#E4E8ED"/>
+        <text x="70" y="115.7" text-anchor="end" font-size="12" fill="#6B747E">2.500</text>
+        <line x1="78" x2="676" y1="64.9" y2="64.9" stroke="#E4E8ED"/>
+        <text x="70" y="68.9" text-anchor="end" font-size="12" fill="#6B747E">3.000</text>
+        <line x1="78" x2="676" y1="18.0" y2="18.0" stroke="#E4E8ED"/>
+        <text x="70" y="22.0" text-anchor="end" font-size="12" fill="#6B747E">3.500</text>
+        <line x1="78.0" x2="78.0" y1="18" y2="346" stroke="#E4E8ED"/>
+        <text x="78.0" y="365" text-anchor="middle" font-size="12" fill="#6B747E">0</text>
+        <line x1="152.8" x2="152.8" y1="18" y2="346" stroke="#E4E8ED"/>
+        <line x1="227.5" x2="227.5" y1="18" y2="346" stroke="#E4E8ED"/>
+        <text x="227.5" y="365" text-anchor="middle" font-size="12" fill="#6B747E">500</text>
+        <line x1="302.2" x2="302.2" y1="18" y2="346" stroke="#E4E8ED"/>
+        <line x1="377.0" x2="377.0" y1="18" y2="346" stroke="#E4E8ED"/>
+        <text x="377.0" y="365" text-anchor="middle" font-size="12" fill="#6B747E">1.000</text>
+        <line x1="451.8" x2="451.8" y1="18" y2="346" stroke="#E4E8ED"/>
+        <line x1="526.5" x2="526.5" y1="18" y2="346" stroke="#E4E8ED"/>
+        <text x="526.5" y="365" text-anchor="middle" font-size="12" fill="#6B747E">1.500</text>
+        <line x1="601.2" x2="601.2" y1="18" y2="346" stroke="#E4E8ED"/>
+        <line x1="676.0" x2="676.0" y1="18" y2="346" stroke="#E4E8ED"/>
+        <text x="676.0" y="365" text-anchor="end" font-size="12" fill="#6B747E">2.000</text>
+        <line x1="78" x2="676" y1="346" y2="346" stroke="#434A53" stroke-width="1.3"/>
+        <line x1="78" x2="78" y1="18" y2="346" stroke="#434A53" stroke-width="1.3"/>
+        <text x="377.0" y="390" text-anchor="middle" font-size="13" fill="#434A53">Bestellmenge (Stück)</text>
+        <text x="18" y="182.0" text-anchor="middle" font-size="13" fill="#434A53" transform="rotate(-90 18 182.0)">Kosten je Jahr (€)</text>
+        <g clip-path="url(#gv-clip)">
+        <path d="M80.0 -80.4 L82.0 -80.4 L84.0 -80.4 L86.0 -80.4 L88.0 -80.4 L90.0 -80.4 L92.0 -80.4 L93.9 -80.4 L95.9 -80.4 L97.9 -80.4 L99.9 -80.4 L101.9 -80.4 L103.9 -80.4 L105.9 -80.4 L107.9 -80.4 L109.9 -80.4 L111.9 -80.4 L113.9 -75.7 L115.9 -53.5 L117.9 -33.5 L119.9 -15.5 L121.9 1.0 L123.8 16.0 L125.8 29.7 L127.8 42.4 L129.8 54.0 L131.8 64.9 L133.8 74.9 L135.8 84.2 L137.8 93.0 L139.8 101.1 L141.8 108.8 L143.8 116.0 L145.8 122.7 L147.8 129.1 L149.8 135.1 L151.8 140.8 L153.7 146.2 L155.7 151.4 L157.7 156.2 L159.7 160.9 L161.7 165.3 L163.7 169.5 L165.7 173.5 L167.7 177.3 L169.7 181.0 L171.7 184.5 L173.7 187.9 L175.7 191.1 L177.7 194.2 L179.7 197.2 L181.7 200.0 L183.6 202.8 L185.6 205.4 L187.6 208.0 L189.6 210.4 L191.6 212.8 L193.6 215.1 L195.6 217.3 L197.6 219.5 L199.6 221.6 L201.6 223.6 L203.6 225.5 L205.6 227.4 L207.6 229.2 L209.6 231.0 L211.6 232.7 L213.5 234.4 L215.5 236.0 L217.5 237.6 L219.5 239.1 L221.5 240.6 L223.5 242.0 L225.5 243.4 L227.5 244.8 L229.5 246.1 L231.5 247.4 L233.5 248.7 L235.5 249.9 L237.5 251.1 L239.5 252.3 L241.5 253.4 L243.4 254.5 L245.4 255.6 L247.4 256.7 L249.4 257.7 L251.4 258.7 L253.4 259.7 L255.4 260.7 L257.4 261.7 L259.4 262.6 L261.4 263.5 L263.4 264.4 L265.4 265.2 L267.4 266.1 L269.4 266.9 L271.4 267.7 L273.3 268.5 L275.3 269.3 L277.3 270.1 L279.3 270.8 L281.3 271.6 L283.3 272.3 L285.3 273.0 L287.3 273.7 L289.3 274.4 L291.3 275.1 L293.3 275.7 L295.3 276.4 L297.3 277.0 L299.3 277.6 L301.3 278.2 L303.2 278.8 L305.2 279.4 L307.2 280.0 L309.2 280.6 L311.2 281.1 L313.2 281.7 L315.2 282.2 L317.2 282.7 L319.2 283.3 L321.2 283.8 L323.2 284.3 L325.2 284.8 L327.2 285.3 L329.2 285.8 L331.2 286.2 L333.1 286.7 L335.1 287.2 L337.1 287.6 L339.1 288.1 L341.1 288.5 L343.1 288.9 L345.1 289.4 L347.1 289.8 L349.1 290.2 L351.1 290.6 L353.1 291.0 L355.1 291.4 L357.1 291.8 L359.1 292.2 L361.1 292.5 L363.0 292.9 L365.0 293.3 L367.0 293.6 L369.0 294.0 L371.0 294.4 L373.0 294.7 L375.0 295.1 L377.0 295.4 L379.0 295.7 L381.0 296.1 L383.0 296.4 L385.0 296.7 L387.0 297.0 L389.0 297.3 L391.0 297.7 L392.9 298.0 L394.9 298.3 L396.9 298.6 L398.9 298.9 L400.9 299.1 L402.9 299.4 L404.9 299.7 L406.9 300.0 L408.9 300.3 L410.9 300.5 L412.9 300.8 L414.9 301.1 L416.9 301.3 L418.9 301.6 L420.9 301.9 L422.8 302.1 L424.8 302.4 L426.8 302.6 L428.8 302.9 L430.8 303.1 L432.8 303.4 L434.8 303.6 L436.8 303.8 L438.8 304.1 L440.8 304.3 L442.8 304.5 L444.8 304.7 L446.8 305.0 L448.8 305.2 L450.8 305.4 L452.7 305.6 L454.7 305.8 L456.7 306.0 L458.7 306.3 L460.7 306.5 L462.7 306.7 L464.7 306.9 L466.7 307.1 L468.7 307.3 L470.7 307.5 L472.7 307.7 L474.7 307.9 L476.7 308.0 L478.7 308.2 L480.7 308.4 L482.6 308.6 L484.6 308.8 L486.6 309.0 L488.6 309.2 L490.6 309.3 L492.6 309.5 L494.6 309.7 L496.6 309.9 L498.6 310.0 L500.6 310.2 L502.6 310.4 L504.6 310.5 L506.6 310.7 L508.6 310.9 L510.6 311.0 L512.5 311.2 L514.5 311.3 L516.5 311.5 L518.5 311.7 L520.5 311.8 L522.5 312.0 L524.5 312.1 L526.5 312.3 L528.5 312.4 L530.5 312.6 L532.5 312.7 L534.5 312.9 L536.5 313.0 L538.5 313.1 L540.5 313.3 L542.4 313.4 L544.4 313.6 L546.4 313.7 L548.4 313.8 L550.4 314.0 L552.4 314.1 L554.4 314.2 L556.4 314.4 L558.4 314.5 L560.4 314.6 L562.4 314.8 L564.4 314.9 L566.4 315.0 L568.4 315.1 L570.4 315.3 L572.3 315.4 L574.3 315.5 L576.3 315.6 L578.3 315.8 L580.3 315.9 L582.3 316.0 L584.3 316.1 L586.3 316.2 L588.3 316.3 L590.3 316.5 L592.3 316.6 L594.3 316.7 L596.3 316.8 L598.3 316.9 L600.3 317.0 L602.2 317.1 L604.2 317.2 L606.2 317.4 L608.2 317.5 L610.2 317.6 L612.2 317.7 L614.2 317.8 L616.2 317.9 L618.2 318.0 L620.2 318.1 L622.2 318.2 L624.2 318.3 L626.2 318.4 L628.2 318.5 L630.2 318.6 L632.1 318.7 L634.1 318.8 L636.1 318.9 L638.1 319.0 L640.1 319.1 L642.1 319.2 L644.1 319.3 L646.1 319.4 L648.1 319.5 L650.1 319.6 L652.1 319.6 L654.1 319.7 L656.1 319.8 L658.1 319.9 L660.1 320.0 L662.0 320.1 L664.0 320.2 L666.0 320.3 L668.0 320.4 L670.0 320.4 L672.0 320.5 L674.0 320.6 L676.0 320.7" fill="none" stroke="#2A72BD" stroke-width="2.4"/>
+        <path d="M80.0 345.1 L82.0 344.1 L84.0 343.2 L86.0 342.3 L88.0 341.3 L90.0 340.4 L92.0 339.4 L93.9 338.5 L95.9 337.6 L97.9 336.6 L99.9 335.7 L101.9 334.8 L103.9 333.8 L105.9 332.9 L107.9 331.9 L109.9 331.0 L111.9 330.1 L113.9 329.1 L115.9 328.2 L117.9 327.3 L119.9 326.3 L121.9 325.4 L123.8 324.4 L125.8 323.5 L127.8 322.6 L129.8 321.6 L131.8 320.7 L133.8 319.8 L135.8 318.8 L137.8 317.9 L139.8 316.9 L141.8 316.0 L143.8 315.1 L145.8 314.1 L147.8 313.2 L149.8 312.3 L151.8 311.3 L153.7 310.4 L155.7 309.5 L157.7 308.5 L159.7 307.6 L161.7 306.6 L163.7 305.7 L165.7 304.8 L167.7 303.8 L169.7 302.9 L171.7 302.0 L173.7 301.0 L175.7 300.1 L177.7 299.1 L179.7 298.2 L181.7 297.3 L183.6 296.3 L185.6 295.4 L187.6 294.5 L189.6 293.5 L191.6 292.6 L193.6 291.6 L195.6 290.7 L197.6 289.8 L199.6 288.8 L201.6 287.9 L203.6 287.0 L205.6 286.0 L207.6 285.1 L209.6 284.1 L211.6 283.2 L213.5 282.3 L215.5 281.3 L217.5 280.4 L219.5 279.5 L221.5 278.5 L223.5 277.6 L225.5 276.7 L227.5 275.7 L229.5 274.8 L231.5 273.8 L233.5 272.9 L235.5 272.0 L237.5 271.0 L239.5 270.1 L241.5 269.2 L243.4 268.2 L245.4 267.3 L247.4 266.3 L249.4 265.4 L251.4 264.5 L253.4 263.5 L255.4 262.6 L257.4 261.7 L259.4 260.7 L261.4 259.8 L263.4 258.8 L265.4 257.9 L267.4 257.0 L269.4 256.0 L271.4 255.1 L273.3 254.2 L275.3 253.2 L277.3 252.3 L279.3 251.3 L281.3 250.4 L283.3 249.5 L285.3 248.5 L287.3 247.6 L289.3 246.7 L291.3 245.7 L293.3 244.8 L295.3 243.9 L297.3 242.9 L299.3 242.0 L301.3 241.0 L303.2 240.1 L305.2 239.2 L307.2 238.2 L309.2 237.3 L311.2 236.4 L313.2 235.4 L315.2 234.5 L317.2 233.5 L319.2 232.6 L321.2 231.7 L323.2 230.7 L325.2 229.8 L327.2 228.9 L329.2 227.9 L331.2 227.0 L333.1 226.0 L335.1 225.1 L337.1 224.2 L339.1 223.2 L341.1 222.3 L343.1 221.4 L345.1 220.4 L347.1 219.5 L349.1 218.5 L351.1 217.6 L353.1 216.7 L355.1 215.7 L357.1 214.8 L359.1 213.9 L361.1 212.9 L363.0 212.0 L365.0 211.1 L367.0 210.1 L369.0 209.2 L371.0 208.2 L373.0 207.3 L375.0 206.4 L377.0 205.4 L379.0 204.5 L381.0 203.6 L383.0 202.6 L385.0 201.7 L387.0 200.7 L389.0 199.8 L391.0 198.9 L392.9 197.9 L394.9 197.0 L396.9 196.1 L398.9 195.1 L400.9 194.2 L402.9 193.2 L404.9 192.3 L406.9 191.4 L408.9 190.4 L410.9 189.5 L412.9 188.6 L414.9 187.6 L416.9 186.7 L418.9 185.7 L420.9 184.8 L422.8 183.9 L424.8 182.9 L426.8 182.0 L428.8 181.1 L430.8 180.1 L432.8 179.2 L434.8 178.3 L436.8 177.3 L438.8 176.4 L440.8 175.4 L442.8 174.5 L444.8 173.6 L446.8 172.6 L448.8 171.7 L450.8 170.8 L452.7 169.8 L454.7 168.9 L456.7 167.9 L458.7 167.0 L460.7 166.1 L462.7 165.1 L464.7 164.2 L466.7 163.3 L468.7 162.3 L470.7 161.4 L472.7 160.4 L474.7 159.5 L476.7 158.6 L478.7 157.6 L480.7 156.7 L482.6 155.8 L484.6 154.8 L486.6 153.9 L488.6 152.9 L490.6 152.0 L492.6 151.1 L494.6 150.1 L496.6 149.2 L498.6 148.3 L500.6 147.3 L502.6 146.4 L504.6 145.5 L506.6 144.5 L508.6 143.6 L510.6 142.6 L512.5 141.7 L514.5 140.8 L516.5 139.8 L518.5 138.9 L520.5 138.0 L522.5 137.0 L524.5 136.1 L526.5 135.1 L528.5 134.2 L530.5 133.3 L532.5 132.3 L534.5 131.4 L536.5 130.5 L538.5 129.5 L540.5 128.6 L542.4 127.6 L544.4 126.7 L546.4 125.8 L548.4 124.8 L550.4 123.9 L552.4 123.0 L554.4 122.0 L556.4 121.1 L558.4 120.1 L560.4 119.2 L562.4 118.3 L564.4 117.3 L566.4 116.4 L568.4 115.5 L570.4 114.5 L572.3 113.6 L574.3 112.7 L576.3 111.7 L578.3 110.8 L580.3 109.8 L582.3 108.9 L584.3 108.0 L586.3 107.0 L588.3 106.1 L590.3 105.2 L592.3 104.2 L594.3 103.3 L596.3 102.3 L598.3 101.4 L600.3 100.5 L602.2 99.5 L604.2 98.6 L606.2 97.7 L608.2 96.7 L610.2 95.8 L612.2 94.8 L614.2 93.9 L616.2 93.0 L618.2 92.0 L620.2 91.1 L622.2 90.2 L624.2 89.2 L626.2 88.3 L628.2 87.3 L630.2 86.4 L632.1 85.5 L634.1 84.5 L636.1 83.6 L638.1 82.7 L640.1 81.7 L642.1 80.8 L644.1 79.9 L646.1 78.9 L648.1 78.0 L650.1 77.0 L652.1 76.1 L654.1 75.2 L656.1 74.2 L658.1 73.3 L660.1 72.4 L662.0 71.4 L664.0 70.5 L666.0 69.5 L668.0 68.6 L670.0 67.7 L672.0 66.7 L674.0 65.8 L676.0 64.9" fill="none" stroke="#B07A08" stroke-width="2.4"/>
+        <path d="M80.0 -80.4 L82.0 -80.4 L84.0 -80.4 L86.0 -80.4 L88.0 -80.4 L90.0 -80.4 L92.0 -80.4 L93.9 -80.4 L95.9 -80.4 L97.9 -80.4 L99.9 -80.4 L101.9 -80.4 L103.9 -80.4 L105.9 -80.4 L107.9 -80.4 L109.9 -80.4 L111.9 -80.4 L113.9 -80.4 L115.9 -71.3 L117.9 -52.3 L119.9 -35.1 L121.9 -19.7 L123.8 -5.6 L125.8 7.2 L127.8 18.9 L129.8 29.7 L131.8 39.6 L133.8 48.7 L135.8 57.1 L137.8 64.9 L139.8 72.1 L141.8 78.8 L143.8 85.0 L145.8 90.9 L147.8 96.3 L149.8 101.4 L151.8 106.2 L153.7 110.6 L155.7 114.8 L157.7 118.7 L159.7 122.4 L161.7 125.9 L163.7 129.2 L165.7 132.2 L167.7 135.1 L169.7 137.9 L171.7 140.4 L173.7 142.9 L175.7 145.2 L177.7 147.3 L179.7 149.4 L181.7 151.3 L183.6 153.1 L185.6 154.8 L187.6 156.4 L189.6 158.0 L191.6 159.4 L193.6 160.8 L195.6 162.0 L197.6 163.3 L199.6 164.4 L201.6 165.5 L203.6 166.5 L205.6 167.4 L207.6 168.3 L209.6 169.1 L211.6 169.9 L213.5 170.6 L215.5 171.3 L217.5 172.0 L219.5 172.5 L221.5 173.1 L223.5 173.6 L225.5 174.1 L227.5 174.5 L229.5 174.9 L231.5 175.3 L233.5 175.6 L235.5 175.9 L237.5 176.1 L239.5 176.4 L241.5 176.6 L243.4 176.8 L245.4 176.9 L247.4 177.0 L249.4 177.1 L251.4 177.2 L253.4 177.3 L255.4 177.3 L257.4 177.3 L259.4 177.3 L261.4 177.3 L263.4 177.2 L265.4 177.2 L267.4 177.1 L269.4 177.0 L271.4 176.8 L273.3 176.7 L275.3 176.5 L277.3 176.4 L279.3 176.2 L281.3 176.0 L283.3 175.8 L285.3 175.5 L287.3 175.3 L289.3 175.1 L291.3 174.8 L293.3 174.5 L295.3 174.2 L297.3 173.9 L299.3 173.6 L301.3 173.3 L303.2 172.9 L305.2 172.6 L307.2 172.2 L309.2 171.9 L311.2 171.5 L313.2 171.1 L315.2 170.7 L317.2 170.3 L319.2 169.9 L321.2 169.4 L323.2 169.0 L325.2 168.6 L327.2 168.1 L329.2 167.7 L331.2 167.2 L333.1 166.7 L335.1 166.3 L337.1 165.8 L339.1 165.3 L341.1 164.8 L343.1 164.3 L345.1 163.8 L347.1 163.3 L349.1 162.7 L351.1 162.2 L353.1 161.7 L355.1 161.1 L357.1 160.6 L359.1 160.0 L361.1 159.5 L363.0 158.9 L365.0 158.3 L367.0 157.8 L369.0 157.2 L371.0 156.6 L373.0 156.0 L375.0 155.4 L377.0 154.8 L379.0 154.2 L381.0 153.6 L383.0 153.0 L385.0 152.4 L387.0 151.8 L389.0 151.1 L391.0 150.5 L392.9 149.9 L394.9 149.3 L396.9 148.6 L398.9 148.0 L400.9 147.3 L402.9 146.7 L404.9 146.0 L406.9 145.4 L408.9 144.7 L410.9 144.0 L412.9 143.4 L414.9 142.7 L416.9 142.0 L418.9 141.4 L420.9 140.7 L422.8 140.0 L424.8 139.3 L426.8 138.6 L428.8 137.9 L430.8 137.2 L432.8 136.5 L434.8 135.8 L436.8 135.1 L438.8 134.4 L440.8 133.7 L442.8 133.0 L444.8 132.3 L446.8 131.6 L448.8 130.9 L450.8 130.2 L452.7 129.4 L454.7 128.7 L456.7 128.0 L458.7 127.3 L460.7 126.5 L462.7 125.8 L464.7 125.1 L466.7 124.3 L468.7 123.6 L470.7 122.9 L472.7 122.1 L474.7 121.4 L476.7 120.6 L478.7 119.9 L480.7 119.1 L482.6 118.4 L484.6 117.6 L486.6 116.9 L488.6 116.1 L490.6 115.3 L492.6 114.6 L494.6 113.8 L496.6 113.1 L498.6 112.3 L500.6 111.5 L502.6 110.8 L504.6 110.0 L506.6 109.2 L508.6 108.4 L510.6 107.7 L512.5 106.9 L514.5 106.1 L516.5 105.3 L518.5 104.5 L520.5 103.8 L522.5 103.0 L524.5 102.2 L526.5 101.4 L528.5 100.6 L530.5 99.8 L532.5 99.0 L534.5 98.2 L536.5 97.5 L538.5 96.7 L540.5 95.9 L542.4 95.1 L544.4 94.3 L546.4 93.5 L548.4 92.7 L550.4 91.9 L552.4 91.1 L554.4 90.3 L556.4 89.5 L558.4 88.7 L560.4 87.8 L562.4 87.0 L564.4 86.2 L566.4 85.4 L568.4 84.6 L570.4 83.8 L572.3 83.0 L574.3 82.2 L576.3 81.4 L578.3 80.5 L580.3 79.7 L582.3 78.9 L584.3 78.1 L586.3 77.3 L588.3 76.4 L590.3 75.6 L592.3 74.8 L594.3 74.0 L596.3 73.1 L598.3 72.3 L600.3 71.5 L602.2 70.7 L604.2 69.8 L606.2 69.0 L608.2 68.2 L610.2 67.4 L612.2 66.5 L614.2 65.7 L616.2 64.9 L618.2 64.0 L620.2 63.2 L622.2 62.4 L624.2 61.5 L626.2 60.7 L628.2 59.8 L630.2 59.0 L632.1 58.2 L634.1 57.3 L636.1 56.5 L638.1 55.6 L640.1 54.8 L642.1 54.0 L644.1 53.1 L646.1 52.3 L648.1 51.4 L650.1 50.6 L652.1 49.7 L654.1 48.9 L656.1 48.1 L658.1 47.2 L660.1 46.4 L662.0 45.5 L664.0 44.7 L666.0 43.8 L668.0 43.0 L670.0 42.1 L672.0 41.3 L674.0 40.4 L676.0 39.6" fill="none" stroke="#0F2E52" stroke-width="3.2"/>
+        </g>
+        <circle cx="616.2" cy="317.9" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="616.2" cy="93.0" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="616.2" cy="64.9" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="436.8" cy="303.8" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="436.8" cy="177.3" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="436.8" cy="135.1" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="347.1" cy="289.8" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="347.1" cy="219.5" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="347.1" cy="163.3" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="293.3" cy="275.7" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="293.3" cy="244.8" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="293.3" cy="174.5" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="257.4" cy="261.7" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="257.4" cy="261.7" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="257.4" cy="177.3" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="212.6" cy="233.5" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="212.6" cy="282.7" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="212.6" cy="170.3" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="185.6" cy="205.4" r="4.5" fill="#2A72BD" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="185.6" cy="295.4" r="4.5" fill="#B07A08" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="185.6" cy="154.8" r="4.5" fill="#0F2E52" stroke="#fff" stroke-width="1.5"/>
+        <line x1="257.4" x2="257.4" y1="177.3" y2="346" stroke="#1B7A5A" stroke-width="1.4" stroke-dasharray="4 4"/>
+        <line x1="257.4" y1="177.3" x2="287.3" y2="50.8" stroke="#1B7A5A" stroke-width="1.2"/>
+        <line x1="257.4" y1="261.7" x2="403.9" y2="269.2" stroke="#1B7A5A" stroke-width="1.2"/>
+        <circle cx="257.4" cy="177.3" r="6.5" fill="#1B7A5A" stroke="#fff" stroke-width="2"/>
+        <circle cx="257.4" cy="261.7" r="6.5" fill="#fff" stroke="#1B7A5A" stroke-width="2.5"/>
+        <text x="290.3" y="54.8" font-size="13" font-weight="700" fill="#1B7A5A" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Minimum der Gesamtkosten: 600 Stück, 1.800 €</text>
+        <text x="406.9" y="273.2" font-size="13" font-weight="700" fill="#1B7A5A" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Schnittpunkt: je 900 €</text>
+        <text x="646.1" y="309.4" text-anchor="end" font-size="12.5" font-weight="600" fill="#2A72BD" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Bestellkosten</text>
+        <text x="421.8" y="214.8" font-size="12.5" font-weight="600" fill="#B07A08" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Lagerhaltungskosten</text>
+        <text x="511.6" y="93.3" text-anchor="end" font-size="12.5" font-weight="600" fill="#0F2E52" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Gesamtkosten</text>
+        </svg>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p>Im Grundmodell schneiden sich Bestell- und Lagerkostenkurve genau unter dem Minimum der Gesamtkosten. Mit einem <a href="#mindestbestand">Mindestbestand</a> gilt das nicht mehr: Die Lagerkostengerade beginnt dann oberhalb des Ursprungs und schneidet die Bestellkostenkurve weiter links. Abgelesen wird deshalb immer am Minimum der Gesamtkostenkurve.</p>
+      <p>Eine Zeichnung liefert nur eine Näherung. Wie genau, hängt vom Maßstab ab – den exakten Wert liefert die Formel.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Formel ============================ -->
+  <section>
+    <h2 id="formel">Die Formel nach Andler</h2>
+    <div class="schmal">
+      <div class="formel" role="math" aria-label="x opt gleich Wurzel aus 200 mal Jahresbedarf mal bestellfixe Kosten geteilt durch Einstandspreis mal Lagerhaltungskostensatz in Prozent">
+        x<sub>opt</sub> =
+        <span class="wurzel"><span><span class="bruch"><span>200 · Jahresbedarf · bestellfixe Kosten</span><span>Einstandspreis · Lagerhaltungskostensatz (in %)</span></span></span></span>
+      </div>
+      <p>Für das Beispiel: x<sub>opt</sub> = √(200 · 3.600 · 150 ÷ (20 · 15)) = √360.000 = <strong>600 Stück</strong>. Das entspricht 3.600 ÷ 600 = 6 Bestellungen im Jahr. Hier trifft die Tabelle das Optimum also genau; meist liefert die Formel einen Wert zwischen zwei Tabellenzeilen.</p>
+      <p>Die Zahl <strong>200</strong> setzt sich aus 2 · 100 zusammen: Die 2 stammt aus dem durchschnittlichen Lagerbestand (Bestellmenge ÷ 2), die 100 daraus, dass der Lagerhaltungskostensatz in Prozent eingesetzt wird. Wer den Satz als Dezimalzahl einsetzt (0,15 statt 15), rechnet mit 2 statt mit 200.</p>
+      <p>Im Beispiel sind im Optimum Bestellkosten und Lagerhaltungskosten genau gleich hoch (je 900,00 €). Das ist eine Eigenschaft dieses Grundmodells – keine allgemeine Regel, wie der nächste Abschnitt zeigt.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Mindestbestand ============================ -->
+  <section>
+    <h2 id="mindestbestand">Erweiterung: Mindestbestand</h2>
+    <div class="schmal">
+      <p>Viele Unternehmen halten einen <strong>Mindestbestand</strong> (Sicherheitsbestand), der nicht verbraucht werden soll. Dann gilt:</p>
+      <p><strong>Ø Lagerbestand</strong> = Bestellmenge ÷ 2 + Mindestbestand</p>
+      <p>Der Mindestbestand erhöht die Lagerhaltungskosten in jeder Zeile um denselben Betrag. Untersuchen Sie im Rechner, was das für die optimale Bestellmenge bedeutet – und ob Bestell- und Lagerhaltungskosten im Optimum dann noch gleich hoch sind.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Rechner ============================ -->
+  <section>
+    <h2 id="rechner">Interaktiver Rechner</h2>
+    <div class="schmal">
+      <p>Der Rechner hat zwei Modi. Im <strong>Prüfmodus</strong> erhalten Sie eine eigene Aufgabe mit Aufgabennummer, füllen die Tabelle selbst aus und bekommen erst nach dem Prüfen eine Rückmeldung – einschließlich Folgefehlern. Danach tragen Sie die Werte in ein Diagramm ein, lesen das Optimum ab, rechnen mit der Formel und beantworten Verständnisfragen. Im Modus <strong>Erkunden</strong> verändern Sie die Werte und sehen sofort, wie sich die Kostenkurven verschieben. Mit „Ausgangslage merken“ vergleichen Sie zwei Situationen, bei denen Sie genau einen Wert verändert haben.</p>
+    </div>
+    <div class="rahmen">
+      <iframe id="rechner-rahmen" src="rechner.html?modus=erkunden" title="Rechner optimale Bestellmenge" loading="lazy"></iframe>
+    </div>
+    <div class="knopfzeile">
+      <a class="knopf sekundaer" href="rechner.html?modus=pruefen">Prüfmodus in eigenem Fenster öffnen</a>
+      <a class="knopf sekundaer" href="rechner.html?modus=erkunden">Erkunden in eigenem Fenster öffnen</a>
+    </div>
+  </section>
+
+  <!-- ============================ Grenzen ============================ -->
+  <section>
+    <h2 id="grenzen">Modellannahmen und Grenzen</h2>
+    <div class="schmal">
+      <p>Die Formel liefert nur dann die kostengünstigste Menge, wenn ihre Annahmen zutreffen:</p>
+      <ul class="liste">
+        <li>Der Jahresbedarf ist bekannt und wird <strong>gleichmäßig</strong> verbraucht.</li>
+        <li>Bestellfixe Kosten, Einstandspreis und Lagerhaltungskostensatz sind <strong>konstant</strong>; es gibt <strong>keine Mengenrabatte</strong>.</li>
+        <li>Die Ware kommt rechtzeitig und vollständig an; <strong>Fehlmengen</strong>, Lieferzeiten und Lagerplatzgrenzen werden nicht betrachtet.</li>
+      </ul>
+      <p class="hinweis"><strong>Einordnung:</strong> Das Modell ist eine bewusste Vereinfachung. In der Praxis schwankt der Bedarf, Lieferanten gewähren Rabatte, und Mengen werden auf Paletten oder Verpackungseinheiten gerundet. Weil die Gesamtkostenkurve um das Optimum flach verläuft, sind kleine Abweichungen meist unproblematisch. Ökologische und soziale Folgen der Bestellpolitik – etwa die Zahl der Transporte – bildet die Formel nicht ab; sie müssen zusätzlich abgewogen werden.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Merkkasten ============================ -->
+  <section>
+    <h2 id="zusammenfassung">Zusammenfassung</h2>
+    <div class="merkkasten">
+      <h2 style="margin:0 0 12px;font-size:1.25rem">Optimale Bestellmenge</h2>
+      <dl>
+        <div><dt>Begriff</dt><dd>Die Bestellmenge, bei der die Summe aus Bestellkosten und Lagerhaltungskosten eines Jahres am niedrigsten ist.</dd></div>
+        <div><dt>Zielkonflikt</dt><dd>Größere Bestellmengen senken die Bestellkosten und erhöhen die Lagerhaltungskosten – kleinere Bestellmengen wirken umgekehrt.</dd></div>
+        <div><dt>Tabellarisches Verfahren</dt><dd>Kosten für ausgewählte Bestellhäufigkeiten berechnen und die Zeile mit den niedrigsten Gesamtkosten wählen. Ergebnis ist eine Näherung.</dd></div>
+        <div><dt>Grafisches Verfahren</dt><dd>Bestell-, Lagerhaltungs- und Gesamtkosten der Tabellenzeilen einzeichnen und verbinden. Das Optimum liegt am tiefsten Punkt der Gesamtkostenkurve; im Grundmodell schneiden sich dort auch Bestell- und Lagerkostenkurve. Ergebnis ist eine Näherung.</dd></div>
+        <div><dt>Formel nach Andler</dt><dd>x<sub>opt</sub> = √(200 · Jahresbedarf · bestellfixe Kosten ÷ (Einstandspreis · Lagerhaltungskostensatz in %))</dd></div>
+        <div><dt>Grenzen</dt><dd>Gilt nur unter den Modellannahmen (gleichmäßiger Verbrauch, konstante Kosten, keine Rabatte, keine Fehlmengen). Das Ergebnis ist ein Richtwert für die Entscheidung.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<div id="fuss"></div>
+
+<script src="../../../data/inhalte.js"></script>
+<script src="../../../assets/js/site.js"></script>
+<script>Schule.seite({ tiefe: 3, typ: "thema", id: "optimale-bestellmenge" });</script>
+<script>
+  // Höhe des eingebetteten Rechners an seinen Inhalt anpassen
+  (function(){
+    var rahmen = document.getElementById("rechner-rahmen");
+    window.addEventListener("message", function(e){
+      if(!rahmen || e.source !== rahmen.contentWindow) return;
+      var d = e.data;
+      if(d && d.typ === "rechner-hoehe" && d.hoehe > 300 && d.hoehe < 8000){
+        rahmen.style.height = (d.hoehe + 4) + "px";
+      }
+    });
+  })();
+</script>
+</body>
+</html>

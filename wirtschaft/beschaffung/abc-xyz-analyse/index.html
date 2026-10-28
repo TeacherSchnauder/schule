@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABC/XYZ-Analyse · Lernplattform</title>
+<meta name="description" content="ABC/XYZ-Analyse verständlich erklärt: Verbrauchswert, Klassenbildung, Lorenzkurve, Variationskoeffizient, Neun-Felder-Matrix mit Handlungsempfehlungen und Grenzen – mit interaktivem Übungs- und Analysewerkzeug.">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<style>
+  .badge{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:6px;font-weight:800;font-size:.82rem;color:#fff;font-family:var(--sans);vertical-align:middle}
+  .b-A{background:#0F2E52}.b-B{background:#2A72BD}.b-C{background:#8AA4BF}.b-X{background:#1B7A5A}.b-Y{background:#B07A08}.b-Z{background:#B33A2B}
+  table.daten td.zahl,table.daten th.zahl{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .symklein{display:inline-flex;width:28px;height:28px;border-radius:7px;background:var(--blau-100);color:var(--blau-900);align-items:center;justify-content:center;vertical-align:middle;margin-right:4px}
+  .ico{display:inline-block;vertical-align:middle;flex:none}
+  .karte-symbol .ico{width:20px;height:20px}
+  .xyzkarte svg[role=img]{display:block;width:100%;height:auto}
+  .xyzkarte h3{display:flex;align-items:center;gap:8px}
+  .zweispaltig{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+  @media (max-width:860px){.zweispaltig{grid-template-columns:minmax(0,1fr)}}
+  .zweispaltig .ablauf svg{min-width:0}
+  .matrix{display:grid;grid-template-columns:80px repeat(3,minmax(0,1fr));gap:6px;margin-top:8px}
+  .mk{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;font-size:.78rem;color:var(--grau-700);padding:4px}
+  .mf{background:var(--weiss);border:1px solid var(--grau-150);border-radius:10px;padding:10px 11px;box-shadow:var(--schatten)}
+  .mf-kopf{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+  .mf-sym{width:32px;height:32px;border-radius:8px;background:var(--blau-900);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .mf-sym .ico{width:19px;height:19px}
+  .mf-kopf b{font-size:.88rem;line-height:1.2;hyphens:auto;overflow-wrap:anywhere;min-width:0}
+  .mf{min-width:0}
+  .mf-code{margin-left:auto;font-weight:800;color:var(--grau-300);font-size:.8rem}
+  .mf p{margin:0;font-size:.82rem;color:var(--grau-700);line-height:1.4}
+  @media (max-width:640px){.matrix{grid-template-columns:44px repeat(3,minmax(0,1fr));gap:4px}.mf{padding:7px}.mf-kopf b{font-size:.74rem}.mf p{display:none}.mf-kopf{flex-direction:column;align-items:flex-start}.mf-code{margin-left:0}.mk small{font-size:.62rem}}
+  .formel{font-family:var(--serif);font-size:1.12rem;background:var(--blau-050);border:1px solid var(--blau-100);border-radius:var(--radius);padding:14px 18px;margin:6px 0 14px;overflow-x:auto}
+</style>
+</head>
+<body>
+<div id="kopf"></div>
+<div id="krumen"></div>
+
+<main class="inhalt">
+
+  <div class="titelblock">
+    <p class="augenbraue">Beschaffung · Materialbereitstellung</p>
+    <h1>ABC/XYZ-Analyse</h1>
+    <p class="lead">Nicht jedes Material verdient im Einkauf dieselbe Aufmerksamkeit. Die ABC-Analyse ordnet Materialien nach ihrem <strong>Wert</strong>, die XYZ-Analyse nach der <strong>Regelmäßigkeit</strong> ihres Verbrauchs. Kombiniert ergeben sie eine Neun-Felder-Matrix, aus der sich ableiten lässt, wie ein Material beschafft werden sollte.</p>
+    <div class="knopfzeile">
+      <a class="knopf primaer" href="analyse.html?modus=ueben"><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/></svg> Üben: einordnen und begründen</a>
+      <a class="knopf sekundaer" href="analyse.html?modus=analyse">Eigene Materialliste analysieren</a>
+    </div>
+  </div>
+
+  <section>
+    <h2 id="abc">Die ABC-Analyse in vier Schritten</h2>
+    <ul class="karten">
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4 4 0 1 0 0 7M7 11h6M7 13.5h6"/></svg></span><h3>1 · Verbrauchswert berechnen</h3></div><p>Jahresmenge · Preis je Stück. Entscheidend ist dieses Produkt – nicht der Preis allein und nicht die Menge allein.</p></li>
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M16 6h4v4"/></svg></span><h3>2 · Absteigend sortieren</h3></div><p>Das Material mit dem höchsten Verbrauchswert steht oben.</p></li>
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M3 21h18M3 21V3"/><path d="M3 21C5 10 9 6 21 4"/><path d="M3 21L21 4" stroke-dasharray="2 2"/></svg></span><h3>3 · Anteile kumulieren</h3></div><p>Für jedes Material den Anteil am Gesamtwert berechnen und von oben nach unten aufsummieren.</p></li>
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></span><h3>4 · Klassen bilden</h3></div><p>Typisch: A bis etwa 80 % des kumulierten Wertes, B bis etwa 95 %, C der Rest.</p></li>
+    </ul>
+    <p class="hinweis" style="margin-top:14px"><strong>Die Grenzen sind Konventionen.</strong> Lehrbücher und Unternehmen setzen sie unterschiedlich, zum Beispiel 75/95 oder 80/90. Typisch ist das Ergebnis: Wenige A-Materialien (oft 10–20 % der Positionen) stehen für den Großteil des Wertes, viele C-Materialien für einen kleinen Rest.</p>
+  </section>
+
+  <section>
+    <h2 id="beispiel">Beispiel: eine Großbäckerei</h2>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th class="zahl">Platz</th><th>Material</th><th class="zahl">Jahresmenge</th><th class="zahl">Preis</th><th class="zahl">Verbrauchswert</th><th class="zahl">Anteil</th><th class="zahl">kumuliert</th><th>Klasse</th></tr></thead>
+        <tbody><tr><td class='zahl'>1.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M3 13l5-5h13l-5 5z"/><path d="M3 13v4h13v-4M16 13l5-5v4l-5 5"/></svg></span> Butter</td><td class='zahl'>12.400</td><td class='zahl'>6,80 €</td><td class='zahl'>84.320 €</td><td class='zahl'>30,3 %</td><td class='zahl'>30,3 %</td><td><span class='badge b-A'>A</span></td></tr><tr><td class='zahl'>2.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M6 8l2-5h8l2 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z"/><path d="M6 8h12M10 13h4M10 16h4"/></svg></span> Weizenmehl</td><td class='zahl'>119.900</td><td class='zahl'>0,62 €</td><td class='zahl'>74.338 €</td><td class='zahl'>26,7 %</td><td class='zahl'>56,9 %</td><td><span class='badge b-A'>A</span></td></tr><tr><td class='zahl'>3.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 3c-3.5 0-6 5.5-6 10a6 6 0 0 0 12 0c0-4.5-2.5-10-6-10z"/></svg></span> Eier</td><td class='zahl'>179.100</td><td class='zahl'>0,24 €</td><td class='zahl'>42.984 €</td><td class='zahl'>15,4 %</td><td class='zahl'>72,4 %</td><td><span class='badge b-A'>A</span></td></tr><tr><td class='zahl'>4.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M5 9h14M5 15h14M12 3v18"/></svg></span> Kuvertüre</td><td class='zahl'>1.955</td><td class='zahl'>11,50 €</td><td class='zahl'>22.482 €</td><td class='zahl'>8,1 %</td><td class='zahl'>80,4 %</td><td><span class='badge b-B'>B</span></td></tr><tr><td class='zahl'>5.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="5" y="9" width="8" height="8" rx="1"/><rect x="11" y="5" width="8" height="8" rx="1"/></svg></span> Zucker</td><td class='zahl'>18.000</td><td class='zahl'>0,95 €</td><td class='zahl'>17.100 €</td><td class='zahl'>6,1 %</td><td class='zahl'>86,6 %</td><td><span class='badge b-B'>B</span></td></tr><tr><td class='zahl'>6.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span> Brötchentüten</td><td class='zahl'>632.000</td><td class='zahl'>0,018 €</td><td class='zahl'>11.376 €</td><td class='zahl'>4,1 %</td><td class='zahl'>90,7 %</td><td><span class='badge b-B'>B</span></td></tr><tr><td class='zahl'>7.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 4c4 0 7 3 7 7 0 5-4 9-7 9s-7-4-7-9c0-4 3-7 7-7z"/><path d="M12 4v16M8 9c1.5 1 6.5 1 8 0"/></svg></span> Haselnüsse</td><td class='zahl'>655</td><td class='zahl'>13,90 €</td><td class='zahl'>9.104 €</td><td class='zahl'>3,3 %</td><td class='zahl'>93,9 %</td><td><span class='badge b-B'>B</span></td></tr><tr><td class='zahl'>8.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx="8" cy="9" r="3"/><circle cx="15" cy="8" r="2.5"/><circle cx="14" cy="15.5" r="3.5"/><circle cx="7.5" cy="16" r="2"/></svg></span> Frischhefe</td><td class='zahl'>3.680</td><td class='zahl'>2,10 €</td><td class='zahl'>7.728 €</td><td class='zahl'>2,8 %</td><td class='zahl'>96,7 %</td><td><span class='badge b-C'>C</span></td></tr><tr><td class='zahl'>9.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/></svg></span> Backpapier</td><td class='zahl'>218.700</td><td class='zahl'>0,035 €</td><td class='zahl'>7.655 €</td><td class='zahl'>2,7 %</td><td class='zahl'>99,5 %</td><td><span class='badge b-C'>C</span></td></tr><tr><td class='zahl'>10.</td><td><span class='symklein'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M9 7h6v14H9z"/><path d="M10 7V4h5l2 2"/><path d="M5 5l2 1M5 9h2M5 13l2-1"/></svg></span> Reinigungsmittel</td><td class='zahl'>360</td><td class='zahl'>4,20 €</td><td class='zahl'>1.512 €</td><td class='zahl'>0,5 %</td><td class='zahl'>100,0 %</td><td><span class='badge b-C'>C</span></td></tr></tbody>
+      </table>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p>Die Kuvertüre liegt mit kumuliert 80,4 % knapp über der Grenze und ist deshalb ein B-Gut. Solche Grenzfälle zeigen: Die Klassen sind ein Hilfsmittel, keine Naturgesetze. Die Brötchentüten kosten kaum etwas, werden aber so oft verbraucht, dass sie ein B-Gut sind.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="lorenz">Die Lorenzkurve</h2>
+    <div class="zweispaltig">
+      <div class="ablauf"><svg viewBox="0 0 560 430" role="img" aria-label="Lorenzkurve der Bäckerei: Butter, Mehl und Eier ergeben 72 Prozent des Wertes bei 26 Prozent der Menge; die Brötchentüten machen über die Hälfte der Menge aus, aber nur 4 Prozent des Wertes.">
+<rect x="58" y="88.8" width="468" height="291.2" fill="#0F2E52" opacity=".07"/>
+<rect x="58" y="34.2" width="468" height="54.6" fill="#2A72BD" opacity=".07"/>
+<rect x="58" y="16.0" width="468" height="18.2" fill="#8AA4BF" opacity=".07"/>
+<line x1="58.0" x2="58.0" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="380.0" y2="380.0" stroke="#E4E8ED"/>
+<text x="58.0" y="396" text-anchor="middle" font-size="11.5" fill="#6B747E">0 %</text><text x="52" y="384.0" text-anchor="end" font-size="11.5" fill="#6B747E">0 %</text>
+<line x1="151.6" x2="151.6" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="307.2" y2="307.2" stroke="#E4E8ED"/>
+<text x="151.6" y="396" text-anchor="middle" font-size="11.5" fill="#6B747E">20 %</text><text x="52" y="311.2" text-anchor="end" font-size="11.5" fill="#6B747E">20 %</text>
+<line x1="245.2" x2="245.2" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="234.4" y2="234.4" stroke="#E4E8ED"/>
+<text x="245.2" y="396" text-anchor="middle" font-size="11.5" fill="#6B747E">40 %</text><text x="52" y="238.4" text-anchor="end" font-size="11.5" fill="#6B747E">40 %</text>
+<line x1="338.8" x2="338.8" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="161.6" y2="161.6" stroke="#E4E8ED"/>
+<text x="338.8" y="396" text-anchor="middle" font-size="11.5" fill="#6B747E">60 %</text><text x="52" y="165.6" text-anchor="end" font-size="11.5" fill="#6B747E">60 %</text>
+<line x1="432.4" x2="432.4" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="88.8" y2="88.8" stroke="#E4E8ED"/>
+<text x="432.4" y="396" text-anchor="middle" font-size="11.5" fill="#6B747E">80 %</text><text x="52" y="92.8" text-anchor="end" font-size="11.5" fill="#6B747E">80 %</text>
+<line x1="526.0" x2="526.0" y1="16" y2="380" stroke="#E4E8ED"/><line x1="58" x2="526" y1="16.0" y2="16.0" stroke="#E4E8ED"/>
+<text x="526.0" y="396" text-anchor="end" font-size="11.5" fill="#6B747E">100 %</text><text x="52" y="20.0" text-anchor="end" font-size="11.5" fill="#6B747E">100 %</text>
+<line x1="58" x2="526" y1="88.8" y2="88.8" stroke="#434A53" stroke-dasharray="5 4"/>
+<line x1="58" x2="526" y1="34.2" y2="34.2" stroke="#434A53" stroke-dasharray="5 4"/>
+<line x1="58.0" y1="380.0" x2="526.0" y2="16.0" stroke="#C3CAD2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="58" x2="526" y1="380" y2="380" stroke="#434A53" stroke-width="1.2"/><line x1="58" x2="58" y1="16" y2="380" stroke="#434A53" stroke-width="1.2"/>
+<text x="534" y="239.4" font-size="14" font-weight="800" fill="#0F2E52">A</text>
+<text x="534" y="66.5" font-size="14" font-weight="800" fill="#2A72BD">B</text>
+<text x="534" y="30.1" font-size="14" font-weight="800" fill="#6E8AA8">C</text>
+<text x="292.0" y="420" text-anchor="middle" font-size="12.5" fill="#434A53">kumulierter Mengenanteil</text><text x="15" y="198.0" text-anchor="middle" font-size="12.5" fill="#434A53" transform="rotate(-90 15 198.0)">kumulierter Wertanteil</text>
+<line x1="58.0" y1="380.0" x2="62.9" y2="269.8" stroke="#0F2E52" stroke-width="3" stroke-linecap="round"/>
+<line x1="62.9" y1="269.8" x2="110.2" y2="172.7" stroke="#0F2E52" stroke-width="3" stroke-linecap="round"/>
+<line x1="110.2" y1="172.7" x2="180.8" y2="116.5" stroke="#0F2E52" stroke-width="3" stroke-linecap="round"/>
+<line x1="180.8" y1="116.5" x2="181.6" y2="87.2" stroke="#2A72BD" stroke-width="3" stroke-linecap="round"/>
+<line x1="181.6" y1="87.2" x2="188.7" y2="64.8" stroke="#2A72BD" stroke-width="3" stroke-linecap="round"/>
+<line x1="188.7" y1="64.8" x2="437.9" y2="50.0" stroke="#2A72BD" stroke-width="3" stroke-linecap="round"/>
+<line x1="437.9" y1="50.0" x2="438.2" y2="38.1" stroke="#2A72BD" stroke-width="3" stroke-linecap="round"/>
+<line x1="438.2" y1="38.1" x2="439.6" y2="28.0" stroke="#8AA4BF" stroke-width="3" stroke-linecap="round"/>
+<line x1="439.6" y1="28.0" x2="525.9" y2="18.0" stroke="#8AA4BF" stroke-width="3" stroke-linecap="round"/>
+<line x1="525.9" y1="18.0" x2="526.0" y2="16.0" stroke="#8AA4BF" stroke-width="3" stroke-linecap="round"/>
+<circle cx="62.9" cy="269.8" r="9" fill="#fff" stroke="#0F2E52" stroke-width="2.2"/><text x="62.9" y="273.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">1</text>
+<circle cx="110.2" cy="172.7" r="9" fill="#fff" stroke="#0F2E52" stroke-width="2.2"/><text x="110.2" y="176.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">2</text>
+<circle cx="180.8" cy="116.5" r="9" fill="#fff" stroke="#0F2E52" stroke-width="2.2"/><text x="180.8" y="120.5" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">3</text>
+<circle cx="181.6" cy="87.2" r="9" fill="#fff" stroke="#2A72BD" stroke-width="2.2"/><text x="181.6" y="91.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">4</text>
+<circle cx="188.7" cy="64.8" r="9" fill="#fff" stroke="#2A72BD" stroke-width="2.2"/><text x="188.7" y="68.8" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">5</text>
+<circle cx="437.9" cy="50.0" r="9" fill="#fff" stroke="#2A72BD" stroke-width="2.2"/><text x="437.9" y="54.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">6</text>
+<circle cx="438.2" cy="38.1" r="9" fill="#fff" stroke="#2A72BD" stroke-width="2.2"/><text x="438.2" y="42.1" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">7</text>
+<circle cx="439.6" cy="28.0" r="9" fill="#fff" stroke="#8AA4BF" stroke-width="2.2"/><text x="439.6" y="32.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">8</text>
+<circle cx="525.9" cy="18.0" r="9" fill="#fff" stroke="#8AA4BF" stroke-width="2.2"/><text x="525.9" y="22.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">9</text>
+<circle cx="526.0" cy="16.0" r="9" fill="#fff" stroke="#8AA4BF" stroke-width="2.2"/><text x="526.0" y="20.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#23282E">10</text>
+<text x="194.8" y="134.5" font-size="12" font-weight="600" fill="#0F2E52" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">A: 26 % der Menge, 72 % des Wertes</text>
+<line x1="423.0" y1="183.4" x2="435.2" y2="57.9" stroke="#2A72BD" stroke-width="1.2"/><text x="395.0" y="198.0" text-anchor="middle" font-size="12" font-weight="600" fill="#2A72BD" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">Brötchentüten: 53 % der Menge,</text><text x="395.0" y="213.0" text-anchor="middle" font-size="12" font-weight="600" fill="#2A72BD" stroke="#fff" stroke-width="4" paint-order="stroke" stroke-linejoin="round">nur 4 % des Wertes</text>
+</svg></div>
+      <div>
+        <p>Die Lorenzkurve verbindet die sortierten Materialien: waagerecht der kumulierte Anteil an der <strong>Menge</strong>, senkrecht der kumulierte Anteil am <strong>Wert</strong>.</p>
+        <ul class="liste">
+          <li><strong>Steiler Anfang:</strong> wenig Menge, viel Wert – die A-Güter.</li>
+          <li><strong>Flaches Ende:</strong> viel Menge, wenig Wert – die C-Güter.</li>
+          <li><strong>Diagonale:</strong> So sähe die Kurve aus, wenn jedes Stück gleich viel wert wäre.</li>
+          <li>Je stärker die Kurve gewölbt ist, desto mehr lohnt sich die Unterscheidung nach A, B und C.</li>
+        </ul>
+        <p class="hinweis"><strong>Achse prüfen:</strong> Manche Lehrbücher tragen statt des Mengenanteils den Anteil an der <em>Zahl der Materialpositionen</em> ab. Die Aussage bleibt gleich, die Kurve sieht etwas anders aus. Im Werkzeug lässt sich beides einstellen.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="xyz">Die XYZ-Analyse</h2>
+    <div class="schmal">
+      <p>Die XYZ-Analyse fragt: <strong>Wie regelmäßig</strong> wird ein Material verbraucht? Gemessen wird das mit dem <strong>Variationskoeffizienten</strong>:</p>
+      <div class="formel">Variationskoeffizient = Standardabweichung ÷ Durchschnittsverbrauch</div>
+      <p>Die Standardabweichung allein reicht nicht, weil sie von der Höhe des Verbrauchs abhängt. Erst durch das Teilen durch den Durchschnitt lassen sich Materialien mit sehr unterschiedlichen Mengen vergleichen. Übliche Grenzen: <span class="badge b-X">X</span> bis 25 %, <span class="badge b-Y">Y</span> bis 50 %, <span class="badge b-Z">Z</span> darüber – auch hier je nach Lehrbuch verschieden.</p>
+    </div>
+    <ul class="karten" style="margin-top:10px"><li class='karte xyzkarte'><div class='karte-kopf'><span class='karte-symbol'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx="8" cy="9" r="3"/><circle cx="15" cy="8" r="2.5"/><circle cx="14" cy="15.5" r="3.5"/><circle cx="7.5" cy="16" r="2"/></svg></span><h3>Frischhefe <span class='badge b-X'>X</span></h3></div><svg viewBox='0 0 200 66' role='img' aria-label='Monatsverbrauch'><rect x='2.0' y='3.3' width='12.7' height='50.7' rx='1.5' fill='#1B7A5A'/><rect x='18.7' y='4.9' width='12.7' height='49.1' rx='1.5' fill='#1B7A5A'/><rect x='35.3' y='2.5' width='12.7' height='51.5' rx='1.5' fill='#1B7A5A'/><rect x='52.0' y='4.1' width='12.7' height='49.9' rx='1.5' fill='#1B7A5A'/><rect x='68.7' y='4.9' width='12.7' height='49.1' rx='1.5' fill='#1B7A5A'/><rect x='85.3' y='5.7' width='12.7' height='48.3' rx='1.5' fill='#1B7A5A'/><rect x='102.0' y='6.5' width='12.7' height='47.5' rx='1.5' fill='#1B7A5A'/><rect x='118.7' y='4.9' width='12.7' height='49.1' rx='1.5' fill='#1B7A5A'/><rect x='135.3' y='4.1' width='12.7' height='49.9' rx='1.5' fill='#1B7A5A'/><rect x='152.0' y='3.3' width='12.7' height='50.7' rx='1.5' fill='#1B7A5A'/><rect x='168.7' y='1.6' width='12.7' height='52.4' rx='1.5' fill='#1B7A5A'/><rect x='185.3' y='0.0' width='12.7' height='54.0' rx='1.5' fill='#1B7A5A'/><line x1='0' x2='200' y1='3.8' y2='3.8' stroke='#434A53' stroke-dasharray='3 3'/><text x='8.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='25.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>F</text><text x='41.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='58.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='75.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='91.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='108.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='125.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='141.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>S</text><text x='158.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>O</text><text x='175.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>N</text><text x='191.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>D</text></svg><p>Jeden Monat fast gleich viel – gut planbar. Variationskoeffizient 3 %.</p></li><li class='karte xyzkarte'><div class='karte-kopf'><span class='karte-symbol'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M5 9h14M5 15h14M12 3v18"/></svg></span><h3>Kuvertüre <span class='badge b-Y'>Y</span></h3></div><svg viewBox='0 0 200 66' role='img' aria-label='Monatsverbrauch'><rect x='2.0' y='27.8' width='12.7' height='26.2' rx='1.5' fill='#B07A08'/><rect x='18.7' y='21.3' width='12.7' height='32.7' rx='1.5' fill='#B07A08'/><rect x='35.3' y='26.2' width='12.7' height='27.8' rx='1.5' fill='#B07A08'/><rect x='52.0' y='31.1' width='12.7' height='22.9' rx='1.5' fill='#B07A08'/><rect x='68.7' y='34.4' width='12.7' height='19.6' rx='1.5' fill='#B07A08'/><rect x='85.3' y='37.6' width='12.7' height='16.4' rx='1.5' fill='#B07A08'/><rect x='102.0' y='38.5' width='12.7' height='15.5' rx='1.5' fill='#B07A08'/><rect x='118.7' y='37.6' width='12.7' height='16.4' rx='1.5' fill='#B07A08'/><rect x='135.3' y='32.7' width='12.7' height='21.3' rx='1.5' fill='#B07A08'/><rect x='152.0' y='26.2' width='12.7' height='27.8' rx='1.5' fill='#B07A08'/><rect x='168.7' y='14.7' width='12.7' height='39.3' rx='1.5' fill='#B07A08'/><rect x='185.3' y='0.0' width='12.7' height='54.0' rx='1.5' fill='#B07A08'/><line x1='0' x2='200' y1='27.3' y2='27.3' stroke='#434A53' stroke-dasharray='3 3'/><text x='8.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='25.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>F</text><text x='41.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='58.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='75.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='91.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='108.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='125.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='141.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>S</text><text x='158.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>O</text><text x='175.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>N</text><text x='191.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>D</text></svg><p>Saisonales Muster: Spitze in der Weihnachtszeit. Variationskoeffizient 40 %.</p></li><li class='karte xyzkarte'><div class='karte-kopf'><span class='karte-symbol'><svg class='ico' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 4c4 0 7 3 7 7 0 5-4 9-7 9s-7-4-7-9c0-4 3-7 7-7z"/><path d="M12 4v16M8 9c1.5 1 6.5 1 8 0"/></svg></span><h3>Haselnüsse <span class='badge b-Z'>Z</span></h3></div><svg viewBox='0 0 200 66' role='img' aria-label='Monatsverbrauch'><rect x='2.0' y='49.8' width='12.7' height='4.2' rx='1.5' fill='#B33A2B'/><rect x='18.7' y='51.9' width='12.7' height='2.1' rx='1.5' fill='#B33A2B'/><rect x='35.3' y='54.0' width='12.7' height='0.8' rx='1.5' fill='#B33A2B'/><rect x='52.0' y='54.0' width='12.7' height='0.8' rx='1.5' fill='#B33A2B'/><rect x='68.7' y='50.9' width='12.7' height='3.1' rx='1.5' fill='#B33A2B'/><rect x='85.3' y='54.0' width='12.7' height='0.8' rx='1.5' fill='#B33A2B'/><rect x='102.0' y='54.0' width='12.7' height='0.8' rx='1.5' fill='#B33A2B'/><rect x='118.7' y='51.9' width='12.7' height='2.1' rx='1.5' fill='#B33A2B'/><rect x='135.3' y='45.7' width='12.7' height='8.3' rx='1.5' fill='#B33A2B'/><rect x='152.0' y='35.3' width='12.7' height='18.7' rx='1.5' fill='#B33A2B'/><rect x='168.7' y='10.4' width='12.7' height='43.6' rx='1.5' fill='#B33A2B'/><rect x='185.3' y='0.0' width='12.7' height='54.0' rx='1.5' fill='#B33A2B'/><line x1='0' x2='200' y1='42.7' y2='42.7' stroke='#434A53' stroke-dasharray='3 3'/><text x='8.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='25.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>F</text><text x='41.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='58.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='75.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>M</text><text x='91.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='108.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>J</text><text x='125.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>A</text><text x='141.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>S</text><text x='158.3' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>O</text><text x='175.0' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>N</text><text x='191.7' y='65' text-anchor='middle' font-size='8.5' fill='#6B747E'>D</text></svg><p>Sporadisch: lange kaum Verbrauch, dann große Spitzen. Variationskoeffizient 156 %.</p></li></ul>
+  </section>
+
+  <section>
+    <h2 id="matrix">Die Neun-Felder-Matrix</h2>
+    <div class="schmal"><p>Kombiniert man beide Analysen, erhält jedes Material ein Feld. Daraus lassen sich typische Beschaffungsstrategien ableiten: Je weiter oben links, desto mehr Planungsaufwand lohnt sich und desto knapper sollten die Bestände sein. Je weiter unten rechts, desto einfacher die Abwicklung und desto großzügiger der Puffer.</p></div>
+    <div class='matrix'><div></div><div class='mk'><span class='badge b-X'>X</span><small>gleichmäßig</small></div><div class='mk'><span class='badge b-Y'>Y</span><small>schwankend</small></div><div class='mk'><span class='badge b-Z'>Z</span><small>unregelmäßig</small></div><div class='mk'><span class='badge b-A'>A</span><small>hoher Wert</small></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M2 7h11v9H2zM13 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/><path d="M6 9.5v2.5l1.5 1"/></svg></span><b>Just in time</b><span class='mf-code'>AX</span></div><p>fertigungssynchrone Anlieferung, kaum Lager, enge Lieferantenbindung</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/><path d="M16 6h4v4"/></svg></span><b>Knapper Vorrat</b><span class='mf-code'>AY</span></div><p>Bestellpunktverfahren, niedriger Sicherheitsbestand, genaue Prognose</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M9 10h6M9 14h6M9 18h3"/></svg></span><b>Einzelbeschaffung</b><span class='mf-code'>AZ</span></div><p>im Bedarfsfall, auftragsbezogen; kein Vorrat auf Verdacht</p></div><div class='mk'><span class='badge b-B'>B</span><small>mittlerer Wert</small></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17.5h2"/></svg></span><b>Rhythmus / JIT</b><span class='mf-code'>BX</span></div><p>feste Lieferrhythmen, Rahmenverträge mit Abrufen</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><b>Bestellpunkt</b><span class='mf-code'>BY</span></div><p>Vorrat mit mittlerem Sicherheitsbestand</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg></span><b>Einzelfall prüfen</b><span class='mf-code'>BZ</span></div><p>Einzelbeschaffung oder Vorrat – je nach Lieferzeit</p></div><div class='mk'><span class='badge b-C'>C</span><small>geringer Wert</small></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/></svg></span><b>Kanban / Rahmenvertrag</b><span class='mf-code'>CX</span></div><p>automatischer Nachschub, wenig Aufwand</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="3.5" y="13" width="7.5" height="7.5" rx="1"/><rect x="13" y="13" width="7.5" height="7.5" rx="1"/><rect x="8.25" y="4" width="7.5" height="7.5" rx="1"/></svg></span><b>Vorrat mit Puffer</b><span class='mf-code'>CY</span></div><p>großzügiger Sicherheitsbestand, Sammelbestellungen</p></div><div class='mf'><div class='mf-kopf'><span class='mf-sym'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M3 21V9l9-5 9 5v12"/><path d="M7 21v-7h10v7M7 17.5h10"/></svg></span><b>Großzügiger Vorrat</b><span class='mf-code'>CZ</span></div><p>hoher Sicherheitsbestand vertretbar, selten große Mengen</p></div></div>
+    <p class="hinweis" style="margin-top:14px"><strong>Typische Empfehlungen, keine festen Regeln.</strong> In der Literatur finden sich je Feld leicht unterschiedliche Empfehlungen. Wichtig ist die Begründung: Der <em>Wert</em> entscheidet über Aufwand und Kapitalbindung, die <em>Regelmäßigkeit</em> darüber, ob sich Bedarf planen und Lieferungen takten lassen.</p>
+  </section>
+
+  <section>
+    <h2 id="grenzen">Grenzen der ABC/XYZ-Analyse</h2>
+    <ul class="karten">
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg></span><h3>Wert ist nicht Wichtigkeit</h3></div><p>Ein C-Teil kann unverzichtbar sein: Fehlt eine Schraube, steht das Band trotzdem still. Das Versorgungsrisiko erfasst die Analyse nicht.</p></li>
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17.5h2"/></svg></span><h3>Daten aus der Vergangenheit</h3></div><p>Die Einordnung beruht auf bisherigen Verbräuchen. Ändern sich Sortiment, Preise oder Nachfrage, muss neu analysiert werden.</p></li>
+      <li class='karte'><div class='karte-kopf'><span class='karte-symbol' style='background:var(--blau-100);color:var(--blau-700)'><svg class='ico' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><h3>Grenzen sind gesetzt</h3></div><p>Wo A endet und B beginnt, ist eine Festlegung. Materialien knapp an der Grenze verdienen einen zweiten Blick.</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 id="werkzeug">Interaktives Werkzeug</h2>
+    <div class="schmal">
+      <p>Im Modus <strong>Üben</strong> erhalten Sie eine eigene Aufgabe: Sie schätzen, ordnen A, B und C zu, deuten die Lorenzkurve, erkennen X, Y und Z an Verbrauchsverläufen, füllen die Matrix und begründen Entscheidungen. Im Modus <strong>Eigene Analyse</strong> geben Sie eine Materialliste ein – die Seite sortiert, klassifiziert und zeigt Lorenzkurve und Matrix.</p>
+    </div>
+    <div class="rahmen"><iframe id="rechner-rahmen" src="analyse.html?modus=analyse" title="ABC/XYZ-Analyse" loading="lazy"></iframe></div>
+    <div class="knopfzeile">
+      <a class="knopf sekundaer" href="analyse.html?modus=ueben">Üben in eigenem Fenster öffnen</a>
+      <a class="knopf sekundaer" href="analyse.html?modus=analyse">Eigene Analyse in eigenem Fenster öffnen</a>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="zusammenfassung">Zusammenfassung</h2>
+    <div class="merkkasten">
+      <h2 style="margin:0 0 12px;font-size:1.25rem">ABC/XYZ-Analyse</h2>
+      <dl>
+        <div><dt>ABC-Analyse</dt><dd>Ordnet Materialien nach ihrem Verbrauchswert (Menge · Preis). A: wenige Materialien, großer Wertanteil. C: viele Materialien, kleiner Wertanteil.</dd></div>
+        <div><dt>XYZ-Analyse</dt><dd>Ordnet nach der Regelmäßigkeit des Verbrauchs, gemessen mit dem Variationskoeffizienten. X: gleichmäßig, Y: schwankend, Z: unregelmäßig.</dd></div>
+        <div><dt>Lorenzkurve</dt><dd>Zeigt die Konzentration des Wertes: steiler Anfang (A), flaches Ende (C). Die Diagonale wäre Gleichverteilung.</dd></div>
+        <div><dt>Handlungsempfehlungen</dt><dd>A-Güter: hoher Planungs- und Verhandlungsaufwand, niedrige Bestände. C-Güter: vereinfachte Abwicklung, großzügige Bestände. X: planbar, getaktete Lieferung. Z: Einzelbeschaffung oder Puffer.</dd></div>
+        <div><dt>Grenze</dt><dd>Die Analyse misst den Wert, nicht das Versorgungsrisiko.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<div id="fuss"></div>
+
+<script src="../../../data/inhalte.js"></script>
+<script src="../../../assets/js/site.js"></script>
+<script>Schule.seite({ tiefe: 3, typ: "thema", id: "abc-xyz-analyse" });</script>
+<script>
+  (function(){
+    var rahmen = document.getElementById("rechner-rahmen");
+    window.addEventListener("message", function(e){
+      if(!rahmen || e.source !== rahmen.contentWindow) return;
+      var d = e.data;
+      if(d && d.typ === "rechner-hoehe" && d.hoehe > 300 && d.hoehe < 9000) rahmen.style.height = (d.hoehe + 4) + "px";
+    });
+  })();
+</script>
+</body>
+</html>
