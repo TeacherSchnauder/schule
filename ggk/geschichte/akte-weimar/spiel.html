@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  ESCAPE GAME „AKTE WEIMAR – Was lernen wir für Bonn?“
+  Geschichte mit Gemeinschaftskunde · Berufliches Gymnasium BW · J1 · BPE 2
+  Version 1.2 · 28.10.2026
+  Änderungen 1.2: eingebettet in die Lernplattform (ggk/politik/akte-weimar/spiel.html);
+  Link „Beamer-Ansicht“ öffnet auch aus der eingebetteten Vorschau das ganze Fenster.
+  Änderungen 1.1: Musik neu abgemischt (lauter, hörbar auf Laptop-/Beamer-Lautsprechern),
+  Freischaltung für iPhone/iPad (Stummschalter), Pegelanzeige und Statusmeldung in der Beamer-Ansicht,
+  Tastenkürzel funktionieren auch nach Bedienung des Lautstärkereglers.
+  ------------------------------------------------------------
+  Eine einzige Datei, keine externen Abhängigkeiten.
+  Schüleransicht:  .../spiel.html
+  Beamer-Ansicht:  .../spiel.html#beamer   (Musik, Rahmengeschichte, Spielzeit, QR-Code)
+  Alle Texte stehen im Objekt CONFIG weiter unten und können dort angepasst werden.
+  Lösungen stehen NICHT im Klartext im Quelltext, sondern nur als Prüfwert.
+  ============================================================
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Akte Weimar</title>
+<style>
+:root{
+  --desk:#2b2420; --desk-2:#3a302a;
+  --paper:#f5eddc; --paper-2:#ece1c9; --paper-edge:#d8c8a4;
+  --ink:#231f1b; --ink-soft:#574c40; --line:#c7b48d;
+  --stamp:#9b2e22; --stamp-soft:#c9584a;
+  --accent:#7a5527; --accent-ink:#ffffff; --accent-tint:#efe0c2;
+  --ok:#2c6a38; --ok-tint:#dcebd7; --bad:#9b2e22; --bad-tint:#f6dcd6;
+  --focus:#1f5fbf;
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono: "Courier New",Courier,ui-monospace,Menlo,Consolas,monospace;
+}
+body[data-chapter="d1933"]{ --paper:#eeeae3; --paper-2:#e2ddd3; --paper-edge:#c2bbaf; --accent:#3f3b38; --accent-tint:#e2ddd5; --line:#bdb5a8; }
+body[data-chapter="gg"]{ --paper:#f7f4ec; --paper-2:#ebe7dc; --paper-edge:#cfc8b6; --accent:#1f4f7c; --accent-tint:#dde8f2; --line:#c3bda9; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; min-height:100vh; font-family:var(--sans); font-size:19px; line-height:1.5; color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 20% -10%, #4a3c33 0%, transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 2px, transparent 2px 7px),
+    var(--desk);
+}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+.hidden{display:none !important}
+
+/* ---------- Kopfleiste ---------- */
+.topbar{position:sticky; top:0; z-index:20; background:rgba(30,25,22,.96); color:#f3e9d6; border-bottom:1px solid #000;
+  padding:8px max(12px, env(safe-area-inset-left)); }
+.topbar-inner{max-width:900px; margin:0 auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.brand{font-family:var(--serif); font-size:20px; letter-spacing:.06em; font-variant:small-caps; white-space:nowrap}
+.meta{display:flex; gap:14px; font-family:var(--mono); font-size:18px; margin-left:auto; align-items:center; flex-wrap:wrap}
+.meta span{white-space:nowrap}
+.tbtn{min-height:44px; min-width:44px; padding:6px 12px; border-radius:8px; border:1px solid #6d5d4f; background:#3b322c; color:#f3e9d6; font-size:18px}
+.tbtn:hover{background:#4a3f37}
+.seals{max-width:900px; margin:6px auto 0; display:flex; gap:8px; justify-content:center; flex-wrap:wrap}
+.seal-btn{border:0; background:none; padding:0; min-width:44px; min-height:44px; display:grid; place-items:center}
+.seal-btn[disabled]{cursor:default}
+.seal-btn svg{width:42px; height:42px}
+
+/* ---------- Papier ---------- */
+main{padding:18px 12px 60px}
+.sheet{
+  max-width:860px; margin:0 auto; background:
+   radial-gradient(900px 300px at 50% 0%, rgba(255,255,255,.55), transparent 70%),
+   linear-gradient(180deg, var(--paper), var(--paper-2));
+  border:1px solid var(--paper-edge); border-radius:6px; padding:28px clamp(16px,4vw,44px) 36px;
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 18px 40px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  position:relative;
+}
+.sheet::before{content:""; position:absolute; left:0; right:0; top:0; height:10px; border-radius:6px 6px 0 0;
+  background:repeating-linear-gradient(90deg, var(--accent) 0 40px, transparent 40px 46px); opacity:.85}
+.kicker{font-family:var(--mono); font-size:18px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:6px 0 4px}
+h1,h2,h3{font-family:var(--serif); font-weight:700; line-height:1.2; margin:.2em 0 .5em}
+h1{font-size:clamp(34px,6vw,52px)}
+h2{font-size:clamp(28px,4.5vw,38px)}
+h3{font-size:22px}
+p{margin:.55em 0}
+.lead{font-size:20px}
+.fiction{font-size:18px; color:var(--ink-soft); border-left:4px solid var(--line); padding:4px 12px; margin:16px 0}
+.stamp{display:inline-block; font-family:var(--mono); font-weight:700; color:var(--stamp); border:3px solid var(--stamp);
+  padding:4px 12px; transform:rotate(-4deg); letter-spacing:.12em; text-transform:uppercase; opacity:.85; font-size:18px}
+
+/* Aktennotiz */
+.note{position:relative; background:#fffbe9; border:1px solid #e2d59f; padding:16px 18px 14px 18px; margin:18px 0;
+  box-shadow:2px 3px 0 rgba(0,0,0,.07); transform:rotate(-.4deg); font-family:var(--serif); font-size:20px}
+body[data-chapter="d1933"] .note{background:#f7f5ef; border-color:#d3cdbf}
+body[data-chapter="gg"] .note{background:#fdfcf6; border-color:#dcd6c2}
+.note .from{display:block; font-family:var(--mono); font-size:18px; color:var(--ink-soft); margin-bottom:4px}
+.clip{position:absolute; top:-14px; right:24px; width:22px; height:46px}
+
+/* Material */
+.material{background:#fffdf6; border:1px solid var(--line); border-radius:4px; margin:16px 0; position:relative}
+.material .tab{display:inline-block; font-family:var(--mono); font-weight:700; background:var(--accent); color:var(--accent-ink);
+  padding:4px 12px; border-radius:0 0 6px 0; font-size:18px}
+.material .mt{font-family:var(--serif); font-weight:700; font-size:20px; padding:10px 16px 0}
+.material .mb{padding:4px 16px 14px}
+.material .src{font-size:18px; color:var(--ink-soft); font-style:italic}
+.material ul{padding-left:1.2em; margin:.4em 0}
+.material li{margin:.35em 0}
+.card{border:1px dashed var(--line); border-radius:4px; padding:10px 12px; margin:10px 0; background:rgba(255,255,255,.6)}
+.card b.no{font-family:var(--mono); color:var(--accent)}
+.tbl{border-collapse:collapse; width:100%; font-size:18px}
+.tbl th,.tbl td{border:1px solid var(--line); padding:8px 6px; text-align:center}
+.tbl th{background:var(--accent-tint)}
+.tblwrap{overflow-x:auto}
+
+/* Aufgabe */
+.task{border:2px solid var(--accent); border-radius:6px; padding:16px; margin:22px 0 10px; background:rgba(255,255,255,.55)}
+.task .tl{font-family:var(--mono); font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; font-size:18px}
+.row{padding:12px 0; border-top:1px dotted var(--line)}
+.row:first-of-type{border-top:0}
+.stmt{margin:0 0 8px}
+.stmt .n{display:inline-block; min-width:30px; font-family:var(--mono); font-weight:700; color:var(--accent)}
+.opts{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(118px,1fr))}
+.opts.compact{grid-template-columns:repeat(auto-fit,minmax(52px,1fr))}
+.opts.wide{grid-template-columns:1fr}
+@media(min-width:620px){ .opts.wide{grid-template-columns:1fr 1fr} }
+.opt{min-height:48px; border:2px solid var(--line); background:#fffdf8; border-radius:8px; padding:6px 10px; font-size:18px; line-height:1.25; text-align:center}
+.opts.wide .opt{text-align:left}
+.opt .k{font-family:var(--mono); font-weight:700; font-size:20px}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.numrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.numrow label{flex:1 1 260px}
+.num{width:150px; min-height:48px; font-family:var(--mono); font-size:22px; padding:6px 10px; border:2px solid var(--line); border-radius:8px; background:#fff}
+.codebar{display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:16px; padding-top:14px; border-top:2px solid var(--line)}
+.codeview{font-family:var(--mono); font-size:22px; letter-spacing:.15em; background:#fff; border:1px solid var(--line); padding:6px 12px; border-radius:6px}
+.btn{min-height:48px; padding:8px 18px; border-radius:8px; border:2px solid var(--accent); background:var(--accent); color:var(--accent-ink); font-weight:700; font-size:19px}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent; color:var(--accent)}
+.btn.small{min-height:44px; font-size:18px; padding:6px 14px}
+.feedback{margin-top:12px; padding:10px 14px; border-radius:6px; font-weight:600}
+.feedback.bad{background:var(--bad-tint); color:var(--bad); border:1px solid #e3b3aa}
+.feedback.info{background:#eef0f4; color:#2a3646; border:1px solid #cdd3dd}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Hinweise */
+.hints{margin-top:22px; border-top:1px solid var(--line); padding-top:12px}
+.hints h3{font-size:20px; margin:0 0 6px}
+.hint{background:#fff7d6; border-left:5px solid #c9a227; padding:8px 12px; margin:8px 0; border-radius:0 6px 6px 0}
+.hint b{font-family:var(--mono)}
+.pulse{animation:pulse 1.6s ease-in-out 3}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,39,.0)}50%{box-shadow:0 0 0 8px rgba(201,162,39,.45)}}
+
+/* Erfolg */
+.success{border:2px solid var(--ok); background:var(--ok-tint); border-radius:8px; padding:18px; margin-top:18px}
+.success h3{color:var(--ok); margin-top:0}
+.success .sb{background:#fff; border:1px dashed var(--ok); padding:8px 12px; border-radius:6px; margin:10px 0}
+.btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+
+/* Start / Final */
+.field{margin:14px 0}
+.field label{display:block; font-weight:700; margin-bottom:4px}
+.txt{width:100%; max-width:420px; min-height:48px; font-size:20px; padding:6px 12px; border:2px solid var(--line); border-radius:8px; background:#fff}
+.sel{min-height:48px; font-size:20px; padding:6px 10px; border:2px solid var(--line); border-radius:8px; background:#fff}
+.finalbox{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin:18px 0}
+.fbit{background:#fff; border:1px solid var(--line); border-radius:6px; padding:10px 14px}
+.fbit .l{font-family:var(--mono); font-size:18px; color:var(--ink-soft)}
+.fbit .v{font-size:24px; font-weight:700}
+.pruef{font-family:var(--mono); font-size:clamp(34px,8vw,54px); font-weight:700; letter-spacing:.12em; color:var(--stamp); border:4px double var(--stamp); display:inline-block; padding:6px 18px; transform:rotate(-2deg); background:#fff}
+.footer{max-width:860px; margin:14px auto 0; color:#bfae95; font-size:18px; text-align:center}
+.footer a{color:#e8d6b8}
+.warn{font-size:18px; color:#7a4b00; background:#fff2d2; border:1px solid #e9cf8c; padding:6px 10px; border-radius:6px}
+
+/* Dialoge */
+.overlay{position:fixed; inset:0; background:rgba(10,8,6,.6); z-index:50; display:grid; place-items:center; padding:16px}
+.dialog{background:var(--paper); border:1px solid var(--paper-edge); border-radius:8px; max-width:640px; width:100%; max-height:88vh; overflow:auto; padding:22px; box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.dialog dl{margin:0}
+.dialog dt{font-weight:700; font-family:var(--serif); font-size:20px; margin-top:12px}
+.dialog dd{margin:2px 0 0 0}
+
+/* ---------- Beamer ---------- */
+body.beamer{background:#120f0d; color:#f1e7d4; overflow:hidden}
+.bm{position:fixed; inset:0; display:flex; flex-direction:column}
+.bm-stage{flex:1; display:flex; flex-direction:column; justify-content:center; padding:4vh 7vw; position:relative; overflow:hidden}
+.bm-stage::before{content:""; position:absolute; inset:-20%; background:radial-gradient(60% 50% at 30% 30%, var(--bm-glow, rgba(180,120,60,.25)), transparent 70%); animation:drift 24s ease-in-out infinite alternate; pointer-events:none}
+@keyframes drift{from{transform:translate(-3%,-2%)}to{transform:translate(4%,3%)}}
+.bm-kicker{font-family:var(--mono); letter-spacing:.2em; text-transform:uppercase; font-size:clamp(18px,1.6vw,26px); color:var(--bm-accent,#d8a866); position:relative}
+.bm-title{font-family:var(--serif); font-size:clamp(40px,5.4vw,92px); line-height:1.08; margin:.25em 0 .35em; position:relative}
+.bm-text{font-family:var(--serif); font-size:clamp(22px,2.1vw,36px); max-width:62ch; line-height:1.45; position:relative; color:#e9dcc4}
+.bm-text p{margin:.4em 0}
+.bm-stage.withqr .bm-text,.bm-stage.withqr .bm-title{max-width:calc(100% - min(26vw,300px) - 2vw)}
+.bm-side{position:absolute; right:4vw; top:4vh; text-align:right; font-family:var(--mono)}
+.bm-time{font-size:clamp(28px,3vw,52px); color:#f1e7d4}
+.bm-qr{position:absolute; right:4vw; bottom:3vh; background:#fff; padding:12px; border-radius:8px; text-align:center; color:#222; font-family:var(--sans); font-size:16px; width:min(26vw,300px)}
+.bm-qr svg{width:min(22vh,240px); height:min(22vh,240px); display:block; margin:0 auto 6px}
+.bm-url{word-break:break-all}
+.bm-bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:10px 16px; background:rgba(0,0,0,.55); border-top:1px solid #33291f; transition:opacity .4s}
+.bm-bar.dim{opacity:.08}
+.bm-bar:hover{opacity:1}
+.bm-btn{min-height:44px; padding:6px 14px; border-radius:8px; border:1px solid #6a5643; background:#2a221c; color:#f1e7d4; font-size:18px}
+.bm-btn[aria-pressed="true"]{background:#d8a866; color:#1b140e; border-color:#d8a866}
+.bm-bar label{font-size:18px; display:flex; align-items:center; gap:6px}
+.bm-bar input[type=range]{width:140px}
+.bm-sep{flex:1}
+.bm-help{font-size:16px; color:#a99676}
+.bm-status{display:inline-flex; align-items:center; gap:8px; font-size:18px; min-width:220px}
+.bm-meter{width:90px; height:12px; border-radius:6px; background:#3a2f26; overflow:hidden}
+.bm-meter i{display:block; height:100%; width:0; background:linear-gradient(90deg,#7bbf6a,#e0c25e); transition:width .12s}
+.bm-status.warn{color:#ffb4a2}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =====================================================================
+   KONFIGURATION – hier stehen alle Inhalte.
+   Texte dürfen geändert werden. Die Felder "check" sind Prüfwerte der
+   Lösungen (siehe Funktion pruefwert). Wer eine Lösung ändert, muss den
+   Prüfwert neu berechnen – Anleitung im Lehrkraftmaterial.
+   ===================================================================== */
+var CONFIG = {
+  version: "1.2",
+  storageKey: "akteWeimar_v1",
+  salt: "AKTE-WEIMAR|",
+  teacherCheck: "94d2941fd824b",          /* Prüfwert des Lehrkraftcodes */
+  maxGroups: 8,
+  wrongBeforeHint: 3,                     /* nach so vielen Fehlversuchen wird ein Hinweis angeboten */
+
+  start: {
+    kicker: "Parlamentarischer Rat · Archiv · Bonn 1948",
+    title: "Akte Weimar",
+    subtitle: "Was lernen wir für Bonn?",
+    story: [
+      "Bonn, Herbst 1948. Drei Jahre nach dem Ende des Zweiten Weltkriegs arbeitet der Parlamentarische Rat an einer neuen Verfassung für Westdeutschland: dem Grundgesetz.",
+      "Sie gehören zum Archivteam des Rates. Die Archivarin Dr. Lotte Hartmann hat eine Aktenmappe angelegt: „Lehren aus Weimar“. Fünf Siegel verschließen sie. Jedes Siegel öffnet sich nur, wenn Sie die Akte darunter richtig ausgewertet haben.",
+      "Erst wenn die Mappe vollständig ist, kann der Rat entscheiden."
+    ],
+    fiction: "Hinweis: Das Archivteam und Dr. Lotte Hartmann sind erfunden. Der Parlamentarische Rat, die Verfassungsartikel, Daten und Zahlen sind historisch belegt. Gesetzestexte sind vereinfacht wiedergegeben."
+  },
+
+  final: {
+    kicker: "8. Mai 1949",
+    title: "Die Akte ist vollständig.",
+    text: "Der Parlamentarische Rat beschließt das Grundgesetz; am 23. Mai 1949 wird es verkündet. Die Lehren aus Weimar sind darin eingeflossen. Zeigen Sie diesen Bildschirm Ihrer Lehrkraft.",
+    sicherung: "Bearbeiten Sie die Schlussfrage auf dem Sicherungsblatt: Ist die Weimarer Republik an ihrer Verfassung gescheitert?"
+  },
+
+  stations: [
+    /* ---------------------------------------------------------- STATION 1 */
+    {
+      id: "s1", seal: "I", chapter: "weimar",
+      kicker: "Siegel I · Kapitel Weimarer Republik",
+      title: "Die Spielregeln von Weimar",
+      note: "Bevor wir über das Neue entscheiden, müssen wir das Alte verstehen. Wer hatte in der Weimarer Republik eigentlich welche Macht? Ordnen Sie die Befugnisse den Verfassungsorganen zu – erst dann öffnet sich das erste Siegel.",
+      materials: [
+        { tab: "M1", title: "Weimarer Reichsverfassung vom 11. August 1919 (Auszüge, vereinfacht)",
+          html: "<ul>" +
+            "<li><b>Art. 25:</b> Der Reichspräsident kann den Reichstag auflösen, jedoch nur einmal aus dem gleichen Anlass.</li>" +
+            "<li><b>Art. 41:</b> Der Reichspräsident wird vom ganzen deutschen Volk gewählt.</li>" +
+            "<li><b>Art. 48 Abs. 2:</b> Ist die öffentliche Sicherheit und Ordnung erheblich gestört oder gefährdet, kann der Reichspräsident die nötigen Maßnahmen treffen. Er darf dazu bestimmte Grundrechte vorübergehend außer Kraft setzen.</li>" +
+            "<li><b>Art. 48 Abs. 3:</b> Diese Maßnahmen sind auf Verlangen des Reichstags außer Kraft zu setzen.</li>" +
+            "<li><b>Art. 53:</b> Der Reichskanzler und auf seinen Vorschlag die Reichsminister werden vom Reichspräsidenten ernannt und entlassen.</li>" +
+            "<li><b>Art. 54:</b> Der Reichskanzler und die Reichsminister brauchen das Vertrauen des Reichstags. Entzieht der Reichstag einem von ihnen ausdrücklich das Vertrauen, muss er zurücktreten.</li>" +
+            "<li><b>Art. 56:</b> Der Reichskanzler bestimmt die Richtlinien der Politik.</li>" +
+            "</ul>" }
+      ],
+      task: "<b>Nennen Sie</b> für jede Befugnis das zuständige Organ. Tipp für die Gruppe: Teilen Sie die Artikel untereinander auf.",
+      fields: [
+        { type: "choice", id: "a",
+          options: [ {k:"V", l:"Volk"}, {k:"P", l:"Reichs&shy;präsident"}, {k:"R", l:"Reichstag"}, {k:"K", l:"Reichs&shy;kanzler"} ],
+          rows: [
+            "bestimmt die Richtlinien der Politik",
+            "wählt den Reichspräsidenten",
+            "ernennt und entlässt den Reichskanzler",
+            "kann den Reichskanzler durch einen Misstrauensbeschluss zum Rücktritt zwingen",
+            "kann den Reichstag auflösen",
+            "kann Notmaßnahmen treffen und dabei Grundrechte außer Kraft setzen",
+            "kann verlangen, dass die Notmaßnahmen wieder aufgehoben werden"
+          ] }
+      ],
+      check: "13edbcf5afc0d",
+      hints: [
+        "Jede Befugnis steht in genau einem Artikel von M1. Suchen Sie nach dem passenden Schlüsselwort: „Richtlinien“, „gewählt“, „ernannt“, „Vertrauen“, „auflösen“, „Maßnahmen“.",
+        "Drei der sieben Befugnisse liegen beim Reichspräsidenten (Art. 25, Art. 48 Abs. 2, Art. 53). Der Reichstag kommt zweimal vor (Art. 54 und Art. 48 Abs. 3).",
+        "Die ersten drei Buchstaben lauten K – V – P."
+      ],
+      core: "Der Reichspräsident hatte eine sehr starke Stellung: Er ernannte den Kanzler, konnte den Reichstag auflösen und Notmaßnahmen treffen. Er wurde deshalb auch als „Ersatzkaiser“ bezeichnet. Der Reichstag konnte Kanzler stürzen und Notmaßnahmen aufheben lassen – aber der Präsident konnte darauf mit der Auflösung des Reichstags antworten.",
+      sicherung: "Notieren Sie auf dem Sicherungsblatt drei Befugnisse des Reichspräsidenten mit Artikel."
+    },
+
+    /* ---------------------------------------------------------- STATION 2 */
+    {
+      id: "s2", seal: "II", chapter: "weimar",
+      kicker: "Siegel II · Kapitel Weimarer Republik",
+      title: "Die Falle von 1932",
+      note: "Diese Akte enthält die Wahlergebnisse vom Sommer 1932. Prüfen Sie nach, warum damals keine Regierung mehr eine Mehrheit im Reichstag fand.",
+      materials: [
+        { tab: "M2", title: "Sitzverteilung im Reichstag nach der Wahl vom 31. Juli 1932",
+          html: "<div class='tblwrap'><table class='tbl'><tr><th>NSDAP</th><th>SPD</th><th>KPD</th><th>Zentrum</th><th>DNVP</th><th>BVP</th><th>übrige</th><th>gesamt</th></tr>" +
+                "<tr><td>230</td><td>133</td><td>89</td><td>75</td><td>37</td><td>22</td><td>22</td><td><b>608</b></td></tr></table></div>" +
+                "<p class='src'>Quelle: Deutscher Bundestag, Historische Ausstellung, Infoblatt „Wahlen in der Weimarer Republik“; „übrige“ = Summe der kleineren Parteien.</p>" },
+        { tab: "M3", title: "Die Lage im Herbst 1932",
+          html: "<p>Im Juni 1932 ernannte Reichspräsident Hindenburg Franz von Papen zum Reichskanzler. Papen hatte im Reichstag keine Mehrheit hinter sich. Er stützte sich auf das Vertrauen des Reichspräsidenten (Art. 53) und auf Notverordnungen (Art. 48).</p>" +
+                "<p>NSDAP und KPD bekämpften sich erbittert. Beide lehnten aber die demokratische Republik ab.</p>" +
+                "<p>Am 12. September 1932 sprach der Reichstag der Regierung mit großer Mehrheit das Misstrauen aus. Hindenburg löste den Reichstag auf (Art. 25) – es gab erneut Neuwahlen.</p>" }
+      ],
+      task: "<b>a) Ermitteln Sie</b>, wie viele Sitze für die absolute Mehrheit im Reichstag nötig waren.<br><b>b) Ermitteln Sie</b>, wie viele Sitze NSDAP und KPD zusammen hatten.",
+      fields: [
+        { type: "number", id: "a", label: "a) Sitze für die absolute Mehrheit:" },
+        { type: "number", id: "b", label: "b) Sitze von NSDAP und KPD zusammen:" }
+      ],
+      check: "e826b26a04b62",
+      hints: [
+        "Absolute Mehrheit bedeutet: mehr als die Hälfte aller Sitze des Reichstags.",
+        "Teilen Sie die Gesamtzahl der Sitze durch zwei und zählen Sie eins dazu. Für b) brauchen Sie nur zwei Zahlen aus M2.",
+        "a) liegt zwischen 300 und 310. b) ist 230 + 89."
+      ],
+      core: "NSDAP und KPD hatten zusammen 319 von 608 Sitzen – also die Mehrheit. Sie konnten jede Regierung durch ein Misstrauensvotum (Art. 54) stürzen, aber niemals gemeinsam eine Regierung bilden. Diese „negative Mehrheit“ machte eine parlamentarische Regierung unmöglich. Es blieben nur Präsidialkabinette, die mit Notverordnungen regierten.",
+      sicherung: "Erläutern Sie auf dem Sicherungsblatt in zwei Sätzen den Begriff „negative Mehrheit“."
+    },
+
+    /* ---------------------------------------------------------- STATION 3 */
+    {
+      id: "s3", seal: "III", chapter: "d1933",
+      kicker: "Siegel III · Kapitel 1933/34",
+      title: "Die Zerstörung der Republik",
+      note: "Diese Mappe ist die schwerste im Archiv. Sie zeigt, wie die Demokratie nach dem 30. Januar 1933 in wenigen Monaten beseitigt wurde – oft in der Form von Gesetzen und Verordnungen.",
+      materials: [
+        { tab: "M4", title: "Vier Maßnahmen 1933 (vereinfacht)",
+          html:
+            "<div class='card'><b class='no'>Maßnahme 1</b> – <b>„Ermächtigungsgesetz“</b> (Gesetz zur Behebung der Not von Volk und Reich, beschlossen am 23. März 1933): Die Reichsregierung darf Gesetze beschließen – ohne den Reichstag, auch solche, die von der Verfassung abweichen. Für die Annahme war eine Zweidrittelmehrheit nötig. Die KPD-Abgeordneten waren verhaftet oder geflohen, SA- und SS-Männer standen im Sitzungssaal. Nur die SPD stimmte geschlossen dagegen.</div>" +
+            "<div class='card'><b class='no'>Maßnahme 2</b> – <b>Gesetz gegen die Neubildung von Parteien</b> (14. Juli 1933): Die NSDAP ist die einzige erlaubte Partei. Wer eine andere Partei weiterführt oder gründet, wird bestraft.</div>" +
+            "<div class='card'><b class='no'>Maßnahme 3</b> – <b>„Reichstagsbrandverordnung“</b> (Verordnung des Reichspräsidenten zum Schutz von Volk und Staat, 28. Februar 1933): Die Freiheit der Person, die Meinungs-, Presse- und Versammlungsfreiheit werden „bis auf Weiteres“ außer Kraft gesetzt. Rechtsgrundlage war ein Artikel der Weimarer Verfassung, der dem Reichspräsidenten Notmaßnahmen erlaubte.</div>" +
+            "<div class='card'><b class='no'>Maßnahme 4</b> – <b>Gleichschaltung der Länder</b> (Gesetze vom 31. März und 7. April 1933): Die Landtage werden ohne Wahl nach dem Ergebnis der Reichstagswahl neu besetzt. Reichsstatthalter sorgen dafür, dass in den Ländern die Politik der Reichsregierung umgesetzt wird.</div>" }
+      ],
+      task: "<b>a) Ordnen Sie</b> jeder Maßnahme das demokratische Prinzip zu, das sie zerstört hat.<br><b>b) Nennen Sie</b> den Artikel der Weimarer Verfassung, auf den sich Maßnahme 3 stützte.",
+      fields: [
+        { type: "choice", id: "a",
+          options: [ {k:"G", l:"Grundrechte"}, {k:"W", l:"Gewalten&shy;teilung"}, {k:"F", l:"Föderalis&shy;mus"}, {k:"M", l:"Mehrparteien&shy;system"} ],
+          rows: [ "Maßnahme 1 – „Ermächtigungsgesetz“", "Maßnahme 2 – Gesetz gegen die Neubildung von Parteien", "Maßnahme 3 – „Reichstagsbrandverordnung“", "Maßnahme 4 – Gleichschaltung der Länder" ] },
+        { type: "number", id: "b", label: "b) Rechtsgrundlage von Maßnahme 3: Artikel" }
+      ],
+      check: "180a5a5151d53a",
+      hints: [
+        "Fragen Sie bei jeder Maßnahme: Wer verliert hier Macht oder Rechte – die Bürgerinnen und Bürger, das Parlament, die Länder oder die anderen Parteien?",
+        "Wenn die Regierung selbst Gesetze macht, sind gesetzgebende und ausführende Gewalt nicht mehr getrennt. Für b): Der Notstandsartikel kam schon in Siegel I vor.",
+        "Maßnahme 1 = W, Maßnahme 3 = G. Die Rechtsgrundlage ist Art. 4…"
+      ],
+      core: "Die Machtübernahme wirkte äußerlich oft „legal“: Notverordnung, Gesetz, Abstimmung im Reichstag. Tatsächlich wurden Gegner verhaftet, eingeschüchtert und ausgeschaltet – man spricht von Scheinlegalität. Innerhalb weniger Monate waren Grundrechte, Gewaltenteilung, Föderalismus und Parteienvielfalt beseitigt.",
+      sicherung: "Notieren Sie: Welche Regelungen der Weimarer Verfassung wurden bei Maßnahme 1 und 3 ausgenutzt?"
+    },
+
+    /* ---------------------------------------------------------- STATION 4 */
+    {
+      id: "s4", seal: "IV", chapter: "gg",
+      kicker: "Siegel IV · Kapitel Grundgesetz",
+      title: "Lehren für Bonn",
+      note: "Jetzt ist der Rat gefragt: Die Fehler von Weimar sollen sich nicht wiederholen. Ordnen Sie jedem Weimarer Problem die passende Antwort zu. Vorsicht: Ein Vorschlag auf meinem Zettel ist falsch.",
+      materials: [
+        { tab: "M5", title: "Antworten des Grundgesetzes (vereinfacht)",
+          html: "<ul>" +
+            "<li><b>A – Art. 79 Abs. 3 GG:</b> Die Menschenwürde, die Grundsätze von Demokratie, Rechts-, Sozial- und Bundesstaat sowie die Gliederung in Länder dürfen auch mit Zweidrittelmehrheit nicht abgeschafft werden („Ewigkeitsklausel“).</li>" +
+            "<li><b>B – Art. 67 GG:</b> Der Bundestag kann den Bundeskanzler nur stürzen, indem er gleichzeitig mit Mehrheit einen Nachfolger wählt („konstruktives Misstrauensvotum“).</li>" +
+            "<li><b>C – Art. 21 Abs. 2 GG:</b> Parteien, die die freiheitliche demokratische Grundordnung beseitigen wollen, sind verfassungswidrig. Darüber entscheidet das Bundesverfassungsgericht.</li>" +
+            "<li><b>D – Art. 54 GG:</b> Der Bundespräsident wird von der Bundesversammlung gewählt. Er hat kein Notverordnungsrecht und vor allem repräsentative Aufgaben.</li>" +
+            "<li><b>E – Art. 1 Abs. 3 und Art. 19 Abs. 2 GG:</b> Die Grundrechte binden Gesetzgebung, vollziehende Gewalt und Rechtsprechung als unmittelbar geltendes Recht. Kein Grundrecht darf in seinem Wesensgehalt angetastet werden.</li>" +
+            "<li><b>F – Abschaffung der Verhältniswahl:</b> Der Bundestag wird nur noch per Mehrheitswahl in Wahlkreisen gewählt.</li>" +
+            "<li><b>G – Fünf-Prozent-Sperrklausel:</b> Eine Partei braucht mindestens 5 % der Stimmen, um Sitze im Parlament zu bekommen. (Sie steht im Wahlgesetz, nicht im Grundgesetz.)</li>" +
+            "</ul>" }
+      ],
+      task: "<b>Vergleichen Sie:</b> Welche Antwort (A–G aus M5) gab man auf welches Weimarer Problem? Eine Antwort passt zu keinem Problem.",
+      fields: [
+        { type: "choice", id: "a", compact: true,
+          options: [ {k:"A"}, {k:"B"}, {k:"C"}, {k:"D"}, {k:"E"}, {k:"F"}, {k:"G"} ],
+          rows: [
+            "Die Reichstagsmehrheit konnte den Kanzler stürzen, ohne einen neuen zu wählen.",
+            "Ein vom Volk gewählter Präsident konnte mit Notverordnungen am Parlament vorbei regieren.",
+            "Mit einer Zweidrittelmehrheit konnte die Verfassung vollständig ausgehebelt werden (Ermächtigungsgesetz).",
+            "Grundrechte konnten per Notverordnung außer Kraft gesetzt werden.",
+            "Parteien, die die Demokratie abschaffen wollten, konnten ungehindert legal arbeiten.",
+            "Sehr viele kleine Parteien saßen im Reichstag; Mehrheiten waren schwer zu bilden."
+          ] }
+      ],
+      check: "79751cfc01c80",
+      hints: [
+        "Lesen Sie zuerst die Probleme und markieren Sie das Schlüsselwort: „stürzen“, „Präsident“, „Zweidrittelmehrheit“, „Grundrechte“, „Parteien“, „kleine Parteien“.",
+        "Problem 1 löst Art. 67 GG. Problem 6 löst eine Regel, die nicht im Grundgesetz steht.",
+        "Die ersten drei Buchstaben lauten B – D – A. Vorschlag F ist falsch."
+      ],
+      core: "Das Grundgesetz stärkt Parlament und Kanzler, schwächt den Präsidenten und schützt seinen Kern vor der Abschaffung. Man spricht von einer „wehrhaften Demokratie“. Aber: Eine gute Verfassung allein garantiert keine Demokratie – es braucht auch Menschen, die sie verteidigen.",
+      sicherung: "Begründen Sie auf dem Sicherungsblatt, warum Vorschlag F nicht passt."
+    },
+
+    /* ---------------------------------------------------------- STATION 5 */
+    {
+      id: "s5", seal: "V", chapter: "gg",
+      kicker: "Siegel V · Epilog in der Gegenwart",
+      title: "Der Stresstest",
+      note: "Ein Sprung in die Gegenwart: Die Akte ist fast geschlossen. Eine letzte Frage – halten die Lehren von 1949 auch heute? Prüfen Sie acht erfundene Fälle mithilfe des Grundgesetzes.",
+      materials: [
+        { tab: "M6", title: "Grundgesetz und Bundesverfassungsgerichtsgesetz (Auszüge, vereinfacht)",
+          html: "<ul>" +
+            "<li><b>Art. 8 GG:</b> Alle Deutschen haben das Recht, sich friedlich und ohne Waffen zu versammeln.</li>" +
+            "<li><b>Art. 21 Abs. 2 und 4 GG:</b> Verfassungswidrige Parteien können verboten werden. Darüber entscheidet allein das Bundesverfassungsgericht.</li>" +
+            "<li><b>§ 43 BVerfGG:</b> Den Antrag auf ein Parteiverbot können Bundestag, Bundesrat oder Bundesregierung stellen.</li>" +
+            "<li><b>Art. 38 Abs. 2 GG:</b> Wahlberechtigt ist, wer 18 Jahre alt ist.</li>" +
+            "<li><b>Art. 63 GG:</b> Der Bundeskanzler wird auf Vorschlag des Bundespräsidenten vom Bundestag gewählt.</li>" +
+            "<li><b>Art. 67 GG:</b> Der Bundestag kann den Kanzler nur stürzen, indem er einen Nachfolger wählt.</li>" +
+            "<li><b>Art. 79 Abs. 2 und 3 GG:</b> Das Grundgesetz kann mit zwei Dritteln der Mitglieder des Bundestags und zwei Dritteln der Stimmen des Bundesrats geändert werden – aber nicht die Menschenwürde, die Grundsätze von Demokratie, Rechts-, Sozial- und Bundesstaat und die Gliederung in Länder.</li>" +
+            "<li><b>Art. 93 Abs. 1 Nr. 4a GG:</b> Jede Person kann Verfassungsbeschwerde erheben, wenn sie sich vom Staat in ihren Grundrechten verletzt sieht (in der Regel erst, nachdem sie vor den anderen Gerichten erfolglos geklagt hat).</li>" +
+            "</ul>" }
+      ],
+      task: "<b>Überprüfen Sie</b> jeden Fall: Ist das Vorgehen nach dem Grundgesetz zulässig (Z) oder unzulässig (U)? Alle Fälle sind erfunden.",
+      fields: [
+        { type: "choice", id: "a",
+          options: [ {k:"Z", l:"zulässig"}, {k:"U", l:"unzulässig"} ],
+          rows: [
+            "Der Bundestag spricht der Bundeskanzlerin mit Mehrheit das Misstrauen aus, ohne einen Nachfolger zu wählen. Die Kanzlerin muss deshalb zurücktreten.",
+            "Nach einem Streit ernennt der Bundespräsident seinen Wunschkandidaten zum Bundeskanzler, ohne dass der Bundestag ihn gewählt hat.",
+            "Bundestag und Bundesrat beschließen jeweils mit Zweidrittelmehrheit, das Wahlalter bei Bundestagswahlen auf 16 Jahre zu senken.",
+            "Bundestag und Bundesrat beschließen jeweils mit Zweidrittelmehrheit, die Bundesländer abzuschaffen.",
+            "Die Bundesregierung verbietet per Kabinettsbeschluss eine Partei, die sie für verfassungsfeindlich hält.",
+            "Der Bundesrat beantragt beim Bundesverfassungsgericht, eine Partei zu verbieten.",
+            "Eine Schülerin hat vor den Gerichten erfolglos gegen das Verbot ihrer Schülerzeitung geklagt. Nun erhebt sie Verfassungsbeschwerde, weil sie ihre Pressefreiheit verletzt sieht.",
+            "Weil eine Demonstration gegen die Regierung sehr laut war, hebt der Bundespräsident per Notverordnung die Versammlungsfreiheit für ein Jahr auf."
+          ] }
+      ],
+      check: "16e1eeef3ecb0a",
+      hints: [
+        "Fragen Sie bei jedem Fall: Wer handelt – und darf dieses Organ das laut M6 überhaupt?",
+        "Genau drei Fälle sind zulässig. Bei Verfassungsänderungen kommt es darauf an, was geändert werden soll.",
+        "Zulässig sind die Fälle 3, 6 und 7."
+      ],
+      core: "Das Grundgesetz bindet alle Staatsorgane: Der Kanzler wird vom Bundestag gewählt und kann nur konstruktiv gestürzt werden, über Parteiverbote entscheidet allein das Bundesverfassungsgericht, der Bundespräsident hat kein Notverordnungsrecht, und der Kern der Verfassung ist auch mit Zweidrittelmehrheit nicht veränderbar.",
+      sicherung: "Begründen Sie auf dem Sicherungsblatt zwei Ihrer Entscheidungen mit dem passenden Artikel."
+    }
+  ],
+
+  /* ---------------------------------------------------------- ZUSATZSTATION */
+  extra: {
+    id: "z", seal: "Z", chapter: "gg",
+    kicker: "Zusatzakte · Gegenwart",
+    title: "Wehrhafte Demokratie heute",
+    note: "Für schnelle Teams: Wie wendet das Bundesverfassungsgericht die Lehren von 1949 heute an?",
+    materials: [
+      { tab: "M7", title: "Das NPD-Verfahren und seine Folgen",
+        html: "<p>Im Januar 2017 stellte das Bundesverfassungsgericht fest, dass die NPD verfassungsfeindliche Ziele verfolgt. Es verbot die Partei aber nicht: Ihr fehlte das Potenzial, diese Ziele tatsächlich durchzusetzen.</p>" +
+              "<p>Daraufhin wurde 2017 Art. 21 Abs. 3 ins Grundgesetz eingefügt: Verfassungsfeindliche Parteien können von der staatlichen Parteienfinanzierung ausgeschlossen werden.</p>" +
+              "<p>Am 23. Januar 2024 entschied das Bundesverfassungsgericht auf Antrag von Bundestag, Bundesrat und Bundesregierung: Die Partei „Die Heimat“ (vormals NPD) wird für sechs Jahre von der staatlichen Finanzierung ausgeschlossen.</p>" +
+              "<p class='src'>Quellen: BVerfG, Urteil vom 17.01.2017 – 2 BvB 1/13; BVerfG, Urteil vom 23.01.2024 – 2 BvB 1/19 (Pressemitteilung Nr. 9/2024).</p>" }
+    ],
+    task: "<b>Erläutern Sie</b> mithilfe von M7, indem Sie die drei Fragen beantworten.",
+    fields: [
+      { type: "choice", id: "a", wide: true,
+        options: [ {k:"A", l:"Sie war nicht verfassungsfeindlich."}, {k:"B", l:"Sie hatte zu wenig Einfluss, um ihre Ziele durchzusetzen."}, {k:"C", l:"Die Antragsteller zogen den Antrag zurück."}, {k:"D", l:"Das Gericht war nicht zuständig."} ],
+        rows: [ "a) Warum wurde die NPD 2017 nicht verboten?" ] },
+      { type: "number", id: "b", label: "b) Für wie viele Jahre gilt der Ausschluss von 2024?" },
+      { type: "choice", id: "c", wide: true,
+        options: [ {k:"A", l:"der Bundestag"}, {k:"B", l:"die Bundesregierung"}, {k:"C", l:"das Bundesverfassungsgericht"}, {k:"D", l:"der Bundespräsident"} ],
+        rows: [ "c) Wer hat über den Ausschluss entschieden?" ] }
+    ],
+    check: "1619baa9eb4971",
+    hints: [
+      "Alle Antworten stehen in M7.",
+      "Für ein Parteiverbot prüft das Gericht zweierlei: den Willen, die Demokratie zu beseitigen – und die Fähigkeit dazu.",
+      "a) ist B, b) ist eine Zahl kleiner als 10."
+    ],
+    core: "Die wehrhafte Demokratie hat abgestufte Instrumente: Ein Parteiverbot setzt voraus, dass eine Partei die Demokratie beseitigen will und dazu auch in der Lage sein könnte. Seit 2017 kann eine verfassungsfeindliche Partei zudem von der staatlichen Finanzierung ausgeschlossen werden. Entscheiden darf in beiden Fällen nur das Bundesverfassungsgericht.",
+    sicherung: "Zusatzfrage: Warum entscheidet über Parteiverbote ein Gericht und nicht die Regierung?"
+  },
+
+  glossary: [
+    ["Absolute Mehrheit", "Mehr als die Hälfte aller Sitze bzw. aller Stimmen."],
+    ["Negative Mehrheit", "Eine Mehrheit, die eine Regierung stürzen, aber keine eigene Regierung bilden kann."],
+    ["Notverordnung", "Anordnung des Reichspräsidenten nach Art. 48 WRV, die ohne Beschluss des Reichstags galt. Ab 1930 wurde sie zum Ersatz für Gesetze."],
+    ["Präsidialkabinett", "Regierung (1930–1933), die sich nicht auf eine Mehrheit im Reichstag stützte, sondern auf den Reichspräsidenten und seine Notverordnungen."],
+    ["Misstrauensvotum", "Beschluss des Parlaments, mit dem es der Regierung das Vertrauen entzieht. Im Grundgesetz nur „konstruktiv“: mit gleichzeitiger Wahl eines Nachfolgers."],
+    ["Gewaltenteilung", "Aufteilung der Staatsgewalt auf Gesetzgebung (Legislative), ausführende Gewalt (Exekutive) und Rechtsprechung (Judikative)."],
+    ["Föderalismus", "Gliederung eines Staates in Länder mit eigenen Parlamenten, Regierungen und Zuständigkeiten."],
+    ["Mehrparteiensystem", "Mehrere Parteien konkurrieren frei um Wählerstimmen; Opposition ist erlaubt."],
+    ["Grundrechte", "Rechte jedes Menschen gegenüber dem Staat, z. B. Meinungs-, Presse- und Versammlungsfreiheit."],
+    ["Gleichschaltung", "Ausschaltung aller unabhängigen Kräfte 1933/34: Länder, Parteien, Gewerkschaften und Verbände wurden der NS-Führung unterworfen."],
+    ["Parlamentarischer Rat", "Gremium aus 65 stimmberechtigten Mitgliedern, von den westdeutschen Landtagen entsandt, das 1948/49 in Bonn das Grundgesetz ausarbeitete."],
+    ["Bundesversammlung", "Versammlung aus allen Bundestagsabgeordneten und ebenso vielen Vertretern der Länder; sie wählt den Bundespräsidenten."],
+    ["Ewigkeitsklausel", "Art. 79 Abs. 3 GG: Bestimmte Grundsätze des Grundgesetzes dürfen nie abgeschafft werden."],
+    ["Wehrhafte Demokratie", "Eine Demokratie, die sich mit rechtlichen Mitteln gegen ihre Feinde schützt, z. B. durch Parteiverbote."],
+    ["Verfassungsbeschwerde", "Klage beim Bundesverfassungsgericht, wenn sich jemand vom Staat in seinen Grundrechten verletzt sieht."]
+  ],
+
+  /* Beamer-Ansicht: Kapitel mit Musik-Stimmung */
+  beamer: [
+    { key: "prolog", mood: "prolog", kicker: "Bonn · September 1948", title: "Akte Weimar",
+      text: ["Der Parlamentarische Rat arbeitet an einer neuen Verfassung.", "Sie gehören zum Archivteam. Eine Mappe mit fünf Siegeln wartet: „Lehren aus Weimar“.", "Öffnen Sie das Spiel auf Ihrem iPad und wählen Sie Ihre Gruppennummer."] },
+    { key: "weimar", mood: "weimar", kicker: "Siegel I–II", title: "Die Republik von Weimar 1919–1932",
+      text: ["Wer hatte welche Macht – und warum fand 1932 keine Regierung mehr eine Mehrheit?"] },
+    { key: "d1933", mood: "schatten", kicker: "Siegel III", title: "Die Zerstörung 1933/34",
+      text: ["In wenigen Monaten wird die Demokratie beseitigt – mit Verordnungen, Gesetzen und Gewalt."] },
+    { key: "gg", mood: "grundgesetz", kicker: "Siegel IV–V", title: "Lehren für das Grundgesetz",
+      text: ["Was macht das Grundgesetz anders – und hält es auch heute dem Stresstest stand?"] },
+    { key: "final", mood: "finale", kicker: "8. Mai 1949 · Auswertung", title: "Ist Weimar an seiner Verfassung gescheitert?",
+      text: ["Derselbe Art. 48 half Reichspräsident Ebert 1923, die Republik gegen Umsturzversuche zu verteidigen.", "Ab 1930 diente er dazu, am Parlament vorbei zu regieren.", "Was folgt daraus für die Frage nach den Ursachen des Scheiterns?"] }
+  ]
+};
+
+/* =====================================================================
+   HILFSFUNKTIONEN
+   ===================================================================== */
+/* Hashfunktion cyrb53 (gemeinfrei) – liefert den Prüfwert einer Eingabe */
+function cyrb53(str, seed){seed=seed||0;var h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(var i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(16);}
+function pruefwert(stationId, answer){ return cyrb53(CONFIG.salt + stationId + "|" + answer); }
+function pruefcode(nr){ return "AW" + nr + "-" + cyrb53(CONFIG.salt + "PRUEF|" + nr).slice(-4).toUpperCase(); }
+
+/* tolerante Normalisierung von Texteingaben */
+function normText(s){
+  return String(s||"").toLowerCase()
+    .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss")
+    .replace(/[^a-z0-9]/g,"");
+}
+/* tolerante Normalisierung von Zahleneingaben: Leerzeichen, Einheiten, Tausenderpunkte, Komma */
+function normNumber(s){
+  var t = String(s||"").toLowerCase().trim();
+  t = t.replace(/art(ikel|\.)?/g,"").replace(/sitze?|jahre?|stimmen|abs\.?.*$/g,"").replace(/[€%§\s]/g,"");
+  if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(t)) t = t.replace(/\./g,"");
+  t = t.replace(",",".");
+  if(t==="" ) return "";
+  var n = Number(t);
+  if(!isFinite(n)) return "x" + normText(s);
+  return String(n);
+}
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];}); }
+function fmtTime(ms){ var s=Math.max(0,Math.floor(ms/1000)); var h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h? h+":"+String(m).padStart(2,"0") : String(m).padStart(2,"0")) + ":" + String(x).padStart(2,"0"); }
+
+/* Speicher – Fehler werden abgefangen, das Spiel läuft auch ohne */
+var Store = {
+  ok: true,
+  load: function(){ try{ var raw = localStorage.getItem(CONFIG.storageKey); return raw ? JSON.parse(raw) : null; }catch(e){ this.ok=false; return null; } },
+  save: function(st){ try{ localStorage.setItem(CONFIG.storageKey, JSON.stringify(st)); this.ok=true; }catch(e){ this.ok=false; } },
+  clear: function(){ try{ localStorage.removeItem(CONFIG.storageKey); }catch(e){} }
+};
+
+/* =====================================================================
+   SIEGEL-GRAFIK (inline-SVG)
+   ===================================================================== */
+function sealSVG(label, status){ /* status: open | current | locked */
+  var pts=[], n=18; for(var i=0;i<n*2;i++){ var r=(i%2)?44:48, a=Math.PI*i/n; pts.push((50+r*Math.cos(a)).toFixed(1)+","+(50+r*Math.sin(a)).toFixed(1)); }
+  var fill = status==="open" ? "#3f7a4b" : (status==="current" ? "#a83224" : "#7d6d60");
+  var inner = status==="open" ? "#5c9a68" : (status==="current" ? "#c4473a" : "#968677");
+  var crack = status==="open" ? "<path d='M30 22 L48 46 L40 54 L62 80' stroke='#e9f3ea' stroke-width='5' fill='none' stroke-linecap='round'/>" : "";
+  var txt = status==="open" ? "" : "<text x='50' y='59' text-anchor='middle' font-family='Georgia,serif' font-size='"+(label.length>2?24:30)+"' font-weight='700' fill='#fff7ea'>"+label+"</text>";
+  var anim = status==="current" ? "<animateTransform attributeName='transform' type='scale' values='1;1.06;1' dur='2.4s' repeatCount='indefinite' additive='sum'/>" : "";
+  return "<svg viewBox='0 0 100 100' aria-hidden='true'><g transform-origin='50 50'>"+anim+"<polygon points='"+pts.join(" ")+"' fill='"+fill+"'/><circle cx='50' cy='50' r='34' fill='"+inner+"' stroke='rgba(0,0,0,.2)' stroke-width='3'/>"+txt+crack+"</g></svg>";
+}
+var CLIP = "<svg class='clip' viewBox='0 0 22 46' aria-hidden='true'><path d='M6 40 V8 a5 5 0 0 1 10 0 V36 a3 3 0 0 1 -6 0 V12' fill='none' stroke='#8a8f96' stroke-width='2.4' stroke-linecap='round'/></svg>";
+
+/* =====================================================================
+   SPIEL (Schüleransicht)
+   ===================================================================== */
+var state, ui = { view:null, feedback:{}, justSolved:null, timerId:null };
+
+function newState(){ return { v:1, phase:"start", group:"", nr:0, started:0, finished:0, cur:0, solved:[], zSolved:false, teacher:[], hints:{}, wrong:{}, answers:{} }; }
+function loadState(){
+  var s = Store.load();
+  if(!s || s.v!==1) s = newState();
+  /* Plausibilitätsprüfung: keine Abkürzungen über manipulierte Spielstände */
+  var n = CONFIG.stations.length;
+  s.solved = (s.solved||[]).filter(function(id){ return CONFIG.stations.some(function(st){return st.id===id;}); });
+  s.cur = Math.min(Math.max(0, s.solved.length), n);
+  if(s.phase==="final" && s.solved.length<n) s.phase="play";
+  if(s.phase==="z" && s.solved.length<n) s.phase="play";
+  return s;
+}
+function save(){ Store.save(state); }
+function stationById(id){ if(id==="z") return CONFIG.extra; for(var i=0;i<CONFIG.stations.length;i++) if(CONFIG.stations[i].id===id) return CONFIG.stations[i]; return null; }
+function totalHints(){ var t=0; for(var k in state.hints) t+=state.hints[k]; return t; }
+function elapsed(){ if(!state.started) return 0; return (state.finished||Date.now()) - state.started; }
+
+function setChapter(ch){ document.body.setAttribute("data-chapter", ch==="d1933" ? "d1933" : (ch==="gg" ? "gg" : "weimar")); }
+
+function render(){
+  var app = document.getElementById("app");
+  var html = "";
+  if(state.phase==="start"){ setChapter("weimar"); html = renderTop(false) + "<main>" + renderStart() + "</main>" + renderFooter(); }
+  else if(state.phase==="final"){ setChapter("gg"); html = renderTop(true) + "<main>" + renderFinal() + "</main>" + renderFooter(); }
+  else {
+    var st = currentStation();
+    setChapter(st.chapter);
+    html = renderTop(true) + "<main>" + renderStation(st) + "</main>" + renderFooter();
+  }
+  app.innerHTML = html;
+  bindCommon();
+  window.scrollTo(0, ui.keepScroll ? ui.keepScroll : 0); ui.keepScroll = 0;
+}
+function currentStation(){
+  if(ui.view) return stationById(ui.view);
+  if(state.phase==="z") return CONFIG.extra;
+  return CONFIG.stations[Math.min(state.cur, CONFIG.stations.length-1)];
+}
+
+function renderTop(withMeta){
+  var seals = "";
+  if(withMeta){
+    seals = "<div class='seals' role='navigation' aria-label='Fortschritt'>";
+    CONFIG.stations.forEach(function(st, i){
+      var done = state.solved.indexOf(st.id)>=0;
+      var cur = !done && i===state.cur && state.phase==="play";
+      var status = done ? "open" : (cur ? "current" : "locked");
+      var lbl = "Siegel " + st.seal + (done ? " – geöffnet, ansehen" : (cur ? " – aktuelle Station" : " – verschlossen"));
+      seals += "<button class='seal-btn' data-seal='"+st.id+"' "+(done||cur?"":"disabled")+" aria-label='"+lbl+"' title='"+lbl+"'>"+sealSVG(st.seal,status)+"</button>";
+    });
+    if(state.solved.length===CONFIG.stations.length){
+      var zs = state.zSolved ? "open" : (state.phase==="z" ? "current" : "locked");
+      seals += "<button class='seal-btn' data-seal='z' aria-label='Zusatzakte' title='Zusatzakte Z'>"+sealSVG("Z", zs)+"</button>";
+    }
+    seals += "</div>";
+  }
+  return "<header class='topbar'><div class='topbar-inner'>" +
+    "<span class='brand'>Akte Weimar</span>" +
+    (withMeta ? "<span class='meta'><span title='Gruppe'>▣ "+esc(state.group)+" ("+state.nr+")</span><span title='Verstrichene Zeit'>⏱ <span id='clock'>"+fmtTime(elapsed())+"</span></span><span title='Genutzte Hinweise'>💡 "+totalHints()+"</span></span>" : "<span class='meta'></span>") +
+    "<button class='tbtn' id='btnGloss'>Glossar</button><button class='tbtn' id='btnMenu' aria-label='Menü'>☰</button>" +
+    "</div>" + seals + "</header>";
+}
+function renderFooter(){
+  return "<p class='footer'>Version "+CONFIG.version+" · Für Lehrkräfte: <a href='"+esc(studentURL())+"#beamer' target='_top' id='lnkBeamer'>Beamer-Ansicht</a></p>";
+}
+
+function renderStart(){
+  var c = CONFIG.start, opts = "<option value=''>bitte wählen</option>";
+  for(var i=1;i<=CONFIG.maxGroups;i++) opts += "<option value='"+i+"'>Gruppe "+i+"</option>";
+  return "<section class='sheet'>" +
+    "<p class='kicker'>"+esc(c.kicker)+"</p><h1>"+esc(c.title)+"</h1><p class='lead'><i>"+esc(c.subtitle)+"</i></p>" +
+    "<p><span class='stamp'>Vertraulich</span></p>" +
+    c.story.map(function(p){return "<p>"+esc(p)+"</p>";}).join("") +
+    "<p class='fiction'>"+esc(c.fiction)+"</p>" +
+    "<div class='field'><label for='gname'>Name Ihres Archivteams</label><input id='gname' class='txt' maxlength='30' autocomplete='off' placeholder='z. B. Team Bonn' value='"+esc(state.group)+"'></div>" +
+    "<div class='field'><label for='gnr'>Gruppennummer (von der Lehrkraft)</label><select id='gnr' class='sel'>"+opts+"</select></div>" +
+    "<p class='fiction' style='border-color:#c9a227'>Bitte keine echten Namen eintragen – ein Teamname genügt.</p>" +
+    "<div id='startFb'></div>" +
+    "<button class='btn' id='btnStart'>Akte öffnen</button>" +
+    (Store.ok ? "" : "<p class='warn'>Auf diesem Gerät kann der Spielstand nicht gespeichert werden. Bitte die Seite nicht neu laden.</p>") +
+    "</section>";
+}
+
+function renderStation(st){
+  var solved = st.id==="z" ? state.zSolved : state.solved.indexOf(st.id)>=0;
+  var review = !!ui.view && solved && ui.justSolved!==st.id;
+  var ans = state.answers[st.id] || {};
+  var h = "<section class='sheet' id='station' data-id='"+st.id+"'>";
+  h += "<p class='kicker'>"+esc(st.kicker)+"</p><h2>"+esc(st.title)+"</h2>";
+  if(review) h += "<p class='warn'>Diese Akte ist bereits geöffnet. Sie sehen sie noch einmal zum Nachlesen. <button class='btn small ghost' id='btnBack'>Zur aktuellen Station</button></p>";
+  h += "<div class='note'>"+CLIP+"<span class='from'>Aktennotiz · Dr. L. Hartmann</span>"+esc(st.note)+"</div>";
+  st.materials.forEach(function(m){
+    h += "<div class='material'><span class='tab'>"+esc(m.tab)+"</span><div class='mt'>"+esc(m.title)+"</div><div class='mb'>"+m.html+"</div></div>";
+  });
+  h += "<div class='task'><div class='tl'>Auftrag</div><p>"+st.task+"</p>";
+  st.fields.forEach(function(f){
+    if(f.type==="choice"){
+      var vals = ans[f.id] || [];
+      f.rows.forEach(function(r, ri){
+        h += "<div class='row'><p class='stmt'>"+(f.rows.length>1?"<span class='n'>"+(ri+1)+".</span>":"")+esc(r)+"</p><div class='opts"+(f.compact?" compact":"")+(f.wide?" wide":"")+"' role='group' aria-label='Antwort zu "+(ri+1)+"'>";
+        f.options.forEach(function(o){
+          var pressed = vals[ri]===o.k;
+          h += "<button class='opt' data-field='"+f.id+"' data-row='"+ri+"' data-k='"+o.k+"' aria-pressed='"+pressed+"' "+(solved?"disabled":"")+"><span class='k'>"+o.k+"</span>"+(o.l?(f.wide?" – ":"<br>")+o.l:"")+"</button>";
+        });
+        h += "</div></div>";
+      });
+    } else {
+      h += "<div class='row numrow'><label for='f_"+f.id+"'>"+esc(f.label)+"</label><input class='num' id='f_"+f.id+"' data-field='"+f.id+"' inputmode='numeric' autocomplete='off' value='"+esc(ans[f.id]||"")+"' "+(solved?"disabled":"")+"></div>";
+    }
+  });
+  if(!solved){
+    h += "<div class='codebar'><span>Ihr Code:</span><span class='codeview' id='codeview'>"+esc(codePreview(st))+"</span><button class='btn' id='btnCheck'>Siegel öffnen</button></div>";
+    var fb = ui.feedback[st.id];
+    h += "<div id='fb' aria-live='polite'>"+(fb?"<div class='feedback "+fb.cls+"'>"+fb.msg+"</div>":"")+"</div>";
+  }
+  h += "</div>";
+  if(solved && !review){
+    h += renderSuccess(st);
+  } else if(solved && review){
+    h += "<div class='success'><h3>Kernaussage</h3><p>"+esc(st.core)+"</p></div>";
+  }
+  if(!solved) h += renderHints(st);
+  h += "</section>";
+  return h;
+}
+function codePreview(st){
+  var ans = state.answers[st.id] || {}, parts=[];
+  st.fields.forEach(function(f){
+    if(f.type==="choice"){ var v=ans[f.id]||[]; parts.push(f.rows.map(function(_,i){return v[i]||"–";}).join(" ")); }
+    else parts.push((ans[f.id]||"").trim() || "___");
+  });
+  return parts.join("  |  ");
+}
+function renderHints(st){
+  var used = state.hints[st.id]||0, wrong = state.wrong[st.id]||0;
+  var h = "<div class='hints'><h3>Hinweise der Archivarin</h3>";
+  for(var i=0;i<used;i++) h += "<div class='hint'><b>Hinweis "+(i+1)+":</b> "+esc(st.hints[i])+"</div>";
+  if(used<3){
+    var names=["Denkanstoß","Vorgehen","fast die Lösung"];
+    h += "<button class='btn small ghost"+(wrong>=CONFIG.wrongBeforeHint?" pulse":"")+"' id='btnHint'>Hinweis "+(used+1)+" anzeigen ("+names[used]+")</button>";
+  } else h += "<p>Alle Hinweise genutzt. Wenn Sie nicht weiterkommen, melden Sie sich bei Ihrer Lehrkraft.</p>";
+  return h + "</div>";
+}
+function renderSuccess(st){
+  var byTeacher = state.teacher.indexOf(st.id)>=0;
+  var h = "<div class='success' id='success'><h3>"+(byTeacher?"Von der Lehrkraft freigeschaltet":"Siegel "+st.seal+" ist geöffnet!")+"</h3>";
+  h += "<p><b>Kernaussage:</b> "+esc(st.core)+"</p>";
+  h += "<div class='sb'>✎ "+esc(st.sicherung)+"</div><div class='btnrow'>";
+  var idx = CONFIG.stations.indexOf(st);
+  if(st.id==="z") h += "<button class='btn' id='btnFinal'>Zum Abschluss</button>";
+  else if(idx < CONFIG.stations.length-1) h += "<button class='btn' id='btnNext'>Weiter zu Siegel "+CONFIG.stations[idx+1].seal+"</button>";
+  else { h += "<button class='btn' id='btnFinal'>Akte abschließen</button><button class='btn ghost' id='btnExtra'>Zusatzakte Z öffnen (für schnelle Teams)</button>"; }
+  return h + "</div></div>";
+}
+function renderFinal(){
+  var c = CONFIG.final;
+  var t = state.teacher.length;
+  return "<section class='sheet'><p class='kicker'>"+esc(c.kicker)+"</p><h1>"+esc(c.title)+"</h1><p class='lead'>"+esc(c.text)+"</p>" +
+    "<div class='finalbox'>" +
+    "<div class='fbit'><div class='l'>Archivteam</div><div class='v'>"+esc(state.group)+"</div></div>" +
+    "<div class='fbit'><div class='l'>Gruppennummer</div><div class='v'>"+state.nr+"</div></div>" +
+    "<div class='fbit'><div class='l'>Benötigte Zeit</div><div class='v'>"+fmtTime(elapsed())+"</div></div>" +
+    "<div class='fbit'><div class='l'>Genutzte Hinweise</div><div class='v'>"+totalHints()+"</div></div>" +
+    "<div class='fbit'><div class='l'>Lehrkraft-Freischaltungen</div><div class='v'>"+t+"</div></div>" +
+    "<div class='fbit'><div class='l'>Zusatzakte Z</div><div class='v'>"+(state.zSolved?"gelöst ★":"offen")+"</div></div>" +
+    "</div><p>Prüfcode für die Lehrkraft:</p><p><span class='pruef' id='pruefcode'>"+pruefcode(state.nr)+"</span></p>" +
+    "<div class='success'><p>✎ "+esc(c.sicherung)+"</p></div>" +
+    (state.zSolved ? "" : "<div class='btnrow'><button class='btn ghost' id='btnExtra'>Noch Zeit? Zusatzakte Z öffnen</button></div>") +
+    "</section>";
+}
+
+/* ---------- Ereignisse ---------- */
+function bindCommon(){
+  on("btnGloss","click",openGlossary);
+  on("btnMenu","click",openMenu);
+  on("btnStart","click",startGame);
+  on("btnCheck","click",checkStation);
+  on("btnHint","click",showHint);
+  on("btnNext","click",function(){ ui.justSolved=null; ui.view=null; ui.feedback={}; render(); });
+  on("btnFinal","click",goFinal);
+  on("btnExtra","click",function(){ ui.justSolved=null; ui.view=null; state.phase="z"; save(); render(); });
+  on("btnBack","click",function(){ ui.view=null; render(); });
+  Array.prototype.forEach.call(document.querySelectorAll(".seal-btn"), function(b){
+    b.addEventListener("click", function(){
+      var id=b.getAttribute("data-seal");
+      if(id==="z"){ if(state.zSolved){ ui.view="z"; ui.justSolved=null; render(); } else { ui.view=null; state.phase="z"; save(); render(); } return; }
+      var solved = state.solved.indexOf(id)>=0;
+      if(solved){ ui.view=id; ui.justSolved=null; render(); }
+      else { ui.view=null; if(state.phase==="z"||state.phase==="final"){} render(); }
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".opt"), function(b){
+    b.addEventListener("click", function(){
+      var st=currentStation(), f=b.getAttribute("data-field"), r=+b.getAttribute("data-row"), k=b.getAttribute("data-k");
+      var a = state.answers[st.id] || (state.answers[st.id]={}); var arr = a[f] || (a[f]=[]);
+      arr[r] = k; save();
+      Array.prototype.forEach.call(b.parentNode.querySelectorAll(".opt"), function(o){ o.setAttribute("aria-pressed", o===b ? "true" : "false"); });
+      var cv=document.getElementById("codeview"); if(cv) cv.textContent = codePreview(st);
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("input.num"), function(inp){
+    inp.addEventListener("input", function(){
+      var st=currentStation(); var a = state.answers[st.id] || (state.answers[st.id]={});
+      a[inp.getAttribute("data-field")] = inp.value; save();
+      var cv=document.getElementById("codeview"); if(cv) cv.textContent = codePreview(st);
+    });
+    inp.addEventListener("keydown", function(e){ if(e.key==="Enter"){ e.preventDefault(); checkStation(); } });
+  });
+}
+function on(id, ev, fn){ var el=document.getElementById(id); if(el) el.addEventListener(ev, fn); }
+
+function startGame(){
+  var name = (document.getElementById("gname").value||"").trim();
+  var nr = parseInt(document.getElementById("gnr").value,10);
+  var fb = document.getElementById("startFb");
+  if(!name || !nr){ fb.innerHTML = "<div class='feedback bad'>Bitte geben Sie einen Teamnamen ein und wählen Sie Ihre Gruppennummer.</div>"; return; }
+  state.group = name.slice(0,30); state.nr = nr; state.started = Date.now(); state.phase = "play"; state.cur = 0;
+  save(); render(); startClock();
+}
+function buildAnswer(st){
+  var ans = state.answers[st.id] || {}, parts=[], complete=true;
+  st.fields.forEach(function(f){
+    if(f.type==="choice"){ var v=ans[f.id]||[]; for(var i=0;i<f.rows.length;i++) if(!v[i]) complete=false; parts.push(f.rows.map(function(_,i){return v[i]||"";}).join("")); }
+    else { var n=normNumber(ans[f.id]); if(n==="") complete=false; parts.push(n); }
+  });
+  return { complete:complete, value:parts.join("|") };
+}
+function checkStation(){
+  var st = currentStation();
+  var a = buildAnswer(st);
+  if(!a.complete){ ui.feedback[st.id] = {cls:"info", msg:"Bitte füllen Sie zuerst alle Felder aus."}; refreshFeedback(st); return; }
+  if(pruefwert(st.id, a.value) === st.check){ markSolved(st, false); return; }
+  state.wrong[st.id] = (state.wrong[st.id]||0)+1; save();
+  var w = state.wrong[st.id];
+  var msg = "Das Siegel bleibt verschlossen – mindestens eine Angabe stimmt noch nicht. (Fehlversuch "+w+")";
+  if(w>=CONFIG.wrongBeforeHint && (state.hints[st.id]||0)<3) msg += "<br>Tipp: Rufen Sie unten einen Hinweis der Archivarin ab.";
+  ui.feedback[st.id] = {cls:"bad", msg:msg};
+  refreshFeedback(st, true);
+}
+function refreshFeedback(st, shake){
+  ui.keepScroll = window.scrollY; render();
+  var el=document.getElementById("fb"); if(el){ if(shake){ el.classList.add("shake"); } }
+}
+function markSolved(st, byTeacher){
+  if(st.id==="z"){ state.zSolved = true; }
+  else if(state.solved.indexOf(st.id)<0){ state.solved.push(st.id); state.cur = state.solved.length; }
+  if(byTeacher && state.teacher.indexOf(st.id)<0) state.teacher.push(st.id);
+  ui.justSolved = st.id; ui.view = st.id; delete ui.feedback[st.id];
+  save(); render();
+  var s=document.getElementById("success"); if(s && s.scrollIntoView) s.scrollIntoView({behavior:"smooth", block:"center"});
+}
+function showHint(){
+  var st=currentStation(); state.hints[st.id] = Math.min(3,(state.hints[st.id]||0)+1); save();
+  ui.keepScroll = window.scrollY; render();
+}
+function goFinal(){
+  ui.view=null; ui.justSolved=null; state.phase="final"; if(!state.finished) state.finished = Date.now(); save(); render();
+}
+
+/* ---------- Dialoge ---------- */
+function openDialog(html){
+  var ov = document.createElement("div"); ov.className="overlay"; ov.innerHTML = "<div class='dialog' role='dialog' aria-modal='true'>"+html+"</div>";
+  ov.addEventListener("click", function(e){ if(e.target===ov) closeDialog(); });
+  document.body.appendChild(ov);
+  var f = ov.querySelector("input,button"); if(f) f.focus();
+  return ov;
+}
+function closeDialog(){ var o=document.querySelector(".overlay"); if(o) o.remove(); }
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeDialog(); });
+function openGlossary(){
+  var h="<h2>Glossar</h2><dl>";
+  CONFIG.glossary.forEach(function(g){ h+="<dt>"+esc(g[0])+"</dt><dd>"+esc(g[1])+"</dd>"; });
+  h+="</dl><div class='btnrow'><button class='btn' id='dClose'>Schließen</button></div>";
+  openDialog(h); on("dClose","click",closeDialog);
+}
+function openMenu(){
+  var h="<h2>Menü</h2>" +
+    "<h3>Lehrkraft</h3><p>Mit dem Lehrkraftcode wird die aktuelle Station freigeschaltet.</p>" +
+    "<div class='numrow'><input id='tcode' class='txt' type='password' autocomplete='off' placeholder='Lehrkraftcode' aria-label='Lehrkraftcode'><button class='btn' id='tGo'>Freischalten</button></div><div id='tFb'></div>" +
+    "<h3 style='margin-top:20px'>Neustart</h3><p>Löscht den gesamten Spielstand auf diesem Gerät.</p><button class='btn ghost' id='rGo'>Spiel neu starten …</button>" +
+    "<div class='btnrow' style='margin-top:20px'><button class='btn' id='dClose'>Schließen</button></div>";
+  openDialog(h);
+  on("dClose","click",closeDialog);
+  on("tGo","click",teacherUnlock);
+  var tc=document.getElementById("tcode"); if(tc) tc.addEventListener("keydown",function(e){ if(e.key==="Enter") teacherUnlock(); });
+  on("rGo","click",function(){
+    closeDialog();
+    openDialog("<h2>Wirklich neu starten?</h2><p>Der gesamte Spielstand dieser Gruppe wird gelöscht. Das kann nicht rückgängig gemacht werden.</p><div class='btnrow'><button class='btn' id='rNo'>Abbrechen</button><button class='btn ghost' id='rYes'>Ja, alles löschen</button></div>");
+    on("rNo","click",closeDialog);
+    on("rYes","click",function(){ Store.clear(); state=newState(); ui={view:null,feedback:{},justSolved:null}; closeDialog(); render(); });
+  });
+}
+function teacherUnlock(){
+  var v = document.getElementById("tcode").value, fb=document.getElementById("tFb");
+  if(cyrb53(CONFIG.salt + "LEHRKRAFT|" + normText(v)) !== CONFIG.teacherCheck){ fb.innerHTML="<div class='feedback bad'>Code nicht korrekt.</div>"; return; }
+  if(state.phase!=="play" && state.phase!=="z"){ fb.innerHTML="<div class='feedback info'>Gerade ist keine Station geöffnet.</div>"; return; }
+  var st = state.phase==="z" ? CONFIG.extra : CONFIG.stations[state.cur];
+  if(!st || (st.id!=="z" && state.solved.indexOf(st.id)>=0) || (st.id==="z" && state.zSolved)){ fb.innerHTML="<div class='feedback info'>Die aktuelle Station ist bereits gelöst.</div>"; return; }
+  closeDialog(); ui.view=null; markSolved(st, true);
+}
+
+function startClock(){
+  if(ui.timerId) clearInterval(ui.timerId);
+  ui.timerId = setInterval(function(){ var c=document.getElementById("clock"); if(c) c.textContent = fmtTime(elapsed()); }, 1000);
+}
+
+/* =====================================================================
+   MUSIK (nur Beamer-Ansicht) – wird live im Browser erzeugt (Web Audio)
+   ===================================================================== */
+var Music = (function(){
+  /* Version 1.1: lauter, im Frequenzbereich kleiner Lautsprecher (ca. 150 Hz – 5 kHz),
+     iOS-Freischaltung (Stummschalter), Pegelmessung für die Anzeige */
+  var ctx=null, bus=null, tone=null, hp=null, master=null, analyser=null, crackleGain=null, noiseBuf=null, schedId=null, silentEl=null;
+  var mood=null, step=0, nextTime=0, vol=0.8, playing=false, droneUntil=0;
+  var LOOKAHEAD = 0.35;
+  function mtof(m){ return 440*Math.pow(2,(m-69)/12); }
+  var Q = { min:[0,3,7], maj:[0,4,7], dom7:[0,4,7,10], m7:[0,3,7,10] };
+  function wrap(n, lo, hi){ while(n<lo) n+=12; while(n>hi) n-=12; return n; }
+  function voicing(root, q, lo, hi){ return Q[q].map(function(i){ return wrap(root+i, lo, hi); }).sort(function(a,b){return a-b;}); }
+
+  /* stilles WAV, um auf iPhone/iPad die Wiedergabe trotz Stummschalter zu erlauben */
+  function silentURI(){
+    var n=4000, buf=new Uint8Array(44+n), dv=new DataView(buf.buffer), i;
+    function str(o,s){ for(var k=0;k<s.length;k++) buf[o+k]=s.charCodeAt(k); }
+    str(0,"RIFF"); dv.setUint32(4,36+n,true); str(8,"WAVE"); str(12,"fmt "); dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
+    dv.setUint32(24,8000,true); dv.setUint32(28,8000,true); dv.setUint16(32,1,true); dv.setUint16(34,8,true); str(36,"data"); dv.setUint32(40,n,true);
+    for(i=0;i<n;i++) buf[44+i]=128;
+    var s=""; for(i=0;i<buf.length;i++) s+=String.fromCharCode(buf[i]); return "data:audio/wav;base64,"+btoa(s);
+  }
+  function unlock(){
+    try{ if(navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+    try{
+      if(!silentEl){ silentEl=document.createElement("audio"); silentEl.src=silentURI(); silentEl.loop=true; silentEl.setAttribute("playsinline",""); silentEl.setAttribute("x-webkit-airplay","deny"); }
+      var pr=silentEl.play(); if(pr && pr.catch) pr.catch(function(){});
+    }catch(e){}
+  }
+  function init(){
+    if(ctx) return;
+    var AC = window.AudioContext||window.webkitAudioContext; if(!AC) throw new Error("Kein Web Audio");
+    ctx = new AC();
+    bus = ctx.createGain(); bus.gain.value = 1;
+    tone = ctx.createBiquadFilter(); tone.type="lowpass"; tone.frequency.value=6000; tone.Q.value=0.5;
+    hp = ctx.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=90; hp.Q.value=0.7;
+    var comp = ctx.createDynamicsCompressor(); comp.threshold.value=-22; comp.knee.value=8; comp.ratio.value=4; comp.attack.value=0.004; comp.release.value=0.25;
+    var lim = ctx.createDynamicsCompressor(); lim.threshold.value=-5; lim.knee.value=0; lim.ratio.value=20; lim.attack.value=0.001; lim.release.value=0.12;
+    var makeup = ctx.createGain(); makeup.gain.value = 2.2;
+    master = ctx.createGain(); master.gain.value = 0.0001;
+    analyser = ctx.createAnalyser(); analyser.fftSize = 2048;
+    var conv = ctx.createConvolver(); conv.buffer = impulse(2.2);
+    var send = ctx.createGain(); send.gain.value = 0.22;
+    bus.connect(tone); tone.connect(hp); hp.connect(comp); comp.connect(makeup); makeup.connect(lim); lim.connect(master); master.connect(analyser); analyser.connect(ctx.destination);
+    hp.connect(send); send.connect(conv); conv.connect(comp);
+    /* Rauschen: für Besen (Weimar) und Grammophon-Knistern */
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate*2, ctx.sampleRate);
+    var nd = noiseBuf.getChannelData(0); for(var i=0;i<nd.length;i++) nd[i]=Math.random()*2-1;
+    var cb = ctx.createBuffer(1, ctx.sampleRate*3, ctx.sampleRate), cd = cb.getChannelData(0);
+    for(i=0;i<cd.length;i++) cd[i] = (Math.random()<0.0008 ? (Math.random()*2-1)*0.8 : 0) + (Math.random()*2-1)*0.015;
+    var cs = ctx.createBufferSource(); cs.buffer=cb; cs.loop=true;
+    var cf = ctx.createBiquadFilter(); cf.type="bandpass"; cf.frequency.value=2500; cf.Q.value=0.6;
+    crackleGain = ctx.createGain(); crackleGain.gain.value=0;
+    cs.connect(cf); cf.connect(crackleGain); crackleGain.connect(lim); cs.start();
+  }
+  function impulse(sec){
+    var len=Math.floor(ctx.sampleRate*sec), b=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(var c=0;c<2;c++){ var ch=b.getChannelData(c); for(var i=0;i<len;i++) ch[i]=(Math.random()*2-1)*Math.pow(1-i/len,3); }
+    return b;
+  }
+  /* Klavierähnlicher Klang aus Obertönen – hörbar auch auf kleinen Lautsprechern */
+  function piano(m,t,dur,vel){
+    var f0=mtof(m), end=t+Math.max(0.6, dur*1.5);
+    var g=ctx.createGain(); g.connect(bus);
+    var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.setValueAtTime(Math.min(9000,f0*9),t); lp.frequency.exponentialRampToValueAtTime(Math.max(500,f0*2.5), end); lp.connect(g);
+    [[1,1],[2,0.5],[3,0.28],[4,0.14],[5,0.07]].forEach(function(h, idx){
+      var o=ctx.createOscillator(); o.type="sine"; o.frequency.value=f0*h[0]*(1+idx*0.0007);
+      var hg=ctx.createGain(); hg.gain.value=h[1]; o.connect(hg); hg.connect(lp); o.start(t); o.stop(end+0.05);
+    });
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vel,t+0.006);
+    g.gain.exponentialRampToValueAtTime(vel*0.45,t+0.28); g.gain.exponentialRampToValueAtTime(0.0001,end);
+  }
+  /* Bass: Sägezahn mit Tiefpass – die Obertöne tragen den Ton auch ohne Subwoofer */
+  function bass(m,t,dur,vel){
+    var f0=mtof(m), g=ctx.createGain(); g.connect(bus);
+    var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=Math.min(1400, f0*8); lp.Q.value=1; lp.connect(g);
+    var o=ctx.createOscillator(); o.type="sawtooth"; o.frequency.value=f0; o.connect(lp);
+    var o2=ctx.createOscillator(); o2.type="triangle"; o2.frequency.value=f0*2; var g2=ctx.createGain(); g2.gain.value=0.35; o2.connect(g2); g2.connect(lp);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vel,t+0.01); g.gain.exponentialRampToValueAtTime(vel*0.5,t+0.18); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.start(t); o2.start(t); o.stop(t+dur+0.05); o2.stop(t+dur+0.05);
+  }
+  function pad(ms,t,dur,vel){
+    var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=1800; lp.connect(bus);
+    ms.forEach(function(m){ [-7,7].forEach(function(det){
+      var g=ctx.createGain(); g.connect(lp); var o=ctx.createOscillator(); o.type="sawtooth"; o.frequency.value=mtof(m); o.detune.value=det; o.connect(g);
+      g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(vel,t+dur*0.3); g.gain.linearRampToValueAtTime(vel*0.85,t+dur*0.85); g.gain.linearRampToValueAtTime(0.0001,t+dur+0.5);
+      o.start(t); o.stop(t+dur+0.6); }); });
+  }
+  /* Liegeton für 1933: mittlere Lage, langsam atmender Filter, bewusst ohne Pathos */
+  function drone(ms,t,dur,vel){
+    var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=700; lp.Q.value=2; lp.connect(bus);
+    var lfo=ctx.createOscillator(); lfo.frequency.value=0.09; var lg=ctx.createGain(); lg.gain.value=350; lfo.connect(lg); lg.connect(lp.frequency); lfo.start(t); lfo.stop(t+dur+1);
+    ms.forEach(function(m){ [-5,5].forEach(function(det){
+      var g=ctx.createGain(); g.connect(lp); var o=ctx.createOscillator(); o.type="sawtooth"; o.frequency.value=mtof(m); o.detune.value=det; o.connect(g);
+      g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(vel,t+2); g.gain.setValueAtTime(vel,t+dur-1.5); g.gain.linearRampToValueAtTime(0.0001,t+dur+0.6);
+      o.start(t); o.stop(t+dur+0.7); }); });
+  }
+  function brush(t,vel){
+    var s=ctx.createBufferSource(); s.buffer=noiseBuf; var bp=ctx.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=5500; bp.Q.value=0.8;
+    var g=ctx.createGain(); s.connect(bp); bp.connect(g); g.connect(bus);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vel,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+    s.start(t, Math.random()*1.5); s.stop(t+0.15);
+  }
+
+  /* Stimmungen: Tempo, Akkordfolge (je Takt), Melodie {Takt:[[Achtel, MIDI-Ton, Dauer in Achteln]]} */
+  var MOODS = {
+    prolog: { bpm:66, lp:5000, hp:90, crackle:0, chords:[[57,"min"],[53,"maj"],[48,"maj"],[55,"maj"]],
+      mel:{1:[[0,76,4],[4,74,2],[6,72,2]],3:[[0,71,4],[4,72,4]]},
+      gen:function(bar,s,t,sd,c){ var v=voicing(c[0],c[1],55,70), seq=[0,1,2,1,2,1,0,1];
+        piano(v[seq[s]], t, sd*2, 0.16);
+        if(s===0){ bass(wrap(c[0],40,52), t, sd*7, 0.30); pad(v, t, sd*8, 0.035); } } },
+    weimar: { bpm:112, lp:3800, hp:170, crackle:1, swing:0.15, chords:[[50,"min"],[55,"min"],[57,"dom7"],[50,"min"],[58,"maj"],[55,"min"],[52,"dom7"],[57,"dom7"]],
+      mel:{0:[[0,74,1],[1,77,1],[3,76,1],[4,74,2],[7,69,1]],1:[[0,70,2],[2,74,1],[3,79,2],[6,77,2]],2:[[0,76,1],[1,73,1],[2,76,1],[4,79,2],[6,76,2]],3:[[0,74,3],[4,69,1],[5,72,1],[6,74,2]],
+           4:[[0,77,1],[1,74,1],[3,70,2],[6,74,2]],5:[[0,79,1],[1,77,1],[2,74,1],[4,70,3]],6:[[0,68,1],[1,71,1],[2,74,1],[3,76,2],[6,74,1],[7,73,1]],7:[[0,73,2],[2,76,2],[4,69,4]]},
+      gen:function(bar,s,t,sd,c){
+        if(s===0) bass(wrap(c[0],40,52), t, sd*1.8, 0.34);
+        if(s===4) bass(wrap(c[0]+7,40,52), t, sd*1.8, 0.30);
+        if(s===2||s===6){ voicing(c[0],c[1],55,68).forEach(function(m){ piano(m, t, sd*0.8, 0.10); }); brush(t, 0.10); }
+        else if(s%2===1) brush(t, 0.035); } },
+    schatten: { bpm:48, lp:2600, hp:110, crackle:0, chords:[[50,"min"],[50,"min"],[49,"min"],[50,"min"]],
+      mel:{0:[[0,62,3],[4,65,3]],1:[[2,63,4]],2:[[0,61,3],[5,64,2]],3:[[0,62,7]]},
+      gen:function(bar,s,t,sd,c){
+        if(bar===0 && s===0 && t>=droneUntil-0.1){ drone([50,57], t, sd*32, 0.05); droneUntil=t+sd*32; }
+        if(s===0||s===4) piano(c[0]===49?49:50, t, sd*1.2, 0.10); } },
+    grundgesetz: { bpm:84, lp:7000, hp:90, crackle:0, chords:[[48,"maj"],[55,"maj"],[57,"min"],[53,"maj"]],
+      mel:{0:[[0,76,2],[2,79,2],[4,77,2],[6,76,2]],1:[[0,74,6]],2:[[0,72,2],[2,76,2],[4,74,2],[6,72,2]],3:[[0,72,4],[4,69,4]]},
+      gen:function(bar,s,t,sd,c){ var v=voicing(c[0],c[1],60,74), seq=[0,1,2,1,0,1,2,1];
+        piano(v[seq[s]]+(s%4===2?12:0), t, sd*2, 0.14);
+        if(s===0){ bass(wrap(c[0],40,52), t, sd*7, 0.28); pad(voicing(c[0],c[1],60,74), t, sd*8, 0.03); } } },
+    finale: { bpm:60, lp:5500, hp:90, crackle:0, chords:[[53,"maj"],[48,"maj"],[50,"min"],[58,"maj"]],
+      mel:{0:[[0,69,4],[4,72,4]],1:[[0,67,6]],2:[[0,69,2],[2,65,2],[4,67,4]],3:[[0,65,8]]},
+      gen:function(bar,s,t,sd,c){ var v=voicing(c[0],c[1],55,69);
+        if(s===0){ v.forEach(function(m){ piano(m, t, sd*6, 0.11); }); bass(wrap(c[0],40,52), t, sd*8, 0.30); pad(v, t, sd*8, 0.04); }
+        if(s===4) piano(v[2]+12, t, sd*3, 0.09); } }
+  };
+  function scheduler(){
+    if(!mood || !ctx) return;
+    var M = MOODS[mood], sd = 60/M.bpm/2;
+    if(nextTime < ctx.currentTime - 0.5) nextTime = ctx.currentTime + 0.05; /* nach Pausen nicht nachholen */
+    while(nextTime < ctx.currentTime + LOOKAHEAD){
+      var bars=M.chords.length, bar=Math.floor(step/8)%bars, s=step%8, c=M.chords[bar];
+      var t = nextTime + ((M.swing && s%2===1) ? sd*M.swing : 0);
+      M.gen(bar, s, t, sd, c);
+      var ml=M.mel[bar]; if(ml) ml.forEach(function(n){ if(n[0]===s) piano(n[1], t, sd*n[2], 0.22); });
+      nextTime += sd; step++;
+    }
+  }
+  function applyMood(name){
+    var M=MOODS[name]; mood=name; step=0; droneUntil=0; nextTime=ctx.currentTime+0.08;
+    tone.frequency.setTargetAtTime(M.lp, ctx.currentTime, 0.2);
+    hp.frequency.setTargetAtTime(M.hp, ctx.currentTime, 0.2);
+    crackleGain.gain.setTargetAtTime(M.crackle ? 0.6 : 0, ctx.currentTime, 0.2);
+  }
+  function resume(){ if(ctx && ctx.state!=="running"){ try{ var p=ctx.resume(); if(p && p.catch) p.catch(function(){}); }catch(e){} } }
+  return {
+    MOODS: MOODS,
+    isPlaying: function(){ return playing; },
+    play: function(name){
+      unlock(); init(); resume();
+      applyMood(name);
+      master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(vol, ctx.currentTime, 0.3);
+      if(!schedId) schedId = setInterval(scheduler, 25);
+      playing = true;
+    },
+    switchTo: function(name){
+      if(!playing || !ctx){ mood = playing ? name : null; return; }
+      var now=ctx.currentTime; master.gain.cancelScheduledValues(now); master.gain.setTargetAtTime(0.0001, now, 0.3);
+      mood = null;
+      setTimeout(function(){ if(!playing) return; applyMood(name); master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(vol, ctx.currentTime, 0.5); }, 1100);
+    },
+    stop: function(){
+      if(!ctx) return; playing=false; master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.25);
+      setTimeout(function(){ if(!playing) mood=null; }, 800);
+      try{ if(silentEl) silentEl.pause(); }catch(e){}
+    },
+    setVolume: function(v){ vol=Math.max(0.0001,v); if(ctx && playing) master.gain.setTargetAtTime(vol, ctx.currentTime, 0.1); },
+    resume: resume,
+    state: function(){ return ctx ? ctx.state : "aus"; },
+    level: function(){ /* Pegel 0..1 (RMS) für die Anzeige */
+      if(!analyser) return 0; var a=new Float32Array(analyser.fftSize); analyser.getFloatTimeDomainData(a);
+      var s=0; for(var i=0;i<a.length;i++) s+=a[i]*a[i]; return Math.sqrt(s/a.length); },
+    _ctx: function(){ return ctx; }
+  };
+})();
+
+
+/* =====================================================================
+   QR-CODE (Byte-Modus, Fehlerkorrektur M) – damit die iPads die Adresse scannen können
+   ===================================================================== */
+var QR = (function(){
+  var ECC=[-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26], BLK=[-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16];
+  function rawModules(v){ var r=(16*v+128)*v+64; if(v>=2){ var na=Math.floor(v/7)+2; r-=(25*na-10)*na-55; if(v>=7) r-=36; } return r; }
+  function dataCw(v){ return Math.floor(rawModules(v)/8) - ECC[v]*BLK[v]; }
+  function gmul(x,y){ var z=0; for(var i=7;i>=0;i--){ z=(z<<1)^((z>>>7)*0x11D); z^=((y>>>i)&1)*x; } return z&255; }
+  function rsDiv(deg){ var r=[]; for(var i=0;i<deg;i++) r.push(0); r[deg-1]=1; var root=1; for(i=0;i<deg;i++){ for(var j=0;j<r.length;j++){ r[j]=gmul(r[j],root); if(j+1<r.length) r[j]^=r[j+1]; } root=gmul(root,2); } return r; }
+  function rsRem(data,div){ var r=div.map(function(){return 0;}); data.forEach(function(b){ var f=b^r.shift(); r.push(0); div.forEach(function(c,i){ r[i]^=gmul(c,f); }); }); return r; }
+  function utf8(s){ var b=[]; var e=unescape(encodeURIComponent(s)); for(var i=0;i<e.length;i++) b.push(e.charCodeAt(i)); return b; }
+  function make(text){
+    var data=utf8(text), v;
+    for(v=1; v<=20; v++){ if(4+(v<10?8:16)+data.length*8 <= dataCw(v)*8) break; }
+    if(v>20) return null;
+    var bits=[]; function put(val,len){ for(var i=len-1;i>=0;i--) bits.push((val>>>i)&1); }
+    put(4,4); put(data.length, v<10?8:16); data.forEach(function(b){ put(b,8); });
+    var cap=dataCw(v)*8; put(0, Math.min(4, cap-bits.length)); while(bits.length%8) bits.push(0);
+    var bytes=[]; for(var i=0;i<bits.length;i+=8){ var x=0; for(var j=0;j<8;j++) x=(x<<1)|bits[i+j]; bytes.push(x); }
+    for(var p=0xEC; bytes.length<dataCw(v); p^=0xEC^0x11) bytes.push(p);
+    /* Blöcke + Fehlerkorrektur, verschränkt */
+    var nb=BLK[v], el=ECC[v], raw=Math.floor(rawModules(v)/8), nShort=nb-raw%nb, shortLen=Math.floor(raw/nb), blocks=[], div=rsDiv(el), k=0;
+    for(i=0;i<nb;i++){ var dat=bytes.slice(k, k+shortLen-el+(i<nShort?0:1)); k+=dat.length; var ec=rsRem(dat,div); if(i<nShort) dat.push(0); blocks.push(dat.concat(ec)); }
+    var cw=[]; for(i=0;i<blocks[0].length;i++) for(j=0;j<blocks.length;j++) if(i!==shortLen-el || j>=nShort) cw.push(blocks[j][i]);
+    /* Matrix */
+    var size=v*4+17, M=[], F=[]; for(i=0;i<size;i++){ M.push(new Array(size).fill(false)); F.push(new Array(size).fill(false)); }
+    function sf(x,y,d){ M[y][x]=d; F[y][x]=true; }
+    for(i=0;i<size;i++){ sf(6,i,i%2===0); sf(i,6,i%2===0); }
+    [[3,3],[size-4,3],[3,size-4]].forEach(function(c){ for(var dy=-4;dy<=4;dy++) for(var dx=-4;dx<=4;dx++){ var d=Math.max(Math.abs(dx),Math.abs(dy)), xx=c[0]+dx, yy=c[1]+dy; if(xx>=0&&xx<size&&yy>=0&&yy<size) sf(xx,yy,d!==2&&d!==4); } });
+    var al=[]; if(v>1){ var na=Math.floor(v/7)+2, stp=Math.ceil((v*4+4)/(na*2-2))*2; al=[6]; for(var pos=size-7; al.length<na; pos-=stp) al.splice(1,0,pos); }
+    for(i=0;i<al.length;i++) for(j=0;j<al.length;j++){ if((i===0&&j===0)||(i===0&&j===al.length-1)||(i===al.length-1&&j===0)) continue; for(var dy2=-2;dy2<=2;dy2++) for(var dx2=-2;dx2<=2;dx2++) sf(al[i]+dx2, al[j]+dy2, Math.max(Math.abs(dx2),Math.abs(dy2))!==1); }
+    function fmt(mask){ var d=(0<<3)|mask, r=d; for(var i=0;i<10;i++) r=(r<<1)^((r>>>9)*0x537); var b=((d<<10)|r)^0x5412; function g(i){return ((b>>>i)&1)!==0;}
+      for(i=0;i<=5;i++) sf(8,i,g(i)); sf(8,7,g(6)); sf(8,8,g(7)); sf(7,8,g(8)); for(i=9;i<15;i++) sf(14-i,8,g(i));
+      for(i=0;i<8;i++) sf(size-1-i,8,g(i)); for(i=8;i<15;i++) sf(8,size-15+i,g(i)); sf(8,size-8,true); }
+    fmt(0);
+    if(v>=7){ var r=v; for(i=0;i<12;i++) r=(r<<1)^((r>>>11)*0x1F25); var vb=(v<<12)|r; for(i=0;i<18;i++){ var bt=((vb>>>i)&1)!==0, a=size-11+i%3, bb=Math.floor(i/3); sf(a,bb,bt); sf(bb,a,bt); } }
+    var bi=0; for(var right=size-1; right>=1; right-=2){ if(right===6) right=5; for(var vert=0; vert<size; vert++) for(j=0;j<2;j++){ var x=right-j, up=((right+1)&2)===0, y=up?size-1-vert:vert; if(!F[y][x] && bi<cw.length*8){ M[y][x]=((cw[bi>>>3]>>>(7-(bi&7)))&1)!==0; bi++; } } }
+    var mask=2; for(y=0;y<size;y++) for(x=0;x<size;x++){ if(!F[y][x] && x%3===0) M[y][x]=!M[y][x]; }
+    fmt(mask);
+    return M;
+  }
+  function svg(text){
+    var M=make(text); if(!M) return "";
+    var n=M.length, q=4, s=n+2*q, d="";
+    for(var y=0;y<n;y++) for(var x=0;x<n;x++) if(M[y][x]) d+="M"+(x+q)+" "+(y+q)+"h1v1h-1z";
+    return "<svg viewBox='0 0 "+s+" "+s+"' shape-rendering='crispEdges' role='img' aria-label='QR-Code zur Schüleransicht'><rect width='"+s+"' height='"+s+"' fill='#fff'/><path d='"+d+"' fill='#000'/></svg>";
+  }
+  return { make: make, svg: svg };
+})();
+
+/* =====================================================================
+   BEAMER-ANSICHT
+   ===================================================================== */
+var B = { idx:0, tStart:0, tAcc:0, running:false, showQR:true, idle:null };
+function studentURL(){ return location.href.split("#")[0]; }
+function renderBeamer(){
+  document.body.className="beamer";
+  var ch = CONFIG.beamer[B.idx];
+  var glow = {prolog:"rgba(190,140,80,.22)", weimar:"rgba(200,140,60,.30)", d1933:"rgba(110,110,120,.18)", gg:"rgba(80,140,210,.28)", final:"rgba(230,190,110,.28)"}[ch.key];
+  var acc = {prolog:"#d8a866", weimar:"#e0a85e", d1933:"#b9b3ab", gg:"#8fc0ec", final:"#f0cf86"}[ch.key];
+  var tabs = CONFIG.beamer.map(function(c,i){ return "<button class='bm-btn' data-ch='"+i+"' aria-pressed='"+(i===B.idx)+"'>"+(i+1)+" "+esc(c.kicker.split("·")[0].trim())+"</button>"; }).join("");
+  document.getElementById("app").innerHTML =
+    "<div class='bm' style='--bm-glow:"+glow+"; --bm-accent:"+acc+"'>" +
+    "<div class='bm-stage"+(B.showQR?" withqr":"")+"'><div class='bm-side'><div class='bm-help'>Spielzeit</div><div class='bm-time' id='bmTime'>"+fmtTime(bTime())+"</div></div>" +
+    "<div class='bm-kicker'>"+esc(ch.kicker)+"</div><div class='bm-title'>"+esc(ch.title)+"</div><div class='bm-text'>"+ch.text.map(function(p){return "<p>"+esc(p)+"</p>";}).join("")+"</div>" +
+    (B.showQR ? "<div class='bm-qr'>"+QR.svg(studentURL())+"<div class='bm-url'>"+esc(studentURL())+"</div></div>" : "") +
+    "</div>" +
+    "<div class='bm-bar' id='bmBar'>" + tabs +
+    "<span class='bm-sep'></span>" +
+    "<button class='bm-btn' id='bmMusic' aria-pressed='"+Music.isPlaying()+"'>"+(Music.isPlaying()?"⏸ Musik":"▶ Musik")+"</button>" +
+    "<span class='bm-status' id='bmStatus'></span>" +
+    "<label>Lautstärke <input type='range' id='bmVol' min='0' max='100' value='80'></label>" +
+    "<button class='bm-btn' id='bmTimer' aria-pressed='"+B.running+"'>"+(B.running?"⏸ Zeit":"▶ Zeit")+"</button>" +
+    "<button class='bm-btn' id='bmReset'>↺ Zeit</button>" +
+    "<button class='bm-btn' id='bmQR' aria-pressed='"+B.showQR+"'>QR</button>" +
+    "<button class='bm-btn' id='bmFull'>⛶</button>" +
+    "<a class='bm-btn' href='"+esc(studentURL())+"' id='bmStudent' style='text-decoration:none;display:inline-flex;align-items:center'>Schüleransicht</a>" +
+    "<span class='bm-help'>Tasten: 1–5 Kapitel · M Musik · T Zeit · Q QR · F Vollbild</span>" +
+    "</div></div>";
+  var vol = document.getElementById("bmVol"); vol.value = Math.round((B.vol==null?0.8:B.vol)*100);
+  vol.addEventListener("input", function(){ B.vol = vol.value/100; Music.setVolume(B.vol); });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ch]"), function(b){ b.addEventListener("click", function(){ setBeamerChapter(+b.getAttribute("data-ch")); }); });
+  on("bmMusic","click",toggleMusic); on("bmTimer","click",toggleTimer); on("bmReset","click",function(){ B.tAcc=0; B.tStart=Date.now(); renderBeamer(); });
+  on("bmQR","click",function(){ B.showQR=!B.showQR; renderBeamer(); }); on("bmFull","click",toggleFull);
+  wakeBar();
+}
+function bTime(){ return B.tAcc + (B.running ? Date.now()-B.tStart : 0); }
+function setBeamerChapter(i){ if(i<0||i>=CONFIG.beamer.length) return; B.idx=i; Music.switchTo(CONFIG.beamer[i].mood); renderBeamer(); }
+function toggleMusic(){
+  try{ if(Music.isPlaying()) Music.stop(); else { Music.setVolume(B.vol==null?0.8:B.vol); Music.play(CONFIG.beamer[B.idx].mood); B.musicStart=Date.now(); } }
+  catch(e){ alert("Musik kann in diesem Browser nicht abgespielt werden."); }
+  renderBeamer();
+}
+function toggleTimer(){ if(B.running){ B.tAcc += Date.now()-B.tStart; B.running=false; } else { B.tStart=Date.now(); B.running=true; } renderBeamer(); }
+function toggleFull(){ try{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }catch(e){} }
+function wakeBar(){ var b=document.getElementById("bmBar"); if(!b) return; b.classList.remove("dim"); clearTimeout(B.idle); B.idle=setTimeout(function(){ var bb=document.getElementById("bmBar"); if(bb) bb.classList.add("dim"); }, 6000); }
+function updateMusicStatus(){
+  var el=document.getElementById("bmStatus"); if(!el) return;
+  if(!Music.isPlaying()){ el.className="bm-status"; el.innerHTML=""; return; }
+  var st=Music.state(), lv=Music.level(), pct=Math.min(100, Math.round(lv*400));
+  if(st!=="running"){ el.className="bm-status warn"; el.textContent="⚠ Browser blockiert den Ton – bitte „Musik“ erneut antippen"; return; }
+  if(lv<0.002 && Date.now()-(B.musicStart||0)>4000){ el.className="bm-status warn"; el.textContent="⚠ kein Signal – Musik neu starten"; return; }
+  el.className="bm-status"; el.innerHTML="♪ <span class='bm-meter' title='Pegel'><i style='width:"+pct+"%'></i></span>";
+}
+function startBeamer(){
+  renderBeamer();
+  setInterval(updateMusicStatus, 150);
+  ["pointerdown","keydown","touchend"].forEach(function(ev){ document.addEventListener(ev, function(){ if(Music.isPlaying()) Music.resume(); }, true); });
+  setInterval(function(){ var t=document.getElementById("bmTime"); if(t) t.textContent=fmtTime(bTime()); }, 500);
+  document.addEventListener("mousemove", wakeBar);
+  document.addEventListener("keydown", function(e){
+    if(e.target && e.target.tagName==="INPUT" && e.target.type!=="range") return;   /* Tasten auch nach Bedienung des Lautstärkereglers */
+    if(e.target && e.target.type==="range" && (e.key==="ArrowLeft"||e.key==="ArrowRight")) return; /* Pfeile regeln dort die Lautstärke */
+    var k=e.key.toLowerCase();
+    if(k>="1" && k<="5") setBeamerChapter(+k-1);
+    else if(k==="m") toggleMusic(); else if(k==="t") toggleTimer(); else if(k==="q"){ B.showQR=!B.showQR; renderBeamer(); } else if(k==="f") toggleFull();
+    else if(k==="arrowright") setBeamerChapter(B.idx+1); else if(k==="arrowleft") setBeamerChapter(B.idx-1);
+  });
+}
+
+/* =====================================================================
+   START
+   ===================================================================== */
+if(location.hash.replace("#","").toLowerCase()==="beamer"){ startBeamer(); }
+else {
+  state = loadState();
+  render();
+  if(state.phase!=="start") startClock();
+}
+window.addEventListener("hashchange", function(){ location.reload(); });
+</script>
+</body>
+</html>

@@ -89,7 +89,7 @@ window.INHALTE = {
       kurz: "Politisches System, Parteien und Wahlen, Teilhabe und Willensbildung." },
 
     { id: "ggk-geschichte", fach: "ggk", name: "Geschichte",
-      ordner: "ggk/geschichte", status: "geplant",
+      ordner: "ggk/geschichte", status: "aktiv",
       kurz: "Historische Themen des Bildungsplans." },
 
     { id: "ki-rechtslehre", fach: "ki-coaches", name: "Rechtslehre",
@@ -170,6 +170,17 @@ window.INHALTE = {
       kurz: "Wer schrieb das? Aussagen aus sechs Wahlprogrammen zur Bundestagswahl 2025 den Parteien zuordnen – mit Vergleichsübersicht und Arbeitsaufträgen.",
       faecher: ["ggk"],
       material: ["Zuordnungsspiel", "Vergleichstabelle", "Arbeitsaufträge"]
+    },
+
+    {
+      id: "akte-weimar",
+      name: "Escape Game: Akte Weimar",
+      bereich: "ggk-geschichte",
+      pfad: "ggk/geschichte/akte-weimar",
+      status: "aktiv",
+      kurz: "Was lernen wir für Bonn? Als Archivteam des Parlamentarischen Rates fünf Siegel öffnen – von der Weimarer Verfassung über die Zerstörung der Demokratie 1933 zu den Lehren des Grundgesetzes.",
+      faecher: ["ggk"],
+      material: ["Escape Game", "Beamer-Ansicht mit Musik", "Glossar"]
     },
 
     {
