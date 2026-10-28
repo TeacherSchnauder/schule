@@ -4,15 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cross-Docking-Rechner</title>
-<meta name="description" content="Interaktiver Rechner: Direktbelieferung, einstufiges und mehrstufiges Cross-Docking im Vergleich nach Kilometern, Anlieferungen und Kosten.">
+<meta name="description" content="Interaktiver Rechner: Direktbelieferung, einstufiges und mehrstufiges Cross-Docking im Vergleich – mit Warenfluss, Kommissionierung, Kilometern und Kosten.">
 <style>
 :root{
   --blau-900:#0F2E52; --blau-700:#17518C; --blau-100:#E3EDF7; --blau-050:#F3F7FC;
   --grau-900:#23282E; --grau-700:#434A53; --grau-500:#6B747E;
   --grau-300:#C3CAD2; --grau-150:#E4E8ED; --grau-050:#F5F7F9;
   --weiss:#FFFFFF;
-  --ban:#1B7A5A; --ora:#B07A08; --gur:#B33A2B;
-  --gut:#1B7A5A;
+
+  /* Warenfarben */
+  --banane:#E3A80B;      --banane-hell:#FAE7B0;
+  --orange:#E2711D;      --orange-hell:#FADFC6;
+  --gurke:#3F8F4F;       --gurke-hell:#CFE7D4;
+
+  --gut:#1B7A5A;  --warn:#B4740E;  --rot:#B33A2B;
   --radius:10px;
   --schatten:0 1px 2px rgba(35,40,46,.06), 0 8px 20px rgba(35,40,46,.07);
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -21,10 +26,10 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 body{
-  margin:0;padding:18px 16px 30px;background:var(--grau-050);color:var(--grau-900);
+  margin:0;padding:18px 16px 34px;background:var(--grau-050);color:var(--grau-900);
   font-family:var(--sans);font-size:15px;line-height:1.5;
 }
-.wrap{max-width:1160px;margin:0 auto}
+.wrap{max-width:1180px;margin:0 auto}
 h1{font-family:var(--serif);font-size:clamp(1.4rem,1.1rem + 1.2vw,1.85rem);margin:0 0 6px;letter-spacing:-.015em}
 h2{font-family:var(--serif);font-size:1.08rem;margin:0 0 12px;letter-spacing:-.01em}
 h3{font-size:.8rem;margin:0 0 10px;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
@@ -37,21 +42,24 @@ p{margin:0 0 10px}
 @media (max-width:900px){.layout{grid-template-columns:1fr}}
 .stack{display:flex;flex-direction:column;gap:16px}
 .panel{background:var(--weiss);border:1px solid var(--grau-150);border-radius:var(--radius);padding:16px;box-shadow:var(--schatten)}
+.breit{margin-top:16px}
 
+/* ---------- Bestellmatrix ---------- */
 table.matrix{width:100%;border-collapse:collapse;font-size:.85rem}
 table.matrix th{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--grau-500);text-align:center;padding:0 0 6px;font-weight:700}
 table.matrix th.rowhead{text-align:left;padding-right:6px;text-transform:none;letter-spacing:0;font-size:.82rem;color:var(--grau-900)}
 table.matrix td{padding:3px 2px;text-align:center}
 table.matrix td.rowhead{text-align:left;white-space:nowrap;font-weight:600}
-.punkt{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+.ware-label{display:flex;align-items:center;gap:7px}
+.ware-label svg{width:20px;height:20px;flex:none}
+.fil-kopf{display:flex;flex-direction:column;align-items:center;gap:2px}
+.fil-kopf svg{width:13px;height:13px}
 input[type="number"]{
   width:100%;min-width:0;padding:6px 4px;text-align:center;font-family:var(--mono);
   font-size:.88rem;font-variant-numeric:tabular-nums;background:var(--grau-050);
   color:var(--grau-900);border:1px solid var(--grau-300);border-radius:6px;
 }
-input[type="number"]:focus-visible,input[type="range"]:focus-visible,button:focus-visible{
-  outline:3px solid var(--blau-700);outline-offset:2px
-}
+input[type="number"]:focus-visible,input[type="range"]:focus-visible,button:focus-visible{outline:3px solid var(--blau-700);outline-offset:2px}
 .matrix tfoot td{padding-top:8px;font-family:var(--mono);font-size:.82rem;color:var(--grau-700);font-variant-numeric:tabular-nums;border-top:1px solid var(--grau-150)}
 
 .feld{display:grid;gap:4px;margin-bottom:12px}
@@ -62,32 +70,81 @@ input[type="range"]{width:100%;accent-color:var(--blau-700);background:transpare
 .tipp{font-size:.78rem;color:var(--grau-500);margin:8px 0 0}
 
 .reiter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.reiter button{
-  font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;
-  background:var(--weiss);color:var(--grau-700);border:1px solid var(--grau-300);font-family:inherit;
-}
+.reiter button{font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer;background:var(--weiss);color:var(--grau-700);border:1px solid var(--grau-300);font-family:inherit}
 .reiter button:hover{border-color:var(--blau-700);color:var(--blau-700)}
 .reiter button[aria-pressed="true"]{background:var(--blau-900);color:var(--weiss);border-color:var(--blau-900)}
 
+/* ---------- Karte ---------- */
 .kartenfeld{background:var(--grau-050);border:1px solid var(--grau-150);border-radius:8px;padding:6px}
 svg.karte{display:block;width:100%;height:auto;max-width:100%;touch-action:none}
 .knoten-name{font-size:5px;font-weight:700}
-.knoten-sub{font-family:var(--mono);font-size:3.6px}
+.knoten-sub{font-family:var(--mono);font-size:3.5px}
 .greifbar{cursor:grab}
 .greifbar:active{cursor:grabbing}
+.legende{display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--grau-700);margin-top:10px;align-items:center}
+.legende span{display:flex;align-items:center;gap:6px}
+.legende i{width:18px;height:3px;border-radius:2px;display:inline-block}
+.legende svg{width:16px;height:16px}
 
-.legende{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--grau-700);margin-top:10px}
-.legende span{display:flex;align-items:center;gap:5px}
-.legende i{width:14px;height:3px;border-radius:2px;display:inline-block}
-
+/* ---------- Kennzahlen ---------- */
 .kennzahlen{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;background:var(--grau-150);border:1px solid var(--grau-150);border-radius:8px;overflow:hidden;margin-top:14px}
 .kennzahl{background:var(--weiss);padding:11px 13px}
 .kennzahl .k{font-size:.69rem;letter-spacing:.07em;text-transform:uppercase;color:var(--grau-500);font-weight:700}
 .kennzahl .v{font-family:var(--mono);font-size:1.28rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25;margin-top:2px}
 .kennzahl .d{font-size:.74rem;color:var(--grau-700);font-variant-numeric:tabular-nums}
 .besser{color:var(--gut);font-weight:600}
-.schlechter{color:var(--gur);font-weight:600}
+.schlechter{color:var(--rot);font-weight:600}
 
+/* ---------- Warenfluss ---------- */
+.fluss{
+  display:grid;grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);gap:10px;align-items:stretch;
+}
+@media (max-width:820px){ .fluss{grid-template-columns:1fr;gap:6px} }
+.spalte{background:var(--grau-050);border:1px solid var(--grau-150);border-radius:8px;padding:12px}
+.spalte.mitte{background:var(--blau-050);border-color:var(--blau-100)}
+.spalte > h3{margin-bottom:12px}
+.pfeil{display:flex;align-items:center;justify-content:center;color:var(--grau-300)}
+.pfeil svg{width:26px;height:26px}
+@media (max-width:820px){ .pfeil{height:26px} .pfeil svg{transform:rotate(90deg)} }
+
+.einheit{margin-bottom:12px}
+.einheit:last-child{margin-bottom:0}
+.einheit-kopf{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;color:var(--grau-700);margin-bottom:5px}
+.einheit-kopf svg{width:18px;height:18px;flex:none}
+.einheit-kopf .meta{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--grau-500);font-weight:500;white-space:nowrap}
+.palette{
+  display:flex;flex-wrap:wrap;gap:3px;padding:5px;border-radius:5px;
+  border:1.5px solid var(--grau-300);background:var(--weiss);
+  width:max-content;max-width:100%;
+}
+.palette.artikelrein{border-style:dashed}
+.palette.adressiert{border-color:var(--blau-700)}
+.kiste{
+  width:26px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(0,0,0,.22);
+}
+.kiste svg{width:11px;height:11px;color:rgba(0,0,0,.72)}
+.kiste.banane{background:var(--banane)}
+.kiste.orange{background:var(--orange)}
+.kiste.gurke{background:var(--gurke)}
+.untertitel{font-size:.72rem;color:var(--grau-500);margin:4px 0 0}
+
+.cd-box{text-align:center}
+.cd-bild{display:flex;justify-content:center;margin-bottom:10px}
+.cd-bild svg{width:68px;height:68px;color:var(--blau-900)}
+.cd-titel{font-weight:700;font-size:.95rem;margin-bottom:6px;color:var(--blau-900)}
+.cd-text{font-size:.82rem;color:var(--grau-700);margin:0 0 10px}
+.marke{
+  display:inline-flex;align-items:center;gap:6px;font-size:.73rem;font-weight:700;
+  padding:4px 10px;border-radius:999px;margin:3px;
+}
+.marke svg{width:13px;height:13px}
+.marke.zu{background:var(--grau-150);color:var(--grau-700)}
+.marke.auf{background:#FBE3DE;color:var(--rot)}
+.marke.zeit{background:var(--blau-100);color:var(--blau-900)}
+.marke.keins{background:var(--grau-150);color:var(--grau-500)}
+
+/* ---------- Vergleich ---------- */
 .vergleich{display:grid;gap:14px}
 .balkenzeile{display:grid;grid-template-columns:minmax(88px,auto) minmax(0,1fr) minmax(76px,auto);gap:10px;align-items:center;margin-bottom:7px;font-size:.83rem}
 .balkenbahn{background:var(--grau-050);border-radius:4px;height:18px;overflow:hidden;border:1px solid var(--grau-150)}
@@ -106,34 +163,111 @@ details[open] summary::after{content:"–"}
 .rechenzeile{display:flex;justify-content:space-between;gap:14px;padding:3px 0;border-bottom:1px dotted var(--grau-150)}
 .rechenzeile:last-child{border-bottom:none}
 
+/* ---------- Warnkasten ---------- */
+.warnung{
+  border:2px solid var(--warn);border-left-width:6px;background:#FFFBF2;
+  border-radius:8px;padding:16px 18px;margin-top:16px;
+}
+.warn-kopf{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.warn-kopf svg{width:26px;height:26px;color:var(--warn);flex:none}
+.warn-kopf b{font-size:1rem;color:#7A4E05}
+.warnung p{font-size:.87rem;color:var(--grau-700);margin:0 0 9px}
+.warnung p:last-child{margin-bottom:0}
+.warnung ul{margin:0 0 9px;padding-left:19px;font-size:.87rem;color:var(--grau-700)}
+.warnung li{margin-bottom:5px}
+.warnung .falsch{color:var(--rot);font-weight:600}
+.warnung .richtig{color:var(--gut);font-weight:600}
+
 .modellhinweis{
-  border-left:4px solid var(--ora);background:var(--weiss);
+  border-left:4px solid var(--grau-300);background:var(--weiss);
   border-top:1px solid var(--grau-150);border-right:1px solid var(--grau-150);border-bottom:1px solid var(--grau-150);
-  padding:13px 15px;border-radius:0 8px 8px 0;font-size:.83rem;color:var(--grau-700);margin-top:16px;
+  padding:13px 15px;border-radius:0 8px 8px 0;font-size:.82rem;color:var(--grau-700);margin-top:14px;
 }
-.zuruecksetzen{
-  font-size:.79rem;font-weight:600;cursor:pointer;background:var(--grau-050);color:var(--grau-700);
-  border:1px solid var(--grau-300);border-radius:6px;padding:7px 12px;margin-top:12px;font-family:inherit;
-}
+.zuruecksetzen{font-size:.79rem;font-weight:600;cursor:pointer;background:var(--grau-050);color:var(--grau-700);border:1px solid var(--grau-300);border-radius:6px;padding:7px 12px;margin-top:12px;font-family:inherit}
 .zuruecksetzen:hover{border-color:var(--blau-700);color:var(--blau-700)}
 </style>
 </head>
 <body>
 
+<!-- ===== Symbolvorrat ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-banane" viewBox="0 0 24 24">
+      <path d="M4.6 5.2c-.5 7.8 3.9 13.3 13.5 14.2-.6-1.4-.9-2.6-.9-3.9-6.1-.9-8.6-4.6-8.9-10.4-.5-.9-2.6-1.3-3.7.1z" fill="currentColor"/>
+      <path d="M18.1 15.5c1.3.2 2.2-.3 2.8-1.4.3-.6-.4-1-.8-.5-.5.6-1.1.8-2 .7z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-orange" viewBox="0 0 24 24">
+      <circle cx="12" cy="14" r="7.2" fill="currentColor"/>
+      <path d="M12 7.2c-.3-2 .6-3.4 2.6-4.2.5 1.9-.2 3.4-2 4.2z" fill="currentColor"/>
+      <path d="M11.4 7.1C10.6 6 9.4 5.5 7.8 5.6c.4 1.3 1.4 2 3 2z" fill="currentColor" opacity=".75"/>
+    </symbol>
+    <symbol id="i-gurke" viewBox="0 0 24 24">
+      <path d="M5.3 18.9c-2.3-2.3-1.4-6.9 2.2-10.2 3.5-3.3 8-3.8 10-1.5 2 2.3.6 6.6-2.9 9.9-3.6 3.3-7.3 3.9-9.3 1.8z" fill="currentColor"/>
+      <g fill="#fff" opacity=".45">
+        <circle cx="9" cy="14" r=".9"/><circle cx="12" cy="11" r=".9"/><circle cx="15" cy="9.5" r=".9"/><circle cx="11.5" cy="15.5" r=".9"/>
+      </g>
+    </symbol>
+    <symbol id="i-stern" viewBox="0 0 24 24">
+      <path d="M12 2.6l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.4 5.9 21l1.5-6.8L2.2 9.6l6.9-.7z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-herz" viewBox="0 0 24 24">
+      <path d="M12 21C3.8 15.3 2.2 10.6 4.7 7.6c2.3-2.8 6.1-1.6 7.3 1.4 1.2-3 5-4.2 7.3-1.4 2.5 3 .9 7.7-7.3 13.4z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-raute" viewBox="0 0 24 24">
+      <path d="M12 2.2L21.8 12 12 21.8 2.2 12z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-pfeil" viewBox="0 0 24 24">
+      <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-halle" viewBox="0 0 24 24">
+      <path d="M2 10L12 3l10 7v11H2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M7 21v-6h4v6M14 14h4v4h-4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-kiste-zu" viewBox="0 0 24 24">
+      <path d="M3 7l9-4 9 4v10l-9 4-9-4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M3 7l9 4 9-4M12 11v10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="i-kiste-auf" viewBox="0 0 24 24">
+      <path d="M4 10v9l8 3 8-3v-9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <path d="M4 10l8 3 8-3M12 13v9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M8 6.5L12 3l4 3.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-uhr" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M12 7v5.3l3.4 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24">
+      <path d="M12 2.8l9.6 17.4H2.4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M12 9v5.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="12" cy="17.6" r="1.25" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-verboten" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.9"/>
+      <path d="M5.9 5.9l12.2 12.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div class="wrap">
   <header class="kopfzeile">
     <p class="augenbraue">Beschaffung · Warenumschlag</p>
     <h1>Cross-Docking-Rechner</h1>
-    <p class="lead">Drei Lieferanten, drei Filialen, ein Umschlagpunkt. Verändern Sie Bestellmengen, Lkw&#8209;Kapazität und Standorte – und sehen Sie sofort, wie sich gefahrene Kilometer, Anlieferungen und Kosten in den drei Verfahren unterscheiden.</p>
+    <p class="lead">Drei Lieferanten, drei Filialen, ein Umschlagpunkt. Verändern Sie Bestellmengen, Lkw&#8209;Kapazität und Standorte – und sehen Sie, wie sich Warenfluss, gefahrene Kilometer, Anlieferungen und Kosten in den drei Verfahren unterscheiden.</p>
   </header>
 
   <div class="layout">
+    <!-- ===================== Steuerung ===================== -->
     <div class="stack">
       <section class="panel">
         <h2>Bestellungen (Kisten)</h2>
         <table class="matrix">
           <thead>
-            <tr><th class="rowhead">Lieferant</th><th>Filiale 1</th><th>Filiale 2</th><th>Filiale 3</th></tr>
+            <tr>
+              <th class="rowhead">Lieferant</th>
+              <th><span class="fil-kopf"><svg style="color:var(--grau-700)"><use href="#i-stern"/></svg>Filiale 1</span></th>
+              <th><span class="fil-kopf"><svg style="color:var(--grau-700)"><use href="#i-herz"/></svg>Filiale 2</span></th>
+              <th><span class="fil-kopf"><svg style="color:var(--grau-700)"><use href="#i-raute"/></svg>Filiale 3</span></th>
+            </tr>
           </thead>
           <tbody id="matrix-body"></tbody>
           <tfoot>
@@ -156,11 +290,12 @@ details[open] summary::after{content:"–"}
       <section class="panel">
         <h2>Kurzfristige Bestelländerung</h2>
         <div class="feld"><label for="changes">Geänderte Bestellpositionen <span class="wert" id="changes-val"></span></label><input type="range" id="changes" min="0" max="6" step="1"></div>
-        <p class="tipp">Ohne Cross-Docking und beim <b>einstufigen</b> Verfahren ist die Ware beim Lieferanten bereits filialgenau vorkommissioniert – jede Änderung erzwingt eine Nachlieferung. Beim <b>mehrstufigen</b> Verfahren wird erst am Umschlagpunkt kommissioniert; die Änderung kostet dort nur Arbeitszeit, keine zusätzliche Fahrt.</p>
+        <p class="tipp">Ohne Cross-Docking und beim <b>einstufigen</b> Verfahren ist die Ware beim Lieferanten bereits filialgenau kommissioniert – jede Änderung erzwingt eine Nachlieferung. Beim <b>mehrstufigen</b> Verfahren wird erst am Umschlagpunkt kommissioniert; die Änderung kostet dort nur Arbeitszeit, keine zusätzliche Fahrt.</p>
         <button class="zuruecksetzen" id="reset" type="button">Werte zurücksetzen</button>
       </section>
     </div>
 
+    <!-- ===================== Ergebnis ===================== -->
     <div class="stack">
       <section class="panel">
         <div class="reiter" role="group" aria-label="Verfahren auswählen">
@@ -170,19 +305,41 @@ details[open] summary::after{content:"–"}
         </div>
 
         <div class="kartenfeld">
-          <svg class="karte" id="map" viewBox="0 0 200 150" role="img" aria-label="Karte der Lieferanten, des Cross-Docking-Punkts und der Filialen mit den gefahrenen Strecken">
+          <svg class="karte" id="map" viewBox="0 0 200 150" role="img" aria-label="Karte der Lieferanten, des Umschlagpunkts und der Filialen mit den gefahrenen Strecken">
             <g id="routes"></g><g id="nodes"></g>
           </svg>
         </div>
         <div class="legende">
-          <span><i style="background:var(--ban)"></i> Bananen</span>
-          <span><i style="background:var(--ora)"></i> Orangen</span>
-          <span><i style="background:var(--gur)"></i> Gurken</span>
+          <span><i style="background:var(--banane)"></i><svg style="color:var(--banane)"><use href="#i-banane"/></svg> Bananen</span>
+          <span><i style="background:var(--orange)"></i><svg style="color:var(--orange)"><use href="#i-orange"/></svg> Orangen</span>
+          <span><i style="background:var(--gurke)"></i><svg style="color:var(--gurke)"><use href="#i-gurke"/></svg> Gurken</span>
           <span><i style="background:var(--blau-900)"></i> Sammeltour ab CD-Punkt</span>
-          <span>Standorte lassen sich mit Maus oder Finger verschieben.</span>
+          <span style="color:var(--grau-500)">Standorte lassen sich verschieben.</span>
         </div>
 
         <div class="kennzahlen" id="kpis"></div>
+      </section>
+
+      <!-- ===== Warenfluss ===== -->
+      <section class="panel">
+        <h2 id="fluss-titel">Was passiert mit der Ware?</h2>
+        <p class="tipp" style="margin:0 0 14px" id="fluss-unter"></p>
+        <div class="fluss">
+          <div class="spalte">
+            <h3>Beim Lieferanten</h3>
+            <div id="fluss-links"></div>
+          </div>
+          <div class="pfeil"><svg><use href="#i-pfeil"/></svg></div>
+          <div class="spalte mitte">
+            <h3>Am Umschlagpunkt</h3>
+            <div id="fluss-mitte"></div>
+          </div>
+          <div class="pfeil"><svg><use href="#i-pfeil"/></svg></div>
+          <div class="spalte">
+            <h3>In der Filiale</h3>
+            <div id="fluss-rechts"></div>
+          </div>
+        </div>
       </section>
 
       <section class="panel">
@@ -198,11 +355,27 @@ details[open] summary::after{content:"–"}
         <summary>Rechenweg für das gewählte Verfahren</summary>
         <div class="details-inhalt"><div class="rechnung" id="calc"></div></div>
       </details>
-
-      <div class="modellhinweis">
-        <b>Modellannahmen:</b> Die Entfernungen sind Luftlinien auf der Karte; die Touren folgen der festen Reihenfolge Filiale&nbsp;1 → 2 → 3 ohne Routenoptimierung. Reale Tourenplanung rechnet mit Straßenkilometern, Zeitfenstern und Lenkzeiten. Die Kilometerzahlen zeigen die <em>Richtung</em> des Effekts zuverlässig, nicht seinen exakten Betrag. Einstufiges und mehrstufiges Cross-Docking unterscheiden sich im Modell nicht in der Streckenführung, sondern im Ort der Kommissionierung – und damit in Flexibilität und Umschlagkosten.
-      </div>
     </div>
+  </div>
+
+  <!-- ===== Warnkasten: kein Lager ===== -->
+  <div class="warnung">
+    <div class="warn-kopf">
+      <svg><use href="#i-warn"/></svg>
+      <b>Häufiges Missverständnis: „Beim mehrstufigen Cross-Docking wird doch gelagert.“</b>
+    </div>
+    <p><span class="falsch">Nein.</span> Eine Lagerhaltung im eigentlichen Sinn gibt es auch beim mehrstufigen Cross-Docking nicht. <span class="richtig">Das bestandslose Umschlagen ist das Kernmerkmal aller Cross-Docking-Varianten.</span> Es gibt lediglich eine kurzfristige Zwischenpufferung, die beim mehrstufigen Verfahren meist etwas länger ausfällt als beim einstufigen.</p>
+    <ul>
+      <li><b>Warum kein Lager?</b> Die Ware wird nicht eingelagert und nicht als Bestand geführt. Sie wird nur für die Kommissionierung und die Tourenbildung kurz bereitgestellt. Als Richtwert wird in der Literatur meist ein Durchlauf innerhalb von 24 Stunden genannt, teils bis 48 Stunden – eine gängige Orientierungsgröße, keine feste Norm.</li>
+      <li><b>Genauer formuliert:</b> „ohne Lagerhaltung“ ist nicht falsch, präziser ist <b>„ohne Bevorratung, bestandslos, aber mit kurzer Pufferzeit“</b>.</li>
+      <li><b>Uneinheitliche Begriffe:</b> Manche Lehrbücher nennen die einstufige Variante <i>Transshipment</i> und meinen mit <i>Cross-Docking</i> im engeren Sinn nur die mehrstufige Variante. Die Terminologie des eingeführten Schulbuchs prüfen.</li>
+      <li><b>Mischformen in der Praxis:</b> Manche Verteilzentren schlagen einen Teil der Ware um und lagern den Rest klassisch ein. Das ist dann aber kein „Cross-Docking mit Lager“, sondern ein <b>Zentrallager mit Cross-Docking-Bereich</b>.</li>
+    </ul>
+    <p style="margin:0"><b>Merksatz:</b> Ein Cross-Docking-Punkt ist ein Umschlagpunkt, kein Lager – unabhängig davon, ob ein- oder mehrstufig gearbeitet wird. Verlängert sich die Verweildauer so weit, dass Bestand entsteht, handelt es sich definitionsgemäß nicht mehr um Cross-Docking.</p>
+  </div>
+
+  <div class="modellhinweis">
+    <b>Modellannahmen (didaktische Vereinfachung):</b> Die Entfernungen sind Luftlinien auf der Karte; die Touren folgen der festen Reihenfolge Filiale&nbsp;1 → 2 → 3 ohne Routenoptimierung. Reale Tourenplanung rechnet mit Straßenkilometern, Zeitfenstern und Lenkzeiten. Die Kilometerzahlen zeigen die <em>Richtung</em> des Effekts zuverlässig, nicht seinen exakten Betrag. Einstufiges und mehrstufiges Cross-Docking unterscheiden sich im Modell nicht in der Streckenführung, sondern im Ort der Kommissionierung – und damit in Flexibilität und Umschlagaufwand. Eine Kiste steht hier für eine Ladeeinheit; in der Praxis wären das meist Paletten oder Rollcontainer.
   </div>
 </div>
 
@@ -216,12 +389,16 @@ details[open] summary::after{content:"–"}
     pos:{ L0:[22,26], L1:[18,75], L2:[24,124], CD:[100,75], F0:[176,28], F1:[182,76], F2:[172,124] }
   };
   var SUP = [
-    {name:"Bananen", color:"var(--ban)"},
-    {name:"Orangen", color:"var(--ora)"},
-    {name:"Gurken",  color:"var(--gur)"}
+    {name:"Bananen", klasse:"banane", farbe:"var(--banane)", icon:"i-banane"},
+    {name:"Orangen", klasse:"orange", farbe:"var(--orange)", icon:"i-orange"},
+    {name:"Gurken",  klasse:"gurke",  farbe:"var(--gurke)",  icon:"i-gurke"}
   ];
-  var FIL = ["Filiale 1","Filiale 2","Filiale 3"];
-  var SC  = {A:"Ohne Cross-Docking", B:"Einstufiges Cross-Docking", C:"Mehrstufiges Cross-Docking"};
+  var FIL = [
+    {name:"Filiale 1", icon:"i-stern"},
+    {name:"Filiale 2", icon:"i-herz"},
+    {name:"Filiale 3", icon:"i-raute"}
+  ];
+  var SC = {A:"Ohne Cross-Docking", B:"Einstufiges Cross-Docking", C:"Mehrstufiges Cross-Docking"};
 
   var S = JSON.parse(JSON.stringify(DEF));
   S.scenario = "A";
@@ -229,7 +406,9 @@ details[open] summary::after{content:"–"}
   function eur(n){ return n.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2}) + " €"; }
   function km(n){ return n.toLocaleString("de-DE",{maximumFractionDigits:0}) + " km"; }
   function d(a,b){ return Math.sqrt((a[0]-b[0])*(a[0]-b[0]) + (a[1]-b[1])*(a[1]-b[1])); }
+  function sym(id, stil){ return '<svg' + (stil ? ' style="' + stil + '"' : '') + '><use href="#' + id + '"/></svg>'; }
 
+  /* ================= Rechenmodell ================= */
   function compute(sc){
     var p = S.pos, cap = S.cap;
     var perSup = S.orders.map(function(r){ return r.reduce(function(a,b){return a+b;},0); });
@@ -251,7 +430,7 @@ details[open] summary::after{content:"–"}
         var pts = [p["L"+s]];
         served.forEach(function(f){ pts.push(p["F"+f]); });
         pts.push(p["L"+s]);
-        r.legs.push({pts:pts, color:SUP[s].color});
+        r.legs.push({pts:pts, color:SUP[s].farbe});
       });
     } else {
       S.orders.forEach(function(row,s){
@@ -261,17 +440,17 @@ details[open] summary::after{content:"–"}
         r.km += len*touren; r.fahrten += touren;
         r.steps.push({t:SUP[s].name+": Lieferant → CD-Punkt → zurück",
                       v:len.toFixed(0)+" km × "+touren+" Fahrt(en) = "+(len*touren).toFixed(0)+" km"});
-        r.legs.push({pts:[p["L"+s], p.CD], color:SUP[s].color});
+        r.legs.push({pts:[p["L"+s], p.CD], color:SUP[s].farbe});
       });
       var served = [0,1,2].filter(function(f){ return perFil[f] > 0; });
       if(served.length){
-        var touren2 = Math.ceil(total/cap);
-        var len2 = d(p.CD, p["F"+served[0]]);
-        for(var j=1;j<served.length;j++) len2 += d(p["F"+served[j-1]], p["F"+served[j]]);
-        len2 += d(p["F"+served[served.length-1]], p.CD);
-        r.km += len2*touren2; r.fahrten += touren2; r.anlief += served.length*touren2;
+        var t2 = Math.ceil(total/cap);
+        var l2 = d(p.CD, p["F"+served[0]]);
+        for(var j=1;j<served.length;j++) l2 += d(p["F"+served[j-1]], p["F"+served[j]]);
+        l2 += d(p["F"+served[served.length-1]], p.CD);
+        r.km += l2*t2; r.fahrten += t2; r.anlief += served.length*t2;
         r.steps.push({t:"Sammeltour ab CD-Punkt über "+served.length+" Filiale(n)",
-                      v:len2.toFixed(0)+" km × "+touren2+" Tour(en) = "+(len2*touren2).toFixed(0)+" km"});
+                      v:l2.toFixed(0)+" km × "+t2+" Tour(en) = "+(l2*t2).toFixed(0)+" km"});
         var pts2 = [p.CD];
         served.forEach(function(f){ pts2.push(p["F"+f]); });
         pts2.push(p.CD);
@@ -283,9 +462,7 @@ details[open] summary::after{content:"–"}
     r.nachlief = 0;
     if(S.changes > 0 && sc !== "C"){
       var pairs = [];
-      S.orders.forEach(function(row,s){
-        row.forEach(function(q,f){ if(q>0) pairs.push(2*d(p["L"+s], p["F"+f])); });
-      });
+      S.orders.forEach(function(row,s){ row.forEach(function(q,f){ if(q>0) pairs.push(2*d(p["L"+s], p["F"+f])); }); });
       var avg = pairs.length ? pairs.reduce(function(a,b){return a+b;},0)/pairs.length : 0;
       r.nachlief = S.changes;
       r.km += avg*S.changes; r.fahrten += S.changes; r.anlief += S.changes;
@@ -300,17 +477,24 @@ details[open] summary::after{content:"–"}
     r.kostenFix      = (sc === "A") ? 0 : S.fixCD;
     r.kosten = r.kostenFahrt + r.kostenAnl + r.kostenUmschlag + r.kostenKomm + r.kostenFix;
     r.total = total;
+    r.perSup = perSup; r.perFil = perFil;
     return r;
   }
 
-  var svg = document.getElementById("map");
-  var gR  = document.getElementById("routes");
-  var gN  = document.getElementById("nodes");
-  var NS  = "http://www.w3.org/2000/svg";
+  /* ================= Karte ================= */
+  var svgEl = document.getElementById("map");
+  var gR = document.getElementById("routes");
+  var gN = document.getElementById("nodes");
+  var NS = "http://www.w3.org/2000/svg";
   function el(tag, attrs){
     var n = document.createElementNS(NS, tag);
     for(var k in attrs) n.setAttribute(k, attrs[k]);
     return n;
+  }
+  function useEl(id, x, y, groesse, farbe){
+    var u = el("use", {href:"#"+id, x:x, y:y, width:groesse, height:groesse});
+    if(farbe) u.setAttribute("style","color:"+farbe);
+    return u;
   }
 
   function drawRoutes(res){
@@ -319,43 +503,42 @@ details[open] summary::after{content:"–"}
       for(var i=1;i<leg.pts.length;i++){
         var a = leg.pts[i-1], b = leg.pts[i];
         gR.appendChild(el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],
-          stroke:leg.color,"stroke-width":1.1,"stroke-linecap":"round",opacity:.85}));
+          stroke:leg.color,"stroke-width":1.5,"stroke-linecap":"round",opacity:.9}));
         var mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
         var ang=Math.atan2(b[1]-a[1], b[0]-a[0])*180/Math.PI;
-        gR.appendChild(el("path",{d:"M -2.2 -1.8 L 2 0 L -2.2 1.8 Z",fill:leg.color,
-          transform:"translate("+mx+","+my+") rotate("+ang+")",opacity:.9}));
+        gR.appendChild(el("path",{d:"M -2.4 -2 L 2.2 0 L -2.4 2 Z",fill:leg.color,
+          transform:"translate("+mx+","+my+") rotate("+ang+")"}));
       }
     });
   }
 
-  function nodeList(){
-    var n = [];
-    SUP.forEach(function(s,i){ n.push({key:"L"+i,label:s.name,sub:"Lieferant",color:s.color,shape:"truck"}); });
-    if(S.scenario !== "A"){
-      n.push({key:"CD",label:"CD-Punkt",sub:"Umschlag",color:"var(--blau-900)",shape:"hub"});
-    }
-    FIL.forEach(function(f,i){ n.push({key:"F"+i,label:"F "+(i+1),sub:f,color:"var(--grau-700)",shape:"store"}); });
-    return n;
-  }
-
   function drawNodes(){
     gN.textContent = "";
-    nodeList().forEach(function(n){
+    var knoten = [];
+    SUP.forEach(function(s,i){ knoten.push({key:"L"+i, label:s.name, sub:"Lieferant", art:"ware", icon:s.icon, farbe:s.farbe}); });
+    if(S.scenario !== "A") knoten.push({key:"CD", label:"CD-Punkt", sub:"kein Lager", art:"hub", farbe:"var(--blau-900)"});
+    FIL.forEach(function(f,i){ knoten.push({key:"F"+i, label:"F "+(i+1), sub:f.name, art:"filiale", icon:f.icon, farbe:"var(--grau-700)"}); });
+
+    knoten.forEach(function(n){
       var x = S.pos[n.key][0], y = S.pos[n.key][1];
       var g = el("g",{class:"greifbar","data-key":n.key,transform:"translate("+x+","+y+")"});
-      if(n.shape === "hub"){
-        g.appendChild(el("rect",{x:-9,y:-8,width:18,height:16,rx:2,fill:"var(--weiss)",stroke:n.color,"stroke-width":1.2}));
-        g.appendChild(el("path",{d:"M -6 2 L 0 -4 L 6 2 Z",fill:n.color,opacity:.85}));
-      } else if(n.shape === "truck"){
-        g.appendChild(el("rect",{x:-8,y:-6,width:16,height:12,rx:2,fill:n.color,opacity:.16,stroke:n.color,"stroke-width":1.1}));
-        g.appendChild(el("circle",{cx:0,cy:0,r:2.4,fill:n.color}));
+      if(n.art === "hub"){
+        g.appendChild(el("rect",{x:-10,y:-9,width:20,height:18,rx:2.5,fill:"var(--weiss)",stroke:n.farbe,"stroke-width":1.4}));
+        g.appendChild(useEl("i-halle",-7,-6.5,14,n.farbe));
+      } else if(n.art === "ware"){
+        g.appendChild(el("circle",{cx:0,cy:0,r:8.5,fill:n.farbe,opacity:.17}));
+        g.appendChild(el("circle",{cx:0,cy:0,r:8.5,fill:"none",stroke:n.farbe,"stroke-width":1.2}));
+        g.appendChild(useEl(n.icon,-6,-6,12,n.farbe));
       } else {
-        g.appendChild(el("rect",{x:-7,y:-6,width:14,height:12,rx:1.5,fill:"var(--weiss)",stroke:"var(--grau-300)","stroke-width":1.1}));
-        g.appendChild(el("rect",{x:-7,y:-6,width:14,height:3.4,fill:"var(--grau-500)",opacity:.55}));
+        g.appendChild(el("rect",{x:-8,y:-7,width:16,height:14,rx:2,fill:"var(--weiss)",stroke:"var(--grau-300)","stroke-width":1.2}));
+        g.appendChild(el("rect",{x:-8,y:-7,width:16,height:3.6,fill:"var(--grau-500)",opacity:.5}));
+        g.appendChild(useEl(n.icon,-3.4,-2.6,6.8,"var(--grau-700)"));
       }
-      var t1 = el("text",{class:"knoten-name",x:0,y:-9.5,"text-anchor":"middle",fill:"var(--grau-900)"});
+      var t1 = el("text",{class:"knoten-name",x:0,y:-11,"text-anchor":"middle",fill:"var(--grau-900)",
+        stroke:"var(--grau-050)","stroke-width":1.6,"paint-order":"stroke","stroke-linejoin":"round"});
       t1.textContent = n.label;
-      var t2 = el("text",{class:"knoten-sub",x:0,y:12.5,"text-anchor":"middle",fill:"var(--grau-500)"});
+      var t2 = el("text",{class:"knoten-sub",x:0,y:13.5,"text-anchor":"middle",fill:"var(--grau-500)",
+        stroke:"var(--grau-050)","stroke-width":1.2,"paint-order":"stroke","stroke-linejoin":"round"});
       t2.textContent = n.sub;
       g.appendChild(t1); g.appendChild(t2);
       gN.appendChild(g);
@@ -363,42 +546,145 @@ details[open] summary::after{content:"–"}
   }
 
   var drag = null;
-  svg.addEventListener("pointerdown", function(e){
+  svgEl.addEventListener("pointerdown", function(e){
     var g = e.target.closest ? e.target.closest("g[data-key]") : null;
     if(!g) return;
     drag = g.getAttribute("data-key");
-    svg.setPointerCapture(e.pointerId);
+    svgEl.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
-  svg.addEventListener("pointermove", function(e){
+  svgEl.addEventListener("pointermove", function(e){
     if(!drag) return;
-    var ctm = svg.getScreenCTM(); if(!ctm) return;
-    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var ctm = svgEl.getScreenCTM(); if(!ctm) return;
+    var pt = svgEl.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
     var loc = pt.matrixTransform(ctm.inverse());
-    S.pos[drag] = [Math.min(194, Math.max(6, loc.x)), Math.min(142, Math.max(12, loc.y))];
+    S.pos[drag] = [Math.min(192, Math.max(8, loc.x)), Math.min(140, Math.max(14, loc.y))];
     render();
   });
   function endDrag(){ drag = null; }
-  svg.addEventListener("pointerup", endDrag);
-  svg.addEventListener("pointercancel", endDrag);
+  svgEl.addEventListener("pointerup", endDrag);
+  svgEl.addEventListener("pointercancel", endDrag);
 
+  /* ================= Warenfluss ================= */
+  function kiste(wareIdx, filIdx){
+    var inhalt = (filIdx === null || filIdx === undefined) ? "" : sym(FIL[filIdx].icon);
+    return '<span class="kiste ' + SUP[wareIdx].klasse + '">' + inhalt + '</span>';
+  }
+  function palette(zellen, extraKlasse){
+    return '<div class="palette ' + (extraKlasse || "") + '">' + zellen.join("") + "</div>";
+  }
+  function einheitKopf(icon, farbe, text, meta){
+    return '<div class="einheit-kopf">' + sym(icon, "color:" + farbe) +
+           "<span>" + text + "</span>" +
+           (meta ? '<span class="meta">' + meta + "</span>" : "") + "</div>";
+  }
+
+  function warenflussLinks(sc){
+    var html = "";
+    S.orders.forEach(function(row,s){
+      var menge = row.reduce(function(a,b){return a+b;},0);
+      if(menge === 0) return;
+      var zellen = [];
+      if(sc === "C"){
+        for(var i=0;i<menge;i++) zellen.push(kiste(s, null));
+      } else {
+        row.forEach(function(q,f){ for(var i=0;i<q;i++) zellen.push(kiste(s, f)); });
+      }
+      html += '<div class="einheit">' +
+        einheitKopf(SUP[s].icon, SUP[s].farbe, SUP[s].name, menge + " Kisten") +
+        palette(zellen, sc === "C" ? "artikelrein" : "adressiert") +
+        '<p class="untertitel">' +
+          (sc === "C"
+            ? "artikelrein – noch keiner Filiale zugeordnet"
+            : "bereits filialgenau kommissioniert und adressiert") +
+        "</p></div>";
+    });
+    return html;
+  }
+
+  function warenflussRechts(sc){
+    var html = "";
+    FIL.forEach(function(fil,f){
+      var menge = S.orders.reduce(function(a,r){ return a + r[f]; },0);
+      if(menge === 0) return;
+      if(sc === "A"){
+        var teile = "", anz = 0;
+        S.orders.forEach(function(row,s){
+          if(row[f] === 0) return;
+          anz++;
+          var z = [];
+          for(var i=0;i<row[f];i++) z.push(kiste(s, f));
+          teile += '<div style="margin-bottom:5px">' + palette(z, "adressiert") + "</div>";
+        });
+        html += '<div class="einheit">' +
+          einheitKopf(fil.icon, "var(--grau-700)", fil.name, anz + " Anlieferungen") +
+          teile +
+          '<p class="untertitel">' + anz + " getrennte Sendungen, je Lieferant eine</p>" +
+          "</div>";
+      } else {
+        var zellen = [];
+        S.orders.forEach(function(row,s){ for(var i=0;i<row[f];i++) zellen.push(kiste(s, f)); });
+        html += '<div class="einheit">' +
+          einheitKopf(fil.icon, "var(--grau-700)", fil.name, "1 Anlieferung") +
+          palette(zellen, "adressiert") +
+          '<p class="untertitel">eine gemischte Ladeeinheit mit Ware aller Lieferanten</p>' +
+          "</div>";
+      }
+    });
+    return html;
+  }
+
+  function warenflussMitte(sc, res){
+    if(sc === "A"){
+      return '<div class="cd-box">' +
+        '<div class="cd-bild">' + sym("i-verboten","color:var(--grau-300)") + "</div>" +
+        '<div class="cd-titel" style="color:var(--grau-500)">Kein Umschlagpunkt</div>' +
+        '<p class="cd-text">Jeder Lieferant kommissioniert filialgenau und fährt die Filialen selbst an. Die Ware wird unterwegs nicht angefasst.</p>' +
+        '<span class="marke keins">' + sym("i-kiste-zu") + "0 Kisten umgeschlagen</span>" +
+        "</div>";
+    }
+    if(sc === "B"){
+      return '<div class="cd-box">' +
+        '<div class="cd-bild">' + sym("i-halle") + "</div>" +
+        '<div class="cd-titel">Nur bündeln</div>' +
+        '<p class="cd-text">Die Ladeeinheiten sind bereits adressiert. Sie werden <b>ungeöffnet</b> vom eingehenden auf den ausgehenden Lkw umgeschlagen und nach Filiale zusammengestellt.</p>' +
+        '<span class="marke zu">' + sym("i-kiste-zu") + "Kisten bleiben geschlossen</span>" +
+        '<span class="marke zeit">' + sym("i-uhr") + "Durchlauf unter 24 h, kein Bestand</span>" +
+        "</div>";
+    }
+    return '<div class="cd-box">' +
+      '<div class="cd-bild">' + sym("i-kiste-auf") + "</div>" +
+      '<div class="cd-titel">Kommissionieren</div>' +
+      '<p class="cd-text">Die artikelreinen Ladeeinheiten werden <b>aufgelöst</b>, nach Filialbedarf neu zusammengestellt, <b>adressiert und endverpackt</b>. Erst hier entstehen die Filialsymbole.</p>' +
+      '<span class="marke auf">' + sym("i-kiste-auf") + res.total + " Kisten umgepackt</span>" +
+      '<span class="marke zeit">' + sym("i-uhr") + "Pufferzeit etwas länger, weiterhin kein Bestand</span>" +
+      "</div>";
+  }
+
+  var FLUSS_TEXT = {
+    A: "Die Ware ist beim Lieferanten schon filialgenau gepackt und geht direkt an die Filiale. Jede Filiale nimmt dadurch so viele Sendungen entgegen, wie sie Lieferanten hat.",
+    B: "Der Lieferant kommissioniert filialgenau. Am Umschlagpunkt werden die Ladeeinheiten nur gebündelt – sie bleiben geschlossen. Jede Filiale erhält eine Anlieferung.",
+    C: "Der Lieferant liefert artikelrein, ohne Filialzuordnung. Erst am Umschlagpunkt werden die Einheiten aufgelöst und je Filiale neu zusammengestellt."
+  };
+
+  /* ================= Bedienelemente ================= */
   var mb = document.getElementById("matrix-body");
   SUP.forEach(function(s,i){
     var tr = document.createElement("tr");
     var th = document.createElement("td");
     th.className = "rowhead";
-    th.innerHTML = '<span class="punkt" style="background:'+s.color+'"></span>'+s.name;
+    th.innerHTML = '<span class="ware-label">' + sym(s.icon, "color:" + s.farbe) + s.name + "</span>";
     tr.appendChild(th);
     [0,1,2].forEach(function(f){
       var td = document.createElement("td");
       var inp = document.createElement("input");
-      inp.type="number"; inp.min="0"; inp.max="99"; inp.step="1";
+      inp.type="number"; inp.min="0"; inp.max="30"; inp.step="1";
       inp.id = "o-"+i+"-"+f;
       inp.value = S.orders[i][f];
-      inp.setAttribute("aria-label", s.name+" für "+FIL[f]);
+      inp.setAttribute("aria-label", s.name + " für " + FIL[f].name);
       inp.addEventListener("input", function(){
         var v = parseInt(inp.value,10);
-        S.orders[i][f] = (isNaN(v)||v<0) ? 0 : Math.min(99,v);
+        S.orders[i][f] = (isNaN(v)||v<0) ? 0 : Math.min(30,v);
         render();
       });
       td.appendChild(inp); tr.appendChild(td);
@@ -444,14 +730,14 @@ details[open] summary::after{content:"–"}
     }).join("");
   }
 
+  /* ================= Rendern ================= */
   function render(){
     var res = {A:compute("A"), B:compute("B"), C:compute("C")};
     var cur = res[S.scenario], base = res.A;
 
-    var perFil = [0,1,2].map(function(f){ return S.orders.reduce(function(a,r){ return a + r[f]; },0); });
-    document.getElementById("sum-f1").textContent = perFil[0];
-    document.getElementById("sum-f2").textContent = perFil[1];
-    document.getElementById("sum-f3").textContent = perFil[2];
+    document.getElementById("sum-f1").textContent = cur.perFil[0];
+    document.getElementById("sum-f2").textContent = cur.perFil[1];
+    document.getElementById("sum-f3").textContent = cur.perFil[2];
     document.getElementById("sum-total").textContent = cur.total;
 
     SLIDERS.forEach(function(s){ document.getElementById(s.id+"-val").textContent = s.fmt(S[s.id]); });
@@ -466,8 +752,8 @@ details[open] summary::after{content:"–"}
     function diff(v, unit){
       if(S.scenario === "A") return '<span class="d">Vergleichsbasis</span>';
       var cls = v < 0 ? "besser" : (v > 0 ? "schlechter" : "");
-      var sign = v > 0 ? "+" : (v < 0 ? "−" : "±");
-      return '<span class="d '+cls+'">'+sign+" "+unit(Math.abs(v))+" ggü. ohne CD</span>";
+      var sg = v > 0 ? "+" : (v < 0 ? "−" : "±");
+      return '<span class="d '+cls+'">'+sg+" "+unit(Math.abs(v))+" ggü. ohne CD</span>";
     }
     document.getElementById("kpis").innerHTML =
       '<div class="kennzahl"><div class="k">Gefahrene km</div><div class="v">'+km(cur.km)+'</div>'+diff(dk,km)+'</div>'+
@@ -475,6 +761,12 @@ details[open] summary::after{content:"–"}
       '<div class="kennzahl"><div class="k">Anlieferungen</div><div class="v">'+cur.anlief+'</div><span class="d">in den Filialen</span></div>'+
       '<div class="kennzahl"><div class="k">Umschlag am CD</div><div class="v">'+cur.umschlag+'</div><span class="d">Kisten</span></div>'+
       '<div class="kennzahl"><div class="k">Kosten je Tag</div><div class="v">'+eur(cur.kosten)+'</div>'+diff(dc,eur)+'</div>';
+
+    document.getElementById("fluss-titel").textContent = "Was passiert mit der Ware? · " + SC[S.scenario];
+    document.getElementById("fluss-unter").textContent = FLUSS_TEXT[S.scenario];
+    document.getElementById("fluss-links").innerHTML  = warenflussLinks(S.scenario);
+    document.getElementById("fluss-mitte").innerHTML  = warenflussMitte(S.scenario, cur);
+    document.getElementById("fluss-rechts").innerHTML = warenflussRechts(S.scenario);
 
     function rows(k){
       return ["A","B","C"].map(function(sc){
@@ -492,14 +784,24 @@ details[open] summary::after{content:"–"}
     html += '<div style="height:10px"></div>';
     html += row("Fahrtkosten: "+cur.km.toFixed(0)+" km × "+eur(S.costKm), eur(cur.kostenFahrt));
     html += row("Anlieferungen: "+cur.anlief+" × "+eur(S.costAnl), eur(cur.kostenAnl));
-    if(cur.umschlag)     html += row("Umschlag: "+cur.umschlag+" Kisten × "+eur(S.handling), eur(cur.kostenUmschlag));
-    if(cur.kostenKomm)   html += row("Kommissionierung: "+cur.total+" Kisten × "+eur(S.komm), eur(cur.kostenKomm));
-    if(cur.kostenFix)    html += row("Fixkosten CD-Punkt", eur(cur.kostenFix));
+    if(cur.umschlag)   html += row("Umschlag: "+cur.umschlag+" Kisten × "+eur(S.handling), eur(cur.kostenUmschlag));
+    if(cur.kostenKomm) html += row("Kommissionierung: "+cur.total+" Kisten × "+eur(S.komm), eur(cur.kostenKomm));
+    if(cur.kostenFix)  html += row("Fixkosten CD-Punkt", eur(cur.kostenFix));
     html += row("Gesamtkosten je Tag", eur(cur.kosten));
     document.getElementById("calc").innerHTML = html;
   }
 
   render();
+
+  /* Höhe an eine einbettende Seite melden (wirkungslos, wenn niemand zuhört) */
+  function meldeHoehe(){
+    if(window.parent === window) return;
+    try{
+      window.parent.postMessage({typ:"rechnerHoehe", hoehe:document.body.scrollHeight}, "*");
+    }catch(e){}
+  }
+  if(window.ResizeObserver){ new ResizeObserver(meldeHoehe).observe(document.body); }
+  window.addEventListener("load", meldeHoehe);
 })();
 </script>
 </body>
