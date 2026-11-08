@@ -11,18 +11,38 @@
 <div id="kopf"></div>
 <div id="krumen"></div>
 
-<main class="inhalt">
-  <div class="titelblock">
-    <p class="augenbraue">Lernplattform</p>
-    <h1>Unterrichtsmaterial Wirtschaft und Recht</h1>
-    <p class="lead">Materialien, Übersichten und interaktive Werkzeuge für den Unterricht am Wirtschaftsgymnasium und an der kaufmännischen Berufsschule. Wählen Sie ein Fach, um zu den Themen zu gelangen.</p>
+<section class="hero">
+  <div class="hero-inner">
+    <p class="augenbraue">Wirtschaft · Recht · Politik · Geschichte</p>
+    <h1>Was lernst du heute?</h1>
+    <p class="lead">Materialien, Übersichten und interaktive Werkzeuge für den Unterricht am Wirtschaftsgymnasium und an der kaufmännischen Berufsschule. Wähle ein Fach und leg los.</p>
+    <div class="knopfzeile">
+      <a class="knopf primaer" href="#faecher">Fach wählen</a>
+      <a class="knopf sekundaer" href="#coaches">Zu den Lerncoaches</a>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="inhalt">
+    <h2 id="faecher">Deine Fächer</h2>
+    <p class="lead">Jedes Fach hat seine eigene Farbe, damit du dich schneller zurechtfindest.</p>
+    <ul data-kacheln="faecher"></ul>
   </div>
 
-  <h2>Fächer und Bereiche</h2>
-  <ul data-kacheln="faecher"></ul>
+  <section class="band band-coach" id="coaches">
+    <div class="band-inner">
+      <h2>Lern mit dem Coach</h2>
+      <p class="lead">Ein Lerncoach ist ein Prompt: Du kopierst ihn in ein KI-Programm deiner Wahl und lernst im Gespräch. Das ist freiwillig, die Aufgaben gehen auch ohne KI.</p>
+      <ul data-kacheln="themen-fach" data-id="ki-coaches"></ul>
+      <p class="band-fuss"><a href="ki-coaches/#nutzung">Hinweise zur Nutzung</a></p>
+    </div>
+  </section>
 
-  <h2>Zuletzt veröffentlicht</h2>
-  <ul data-kacheln="veroeffentlicht"></ul>
+  <div class="inhalt">
+    <h2 id="themen">Alle Themen</h2>
+    <ul data-kacheln="veroeffentlicht"></ul>
+  </div>
 </main>
 
 <div id="fuss"></div>
