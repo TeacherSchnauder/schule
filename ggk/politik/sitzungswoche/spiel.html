@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<!--
+  Die Sitzungswoche – Escape Game zum politischen System (GGK J1, BPE 2)
+  Version 1.3 – erstellt am 08.11.2026
+  Eine einzige Datei ohne externe Abhängigkeiten. Alle Inhalte stehen im
+  Konfigurationsobjekt CONFIG am Anfang des Skripts.
+  Beamer-Ansicht (Musik, Timer, Anleitung): diese Seite mit #beamer am Ende der Adresse öffnen.
+  Änderungen:
+    1.3 (08.11.2026) – Ablage im Repository unter ggk/politik/sitzungswoche/spiel.html; Beamer-Ansicht mit
+                       QR-Code; „Beamer-Ansicht öffnen“ im Lehrkraftmodus öffnet auch aus der Vorschau das ganze Fenster
+    1.2 (08.11.2026) – Musik auch in der Schüleransicht (Knopf „Musik“, anfangs aus):
+                       Stationen 1–4 „Die Gedanken sind frei“, ab Station 5 Nationalhymne (Schleife)
+    1.1 (08.11.2026) – Musik der Beamer-Ansicht: „Die Gedanken sind frei“ während des Spiels (Schleife),
+                       Nationalhymne (Melodie Haydn, 3. Strophe, Schlusszeilen wiederholt) zum Abschluss
+                       per eigenem Knopf; „Ode an die Freude“ entfernt
+    1.0 (08.11.2026) – erste Fassung
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Die Sitzungswoche – Escape Game</title>
+<style>
+:root{
+  --ink:#1b2333; --muted:#4a5568; --bg:#e9edf3; --panel:#ffffff; --line:#cfd6e2;
+  --navy:#1f3a68; --navy2:#16294a; --gold:#e2b33c; --gold2:#b88a12;
+  --teal:#176f6c; --red:#b3261e; --green:#1e7a34; --purple:#5d3fa8;
+  --sel:#1f3a68; --selInk:#ffffff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:18px;line-height:1.45;color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hidden{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Musik in der Schüleransicht (anfangs aus) ----------
+   Stationen 1–4: „Die Gedanken sind frei“ (Schleife).
+   Ab Station 5 (sobald Station 4 gelöst ist): Nationalhymne in Schleife mit kurzer Pause. */
+const MUSIC_SWITCH_AFTER = "s4", HYMN_GAP_SECONDS = 4;
+function wantedSong(){ const st = STATIONS.find(x => x.id === MUSIC_SWITCH_AFTER); return st && stationDone(st) ? "hymne" : "gedanken"; }
+function updateMusic(){
+  if (!S.music){ if (Music.playing) Music.stop(); return; }
+  const want = wantedSong();
+  if (Music.song !== want) Music.play(want, null, { loop: true, gap: want === "hymne" ? HYMN_GAP_SECONDS : 0 });
+}
+function renderMusicBtn(){ const b = $("#musicBtn"); if (!b) return; b.setAttribute("aria-pressed", S.music ? "true" : "false"); b.textContent = S.music ? "🔊 Musik" : "🔇 Musik"; b.setAttribute("aria-label", S.music ? "Musik ausschalten" : "Musik einschalten"); }
+
+/* ---------- Kopfleiste ---------- */
+#hud{position:sticky;top:0;z-index:20;background:var(--navy2);color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top))}
+#hud .title{font-weight:800;letter-spacing:.02em;font-size:19px;white-space:nowrap}
+#hud .title small{display:block;font-weight:500;font-size:16px;opacity:.8;letter-spacing:0}
+#stamps{display:flex;gap:5px}
+.stamp{width:36px;height:40px;border:2px dashed rgba(255,255,255,.45);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:rgba(255,255,255,.4);font-family:ui-monospace,Menlo,Consolas,monospace}
+.stamp.got{border:2px solid var(--gold);background:var(--gold);color:var(--navy2);animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+#hud .stats{display:flex;gap:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:18px;margin-left:auto}
+#hud .stats span b{color:var(--gold)}
+#menuBtn,#endBtn,#musicBtn{min-height:44px;min-width:44px;border-radius:8px;border:2px solid rgba(255,255,255,.5);background:transparent;color:#fff;padding:4px 12px;font-weight:700}
+#endBtn{border-color:var(--gold);color:var(--gold)}
+#musicBtn[aria-pressed="true"]{background:var(--gold);color:var(--navy2);border-color:var(--gold)}
+
+/* ---------- Spielwelt ---------- */
+#game{max-width:1100px;margin:0 auto;padding:10px 10px 16px}
+#worldWrap{position:relative;margin:0 auto;width:100%;max-width:calc((100vh - 250px) * 1.5556);min-width:300px;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.25);background:#3b7fd1;touch-action:none}
+#world{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges}
+.blabel{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border:2px solid var(--navy);border-radius:999px;padding:3px 10px 3px 3px;font-size:18px;font-weight:700;line-height:1.1;min-height:44px;box-shadow:0 2px 4px rgba(0,0,0,.25);white-space:nowrap}
+.blabel .num{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;border-radius:999px;background:var(--navy);color:#fff;font-size:20px}
+.blabel.locked{opacity:.78;border-color:#7a8496}
+.blabel.locked .num{background:#7a8496}
+.blabel.done{border-color:var(--green)}
+.blabel.done .num{background:var(--green)}
+.blabel.next{border-color:var(--gold2);box-shadow:0 0 0 4px rgba(226,179,60,.6)}
+.blabel.next .num{background:var(--gold);color:var(--navy2)}
+#worldWrap.compact .blabel .nm{display:none}#worldWrap.compact .blabel{padding:3px}
+#targetLine{margin:10px auto 0;max-width:900px;text-align:center;font-size:18px}
+#targetLine b{color:var(--navy)}
+
+#controls{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:10px;user-select:none;-webkit-user-select:none}
+#dpad{display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(3,60px);gap:4px;touch-action:none}
+#dpad button{border:none;border-radius:12px;background:var(--navy);color:#fff;font-size:26px;touch-action:none;box-shadow:0 3px 0 var(--navy2)}
+#dpad button:active,#dpad button.on{transform:translateY(2px);box-shadow:0 1px 0 var(--navy2);background:#2c5294}
+#dpad .c{background:transparent;box-shadow:none;pointer-events:none}
+#actBtn{width:110px;height:110px;border-radius:999px;border:none;background:var(--gold);color:var(--navy2);font-weight:800;font-size:20px;box-shadow:0 4px 0 var(--gold2);touch-action:manipulation}
+#actBtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--gold2)}
+#actBtn.near{animation:glow 1s infinite alternate}
+@keyframes glow{from{box-shadow:0 4px 0 var(--gold2),0 0 0 0 rgba(226,179,60,.7)}to{box-shadow:0 4px 0 var(--gold2),0 0 0 12px rgba(226,179,60,0)}}
+#keysHint{font-size:18px;color:var(--muted);text-align:center;margin-top:6px}
+@media (min-width:900px) and (orientation:landscape){
+  #game{display:grid;grid-template-columns:minmax(0,1fr) 250px;grid-template-areas:"world ctrl" "line ctrl" "keys ctrl";gap:0 18px;max-width:1500px;align-items:start}
+  #worldWrap{grid-area:world;max-width:calc((100vh - 130px) * 1.5556)}
+  #targetLine{grid-area:line}
+  #keysHint{grid-area:keys}
+  #controls{grid-area:ctrl;flex-direction:column;margin-top:0;gap:26px;align-self:center}
+}
+
+/* ---------- Dialoge ---------- */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(10,18,34,.62);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px;-webkit-overflow-scrolling:touch}
+.overlay.top{z-index:60}
+.sheet{background:var(--panel);border-radius:14px;max-width:900px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.4);overflow:hidden;margin-bottom:24px}
+.sheet header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.sheet header h2{margin:0;font-size:22px;line-height:1.2;flex:1}
+.sheet header h2:focus{outline:none}
+.sheet header h2 small{display:block;font-size:18px;font-weight:500;opacity:.85}
+.xbtn{min-width:44px;min-height:44px;border-radius:8px;border:2px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:22px;font-weight:700}
+.sheet .body{padding:16px}
+@media (max-width:600px){.overlay{padding:0}.sheet{border-radius:0;min-height:100%;margin:0}}
+.npc{display:flex;gap:12px;align-items:flex-start;margin:4px 0 16px}
+.npc canvas{width:72px;height:72px;image-rendering:pixelated;flex:0 0 72px;border-radius:10px;background:#cfe3f7;border:2px solid var(--navy)}
+.bubble{position:relative;background:#f4f1e8;border:2px solid #d8cfb8;border-radius:12px;padding:10px 14px;flex:1}
+.bubble .who{font-weight:800;font-size:18px;color:var(--navy);display:block;margin-bottom:2px}
+.tag{display:inline-block;font-size:15px;font-weight:800;letter-spacing:.06em;padding:2px 7px;border-radius:5px;color:#fff;vertical-align:middle}
+.tag.fakt{background:var(--teal)}
+.tag.fiktiv{background:var(--purple)}
+details.mat{border:2px solid var(--line);border-radius:10px;margin:0 0 10px;background:#fbfcfe}
+details.mat>summary{padding:10px 14px;font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:10px;list-style:none}
+details.mat>summary::-webkit-details-marker{display:none}
+details.mat>summary::before{content:"▸";font-size:18px;color:var(--navy);transition:transform .15s}
+details.mat[open]>summary::before{transform:rotate(90deg)}
+details.mat .mbody{padding:0 14px 12px}
+details.mat .mbody p{margin:.4em 0}
+details.mat .mbody ul,details.mat .mbody ol{margin:.4em 0;padding-left:1.3em}
+.stand{font-size:18px;color:var(--teal);font-weight:700}
+.src{font-size:18px;color:var(--muted)}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;width:100%;font-size:18px;min-width:560px}
+.tbl th,.tbl td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.tbl th{background:#eef2f8}
+
+.part{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:16px 0}
+.part.solved{border-color:var(--green);background:#f3faf4}
+.part-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.part-head h3{margin:0;font-size:20px}
+.op{font-size:18px;color:var(--muted);font-weight:600}
+.pstate{margin-left:auto;font-weight:800;color:var(--green)}
+.prompt{margin:8px 0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:18px;background:#f2f5fa;border-radius:8px;padding:8px 10px;margin:6px 0 10px}
+.legend b{color:var(--navy)}
+ol.items{list-style:none;margin:0;padding:0;counter-reset:it}
+ol.items>li{counter-increment:it;border-top:1px solid var(--line);padding:10px 0}
+ol.items>li:first-child{border-top:none}
+ol.items>li>p{margin:0 0 8px}
+ol.items>li>p::before{content:counter(it) ". ";font-weight:800;color:var(--navy)}
+.choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.choices+.choices{margin-top:6px}
+.ch{min-height:44px;min-width:48px;border:2px solid var(--navy);background:#fff;border-radius:8px;padding:6px 10px;font-size:18px;text-align:left;line-height:1.2}
+.ch .k{font-weight:800;margin-right:6px}
+.ch[aria-pressed="true"]{background:var(--sel);color:var(--selInk)}
+.ch:disabled{cursor:default;opacity:.95}
+.q{margin:8px 0 14px}
+.q>p{margin:0 0 6px;font-weight:600}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts .ch{width:100%}
+.order-seq,.order-pool{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.order-seq{min-height:52px;border:2px dashed var(--line);border-radius:10px;padding:6px}
+.order-seq .empty{color:var(--muted);padding:8px}
+.card{min-height:48px;border:2px solid var(--navy);border-radius:8px;background:#fff;padding:8px 12px;text-align:left;font-size:18px;display:flex;gap:10px;align-items:center;width:100%}
+.card .n{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:999px;background:var(--navy);color:#fff;font-weight:800}
+.order-seq .card{background:#eef3fb}
+.lbl{font-size:18px;font-weight:700;color:var(--muted);margin-top:8px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.btn{min-height:48px;border-radius:10px;border:none;background:var(--navy);color:#fff;font-weight:800;padding:10px 18px;font-size:18px}
+.btn.gold{background:var(--gold);color:var(--navy2)}
+.btn.ghost{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+.btn.red{background:var(--red)}
+.btn:disabled{opacity:.45;cursor:default}
+.fb{font-weight:700;margin:8px 0 0;min-height:1.4em}
+.fb.ok{color:var(--green)}
+.fb.no{color:var(--red)}
+.hints{border:2px solid #e8d9a8;background:#fffaea;border-radius:12px;padding:10px 14px;margin:16px 0 6px}
+.hints.pulse{animation:hp 1s ease 3}
+@keyframes hp{50%{box-shadow:0 0 0 6px rgba(226,179,60,.6)}}
+.hints h3{margin:0 0 6px;font-size:18px}
+.hints ol{margin:4px 0 8px;padding-left:1.3em}
+.hints li{margin:4px 0}
+.donebox{border:3px solid var(--green);background:#eaf6ec;border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.donebox h3{margin:0 0 6px;color:var(--green)}
+.donebox .sb{background:#fff;border-left:5px solid var(--gold);padding:8px 10px;margin-top:8px;border-radius:6px}
+.infobox{border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;margin:12px 0}
+input[type=text]{font:inherit;font-size:20px;padding:10px 12px;border:2px solid var(--navy);border-radius:10px;min-height:50px;width:100%;max-width:420px}
+label.fl{display:block;font-weight:700;margin:12px 0 4px}
+.endcode{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:44px;font-weight:800;letter-spacing:.12em;color:var(--navy);background:#fff6d8;border:3px solid var(--gold);border-radius:12px;display:inline-block;padding:6px 18px;margin:6px 0}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:19px;margin:10px 0}
+.facts dt{font-weight:700;color:var(--muted)}
+.facts dd{margin:0;font-weight:800}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy2);color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;z-index:80;max-width:92vw;box-shadow:0 6px 20px rgba(0,0,0,.35);text-align:center}
+.menu-list{display:flex;flex-direction:column;gap:10px}
+.menu-list .btn{text-align:left}
+
+/* ---------- Startbildschirm ---------- */
+.hero{text-align:center;padding:6px 0 4px}
+.hero h1{font-size:34px;margin:4px 0 2px;color:var(--navy)}
+.hero p{margin:4px 0;color:var(--muted)}
+.notice{background:#f1edfb;border:2px solid #d6ccef;border-radius:10px;padding:10px 12px;margin:12px 0}
+
+/* ---------- Beamer-Ansicht ---------- */
+body.beamer{background:#0f1c33;color:#fff;font-size:22px}
+#beamer{max-width:1700px;margin:0 auto;padding:14px 22px;display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:start}
+#beamer h1{font-size:46px;margin:0;color:var(--gold);letter-spacing:.02em}
+#beamer .sub{font-size:24px;opacity:.85;margin:2px 0 14px}
+#beamer .bw{border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#beamer .card2{background:#18294a;border:2px solid #2d4677;border-radius:14px;padding:10px 16px;margin-bottom:12px}
+#beamer h2{margin:0 0 6px;font-size:26px;color:var(--gold)}
+#beamer ol,#beamer ul{margin:0;padding-left:1.2em}
+#beamer li{margin:2px 0}
+#bTimer{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:64px;font-weight:800;text-align:center;line-height:1}
+#beamer .row .btn{font-size:22px;min-height:56px}
+#beamer input[type=range]{width:220px;height:40px}
+#bLink{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:20px;word-break:break-all;background:#0b1528;padding:8px 10px;border-radius:8px}
+@media (max-width:1000px){#beamer{grid-template-columns:1fr}#beamer h1{font-size:40px}}
+</style>
+</head>
+<body>
+<noscript><p style="padding:20px;font-size:20px">Dieses Spiel braucht JavaScript. Bitte die Seite über den Link der Lehrkraft in Safari oder Chrome öffnen.</p></noscript>
+
+<div id="app" class="hidden">
+  <header id="hud">
+    <div class="title">Die Sitzungswoche<small id="hudGroup"></small></div>
+    <div id="stamps" aria-label="Stempel"></div>
+    <div class="stats"><span title="verstrichene Zeit">⏱ <b id="hudTime">0:00</b></span><span title="genutzte Hinweise">💡 <b id="hudHints">0</b></span></div>
+    <button id="endBtn" class="hidden" type="button">Abschluss</button>
+    <button id="musicBtn" type="button" aria-pressed="false">🔇 Musik</button>
+    <button id="menuBtn" type="button" aria-label="Menü">☰ Menü</button>
+  </header>
+  <main id="game">
+    <div id="worldWrap"><canvas id="world" width="448" height="288" aria-label="Spielwelt: Regierungsviertel in Draufsicht"></canvas><div id="labels"></div></div>
+    <p id="targetLine" aria-live="polite"></p>
+    <div id="controls">
+      <div id="dpad" aria-label="Steuerkreuz">
+        <span class="c"></span><button type="button" data-dir="up" aria-label="hoch">▲</button><span class="c"></span>
+        <button type="button" data-dir="left" aria-label="links">◀</button><span class="c"></span><button type="button" data-dir="right" aria-label="rechts">▶</button>
+        <span class="c"></span><button type="button" data-dir="down" aria-label="runter">▼</button><span class="c"></span>
+      </div>
+      <button id="actBtn" type="button">Betreten</button>
+    </div>
+    <p id="keysHint">Tastatur: Pfeiltasten oder WASD zum Laufen, Leertaste oder Enter zum Betreten.</p>
+  </main>
+</div>
+
+<div id="beamerRoot" class="hidden"></div>
+<div id="modalRoot"></div>
+<div id="modalRoot2"></div>
+<div id="toast" class="hidden" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   KONFIGURATION – hier stehen alle Texte, Aufgaben, Hinweise und
+   Prüfwerte. Texte dürfen Sie hier ändern (HTML ist erlaubt).
+   ---------------------------------------------------------------------
+   WICHTIG:
+   - Die Lösungen stehen NICHT im Klartext hier, sondern nur als
+     Prüfwert ("hash"). Wenn Sie die REIHENFOLGE oder den INHALT von
+     Aufgaben (items, options, cards) ändern, stimmt der Prüfwert nicht
+     mehr. Reine Umformulierungen von Texten sind unproblematisch.
+   - Die Infokästen mit "FAKT" geben einen Stand wieder (meta.stand).
+     Vor dem Einsatz prüfen und ggf. aktualisieren.
+   - Kennzeichnung: tag "FAKT" = reale Information, "FIKTIV" = erfunden.
+   ===================================================================== */
+const CONFIG = {
+  meta: {
+    title: "Die Sitzungswoche",
+    subtitle: "Escape Game zum politischen System · GGK J1, BPE 2",
+    version: "1.3",
+    stand: "Ende Oktober 2026",
+    storageKey: "sitzungswoche_j1_v1"
+  },
+
+  /* Prüfwert des Lehrkraftcodes (Code steht nur im Lehrkraftmaterial) */
+  teacherCodeHash: "9743a6a6f8927f15",
+
+  /* Startbildschirm und Einführung */
+  start: {
+    fiction: "Alle Personen, Parteien, Orte und der Gesetzentwurf in diesem Spiel sind <b>erfunden</b>. Kästen mit dem Etikett <span class=\"tag fakt\">FAKT</span> enthalten echte Informationen.",
+    intro: "Hallo, ich bin Konrad Wälder, Fraktionsvorsitzender der Bürgerunion. Schön, dass ihr diese Woche mein Praktikumsteam seid! Ich will ein <b>Bundesgesetz über handyfreie Schulen</b> durch Bundestag und Bundesrat bringen. Dafür brauche ich eure Hilfe an sechs Orten im Regierungsviertel. Für jede gelöste Station bekommt ihr einen Stempel – zusammen ergeben sie ein Lösungswort.",
+    controls: "Lauft mit dem Steuerkreuz (oder den Pfeiltasten) zu einer Tür und tippt auf <b>Betreten</b>. Ihr könnt auch einfach auf ein Gebäude tippen – dann läuft eure Figur selbst hin. Die nächste Station ist mit einem gelben Pfeil markiert. Mit dem Knopf <b>Musik</b> oben könnt ihr Musik einschalten – im Unterricht nur, wenn eure Lehrkraft es erlaubt.",
+    roles: "Wechselt nach jeder Station die Rollen: <b>Steuerung</b> (iPad), <b>Grundgesetz</b> (Dossier), <b>Akte</b> (Fall vorlesen), <b>Protokoll</b> (Sicherungsblatt)."
+  },
+
+  /* ---------------- STATIONEN ---------------- */
+  stations: [
+    /* ======================= STATION 1 ======================= */
+    {
+      id: "s1", nr: 1, stamp: "L", name: "Grundgesetz-Pavillon", building: "pav",
+      intro: "Bevor wir ein Gesetz schreiben, müsst ihr die Spielregeln kennen. Ohne die Prinzipien des Grundgesetzes läuft hier gar nichts.",
+      materials: [
+        { title: "M1 – Grundgesetz (Wortlaut)", tag: "FAKT", html:
+          "<p><b>Art. 20 Abs. 1:</b> Die Bundesrepublik Deutschland ist ein demokratischer und sozialer Bundesstaat.</p>" +
+          "<p><b>Art. 20 Abs. 2:</b> Alle Staatsgewalt geht vom Volke aus. Sie wird vom Volke in Wahlen und Abstimmungen und durch besondere Organe der Gesetzgebung, der vollziehenden Gewalt und der Rechtsprechung ausgeübt.</p>" +
+          "<p><b>Art. 20 Abs. 3:</b> Die Gesetzgebung ist an die verfassungsmäßige Ordnung, die vollziehende Gewalt und die Rechtsprechung sind an Gesetz und Recht gebunden.</p>" +
+          "<p><b>Art. 79 Abs. 3:</b> Eine Änderung dieses Grundgesetzes, durch welche die Gliederung des Bundes in Länder, die grundsätzliche Mitwirkung der Länder bei der Gesetzgebung oder die in den Artikeln 1 und 20 niedergelegten Grundsätze berührt werden, ist unzulässig.</p>" }
+      ],
+      parts: [
+        { id: "s1a", title: "Teil A – Welches Prinzip steckt dahinter?", operator: "einordnen · AFB II", type: "assign",
+          prompt: "Ordnet jeden Fall dem Verfassungsprinzip zu, das er <b>am deutlichsten</b> zeigt.",
+          dims: [[ {k:"D", l:"Demokratie"}, {k:"R", l:"Rechtsstaat"}, {k:"S", l:"Sozialstaat"}, {k:"B", l:"Bundesstaat"}, {k:"P", l:"Republik"} ]],
+          items: [
+            "Lena (17) soll ihr Handy eine Woche lang abgeben. Sie klagt vor dem Verwaltungsgericht, dessen Richterinnen und Richter unabhängig entscheiden.",
+            "Das Staatsoberhaupt wird für fünf Jahre gewählt. Niemand erbt das Amt.",
+            "Über Lehrpläne und Schulregeln entscheidet jedes Land selbst.",
+            "Kinder aus Familien mit geringem Einkommen erhalten Zuschüsse für Ausflüge und Schulbedarf.",
+            "Die Bürgerinnen und Bürger wählen den Bundestag. Dessen Mehrheit wählt die Bundeskanzlerin oder den Bundeskanzler.",
+            "Ein Ministerium will Handys per Anordnung verbieten, obwohl es dafür kein Gesetz gibt. Das ist unzulässig."
+          ],
+          hash: "0d71e1c7b52879ec" }
+      ],
+      hints: [
+        "Art. 20 Abs. 1 nennt drei Prinzipien wörtlich. Ein viertes steckt im Namen unseres Staates.",
+        "Rechtsstaat heißt: Der Staat ist an Gesetze gebunden, und unabhängige Gerichte kontrollieren ihn. Zwei Fälle gehören dazu.",
+        "Fall 1 und Fall 6 gehören zum Rechtsstaat, Fall 3 zum Bundesstaat. Ordnet jetzt das Staatsoberhaupt auf Zeit, die Zuschüsse und die Bundestagswahl zu."
+      ],
+      done: { text: "Stark! Die Spielregeln sitzen. Merkt euch Fall 3 – der wird noch wichtig.",
+              sicherung: "Notiert das Prinzip aus Fall 3." }
+    },
+
+    /* ======================= STATION 2 ======================= */
+    {
+      id: "s2", nr: 2, stamp: "Ä", name: "Parteizentrale", building: "pz",
+      intro: "Parteien sind das Herz unserer Demokratie. Aber was passiert, wenn eine Partei die Demokratie abschaffen will? Hier in der Parteizentrale wird gerade heftig diskutiert.",
+      materials: [
+        { title: "M2 – Art. 21 GG (Auszug, Wortlaut)", tag: "FAKT", html:
+          "<p><b>Abs. 1:</b> Die Parteien wirken bei der politischen Willensbildung des Volkes mit. Ihre Gründung ist frei. Ihre innere Ordnung muß demokratischen Grundsätzen entsprechen. […]</p>" +
+          "<p><b>Abs. 2:</b> Parteien, die nach ihren Zielen oder nach dem Verhalten ihrer Anhänger darauf ausgehen, die freiheitliche demokratische Grundordnung zu beeinträchtigen oder zu beseitigen oder den Bestand der Bundesrepublik Deutschland zu gefährden, sind verfassungswidrig.</p>" +
+          "<p><b>Abs. 3:</b> Parteien, die nach ihren Zielen oder dem Verhalten ihrer Anhänger darauf ausgerichtet sind, […] sind von staatlicher Finanzierung ausgeschlossen. […]</p>" +
+          "<p><b>Abs. 4:</b> Über die Frage der Verfassungswidrigkeit nach Absatz 2 sowie über den Ausschluss von staatlicher Finanzierung nach Absatz 3 entscheidet das Bundesverfassungsgericht.</p>" },
+        { title: "M3 – So läuft ein Parteiverbotsverfahren", tag: "FAKT", html:
+          "<ul><li>Einen Antrag stellen dürfen nur <b>Bundestag, Bundesrat oder Bundesregierung</b> (§ 43 Abs. 1 BVerfGG).</li>" +
+          "<li>Das <b>Bundesverfassungsgericht</b> entscheidet, mit einer Zweidrittelmehrheit im Senat (§ 15 Abs. 4 BVerfGG).</li>" +
+          "<li>Maßstab seit dem NPD-Urteil von 2017: Verfassungsfeindliche Ziele allein genügen nicht. Die Partei muss planvoll auf ihre Umsetzung hinarbeiten, und es muss konkrete Anhaltspunkte geben, dass sie damit Erfolg haben könnte (<b>Potenzialität</b>).</li>" +
+          "<li>Bisher verboten: SRP (1952) und KPD (1956). Das erste NPD-Verfahren wurde 2003 eingestellt (V-Leute des Verfassungsschutzes in der Parteiführung). Im zweiten Verfahren 2017 gab es kein Verbot, weil die Potenzialität fehlte.</li>" +
+          "<li>Milderes Mittel seit 2017: <b>Ausschluss von der staatlichen Finanzierung</b>. 2024 erstmals angewandt gegen „Die Heimat“ (früher NPD), für sechs Jahre. Potenzialität ist dafür nicht nötig.</li></ul>" },
+        { title: "M4 – Verfassungsschutz ist nicht gleich Verbot", tag: "FAKT", html:
+          "<p>Der Verfassungsschutz ist eine Behörde der Exekutive. Er kann <b>nicht verbieten</b>, sondern nur beobachten. Seine Stufen:</p>" +
+          "<ol><li><b>Prüffall:</b> Material wird gesichtet, keine nachrichtendienstlichen Mittel.</li>" +
+          "<li><b>Verdachtsfall:</b> tatsächliche Anhaltspunkte für extremistische Bestrebungen; Beobachtung mit nachrichtendienstlichen Mitteln möglich.</li>" +
+          "<li><b>Gesichert extremistische Bestrebung:</b> Die Behörde sieht die Bestrebungen als erwiesen an.</li></ol>" },
+        { title: "M5 – Stand der Debatte um ein AfD-Verbot", tag: "FAKT", stand: true, html:
+          "<ul><li>Die Einstufung der AfD als rechtsextremistischer <b>Verdachtsfall</b> durch das Bundesamt für Verfassungsschutz ist rechtskräftig (Bundesverwaltungsgericht, Beschluss vom 20.05.2025).</li>" +
+          "<li>Im Mai 2025 stufte das Bundesamt die AfD als <b>gesichert rechtsextremistisch</b> ein. Das Verwaltungsgericht Köln untersagte dies am 26.02.2026 im Eilverfahren vorläufig: Es sah einen starken Verdacht, aber die Schwelle zur Gewissheit nicht erreicht. Das Hauptsacheverfahren läuft noch.</li>" +
+          "<li>Ein <b>Verbotsantrag ist bisher nicht gestellt</b>. Befürworter (u. a. SPD-Fraktionsvorsitzende aus Bund und Ländern) wollen ein Verfahren mit einer Bund-Länder-Arbeitsgruppe vorbereiten. Gegner (u. a. die CSU) lehnen ein Verfahren ab und setzen auf die politische Auseinandersetzung.</li></ul>" +
+          "<p class=\"src\">Quellen: BVerwG, Pressemitteilung 54/2025; VG Köln, Beschluss vom 26.02.2026; Presseberichte.</p>" },
+        { title: "Fall: Die Partei der Nationalen Wende (PNW)", tag: "FIKTIV", html:
+          "<p>Die PNW will den Bundestag durch einen „Volksrat“ ersetzen, dessen Mitglieder der Parteiführer ernennt. Sie hetzt gegen Minderheiten. Bei der Bundestagswahl erhielt sie 0,2 Prozent der Stimmen. Sie hat 350 Mitglieder und keine Mandate.</p>" }
+      ],
+      parts: [
+        { id: "s2a", title: "Teil A – Der Fall PNW", operator: "anwenden · AFB II", type: "quiz",
+          prompt: "Beantwortet alle drei Fragen. Nutzt M2 bis M4.",
+          questions: [
+            { q: "1) Wer darf ein Verbot der PNW beantragen? <i>(Mehrere Antworten richtig)</i>", multi: true, options: [
+                {k:"bp", l:"Bundespräsident"}, {k:"bt", l:"Bundestag"}, {k:"vs", l:"Verfassungsschutz"},
+                {k:"br", l:"Bundesrat"}, {k:"bue", l:"100 000 Bürgerinnen und Bürger"}, {k:"breg", l:"Bundesregierung"} ] },
+            { q: "2) Wie würde das Bundesverfassungsgericht voraussichtlich entscheiden?", options: [
+                {k:"a", l:"Verbot, weil die Ziele der PNW verfassungsfeindlich sind."},
+                {k:"b", l:"Kein Verbot, weil die Ziele der PNW nicht verfassungsfeindlich sind."},
+                {k:"c", l:"Kein Verbot, weil die Potenzialität fehlt – ein Ausschluss von der staatlichen Finanzierung ist aber möglich."},
+                {k:"d", l:"Gar keine Entscheidung, weil Parteien in Deutschland nie verboten werden dürfen."} ] },
+            { q: "3) Der Verfassungsschutz stuft die PNW als gesichert extremistisch ein. Was folgt daraus?", options: [
+                {k:"a", l:"Die PNW ist damit verboten."},
+                {k:"b", l:"Sie darf mit nachrichtendienstlichen Mitteln beobachtet werden, bleibt aber erlaubt."},
+                {k:"c", l:"Sie darf nicht mehr zu Wahlen antreten."},
+                {k:"d", l:"Ihre Mitglieder verlieren das Wahlrecht."} ] }
+          ],
+          hash: "a3ae890a6aad773f" },
+        { id: "s2b", title: "Teil B – Ein Verbotsantrag gegen die AfD?", operator: "beurteilen · AFB III", type: "assign",
+          prompt: "Ordnet jedes Argument einem <b>Kriterium</b> zu und entscheidet, ob es <b>für (+)</b> oder <b>gegen (–)</b> einen Verbotsantrag spricht. Das Spiel prüft eure Zuordnung, nicht eure Meinung.",
+          dims: [
+            [ {k:"E", l:"Erfolgsaussicht vor Gericht"}, {k:"W", l:"Wirkung in Politik und Gesellschaft"}, {k:"G", l:"Grundsatz der Verfassung"} ],
+            [ {k:"+", l:"dafür"}, {k:"-", l:"dagegen"} ] ],
+          items: [
+            "Das Grundgesetz sieht das Parteiverbot als Lehre aus Weimar ausdrücklich vor: Die Demokratie soll sich nicht mit legalen Mitteln abschaffen lassen (wehrhafte Demokratie).",
+            "Das VG Köln sah 2026 im Eilverfahren zwar einen starken Verdacht, aber noch keine Gewissheit, dass die AfD als gesichert rechtsextremistisch einzustufen ist.",
+            "Ein Verbot würde der Partei Mandate, Strukturen und staatliches Geld entziehen und so die Organisation verfassungsfeindlicher Bestrebungen erschweren.",
+            "Eine Partei mit zweistelligen Wahlergebnissen könnte ihre Ziele tatsächlich durchsetzen. Die Potenzialität, an der die NPD scheiterte, dürfte also vorliegen.",
+            "Parteien stehen unter besonderem Schutz des Grundgesetzes. Ein Verbot ist das schärfste Mittel und soll nur das letzte Mittel sein; Vorrang hat die politische Auseinandersetzung.",
+            "Scheitert ein Antrag in Karlsruhe, kann die Partei das als Bestätigung für sich nutzen („vom Gericht geprüft“)."
+          ],
+          hash: "c614757404831a95" }
+      ],
+      hints: [
+        "Teil A: Wer einen Antrag stellen darf, steht in M3. Kann eine Behörde wie der Verfassungsschutz eine Partei verbieten? Schaut in M4.",
+        "Frage 2: Entscheidend ist das Merkmal, an dem die NPD 2017 gescheitert ist. Teil B: E fragt „Würde Karlsruhe zustimmen?“, W fragt „Was passiert in Politik und Gesellschaft?“, G fragt „Was will das Grundgesetz grundsätzlich?“",
+        "Teil A: Bundestag, Bundesrat und Bundesregierung · bei Frage 2 die Antwort mit „Potenzialität“ · bei Frage 3 die Antwort mit „beobachtet“. Teil B: Jedes Kriterium kommt genau zweimal vor – einmal dafür, einmal dagegen."
+      ],
+      done: { text: "Gut sortiert! Ob ein Antrag gestellt werden sollte, ist umstritten – auch unter Fachleuten. Entscheidend ist, dass man sein Urteil begründen kann.",
+              sicherung: "Welches Argument wiegt für ein Sachurteil am schwersten? Begründet in zwei Sätzen." }
+    },
+
+    /* ======================= STATION 3 ======================= */
+    {
+      id: "s3", nr: 3, stamp: "N", name: "Fraktionssaal", building: "fs",
+      intro: "Drei aus unserer eigenen Fraktion wollen gegen das Handyverbot stimmen. Was kann ich als Fraktionsvorsitzender tun – und was darf ich nicht?",
+      materials: [
+        { title: "M6 – Freies Mandat und Fraktion", tag: "FAKT", html:
+          "<p><b>Art. 38 Abs. 1 Satz 2 GG:</b> Sie sind Vertreter des ganzen Volkes, an Aufträge und Weisungen nicht gebunden und nur ihrem Gewissen unterworfen.</p>" +
+          "<p>Eine <b>Fraktion</b> ist ein Zusammenschluss von mindestens 5 % der Abgeordneten derselben Partei (§ 10 GO-BT). Sie verteilt Redezeit und besetzt Ausschüsse.</p>" +
+          "<p><b>Fraktionsdisziplin</b> ist die Erwartung, geschlossen abzustimmen; sie wird mit politischen Mitteln durchgesetzt. Ein rechtlich verbindlicher <b>Fraktionszwang</b> wäre mit Art. 38 unvereinbar. Umgangssprachlich wird „Fraktionszwang“ oft für Fraktionsdisziplin verwendet.</p>" },
+        { title: "Fall: Abweichler in der Bürgerunion", tag: "FIKTIV", html:
+          "<p>Die Abgeordnete Selin Aydın und zwei weitere Mitglieder der Bürgerunion halten ein Handyverbot für falsch und wollen dagegen stimmen.</p>" }
+      ],
+      parts: [
+        { id: "s3a", title: "Teil A – Was darf die Fraktion?", operator: "erläutern · AFB II", type: "assign",
+          prompt: "Ist die Maßnahme <b>zulässig (Z)</b> oder <b>unzulässig (U)</b>?",
+          dims: [[ {k:"Z", l:"zulässig"}, {k:"U", l:"unzulässig"} ]],
+          items: [
+            "Wälder lädt die drei zu Gesprächen ein und wirbt um Zustimmung.",
+            "Die Fraktion erklärt, Aydın habe ihr Bundestagsmandat verloren.",
+            "Die Fraktion zieht Aydın aus einem Ausschuss ab und benennt ein anderes Mitglied.",
+            "Die Partei verlangt vor Gericht 10 000 € Vertragsstrafe, die Aydın vor der Wahl für den Fall des Abweichens unterschrieben hat.",
+            "Bei einer Gewissensfrage (z. B. Sterbehilfe) gibt die Fraktion die Abstimmung frei.",
+            "Die Bundestagsverwaltung lässt Aydın nicht mit abstimmen.",
+            "Die Fraktion beschließt mehrheitlich eine Abstimmungsempfehlung.",
+            "Nach wiederholtem Abweichen schließt die Fraktion Aydın aus. Sie bleibt fraktionslose Abgeordnete."
+          ],
+          hash: "e63892f76d5a268d" },
+        { id: "s3b", title: "Teil B – Euer Urteil", operator: "beurteilen · AFB III", type: "quiz",
+          prompt: "Wählt die am besten begründete These und die <b>zwei</b> Argumente, die sie tragen.",
+          questions: [
+            { q: "Welche These ist am besten begründet?", options: [
+                {k:"a", l:"Fraktionsdisziplin verstößt gegen Art. 38, weil Abgeordnete nur ihrem Gewissen folgen dürfen."},
+                {k:"b", l:"Abgeordnete müssen immer mit ihrer Fraktion stimmen, weil sie über die Partei gewählt wurden."},
+                {k:"c", l:"Fraktionsdisziplin ist zulässig, solange die Entscheidung der Abgeordneten rechtlich frei bleibt; sie sichert die Arbeitsfähigkeit des Parlaments."},
+                {k:"d", l:"Fraktionen spielen im Parlament keine Rolle; jede Abgeordnete entscheidet allein."} ] },
+            { q: "Welche zwei Argumente tragen diese These?", multi: true, exact: 2, options: [
+                {k:"a", l:"Alle Abgeordneten werden ausschließlich über Parteilisten gewählt."},
+                {k:"b", l:"Ohne verlässliche Mehrheiten könnte keine Regierung dauerhaft arbeiten."},
+                {k:"c", l:"Die Fraktion darf Abweichler mit Geldstrafen belegen."},
+                {k:"d", l:"Wer abweicht, behält sein Mandat – die Entscheidung bleibt rechtlich frei."},
+                {k:"e", l:"Das Grundgesetz verbietet Zusammenschlüsse von Abgeordneten."} ] }
+          ],
+          hash: "4f40d0bf72d8b809" }
+      ],
+      hints: [
+        "Leitfrage: Bleibt die Abstimmungsentscheidung am Ende rechtlich bei der Abgeordneten?",
+        "Unzulässig ist alles, was das Mandat selbst antastet oder eine Stimme rechtlich erzwingt. Das sind drei Maßnahmen. Teil B: Eine gute These nimmt beide Seiten ernst.",
+        "Teil A: Unzulässig sind die Erklärung des Mandatsverlusts, die Vertragsstrafe und der Ausschluss von der Abstimmung. Teil B: These C."
+      ],
+      done: { text: "Verstanden: Ich darf werben und überzeugen – aber nicht zwingen. Das Mandat gehört der Abgeordneten.",
+              sicherung: "Erklärt in einem Satz den Unterschied zwischen Fraktionsdisziplin und Fraktionszwang." }
+    },
+
+    /* ======================= STATION 4 ======================= */
+    {
+      id: "s4", nr: 4, stamp: "D", name: "Rathausplatz (Wahlkreis)", building: "rh",
+      intro: "Wochenende im Wahlkreis. Vor dem Rathaus in Tannheim sammelt die Elterninitiative „Pause ohne Display“ Unterschriften. Die wollen mehr, als ich ihnen geben kann. Findet heraus, was überhaupt geht.",
+      materials: [
+        { title: "M7 – Wege der Beteiligung", tag: "FAKT", html:
+          "<div class=\"tbl\"><table><thead><tr><th>Ebene</th><th>Repräsentativ</th><th>Direkt (plebiszitär)</th></tr></thead><tbody>" +
+          "<tr><td>Bund</td><td>Bundestagswahl; Abgeordnete entscheiden</td><td>Volksabstimmung nur bei Neugliederung des Bundesgebiets in den betroffenen Ländern (Art. 29 GG)</td></tr>" +
+          "<tr><td>Land Baden-Württemberg</td><td>Landtagswahl</td><td>Volksantrag (Landtag muss sich damit befassen); Volksbegehren (Unterstützung von 10 % der Wahlberechtigten, Art. 59 Abs. 3 Landesverfassung); danach Volksabstimmung</td></tr>" +
+          "<tr><td>Gemeinde in Baden-Württemberg</td><td>Gemeinderatswahl</td><td>Bürgerbegehren (7 % der Bürgerinnen und Bürger, höchstens 20 000) → Bürgerentscheid; nur über Angelegenheiten der Gemeinde, für die der Gemeinderat zuständig ist (§ 21 Gemeindeordnung)</td></tr>" +
+          "</tbody></table></div>" +
+          "<p>Eine <b>Bürgerinitiative</b> ist ein Zusammenschluss von Bürgerinnen und Bürgern zu einem konkreten, oft örtlichen Anliegen. Sie kann diese Instrumente nutzen, hat aber selbst keine Entscheidungsmacht.</p>" +
+          "<p>Beispiel: Die Volksbegehren „Landtag verkleinern“ (März 2025) und „XXL-Landtag verhindern!“ (Dezember 2025) verfehlten das nötige Quorum.</p>" },
+        { title: "Fall: Elterninitiative „Pause ohne Display“", tag: "FIKTIV", html:
+          "<p>Die Initiative aus der Schwarzwaldstadt Tannheim hat eine lange Wunschliste. Prüft in Teil A, welcher Weg zu welchem Ziel passt.</p>" }
+      ],
+      parts: [
+        { id: "s4a", title: "Teil A – Welcher Weg passt?", operator: "ermitteln · AFB II", type: "assign",
+          prompt: "Ordnet jedem Ziel der Initiative den passenden Beteiligungsweg zu.",
+          dims: [[ {k:"K", l:"Bürgerbegehren / Bürgerentscheid (Gemeinde)"}, {k:"L", l:"Volksantrag / Volksbegehren (Land BW)"}, {k:"N", l:"kein Plebiszit möglich"} ]],
+          items: [
+            "Die Stadt soll statt eines Parkhauses ein Jugendzentrum bauen.",
+            "Ein bundesweites Handyverbot an Schulen per Volksentscheid durchsetzen.",
+            "Ein Landesgesetz, das an allen Schulen in Baden-Württemberg die private Handynutzung verbietet.",
+            "Die geplante Schließung des städtischen Hallenbads stoppen.",
+            "Den Bundestag zwingen, Wälders Gesetz zu beschließen."
+          ],
+          hash: "eadf61e107feea95" },
+        { id: "s4b", title: "Teil B – Volksentscheide auch im Bund?", operator: "erörtern · AFB III", type: "assign",
+          prompt: "Ordnet jedes Argument einem <b>Kriterium</b> zu und entscheidet, ob es <b>für (+)</b> oder <b>gegen (–)</b> Volksentscheide auf Bundesebene spricht.",
+          dims: [
+            [ {k:"B", l:"Beteiligung und Legitimation"}, {k:"Q", l:"Qualität der Entscheidung"}, {k:"S", l:"Stabilität und Minderheitenschutz"} ],
+            [ {k:"+", l:"dafür"}, {k:"-", l:"dagegen"} ] ],
+          items: [
+            "Komplexe Gesetze lassen sich kaum auf eine Ja-Nein-Frage verkürzen; Kompromisse werden schwer.",
+            "Die Schweiz verbindet seit Langem direkte Demokratie mit stabilen Regierungen.",
+            "Bürgerinnen und Bürger könnten auch zwischen den Wahlen über Sachfragen mitentscheiden; das kann Politikverdrossenheit verringern.",
+            "Eine Mehrheit könnte über Rechte von Minderheiten abstimmen.",
+            "Eine Abstimmungskampagne zwingt zu breiter Information und öffentlicher Debatte.",
+            "Die Beteiligung an Abstimmungen kann niedrig und sozial ungleich sein; dann entscheiden wenige."
+          ],
+          hash: "ce5555e0f36fd567" }
+      ],
+      hints: [
+        "Prüft für jedes Ziel zuerst: Wer ist zuständig – Bund, Land oder Gemeinde?",
+        "Auf Bundesebene gibt es Volksabstimmungen nur bei einer Neugliederung der Länder (Art. 29 GG). Ein Bürgerbegehren geht nur über Angelegenheiten der Gemeinde.",
+        "Teil A: Jugendzentrum und Hallenbad = K, das Landesgesetz = L, beide Ziele auf Bundesebene = N. Teil B: Jedes Kriterium kommt einmal dafür und einmal dagegen vor."
+      ],
+      done: { text: "Die Initiative kann also einiges erreichen – aber nicht im Bund. Für Schulregeln wäre sie im Land an der richtigen Adresse. Hm …",
+              sicherung: "Würdet ihr Volksentscheide auf Bundesebene einführen? Ein Argument dafür, eines dagegen, ein begründetes Fazit." }
+    },
+
+    /* ======================= STATION 5 ======================= */
+    {
+      id: "s5", nr: 5, stamp: "E", name: "Verbändehaus", building: "vh",
+      intro: "Zurück in Berlin. Heute Morgen hatte ich drei Termine mit Interessenvertretern. Ist das normal – oder ein Problem? Schaut euch im Verbändehaus um.",
+      materials: [
+        { title: "M8 – Partei, Verband, Bürgerinitiative und Lobbyregeln", tag: "FAKT", html:
+          "<div class=\"tbl\"><table><thead><tr><th></th><th>Partei</th><th>Verband</th><th>Bürgerinitiative</th></tr></thead><tbody>" +
+          "<tr><td>Ziel</td><td>Regierungsmacht über Wahlen</td><td>Interessen einer Gruppe durchsetzen, ohne zur Wahl anzutreten</td><td>ein konkretes, oft örtliches Anliegen</td></tr>" +
+          "<tr><td>Dauer</td><td>dauerhaft</td><td>dauerhaft</td><td>meist bis zum Ziel</td></tr>" +
+          "<tr><td>Programm</td><td>umfassend</td><td>auf die eigene Gruppe bezogen</td><td>ein Thema</td></tr>" +
+          "</tbody></table></div>" +
+          "<ul><li><b>Lobbyregister:</b> Wer gegenüber Bundestag oder Bundesregierung regelmäßig Interessen vertritt, muss sich eintragen. Verstöße sind Ordnungswidrigkeiten (Lobbyregistergesetz, in Kraft seit 2022, verschärft 2024).</li>" +
+          "<li><b>Abgeordnete</b> dürfen kein Geld dafür annehmen, Interessen Dritter gegenüber Bundestag oder Bundesregierung zu vertreten (Abgeordnetengesetz). Bestechlichkeit ist strafbar (§ 108e StGB).</li>" +
+          "<li><b>Ehemalige Ministerinnen und Minister</b> müssen einen Wechsel in die Wirtschaft anzeigen; die Bundesregierung kann ihn bis zu 18 Monate untersagen (Karenzzeit, § 6a Bundesministergesetz).</li></ul>" }
+      ],
+      parts: [
+        { id: "s5a", title: "Teil A – Wer ist wer?", operator: "unterscheiden · AFB II", type: "assign",
+          prompt: "Handelt es sich um eine <b>Partei (P)</b>, einen <b>Verband (V)</b> oder eine <b>Bürgerinitiative (B)</b>?",
+          dims: [[ {k:"P", l:"Partei"}, {k:"V", l:"Verband"}, {k:"B", l:"Bürgerinitiative"} ]],
+          items: [
+            "Anwohnerinnen und Anwohner sammeln Unterschriften gegen einen Funkmast in ihrem Viertel.",
+            "Der Bundesverband der Mobilfunkhändler (fiktiv); seine Mitglieder sind Unternehmen.",
+            "Eine Organisation, die mit Landeslisten zur Bundestagswahl antritt.",
+            "Die Elterninitiative „Pause ohne Display“ in Tannheim, gegründet 2026.",
+            "Die Gewerkschaft der Lehrkräfte."
+          ],
+          hash: "73689710136e8a28" },
+        { id: "s5b", title: "Teil B – Wie ist die Einflussnahme zu beurteilen?", operator: "beurteilen · AFB III", type: "assign",
+          prompt: "Ist der Vorgang <b>legitim (L)</b>, <b>legal, aber problematisch (P)</b> oder <b>unzulässig (U)</b>?",
+          dims: [[ {k:"L", l:"legitim"}, {k:"P", l:"legal, aber problematisch"}, {k:"U", l:"unzulässig"} ]],
+          items: [
+            "Ein früherer Minister wird nach Ablauf der Karenzzeit Cheflobbyist der Branche, die er zuvor reguliert hat.",
+            "Eine Verbandsvertreterin spricht als Sachverständige in einer öffentlichen Ausschussanhörung.",
+            "Eine Agentur trifft im Auftrag von Kunden regelmäßig Abgeordnete, trägt sich aber nicht ins Lobbyregister ein.",
+            "Ein Ministerium übernimmt Formulierungen eines Verbands wörtlich in einen Gesetzentwurf, ohne das offenzulegen.",
+            "Ein im Lobbyregister eingetragener Verband schickt allen Fraktionen eine Stellungnahme.",
+            "Ein Abgeordneter nimmt Geld eines Unternehmens dafür, dessen Interessen gegenüber der Bundesregierung zu vertreten."
+          ],
+          hash: "aea44cb522658149" }
+      ],
+      hints: [
+        "Teil A: Will der Akteur Macht über Wahlen – oder Einfluss ohne Wahl? Dauerhaft oder für ein einzelnes Anliegen?",
+        "Teil B: „Unzulässig“ nur, wenn ein Gesetz verletzt wird (M8). Zwei Vorgänge sind legal, aber problematisch.",
+        "Teil A: Die Funkmast-Anwohner und die Elterninitiative sind Bürgerinitiativen. Teil B: Unzulässig sind die nicht eingetragene Agentur und das Geld für den Abgeordneten; problematisch sind der Seitenwechsel des Ministers und die übernommenen Formulierungen."
+      ],
+      done: { text: "Interessenvertretung gehört zur Demokratie – solange sie offen abläuft und sich an Regeln hält.",
+              sicherung: "Ist Lobbyismus eher ein Problem oder ein notwendiger Teil der Demokratie? Zwei Sätze mit Begründung." }
+    },
+
+    /* ======================= STATION 6 ======================= */
+    {
+      id: "s6", nr: 6, stamp: "R", name: "Bundestag → Bundesrat", building: "bt",
+      /* Station 6 hat zwei Gebäude: Teil A im Bundestag (bt), Teile B und C im Bundesrat (br) */
+      intro: {
+        bt: "Jetzt wird's ernst: Unser Gesetzentwurf kommt in den Bundestag. Zeigt mir, welchen Weg er nehmen muss.",
+        br: "Im Bundesrat sitzen die Landesregierungen. Bevor sie abstimmen, prüfen sie eine Frage ganz genau: Darf der Bund das überhaupt regeln?"
+      },
+      materials: [
+        { title: "M9 – Wer darf Gesetze machen? (Auszug, Wortlaut)", tag: "FAKT", building: "br", html:
+          "<p><b>Art. 70 Abs. 1 GG:</b> Die Länder haben das Recht der Gesetzgebung, soweit dieses Grundgesetz nicht dem Bunde Gesetzgebungsbefugnisse verleiht.</p>" +
+          "<p><b>Art. 73 Abs. 1 GG</b> (ausschließliche Gesetzgebung des Bundes), u. a.: Nr. 1 die auswärtigen Angelegenheiten sowie die Verteidigung einschließlich des Schutzes der Zivilbevölkerung; Nr. 2 die Staatsangehörigkeit im Bunde.</p>" +
+          "<p><b>Art. 74 Abs. 1 GG</b> (konkurrierende Gesetzgebung), u. a.: Nr. 1 das bürgerliche Recht, das Strafrecht, […]; Nr. 22 den Straßenverkehr, das Kraftfahrwesen, […].</p>" }
+      ],
+      parts: [
+        { id: "s6a", building: "bt", title: "Teil A – Der Weg eines Gesetzes", operator: "beschreiben · AFB I", type: "order",
+          prompt: "Tippt die Karten in der richtigen Reihenfolge an – vom Kabinett bis zum Bundesgesetzblatt. Ein Tipp auf eine eingeordnete Karte nimmt sie wieder heraus.",
+          cards: [
+            {k:"l23",  l:"Zweite und dritte Lesung: Der Bundestag beschließt das Gesetz."},
+            {k:"kab",  l:"Die Bundesregierung beschließt den Gesetzentwurf im Kabinett."},
+            {k:"bgbl", l:"Verkündung im Bundesgesetzblatt"},
+            {k:"aus",  l:"Beratung in den Ausschüssen, oft mit Anhörungen"},
+            {k:"br2",  l:"Der Bundesrat berät (zweiter Durchgang): Zustimmung oder kein Einspruch"},
+            {k:"l1",   l:"Erste Lesung im Bundestag"},
+            {k:"bp",   l:"Gegenzeichnung und Ausfertigung durch den Bundespräsidenten"},
+            {k:"br1",  l:"Der Bundesrat nimmt Stellung (erster Durchgang)."}
+          ],
+          hash: "41479b3c62371d8b" },
+        { id: "s6b", building: "br", title: "Teil B – Darf der Bund das?", operator: "einordnen · AFB II", type: "assign",
+          prompt: "Wer darf in diesem Bereich Gesetze erlassen? Nutzt M9.",
+          dims: [[ {k:"B", l:"nur der Bund (Art. 73)"}, {k:"K", l:"konkurrierend (Art. 74)"}, {k:"L", l:"die Länder (Art. 70)"} ]],
+          items: [
+            "Verteidigung",
+            "Polizei (allgemeine Gefahrenabwehr)",
+            "Strafrecht",
+            "Straßenverkehr",
+            "Schulwesen"
+          ],
+          /* Wendepunkt: erscheint nach dem Lösen von Teil B */
+          afterSolve: {
+            title: "Moment mal …",
+            text: "Schulwesen ist Ländersache? Dann darf der Bund gar kein Handyverbot an Schulen beschließen! Unser Gesetz wäre verfassungswidrig – ein Land könnte es vor dem Bundesverfassungsgericht zu Fall bringen.",
+            fakt: "<p>Baden-Württemberg hat 2025 im Schulgesetz verankert, dass jede Schule verbindliche Regeln zur privaten Nutzung von Handys und anderen Mobilgeräten festlegt (§ 23 Abs. 2b Schulgesetz). Im August 2026 legte das Kultusministerium Eckpunkte für landesweit einheitliche, weitgehende Beschränkungen ab dem Schuljahr 2027/28 vor (Stand: Planung).</p>"
+          },
+          hash: "588c0d38cddcec09" },
+        { id: "s6c", building: "br", title: "Teil C – Wie greifen die Gewalten ineinander?", operator: "einordnen · AFB II", type: "assign",
+          prompt: "Zeigt das Beispiel <b>Gewaltenverschränkung (V)</b>, <b>Kontrolle (K)</b> oder <b>Föderalismus (F)</b>?",
+          dims: [[ {k:"V", l:"Gewaltenverschränkung"}, {k:"K", l:"Kontrolle"}, {k:"F", l:"Föderalismus"} ]],
+          items: [
+            "Der Bundestag wählt die Bundeskanzlerin oder den Bundeskanzler; viele Ministerinnen und Minister sind zugleich Abgeordnete.",
+            "Eine Fraktion stellt der Bundesregierung eine Kleine Anfrage, die diese beantworten muss.",
+            "Bundestag und Bundesrat wählen je die Hälfte der Richterinnen und Richter des Bundesverfassungsgerichts (Art. 94 Abs. 1).",
+            "Die Länder wirken über den Bundesrat an der Gesetzgebung des Bundes mit (Art. 50).",
+            "Auf Antrag eines Viertels der Abgeordneten muss der Bundestag einen Untersuchungsausschuss einsetzen (Art. 44)."
+          ],
+          hash: "5be91b07bf03993c" }
+      ],
+      hints: [
+        "Teil A: Ein Regierungsentwurf geht zuerst zum Bundesrat, bevor der Bundestag ihn liest. Teil B: Lest M9 – was nicht in Art. 73 oder 74 steht, ist Sache der Länder.",
+        "Teil C: Verschränkung heißt, ein Organ wirkt bei der Bildung oder Besetzung eines anderen mit. Kontrolle heißt, ein Organ überprüft ein anderes. Föderalismus betrifft das Verhältnis von Bund und Ländern.",
+        "Teil A: Kabinett → Bundesrat → 1. Lesung → Ausschüsse → 2./3. Lesung → Bundesrat → Bundespräsident → Verkündung. Teil B: Nur die Verteidigung ist reine Bundessache. Teil C: Zwei Beispiele sind Verschränkung, zwei sind Kontrolle."
+      ],
+      done: { text: "Das war's mit meinem Bundes-Handyverbot. Aber jetzt weiß ich, wer zuständig ist. Kommt mit zur Pressekonferenz am Ausgang!",
+              sicherung: "Erklärt mit Artikelangabe, warum das Gesetz scheitern muss und wer stattdessen zuständig ist." }
+    }
+  ],
+
+  /* ---------------- FINALE (Ausgang / Pressekonferenz) ---------------- */
+  finale: {
+    id: "fin", name: "Pressekonferenz (Ausgang)", building: "aus",
+    intro: "Die Presse wartet schon. Für meine Erklärung brauche ich nur noch ein Wort. Eure sechs Stempel verraten es.",
+    question: "Wer ist in Deutschland für Regeln zur Handynutzung an Schulen zuständig?",
+    hash: "e6a527f165e313c0",
+    hints: [
+      "Schaut auf eure sechs Stempel oben in der Leiste.",
+      "Lest die Stempel von Station 1 bis Station 6.",
+      "Das Wort hat mit Art. 70 GG zu tun: L _ _ _ _ R."
+    ],
+    success: "Dann rufe ich morgen die Kultusministerinnen und Kultusminister der Länder an. So funktioniert eben Föderalismus. Danke für eure Hilfe in dieser Sitzungswoche!"
+  },
+
+  /* ---------------- ZUSATZSTATION (zählt nicht für den Abschluss) ---------------- */
+  zusatz: {
+    id: "zus", nr: "Z", name: "Karlsruhe-Express (Zusatz)", building: "zus",
+    intro: "Für die Schnellsten: ein Abstecher nach Karlsruhe zum Bundesverfassungsgericht – und noch eine Frage zum Bundesrat. Zählt nicht für den Abschluss, macht euch aber fit für die Klassenarbeit.",
+    materials: [],
+    parts: [
+      { id: "zusa", title: "Teil 1 – Welches Verfahren in Karlsruhe?", operator: "einordnen · AFB II", type: "assign",
+        prompt: "Ordnet jedem Fall das passende Verfahren vor dem Bundesverfassungsgericht zu.",
+        dims: [[ {k:"A", l:"abstrakte Normenkontrolle"}, {k:"V", l:"Verfassungsbeschwerde"}, {k:"O", l:"Organstreit"}, {k:"P", l:"Parteiverbotsverfahren"} ]],
+        items: [
+          "Eine Bundestagsfraktion meint, der Bundestag habe ihre Rechte verletzt.",
+          "Lena sieht sich durch ein Gesetz in ihren Grundrechten verletzt.",
+          "Der Bundesrat beantragt, eine Partei für verfassungswidrig zu erklären.",
+          "Die Landesregierung von Baden-Württemberg will Wälders Gesetz vom Bundesverfassungsgericht für nichtig erklären lassen."
+        ],
+        hash: "c5ab2f30d90c6674" },
+      { id: "zusb", title: "Teil 2 – Muss der Bundesrat zustimmen?", operator: "einordnen · AFB II", type: "assign",
+        prompt: "Handelt es sich um ein <b>Zustimmungsgesetz (Z)</b> oder ein <b>Einspruchsgesetz (E)</b>?",
+        dims: [[ {k:"Z", l:"Zustimmungsgesetz"}, {k:"E", l:"Einspruchsgesetz"} ]],
+        items: [
+          "Ein Gesetz ändert das Grundgesetz.",
+          "Ein Gesetz ändert einen Straftatbestand im Strafgesetzbuch.",
+          "Ein Gesetz verpflichtet die Länder, aus ihren Haushalten Geldleistungen an Bürgerinnen und Bürger zu zahlen."
+        ],
+        hash: "3836cc66e7fb6301" }
+    ],
+    hints: [
+      "Teil 1: Wer klagt hier – eine Bürgerin, ein Staatsorgan, ein Land? Danach richtet sich das Verfahren.",
+      "Teil 2: Grundgesetzänderungen und Kosten für die Haushalte der Länder brauchen die Zustimmung des Bundesrats.",
+      "Teil 1: Lena = Verfassungsbeschwerde, das Land Baden-Württemberg = abstrakte Normenkontrolle. Teil 2: Nur das Strafgesetz ist in der Regel ein Einspruchsgesetz."
+    ],
+    done: { text: "Respekt – ihr seid bereit für Karlsruhe!", sicherung: "" }
+  }
+};
+/* ======================= ENDE DER KONFIGURATION ======================= */
+
+
+/* =====================================================================
+   SPIELLOGIK – ab hier nur ändern, wenn Sie wissen, was Sie tun.
+   ===================================================================== */
+
+/* ---------- Hilfsfunktionen ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+function norm(s){ return String(s || "").toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]/g,""); }
+/* Eigene Hashfunktion (FNV-1a, zwei Durchgänge) – keine Browser-Krypto nötig.
+   Das ist eine Hürde gegen schnelles Nachschauen, kein echter Schutz. */
+function h32(str){ let h = 0x811c9dc5; for (let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h >>> 0; }
+function hashHex(str){ const a = h32(str), b = h32(str + "#" + a); return a.toString(16).padStart(8,"0") + b.toString(16).padStart(8,"0"); }
+const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function codeChars(n, len){ let s = ""; for (let i = 0; i < len; i++){ s += CODE_ABC[n & 31]; n = n >>> 5; } return s; }
+function checkCode(hints, group){ return codeChars(h32("pc1|" + hints), 4) + "-" + codeChars(h32("pc2|" + norm(group)), 2); }
+function fmtTime(ms){ const t = Math.max(0, Math.floor(ms / 1000)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60; return (h ? h + ":" + String(m).padStart(2,"0") : m) + ":" + String(s).padStart(2,"0"); }
+
+/* ---------- Speicher (fehlertolerant) ---------- */
+const store = {
+  get(){ try { const v = localStorage.getItem(CONFIG.meta.storageKey); return v ? JSON.parse(v) : null; } catch(e){ return null; } },
+  set(v){ try { localStorage.setItem(CONFIG.meta.storageKey, JSON.stringify(v)); return true; } catch(e){ return false; } },
+  del(){ try { localStorage.removeItem(CONFIG.meta.storageKey); } catch(e){} }
+};
+function freshState(){ return { v: 1, group: "", start: 0, finish: 0, finishHints: null, solved: {}, teacher: {}, wrong: {}, hints: {}, sel: {}, twist: false, introSeen: false, pos: null, music: false }; }
+let S = freshState();
+let resetting = false;
+function save(){ if (resetting) return; if (player) S.pos = { x: Math.round(player.x), y: Math.round(player.y) }; store.set(S); }
+
+/* ---------- Abgeleitete Spieldaten ---------- */
+const STATIONS = CONFIG.stations;
+const ALL = STATIONS.concat([CONFIG.zusatz]);
+const PART = {}; ALL.forEach(st => st.parts.forEach(p => { PART[p.id] = p; p._st = st; }));
+const isSolved = pid => !!S.solved[pid];
+const stationDone = st => st.parts.every(p => isSolved(p.id));
+const allDone = () => STATIONS.every(stationDone);
+function stationUnlocked(st){ const i = STATIONS.indexOf(st); return i <= 0 || stationDone(STATIONS[i - 1]); }
+const partBuilding = (st, p) => p.building || st.building;
+function totalHints(){ let n = 0; STATIONS.forEach(st => n += (S.hints[st.id] || 0)); n += (S.hints.fin || 0); return n; }
+function teacherCount(){ return Object.keys(S.teacher).length; }
+
+/* Was steht in welchem Gebäude, und ist es offen? */
+function buildingInfo(bid){
+  if (bid === "aus") return { kind: "fin", locked: !allDone(), done: !!S.finish, label: "Ausgang", nr: "★" };
+  if (bid === "zus") return { kind: "zus", locked: !stationDone(STATIONS[5]), done: stationDone(CONFIG.zusatz), label: CONFIG.zusatz.name, nr: "Z" };
+  for (const st of STATIONS){
+    const parts = st.parts.filter(p => partBuilding(st, p) === bid);
+    if (!parts.length) continue;
+    let locked = !stationUnlocked(st);
+    /* Bundesrat (Station 6, Teile B/C) öffnet erst nach Teil A im Bundestag */
+    if (!locked && st.id === "s6" && bid === "br" && !isSolved("s6a")) locked = true;
+    return { kind: "st", st, locked, done: parts.every(p => isSolved(p.id)), nr: st.nr };
+  }
+  return null;
+}
+function nextTarget(){
+  for (const st of STATIONS){
+    if (!stationDone(st)){ const p = st.parts.find(p => !isSolved(p.id)); return { bid: partBuilding(st, p), text: "Station " + st.nr + " – " + st.name + (st.id === "s6" ? (partBuilding(st, p) === "bt" ? " (Bundestag)" : " (Bundesrat)") : "") }; }
+  }
+  if (!S.finish) return { bid: "aus", text: "Pressekonferenz am Ausgang – Lösungswort eingeben" };
+  if (!stationDone(CONFIG.zusatz)) return { bid: "zus", text: "Fertig! Wer mag: Zusatzstation Karlsruhe-Express" };
+  return null;
+}
+
+/* =====================================================================
+   SPIELWELT (Draufsicht, Pixelgrafik auf Canvas)
+   ===================================================================== */
+const T = 16, MW = 28, MH = 18;
+const BUILDINGS = [
+  { id: "pav", name: "Grundgesetz-Pavillon", x: 7,  y: 14, w: 5, h: 4, front: { x: 9,  y: 13 } },
+  { id: "pz",  name: "Parteizentrale",       x: 3,  y: 8,  w: 6, h: 5, front: { x: 5,  y: 13 } },
+  { id: "fs",  name: "Fraktionssaal",        x: 3,  y: 1,  w: 6, h: 5, front: { x: 5,  y: 6 } },
+  { id: "rh",  name: "Rathausplatz",         x: 11, y: 1,  w: 6, h: 5, front: { x: 13, y: 6 } },
+  { id: "vh",  name: "Verbändehaus",         x: 19, y: 1,  w: 6, h: 5, front: { x: 21, y: 6 } },
+  { id: "bt",  name: "Bundestag",            x: 10, y: 7,  w: 8, h: 6, front: { x: 13, y: 13 } },
+  { id: "zus", name: "Karlsruhe-Express",    x: 19, y: 8,  w: 5, h: 5, front: { x: 21, y: 13 } },
+  { id: "br",  name: "Bundesrat",            x: 16, y: 14, w: 5, h: 4, front: { x: 18, y: 13 } },
+  { id: "aus", name: "Ausgang",              x: 22, y: 14, w: 5, h: 4, front: { x: 24, y: 13 } }
+];
+const BMAP = {}; BUILDINGS.forEach(b => BMAP[b.id] = b);
+const TREES = [[0,2],[1,4],[0,7],[1,9],[0,11],[1,14],[0,16],[3,16],[5,15],[9,2],[10,4],[17,2],[18,4],[26,2],[27,4],[26,8],[27,10],[26,11],[9,8],[18,8]];
+const START = { x: 13.5 * T + 0.5, y: 16 * T + 10 };
+
+let solid = [], ground = [];
+function buildGrid(){
+  solid = []; ground = [];
+  for (let y = 0; y < MH; y++){ solid.push(new Array(MW).fill(false)); ground.push(new Array(MW).fill("g")); }
+  const path = (x1,y1,x2,y2) => { for (let y = y1; y <= y2; y++) for (let x = x1; x <= x2; x++) ground[y][x] = "p"; };
+  path(2,6,25,6); path(2,13,25,13); path(2,6,2,13); path(25,6,25,13); path(13,13,14,17);
+  for (let x = 0; x < MW; x++){ ground[0][x] = "w"; solid[0][x] = true; }
+  BUILDINGS.forEach(b => { for (let y = b.y; y < b.y + b.h; y++) for (let x = b.x; x < b.x + b.w; x++) solid[y][x] = true; });
+  TREES.forEach(([x,y]) => { solid[y][x] = true; });
+}
+function isSolidPx(px, py){
+  const tx = Math.floor(px / T), ty = Math.floor(py / T);
+  if (tx < 0 || ty < 0 || tx >= MW || ty >= MH) return true;
+  return solid[ty][tx];
+}
+
+/* ---------- Pixelgrafik ---------- */
+function rnd(x, y, s){ let h = (x * 374761393 + y * 668265263 + (s || 0) * 2147483647) >>> 0; h = Math.imul(h ^ (h >>> 13), 1274126177) >>> 0; return (h ^ (h >>> 16)) / 4294967296; }
+function R(c, x, y, w, h, col){ c.fillStyle = col; c.fillRect(x, y, w, h); }
+function drawPixels(c, rows, pal, ox, oy, sc, flip){
+  sc = sc || 1;
+  for (let y = 0; y < rows.length; y++){
+    const row = rows[y];
+    for (let x = 0; x < row.length; x++){
+      const ch = row[x]; if (ch === "." || !pal[ch]) continue;
+      const xx = flip ? (row.length - 1 - x) : x;
+      c.fillStyle = pal[ch]; c.fillRect(ox + xx * sc, oy + y * sc, sc, sc);
+    }
+  }
+}
+const PL_PAL = { h:"#5b3a1e", s:"#f1c27d", e:"#1b1b1b", m:"#b8574f", b:"#24467a", w:"#f4f4f4", y:"#e0b020", c:"#ffffff", p:"#2d2d3a", k:"#111111", o:"#1a2f55" };
+const PL_DOWN = [
+  "....hhhh....","...hhhhhh...","...hsssshh..","...sesses...","...ssssss...","....smms....",
+  "..obwyywbo..","..bbwyywbb..",".sbbbyybbbs.",".sbbbccbbbs.","..bbbbbbbb..","...pppppp...",
+  "...pp..pp...","...pp..pp...","...kk..kk...","............"];
+const PL_DOWN2 = PL_DOWN.slice(0, 12).concat(["..pp....pp..","..pp....pp..","..kk....kk..","............"]);
+const PL_UP = [
+  "....hhhh....","...hhhhhh...","...hhhhhh...","...hhhhhh...","...shhhhs...","....ssss....",
+  "..obbbbbbo..","..bbbbbbbb..",".sbbbbbbbbs.",".sbbbbbbbbs.","..bbbbbbbb..","...pppppp...",
+  "...pp..pp...","...pp..pp...","...kk..kk...","............"];
+const PL_UP2 = PL_UP.slice(0, 12).concat(["..pp....pp..","..pp....pp..","..kk....kk..","............"]);
+const WA_PAL = { g:"#b9bcc2", s:"#efc18f", o:"#2a2a2a", e:"#1b1b1b", n:"#d9a26e", m:"#9a4a44", d:"#2b3445", w:"#f5f5f5", t:"#1b9e9a", b:"#cfe3f7" };
+const WA_ROWS = [
+  "................",".....gggggg.....","....gggggggg....","...ggssssssgg...","...gssssssssg...","...sooossooos...",
+  "...soeossoeos...","...sooossooos...","...ssssnnssss...","....ssssssss....","....ssmmmmss....",".....ssssss.....",
+  "...ddwwttwwdd...","..dddwwttwwddd..",".ddddddttdddddd.",".ddddddddddddddd"];
+function portrait(){ const cv = document.createElement("canvas"); cv.width = 16; cv.height = 16; const c = cv.getContext("2d"); drawPixels(c, WA_ROWS, WA_PAL, 0, 0, 1); cv.setAttribute("aria-hidden", "true"); return cv; }
+
+function drawTree(c, tx, ty){
+  const x = tx * T, y = ty * T;
+  R(c, x + 3, y + 13, 10, 2, "rgba(0,0,0,.22)");
+  R(c, x + 7, y + 9, 2, 5, "#6b4423");
+  const can = [[5,1,6,1],[3,2,10,1],[2,3,12,5],[3,8,10,1],[5,9,6,1]];
+  can.forEach(([a,b,w,h]) => R(c, x + a, y + b, w, h, "#2f7d32"));
+  R(c, x + 4, y + 3, 4, 2, "#43a047"); R(c, x + 4, y + 5, 2, 1, "#43a047");
+  R(c, x + 9, y + 7, 4, 1, "#22602a");
+}
+function drawGround(c){
+  for (let y = 0; y < MH; y++) for (let x = 0; x < MW; x++){
+    const g = ground[y][x], X = x * T, Y = y * T;
+    if (g === "w"){
+      R(c, X, Y, T, T, "#3b7fd1");
+      for (let i = 0; i < 3; i++){ const px = Math.floor(rnd(x, y, i) * 12), py = 3 + i * 4; R(c, X + px, Y + py, 4, 1, "#7db3ee"); }
+    } else if (g === "p"){
+      R(c, X, Y, T, T, "#dcc79c");
+      const off = (y % 2) * 4;
+      for (let i = 0; i < 2; i++) R(c, X, Y + i * 8, T, 1, "#c8b083");
+      R(c, X + ((4 + off) % 16), Y, 1, 8, "#c8b083"); R(c, X + ((12 + off) % 16), Y + 8, 1, 8, "#c8b083");
+    } else {
+      R(c, X, Y, T, T, "#6dbb4f");
+      for (let i = 0; i < 6; i++){ const px = Math.floor(rnd(x, y, i) * 16), py = Math.floor(rnd(y, x, i + 7) * 16); R(c, X + px, Y + py, 1, 1, i % 2 ? "#5fa944" : "#82cc63"); }
+      if (rnd(x, y, 99) > 0.9 && !solid[y][x]){ const fx = 3 + Math.floor(rnd(x, y, 5) * 9), fy = 3 + Math.floor(rnd(x, y, 6) * 9); const col = rnd(x, y, 7) > 0.5 ? "#f06292" : "#ffd54f"; R(c, X + fx, Y + fy, 2, 2, col); R(c, X + fx + 3, Y + fy + 2, 2, 2, col); }
+    }
+  }
+  /* Uferkante */
+  for (let x = 0; x < MW; x++) R(c, x * T, T - 2, T, 2, "#3a6e2a");
+}
+function windows(c, x, y, w, h, cols, rows, col, ww, wh){
+  const gx = (w - cols * ww) / (cols + 1), gy = (h - rows * wh) / (rows + 1);
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++){
+    const X = Math.round(x + gx + i * (ww + gx)), Y = Math.round(y + gy + j * (wh + gy));
+    R(c, X, Y, ww, wh, col); R(c, X, Y, ww, 1, "rgba(255,255,255,.45)");
+  }
+}
+function drawBuilding(c, b){
+  const X = b.x * T, Y = b.y * T, W = b.w * T, H = b.h * T;
+  R(c, X + 3, Y + H - 2, W, 3, "rgba(0,0,0,.25)");
+  switch (b.id){
+    case "pav": {
+      R(c, X, Y + 12, W, H - 12, "#efe6d2");
+      for (let i = 0; i < 5; i++){ const cx = X + 6 + i * 16; R(c, cx, Y + 16, 5, H - 22, "#ffffff"); R(c, cx + 4, Y + 16, 1, H - 22, "#d3c8b0"); }
+      for (let i = 0; i < 6; i++) R(c, X + i * 4, Y + 12 - i * 2, W - i * 8, 2, i % 2 ? "#a83a32" : "#8a2c2c");
+      R(c, X, Y + H - 6, W, 6, "#d8ccb2");
+      R(c, X + W / 2 + 8, Y + 22, 14, 11, "#1f3a68"); R(c, X + W / 2 + 15, Y + 22, 1, 11, "#ffffff");
+      R(c, X + W / 2 + 10, Y + 25, 4, 1, "#e2b33c"); R(c, X + W / 2 + 17, Y + 25, 4, 1, "#e2b33c");
+      break; }
+    case "pz": {
+      R(c, X, Y + 8, W, H - 8, "#f3efe6"); R(c, X, Y + 4, W, 6, "#44505e");
+      R(c, X, Y + 22, W, 4, "#1b9e9a");
+      windows(c, X, Y + 10, W, 12, 6, 1, "#9cc7e8", 8, 7); windows(c, X, Y + 26, W, 20, 6, 2, "#9cc7e8", 8, 6);
+      [[X + 16, "#1b9e9a"], [X + 48, "#e2b33c"], [X + 80, "#1b9e9a"]].forEach(([fx, col]) => { R(c, fx, Y - 6, 1, 12, "#dddddd"); R(c, fx + 1, Y - 6, 8, 5, col); });
+      break; }
+    case "fs": {
+      R(c, X, Y + 4, W, H - 4, "#2e3a4a"); R(c, X + 3, Y + 8, W - 6, H - 12, "#8fc1e3");
+      for (let i = X + 3; i < X + W - 3; i += 8) R(c, i, Y + 8, 1, H - 12, "#4d6f8c");
+      for (let j = Y + 8; j < Y + H - 4; j += 8) R(c, X + 3, j, W - 6, 1, "#4d6f8c");
+      R(c, X + 10, Y + 12, 20, 3, "rgba(255,255,255,.5)");
+      break; }
+    case "rh": {
+      R(c, X + 2, Y + 18, W - 4, H - 18, "#f7f1e1");
+      for (let i = 0; i < 9; i++) R(c, X + i * 4 - 2, Y + 18 - i * 2, W - i * 8 + 4, 2, i % 2 ? "#a33a2a" : "#8c2f22");
+      for (let i = X + 2; i < X + W - 2; i += 12) R(c, i, Y + 18, 2, H - 18, "#6b3f22");
+      R(c, X + 2, Y + 18, W - 4, 2, "#6b3f22"); R(c, X + 2, Y + 50, W - 4, 2, "#6b3f22");
+      windows(c, X + 2, Y + 22, W - 4, 24, 6, 1, "#6f9ec9", 6, 9);
+      R(c, X + W / 2 - 5, Y + 4, 10, 10, "#ffffff"); R(c, X + W / 2 - 1, Y + 6, 1, 4, "#222"); R(c, X + W / 2 - 1, Y + 9, 3, 1, "#222");
+      break; }
+    case "vh": {
+      R(c, X + 4, Y, W - 8, H, "#c9ced6"); R(c, X + 4, Y, W - 8, 4, "#59606a");
+      windows(c, X + 4, Y + 4, W - 8, H - 18, 7, 6, "#5f86b0", 6, 4);
+      R(c, X + 4, Y + H - 16, W - 8, 4, "#e2b33c");
+      break; }
+    case "bt": {
+      R(c, X + 6, Y + 14, W - 12, H - 14, "#d8c39a");
+      [[X, Y + 8], [X + W - 20, Y + 8]].forEach(([tx, ty]) => { R(c, tx, ty, 20, H - 8, "#cdb58a"); R(c, tx, ty, 20, 3, "#b89d6c"); windows(c, tx, ty + 6, 20, H - 26, 2, 3, "#6d7d8c", 5, 6); });
+      R(c, X + W / 2 - 24, Y + 6, 48, 10, "#bfe3f2"); R(c, X + W / 2 - 20, Y + 2, 40, 4, "#bfe3f2"); R(c, X + W / 2 - 14, Y - 1, 28, 3, "#bfe3f2");
+      for (let i = X + W / 2 - 22; i < X + W / 2 + 22; i += 6) R(c, i, Y + 3, 1, 13, "#7fb3c9");
+      R(c, X + 20, Y + 16, W - 40, 6, "#c4ab7d");
+      for (let i = 0; i < 6; i++) R(c, X + 30 + i * 13, Y + 24, 5, H - 34, "#efe2c2");
+      windows(c, X + 20, Y + 24, W - 40, H - 34, 8, 2, "rgba(60,70,85,.25)", 3, 6);
+      R(c, X + 6, Y + H - 6, W - 12, 6, "#bfa77a");
+      break; }
+    case "br": {
+      R(c, X, Y + 10, W, H - 10, "#ece6da");
+      for (let i = 0; i < 6; i++) R(c, X + 6 + i * 13, Y + 20, 5, H - 26, "#ffffff");
+      for (let i = 0; i < 5; i++) R(c, X + i * 4, Y + 10 - i * 2, W - i * 8, 2, "#b8b0a0");
+      R(c, X, Y + 16, W, 3, "#cfc6b4"); R(c, X, Y + H - 6, W, 6, "#d6cdb9");
+      break; }
+    case "zus": {
+      R(c, X, Y + 12, W, H - 12, "#a24d3a");
+      for (let j = Y + 15; j < Y + H; j += 4) R(c, X, j, W, 1, "#b8634f");
+      R(c, X - 2, Y + 8, W + 4, 6, "#4a4f57"); R(c, X + 6, Y + 4, W - 12, 6, "#4a4f57");
+      R(c, X + W / 2 - 12, Y + 20, 24, 18, "#9cc7e8"); R(c, X + W / 2 - 10, Y + 18, 20, 2, "#9cc7e8");
+      R(c, X + W / 2 - 4, Y + 1, 8, 8, "#ffffff"); R(c, X + W / 2, Y + 2, 1, 4, "#222");
+      R(c, X + 6, Y + 44, 22, 8, "#1f3a68"); R(c, X + 9, Y + 47, 16, 2, "#ffffff");
+      break; }
+    case "aus": {
+      R(c, X, Y + 6, W, H - 6, "#24365c"); R(c, X + 6, Y + 10, W - 12, 28, "#3a5a96");
+      R(c, X + 10, Y + 14, W - 20, 2, "#e2b33c"); R(c, X + 10, Y + 20, W - 34, 2, "#9fb6dd"); R(c, X + 10, Y + 25, W - 40, 2, "#9fb6dd");
+      R(c, X + W / 2 - 8, Y + 42, 16, 14, "#e2b33c"); R(c, X + W / 2, Y + 34, 1, 8, "#222"); R(c, X + W / 2 - 1, Y + 32, 3, 3, "#222");
+      break; }
+  }
+  /* Tür */
+  const atTop = b.front.y < b.y, dx = b.front.x * T + 3;
+  const info = buildingInfo(b.id);
+  if (atTop){
+    R(c, dx - 2, Y, 14, 4, "#6a5a48"); R(c, dx, Y + 4, 10, 6, "#3a2a1e"); R(c, dx - 3, Y - 1, 16, 2, "#8a7a68");
+  } else {
+    R(c, dx - 1, Y + H - 13, 12, 13, "#2a1d14"); R(c, dx, Y + H - 12, 10, 12, "#4a3424"); R(c, dx + 7, Y + H - 6, 2, 2, "#e2b33c");
+  }
+  if (info && info.locked){
+    const by = atTop ? Y + 2 : Y + H - 8;
+    for (let i = 0; i < 6; i++) R(c, dx - 3 + i * 3, by, 3, 3, i % 2 ? "#ffffff" : "#c62828");
+  }
+  if (info && info.done){
+    const fx = dx + 13, fy = atTop ? Y + 2 : Y + H - 18;
+    R(c, fx, fy, 1, 12, "#eeeeee"); R(c, fx + 1, fy, 6, 4, "#2e7d32");
+  }
+}
+
+/* ---------- Spielfigur ---------- */
+let player = null;
+const keys = { up: false, down: false, left: false, right: false };
+const MOVE_SPEED = 66;
+function makePlayer(pos){ return { x: pos ? pos.x : START.x, y: pos ? pos.y : START.y, dir: "down", flip: false, walk: 0, path: null, then: null }; }
+function tryMove(p, dx, dy){
+  const box = (x, y) => isSolidPx(x - 5, y - 4) || isSolidPx(x + 5, y - 4) || isSolidPx(x - 5, y) || isSolidPx(x + 5, y);
+  let moved = false;
+  if (dx && !box(p.x + dx, p.y)){ p.x += dx; moved = true; }
+  if (dy && !box(p.x, p.y + dy)){ p.y += dy; moved = true; }
+  return moved;
+}
+function playerTile(p){ return { x: Math.floor(p.x / T), y: Math.floor((p.y - 2) / T) }; }
+function bfs(from, to){
+  const key = (x, y) => y * MW + x, prev = new Map(), q = [from]; prev.set(key(from.x, from.y), null);
+  while (q.length){
+    const cur = q.shift();
+    if (cur.x === to.x && cur.y === to.y){ const out = []; let k = key(cur.x, cur.y); while (k != null){ out.unshift({ x: k % MW, y: Math.floor(k / MW) }); k = prev.get(k); } return out; }
+    for (const [ax, ay] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const nx = cur.x + ax, ny = cur.y + ay;
+      if (nx < 0 || ny < 0 || nx >= MW || ny >= MH || solid[ny][nx] || prev.has(key(nx, ny))) continue;
+      prev.set(key(nx, ny), key(cur.x, cur.y)); q.push({ x: nx, y: ny });
+    }
+  }
+  return null;
+}
+function walkTo(p, bid, then){
+  const b = BMAP[bid]; let start = playerTile(p);
+  if (solid[start.y] && solid[start.y][start.x]) start = { x: Math.floor(p.x / T), y: Math.floor(p.y / T) };
+  const path = bfs(start, b.front);
+  if (!path){ p.path = null; return false; }
+  p.path = path.map(t => ({ x: t.x * T + 8, y: t.y * T + 11 })); p.then = then || null; return true;
+}
+function stepPlayer(p, dt){
+  let vx = 0, vy = 0;
+  if (p === player && !modalOpen()){
+    if (keys.left) vx -= 1; if (keys.right) vx += 1; if (keys.up) vy -= 1; if (keys.down) vy += 1;
+  }
+  if (vx || vy){ p.path = null; p.then = null; }
+  if (!vx && !vy && p.path && p.path.length){
+    const wp = p.path[0], ddx = wp.x - p.x, ddy = wp.y - p.y, d = Math.hypot(ddx, ddy);
+    if (d < 1.5){ p.x = wp.x; p.y = wp.y; p.path.shift(); if (!p.path.length){ p.path = null; const t = p.then; p.then = null; p.walk = 0; if (t) t(); return; } }
+    else { vx = ddx / d; vy = ddy / d; }
+    if (vx || vy){ p.x += vx * MOVE_SPEED * dt; p.y += vy * MOVE_SPEED * dt; setDir(p, vx, vy); p.walk += dt; return; }
+  }
+  if (vx || vy){
+    const n = Math.hypot(vx, vy); vx /= n; vy /= n;
+    const mv = tryMove(p, vx * MOVE_SPEED * dt, vy * MOVE_SPEED * dt);
+    setDir(p, vx, vy); p.walk = mv ? p.walk + dt : 0;
+  } else p.walk = 0;
+}
+function setDir(p, vx, vy){ if (Math.abs(vy) > Math.abs(vx)) p.dir = vy < 0 ? "up" : "down"; else { p.dir = "down"; p.flip = vx < 0; } }
+function drawPlayer(c, p){
+  const frame = Math.floor(p.walk * 8) % 2;
+  const rows = p.dir === "up" ? (frame ? PL_UP2 : PL_UP) : (frame ? PL_DOWN2 : PL_DOWN);
+  const bob = frame && p.walk ? -1 : 0;
+  R(c, Math.round(p.x) - 5, Math.round(p.y) - 1, 10, 3, "rgba(0,0,0,.28)");
+  drawPixels(c, rows, PL_PAL, Math.round(p.x) - 6, Math.round(p.y) - 15 + bob, 1, p.flip);
+}
+function nearBuilding(p){
+  let best = null, bd = 21;
+  BUILDINGS.forEach(b => { const fx = b.front.x * T + 8, fy = b.front.y * T + 11, d = Math.hypot(p.x - fx, p.y - fy); if (d < bd){ bd = d; best = b; } });
+  return best;
+}
+
+/* ---------- Rendern ---------- */
+let bgCanvas = null;
+function renderBackground(){
+  bgCanvas = document.createElement("canvas"); bgCanvas.width = MW * T; bgCanvas.height = MH * T;
+  const c = bgCanvas.getContext("2d");
+  drawGround(c); TREES.forEach(([x, y]) => drawTree(c, x, y)); BUILDINGS.forEach(b => drawBuilding(c, b));
+}
+function drawArrow(c, bid, t){
+  const b = BMAP[bid]; if (!b) return;
+  const x = b.front.x * T + 8, y = (b.front.y < b.y ? b.y * T - 3 : b.front.y * T - 8) + Math.round(Math.sin(t * 5) * 2);
+  const rows = ["ooooooooo", "oyyyyyyyo", ".oyyyyyo.", "..oyyyo..", "...oyo...", "....o...."];
+  drawPixels(c, rows, { o: "#3b2a00", y: "#ffd84a" }, x - 4, y - 6, 1);
+}
+let lastT = 0, worldCtx = null, rafId = 0;
+function frame(ts){
+  const t = ts / 1000, dt = Math.min(0.05, lastT ? t - lastT : 0); lastT = t;
+  if (player){ stepPlayer(player, dt); }
+  const c = worldCtx; c.imageSmoothingEnabled = false;
+  c.drawImage(bgCanvas, 0, 0);
+  const nt = nextTarget(); if (nt) drawArrow(c, nt.bid, t);
+  if (player) drawPlayer(c, player);
+  if (player){ const nb = nearBuilding(player); $("#actBtn").classList.toggle("near", !!nb && !modalOpen()); }
+  if (S.start){ $("#hudTime").textContent = fmtTime((S.finish || Date.now()) - S.start); }
+  rafId = requestAnimationFrame(frame);
+}
+
+/* ---------- Gebäudebeschriftungen ---------- */
+function renderLabels(){
+  const host = $("#labels"); host.innerHTML = "";
+  const nt = nextTarget();
+  BUILDINGS.forEach(b => {
+    const info = buildingInfo(b.id); if (!info) return;
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "blabel"; btn.dataset.b = b.id;
+    const SHORT = { pav: "Grundgesetz", pz: "Parteizentrale", fs: "Fraktionssaal", rh: "Rathaus", vh: "Verbändehaus", bt: "Bundestag", zus: "Karlsruhe", br: "Bundesrat", aus: "Ausgang" };
+    const nm = SHORT[b.id] || b.name, nr = info.nr;
+    const state = info.done ? "done" : info.locked ? "locked" : "";
+    if (state) btn.classList.add(state);
+    if (nt && nt.bid === b.id) btn.classList.add("next");
+    const sym = info.done ? "✓" : "";
+    btn.innerHTML = '<span class="num">' + esc(nr) + '</span><span class="nm">' + esc(nm) + '</span>' + (sym ? '<span aria-hidden="true">' + sym + '</span>' : "");
+    btn.setAttribute("aria-label", (info.kind === "st" ? "Station " + nr + ": " : "") + nm + (info.done ? ", gelöst" : info.locked ? ", noch geschlossen" : ", offen") + ". Hinlaufen");
+    btn.style.left = ((b.x + b.w / 2) / MW * 100) + "%";
+    btn.style.top = ((b.y + b.h * (b.front.y < b.y ? 0.68 : 0.36)) / MH * 100) + "%";
+    btn.addEventListener("click", () => { if (!player) return; if (!walkTo(player, b.id, () => openBuilding(b.id))) openBuilding(b.id); });
+    host.appendChild(btn);
+  });
+  $("#targetLine").innerHTML = nt ? "Nächstes Ziel: <b>" + esc(nt.text) + "</b>" : "Alles erledigt – großartig!";
+}
+function refreshWorld(){ renderBackground(); renderLabels(); renderHud(); }
+
+/* ---------- Musik in der Schüleransicht (anfangs aus) ----------
+   Stationen 1–4: „Die Gedanken sind frei“ (Schleife).
+   Ab Station 5 (sobald Station 4 gelöst ist): Nationalhymne in Schleife mit kurzer Pause. */
+const MUSIC_SWITCH_AFTER = "s4", HYMN_GAP_SECONDS = 4;
+function wantedSong(){ const st = STATIONS.find(x => x.id === MUSIC_SWITCH_AFTER); return st && stationDone(st) ? "hymne" : "gedanken"; }
+function updateMusic(){
+  if (!S.music){ if (Music.playing) Music.stop(); return; }
+  const want = wantedSong();
+  if (Music.song !== want) Music.play(want, null, { loop: true, gap: want === "hymne" ? HYMN_GAP_SECONDS : 0 });
+}
+function renderMusicBtn(){ const b = $("#musicBtn"); if (!b) return; b.setAttribute("aria-pressed", S.music ? "true" : "false"); b.textContent = S.music ? "🔊 Musik" : "🔇 Musik"; b.setAttribute("aria-label", S.music ? "Musik ausschalten" : "Musik einschalten"); }
+
+/* ---------- Kopfleiste ---------- */
+function renderHud(){
+  const host = $("#stamps"); host.innerHTML = "";
+  STATIONS.forEach(st => { const d = document.createElement("div"); const got = stationDone(st); d.className = "stamp" + (got ? " got" : ""); d.textContent = got ? st.stamp : "?"; d.setAttribute("aria-label", "Stempel Station " + st.nr + (got ? ": " + st.stamp : ": noch offen")); host.appendChild(d); });
+  $("#hudHints").textContent = totalHints();
+  $("#hudGroup").textContent = S.group ? "Team " + S.group : "";
+  $("#endBtn").classList.toggle("hidden", !S.finish);
+}
+
+/* =====================================================================
+   DIALOGE
+   ===================================================================== */
+let modal = null, modal2 = null;
+function modalOpen(){ return !!modal || !!modal2; }
+function showSheet(root, opts){
+  root.innerHTML = '<div class="overlay' + (root.id === "modalRoot2" ? " top" : "") + '" role="dialog" aria-modal="true" aria-labelledby="' + root.id + 'H"><div class="sheet"><header><h2 id="' + root.id + 'H" tabindex="-1">' + opts.title + '</h2>' + (opts.closable === false ? "" : '<button class="xbtn" type="button" data-close aria-label="Schließen">✕</button>') + '</header><div class="body"></div></div></div>';
+  const body = $(".body", root);
+  if (typeof opts.body === "string") body.innerHTML = opts.body; else if (opts.body) body.appendChild(opts.body);
+  const x = $("[data-close]", root); if (x) x.addEventListener("click", () => (root.id === "modalRoot2" ? closeModal2() : closeModal()));
+  setTimeout(() => { const h = $("#" + root.id + "H"); if (h) h.focus({ preventScroll: true }); }, 30);
+  return body;
+}
+function openModal(opts){ modal = opts; Object.keys(keys).forEach(k => keys[k] = false); return showSheet($("#modalRoot"), opts); }
+function closeModal(){ if (modal && modal.onClose) modal.onClose(); modal = null; $("#modalRoot").innerHTML = ""; refreshWorld(); const a = $("#actBtn"); if (a) a.focus({ preventScroll: true }); }
+function openModal2(opts){ modal2 = opts; return showSheet($("#modalRoot2"), opts); }
+function closeModal2(){ const cb = modal2 && modal2.onClose; modal2 = null; $("#modalRoot2").innerHTML = ""; if (cb) cb(); }
+let toastTimer = 0;
+function toast(msg, ms){ const t = $("#toast"); t.textContent = msg; t.classList.remove("hidden"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.add("hidden"), ms || 3200); }
+function npc(html){ const wrap = document.createElement("div"); wrap.className = "npc"; wrap.appendChild(portrait()); const b = document.createElement("div"); b.className = "bubble"; b.innerHTML = '<span class="who">Konrad Wälder (fiktiv)</span>' + html; wrap.appendChild(b); return wrap; }
+
+/* ---------- Gebäude betreten ---------- */
+function openBuilding(bid){
+  const info = buildingInfo(bid); if (!info) return;
+  if (info.locked){
+    const nt = nextTarget();
+    toast("Noch geschlossen. " + (nt ? "Als Nächstes: " + nt.text + "." : ""));
+    return;
+  }
+  if (info.kind === "fin"){ if (S.finish) showEnd(); else openFinale(); return; }
+  if (info.kind === "zus"){ openStation(CONFIG.zusatz, "zus"); return; }
+  openStation(info.st, bid);
+}
+
+/* ---------- Station ---------- */
+function openStation(st, bid){
+  const isZ = st === CONFIG.zusatz;
+  const title = (isZ ? "Zusatzstation" : "Station " + st.nr) + " · " + esc(st.name) + (st.id === "s6" ? "<small>" + (bid === "bt" ? "Im Bundestag (Teil A)" : "Im Bundesrat (Teile B und C)") + "</small>" : "");
+  const body = openModal({ title, kind: "station", st, bid });
+  renderStationBody(body, st, bid);
+}
+function renderStationBody(body, st, bid){
+  body.innerHTML = "";
+  const parts = st.parts.filter(p => partBuilding(st, p) === bid);
+  if (stationDone(st)) body.appendChild(doneBox(st));
+  else if (parts.every(p => isSolved(p.id))){
+    const rest = st.parts.find(p => !isSolved(p.id));
+    const box = document.createElement("div"); box.className = "donebox";
+    box.innerHTML = "<h3>Hier ist alles erledigt!</h3><p>Weiter geht es im <b>" + esc(BMAP[partBuilding(st, rest)].name) + "</b>.</p>";
+    const b = document.createElement("button"); b.className = "btn"; b.type = "button"; b.textContent = "Zurück zur Karte"; b.addEventListener("click", closeModal); box.appendChild(b);
+    body.appendChild(box);
+  }
+  const intro = typeof st.intro === "object" ? st.intro[bid] : st.intro;
+  body.appendChild(npc(intro));
+  (st.materials || []).filter(m => !m.building || m.building === bid).forEach(m => {
+    const d = document.createElement("details"); d.className = "mat"; d.open = true;
+    d.innerHTML = '<summary><span class="tag ' + (m.tag === "FAKT" ? "fakt" : "fiktiv") + '">' + esc(m.tag) + '</span><span>' + esc(m.title) + '</span></summary><div class="mbody">' + (m.stand ? '<p class="stand">Stand: ' + esc(CONFIG.meta.stand) + '</p>' : "") + m.html + '</div>';
+    body.appendChild(d);
+  });
+  parts.forEach(p => body.appendChild(renderPart(p)));
+  body.appendChild(hintBox(st.id, st.hints));
+}
+function doneBox(st){
+  const box = document.createElement("div"); box.className = "donebox";
+  const isZ = st === CONFIG.zusatz;
+  box.innerHTML = "<h3>✓ " + (isZ ? "Zusatzstation geschafft!" : "Station gelöst – Stempel „" + esc(st.stamp) + "“") + "</h3><p>" + st.done.text + "</p>" + (st.done.sicherung ? '<div class="sb"><b>Sicherungsblatt:</b> ' + esc(st.done.sicherung) + "</div>" : "");
+  const b = document.createElement("button"); b.className = "btn"; b.type = "button"; b.style.marginTop = "10px"; b.textContent = "Zurück zur Karte"; b.addEventListener("click", closeModal); box.appendChild(b);
+  return box;
+}
+function hintBox(sid, hints){
+  const box = document.createElement("section"); box.className = "hints"; box.id = "hints-" + sid;
+  const lvl = S.hints[sid] || 0;
+  let h = "<h3>💡 Hinweise <span class=\"op\">(werden gezählt)</span></h3>";
+  if (lvl) h += "<ol>" + hints.slice(0, lvl).map(x => "<li>" + x + "</li>").join("") + "</ol>";
+  box.innerHTML = h;
+  if (lvl < hints.length){
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost"; b.textContent = "Hinweis " + (lvl + 1) + " von " + hints.length + " anzeigen";
+    b.addEventListener("click", () => { S.hints[sid] = lvl + 1; save(); renderHud(); const nb = hintBox(sid, hints); box.replaceWith(nb); });
+    box.appendChild(b);
+  } else { const p = document.createElement("p"); p.style.margin = "4px 0 0"; p.textContent = "Alle Hinweise sind aufgedeckt."; box.appendChild(p); }
+  return box;
+}
+
+/* ---------- Teilaufgaben ---------- */
+function getSel(p){
+  if (!S.sel[p.id]){
+    if (p.type === "assign") S.sel[p.id] = p.items.map(() => p.dims.map(() => null));
+    else if (p.type === "quiz") S.sel[p.id] = p.questions.map(q => q.multi ? [] : null);
+    else if (p.type === "order") S.sel[p.id] = [];
+  }
+  return S.sel[p.id];
+}
+function answerString(p){
+  const sel = getSel(p);
+  if (p.type === "assign"){ if (sel.some(r => r.some(v => v == null))) return null; return sel.map(r => r.join("")).join(","); }
+  if (p.type === "quiz"){
+    for (let i = 0; i < p.questions.length; i++){ const q = p.questions[i], v = sel[i]; if (q.multi ? !v.length : v == null) return null; if (q.exact && v.length !== q.exact) return "EXACT:" + q.exact; }
+    return sel.map((v, i) => p.questions[i].multi ? v.slice().sort().join("+") : v).join("|");
+  }
+  if (p.type === "order"){ if (sel.length !== p.cards.length) return null; return sel.join(","); }
+  return null;
+}
+function renderPart(p){
+  const solved = isSolved(p.id), sel = getSel(p);
+  const wrap = document.createElement("section"); wrap.className = "part" + (solved ? " solved" : ""); wrap.id = "part-" + p.id;
+  wrap.innerHTML = '<div class="part-head"><h3>' + esc(p.title) + '</h3><span class="op">' + esc(p.operator) + '</span><span class="pstate">' + (solved ? (S.teacher[p.id] ? "✓ freigeschaltet" : "✓ gelöst") : "") + '</span></div><p class="prompt">' + p.prompt + '</p>';
+  const rerender = () => { const n = renderPart(p); wrap.replaceWith(n); };
+  if (p.type === "assign"){
+    const lg = document.createElement("div"); lg.className = "legend";
+    lg.innerHTML = p.dims.map(d => d.map(o => "<span><b>" + esc(o.k === "-" ? "–" : o.k) + "</b> = " + esc(o.l) + "</span>").join("")).join("");
+    wrap.appendChild(lg);
+    const ol = document.createElement("ol"); ol.className = "items";
+    p.items.forEach((it, i) => {
+      const li = document.createElement("li"); li.innerHTML = "<p>" + it + "</p>";
+      p.dims.forEach((d, di) => {
+        const g = document.createElement("div"); g.className = "choices"; g.setAttribute("role", "group"); g.setAttribute("aria-label", "Aussage " + (i + 1) + (p.dims.length > 1 ? (di ? ": Richtung" : ": Kriterium") : ""));
+        d.forEach(o => {
+          const b = document.createElement("button"); b.type = "button"; b.className = "ch"; b.disabled = solved;
+          const short = d.length > 2 || p.dims.length > 1 ? o.l : o.l;
+          b.innerHTML = '<span class="k">' + esc(o.k === "-" ? "–" : o.k) + "</span>" + '<span class="t">' + esc(short) + "</span>";
+          b.setAttribute("aria-pressed", sel[i][di] === o.k ? "true" : "false");
+          b.setAttribute("aria-label", o.l);
+          b.addEventListener("click", () => { sel[i][di] = o.k; save(); $$("button", g).forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); });
+          g.appendChild(b);
+        });
+        li.appendChild(g);
+      });
+      ol.appendChild(li);
+    });
+    wrap.appendChild(ol);
+  } else if (p.type === "quiz"){
+    p.questions.forEach((q, qi) => {
+      const box = document.createElement("div"); box.className = "q"; box.innerHTML = "<p>" + q.q + "</p>";
+      const opts = document.createElement("div"); opts.className = "opts"; opts.setAttribute("role", "group");
+      q.options.forEach(o => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "ch"; b.disabled = solved;
+        const on = q.multi ? sel[qi].includes(o.k) : sel[qi] === o.k;
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+        b.innerHTML = (q.multi ? '<span class="k" aria-hidden="true">' + (on ? "☑" : "☐") + "</span>" : '<span class="k">' + esc(o.k) + ")</span>") + esc(o.l);
+        b.addEventListener("click", () => {
+          if (q.multi){ const a = sel[qi], ix = a.indexOf(o.k); if (ix >= 0) a.splice(ix, 1); else a.push(o.k); }
+          else sel[qi] = o.k;
+          save(); rerender();
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts); wrap.appendChild(box);
+    });
+  } else if (p.type === "order"){
+    const lab1 = document.createElement("div"); lab1.className = "lbl"; lab1.textContent = "Eure Reihenfolge:"; wrap.appendChild(lab1);
+    const seq = document.createElement("div"); seq.className = "order-seq";
+    if (!sel.length) seq.innerHTML = '<div class="empty">Noch leer – tippt unten die erste Karte an.</div>';
+    sel.forEach((k, i) => {
+      const c = p.cards.find(x => x.k === k);
+      const b = document.createElement("button"); b.type = "button"; b.className = "card"; b.disabled = solved;
+      b.innerHTML = '<span class="n">' + (i + 1) + "</span><span>" + esc(c.l) + "</span>";
+      b.setAttribute("aria-label", "Platz " + (i + 1) + ": " + c.l + ". Antippen zum Herausnehmen");
+      b.addEventListener("click", () => { sel.splice(i, 1); save(); rerender(); });
+      seq.appendChild(b);
+    });
+    wrap.appendChild(seq);
+    const rest = p.cards.filter(c => !sel.includes(c.k));
+    if (rest.length && !solved){
+      const lab2 = document.createElement("div"); lab2.className = "lbl"; lab2.textContent = "Karten:"; wrap.appendChild(lab2);
+      const pool = document.createElement("div"); pool.className = "order-pool";
+      rest.forEach(c => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "card"; b.innerHTML = '<span class="n">+</span><span>' + esc(c.l) + "</span>";
+        b.setAttribute("aria-label", c.l + ". Antippen zum Einordnen");
+        b.addEventListener("click", () => { sel.push(c.k); save(); rerender(); });
+        pool.appendChild(b);
+      });
+      wrap.appendChild(pool);
+    }
+    if (sel.length && !solved){ const r = document.createElement("button"); r.type = "button"; r.className = "btn ghost"; r.style.marginTop = "6px"; r.textContent = "Reihenfolge leeren"; r.addEventListener("click", () => { sel.length = 0; save(); rerender(); }); wrap.appendChild(r); }
+  }
+  const row = document.createElement("div"); row.className = "row";
+  const fb = document.createElement("p"); fb.className = "fb"; fb.setAttribute("aria-live", "polite");
+  if (!solved){
+    const chk = document.createElement("button"); chk.type = "button"; chk.className = "btn gold"; chk.textContent = "Prüfen";
+    chk.addEventListener("click", () => checkPart(p, fb));
+    row.appendChild(chk); wrap.appendChild(row);
+  } else { fb.className = "fb ok"; fb.textContent = S.teacher[p.id] ? "Von der Lehrkraft freigeschaltet." : "Richtig gelöst!"; }
+  wrap.appendChild(fb);
+  return wrap;
+}
+function checkPart(p, fb){
+  const ans = answerString(p);
+  if (ans == null){ fb.className = "fb no"; fb.textContent = p.type === "order" ? "Ordnet zuerst alle Karten ein." : p.type === "quiz" ? "Beantwortet zuerst alle Fragen." : "Ordnet zuerst alle Aussagen zu."; return; }
+  if (ans.indexOf("EXACT:") === 0){ fb.className = "fb no"; fb.textContent = "Wählt bei der zweiten Frage genau " + ans.slice(6) + " Argumente."; return; }
+  if (hashHex(p.id + "|" + ans) === p.hash){ solvePart(p, false); return; }
+  S.wrong[p.id] = (S.wrong[p.id] || 0) + 1; save();
+  fb.className = "fb no";
+  fb.textContent = "Noch nicht richtig. Mindestens eine Antwort stimmt nicht." + (S.wrong[p.id] >= 3 ? " Tipp: Holt euch unten einen Hinweis." : "");
+  if (S.wrong[p.id] >= 3){ const hb = $("#hints-" + p._st.id); if (hb){ hb.classList.remove("pulse"); void hb.offsetWidth; hb.classList.add("pulse"); } }
+}
+function solvePart(p, byTeacher){
+  const st = p._st, wasDone = stationDone(st);
+  S.solved[p.id] = true; if (byTeacher) S.teacher[p.id] = true; save();
+  renderHud();
+  if (modal && modal.kind === "station" && modal.st === st){ renderStationBody($("#modalRoot .body"), st, modal.bid); }
+  if (!wasDone && stationDone(st)){
+    $("#modalRoot .body") && $("#modalRoot .body").scrollTo ? ($("#modalRoot .overlay").scrollTop = 0) : 0;
+    if (STATIONS.includes(st)) toast("Stempel „" + st.stamp + "“ erhalten!");
+  } else if (!byTeacher) toast("Richtig!");
+  updateMusic();
+  if (p.afterSolve && !S.twist){ S.twist = true; save(); setTimeout(() => showTwist(p.afterSolve), 350); }
+}
+function showTwist(a){
+  const body = openModal2({ title: "Wendepunkt: " + esc(a.title) });
+  body.appendChild(npc(a.text));
+  const box = document.createElement("div"); box.className = "infobox";
+  box.innerHTML = '<p><span class="tag fakt">FAKT</span> <span class="stand">Stand: ' + esc(CONFIG.meta.stand) + "</span></p>" + a.fakt;
+  body.appendChild(box);
+  const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Weiter"; b.addEventListener("click", closeModal2); body.appendChild(b);
+}
+
+/* ---------- Finale und Abschluss ---------- */
+function openFinale(){
+  const f = CONFIG.finale;
+  const body = openModal({ title: esc(f.name), kind: "finale" });
+  body.appendChild(npc(f.intro));
+  const box = document.createElement("div"); box.className = "part";
+  box.innerHTML = '<div class="part-head"><h3>Lösungswort</h3></div><p class="prompt">' + esc(f.question) + '</p><label class="fl" for="finIn">Eure Antwort</label><input id="finIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40"><div class="row"><button id="finBtn" type="button" class="btn gold">Prüfen</button></div><p class="fb" id="finFb" aria-live="polite"></p>';
+  body.appendChild(box);
+  body.appendChild(hintBox("fin", f.hints));
+  const go = () => {
+    const raw = $("#finIn").value, fb = $("#finFb");
+    let n = norm(raw).replace(/^die/, "").replace(/^bundes/, "");
+    if (!n){ fb.className = "fb no"; fb.textContent = "Bitte zuerst ein Wort eingeben."; return; }
+    /* Varianten ohne Umlaut-Schreibung zulassen (a→ae, o→oe, u→ue an je einer Stelle) */
+    const cands = [n];
+    for (let i = 0; i < n.length; i++){ if ("aou".includes(n[i]) && n[i + 1] !== "e") cands.push(n.slice(0, i + 1) + "e" + n.slice(i + 1)); }
+    if (cands.some(x => hashHex("fin|" + x) === f.hash)){
+      S.finish = Date.now(); S.finishHints = totalHints(); save(); closeModal(); showEnd(true);
+    } else { S.wrong.fin = (S.wrong.fin || 0) + 1; save(); fb.className = "fb no"; fb.textContent = "Das ist es noch nicht." + (S.wrong.fin >= 3 ? " Tipp: Schaut euch die Hinweise an." : ""); }
+  };
+  $("#finBtn").addEventListener("click", go);
+  $("#finIn").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+}
+function showEnd(first){
+  const f = CONFIG.finale, hints = S.finishHints == null ? totalHints() : S.finishHints;
+  const body = openModal({ title: "Geschafft! Die Sitzungswoche ist vorbei.", kind: "end" });
+  body.appendChild(npc(f.success));
+  const d = document.createElement("div");
+  d.innerHTML = '<dl class="facts"><dt>Team</dt><dd>' + esc(S.group) + '</dd><dt>Zeit</dt><dd>' + fmtTime(S.finish - S.start) + '</dd><dt>Hinweise</dt><dd>' + hints + '</dd><dt>Freigeschaltet</dt><dd>' + teacherCount() + ' Teilaufgabe(n) durch die Lehrkraft</dd></dl>' +
+    '<p style="margin:12px 0 2px;font-weight:700">Prüfcode für eure Lehrkraft:</p><div class="endcode" id="endCode">' + checkCode(hints, S.group) + '</div>' +
+    '<p>Zeigt diesen Bildschirm eurer Lehrkraft. Vergesst das Sicherungsblatt nicht!</p>';
+  body.appendChild(d);
+  const row = document.createElement("div"); row.className = "row";
+  if (!stationDone(CONFIG.zusatz)){ const z = document.createElement("button"); z.type = "button"; z.className = "btn gold"; z.textContent = "Zur Zusatzstation"; z.addEventListener("click", () => { closeModal(); walkTo(player, "zus", () => openBuilding("zus")); }); row.appendChild(z); }
+  const m = document.createElement("button"); m.type = "button"; m.className = "btn ghost"; m.textContent = "Zur Karte"; m.addEventListener("click", closeModal); row.appendChild(m);
+  body.appendChild(row);
+  if (first) renderHud();
+}
+
+/* ---------- Menü, Hilfe, Neustart, Lehrkraftmodus ---------- */
+function openMenu(){
+  const body = openModal({ title: "Menü", kind: "menu" });
+  body.innerHTML = '<div class="menu-list"><button class="btn ghost" type="button" data-m="help">Anleitung anzeigen</button><button class="btn ghost" type="button" data-m="teacher">Lehrkraftmodus</button><button class="btn red" type="button" data-m="restart">Spiel neu starten</button></div><p class="src" style="margin-top:14px">Version ' + esc(CONFIG.meta.version) + ' · Infostand: ' + esc(CONFIG.meta.stand) + '</p>';
+  $$("[data-m]", body).forEach(b => b.addEventListener("click", () => { const m = b.dataset.m; closeModal(); if (m === "help") openHelp(); if (m === "teacher") openTeacher(); if (m === "restart") openRestart(); }));
+}
+function openHelp(){
+  const body = openModal({ title: "Anleitung", kind: "help" });
+  body.appendChild(npc(CONFIG.start.intro));
+  const d = document.createElement("div");
+  d.innerHTML = "<p>" + CONFIG.start.controls + "</p><p>" + CONFIG.start.roles + "</p><p>" + CONFIG.start.fiction + "</p>";
+  body.appendChild(d);
+  const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Zur Karte"; b.addEventListener("click", closeModal); body.appendChild(b);
+}
+function openRestart(){
+  const body = openModal({ title: "Spiel neu starten?", kind: "restart" });
+  body.innerHTML = "<p>Der gesamte Fortschritt dieses Geräts wird gelöscht: Stempel, Hinweise, Zeit und Gruppenname.</p>";
+  const row = document.createElement("div"); row.className = "row";
+  const y = document.createElement("button"); y.type = "button"; y.className = "btn red"; y.textContent = "Ja, alles löschen"; y.addEventListener("click", () => { resetting = true; Music.stop(); store.del(); location.reload(); });
+  const n = document.createElement("button"); n.type = "button"; n.className = "btn ghost"; n.textContent = "Abbrechen"; n.addEventListener("click", closeModal);
+  row.appendChild(y); row.appendChild(n); body.appendChild(row);
+}
+let teacherOk = false;
+function openTeacher(){
+  const body = openModal({ title: "Lehrkraftmodus", kind: "teacher" });
+  if (!teacherOk){
+    body.innerHTML = '<label class="fl" for="tIn">Lehrkraftcode</label><input id="tIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="row"><button id="tBtn" class="btn" type="button">Entsperren</button></div><p class="fb" id="tFb"></p>';
+    const go = () => { if (hashHex("teacher|" + norm($("#tIn").value)) === CONFIG.teacherCodeHash){ teacherOk = true; closeModal(); openTeacher(); } else { $("#tFb").className = "fb no"; $("#tFb").textContent = "Der Code ist nicht richtig."; } };
+    $("#tBtn").addEventListener("click", go); $("#tIn").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+    return;
+  }
+  const nt = nextTarget();
+  let cur = null; for (const st of STATIONS){ if (!stationDone(st)){ cur = st; break; } }
+  let html = "<p><b>Aktuelle Station:</b> " + (cur ? "Station " + cur.nr + " – " + esc(cur.name) : (S.finish ? "alles gelöst" : "Lösungswort am Ausgang")) + "</p>";
+  html += '<div class="row"><button id="tUnlock" class="btn gold" type="button"' + ((cur || !S.finish) ? "" : " disabled") + '>Aktuelle Station freischalten</button></div>';
+  html += '<hr style="margin:18px 0"><h3 style="margin:0 0 6px">Prüfcode kontrollieren</h3><label class="fl" for="tg">Teamname</label><input id="tg" type="text" autocomplete="off"><label class="fl" for="th">Anzahl Hinweise (vom Abschlussbildschirm)</label><input id="th" type="text" inputmode="numeric" autocomplete="off"><label class="fl" for="tc">Prüfcode</label><input id="tc" type="text" autocomplete="off" autocapitalize="characters"><div class="row"><button id="tCheck" class="btn" type="button">Prüfen</button></div><p class="fb" id="tcFb"></p>';
+  html += '<hr style="margin:18px 0"><div class="row"><button id="tBeamer" class="btn ghost" type="button">Beamer-Ansicht öffnen</button></div>';
+  body.innerHTML = html;
+  $("#tUnlock").addEventListener("click", () => {
+    if (cur){ cur.parts.forEach(p => { if (!isSolved(p.id)) solvePart(p, true); }); toast("Station " + cur.nr + " freigeschaltet."); }
+    else if (!S.finish){ S.teacher.fin = true; S.finish = Date.now(); S.finishHints = totalHints(); save(); closeModal(); showEnd(true); return; }
+    closeModal();
+  });
+  $("#tCheck").addEventListener("click", () => {
+    const want = checkCode(parseInt($("#th").value, 10) || 0, $("#tg").value).replace("-", "");
+    const got = $("#tc").value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const fb = $("#tcFb");
+    if (got && got === want){ fb.className = "fb ok"; fb.textContent = "✓ Gültiger Prüfcode."; } else { fb.className = "fb no"; fb.textContent = "✗ Prüfcode passt nicht zu Teamname und Hinweiszahl."; }
+  });
+  $("#tBeamer").addEventListener("click", () => {
+    const url = location.href.split("#")[0] + "#beamer";
+    try { if (window.top !== window){ window.top.location.href = url; return; } } catch(e){}
+    location.hash = "beamer"; location.reload();
+  });
+}
+
+/* ---------- Start ---------- */
+function openStart(){
+  const body = openModal({ title: "Willkommen", kind: "start", closable: false });
+  body.innerHTML = '<div class="hero"><h1>' + esc(CONFIG.meta.title) + '</h1><p>' + esc(CONFIG.meta.subtitle) + '</p></div><div class="notice">' + CONFIG.start.fiction + '</div><label class="fl" for="gIn">Wie heißt euer Team?</label><input id="gIn" type="text" maxlength="30" autocomplete="off" placeholder="z. B. Team Grundgesetz"><div class="row"><button id="gBtn" class="btn gold" type="button">Los geht\'s</button></div><p class="fb" id="gFb"></p><p class="src">Bitte keine echten Namen verwenden.</p>';
+  const go = () => {
+    const v = $("#gIn").value.trim().replace(/\s+/g, " ");
+    if (v.length < 2){ $("#gFb").className = "fb no"; $("#gFb").textContent = "Bitte einen Teamnamen mit mindestens 2 Zeichen eingeben."; return; }
+    S.group = v; S.start = Date.now(); save(); closeModal(); openIntro();
+  };
+  $("#gBtn").addEventListener("click", go); $("#gIn").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+}
+function openIntro(){
+  const body = openModal({ title: "Eure Mission", kind: "intro", onClose: () => { S.introSeen = true; save(); } });
+  body.appendChild(npc(CONFIG.start.intro));
+  const d = document.createElement("div"); d.innerHTML = "<p>" + CONFIG.start.controls + "</p><p>" + CONFIG.start.roles + "</p>"; body.appendChild(d);
+  const b = document.createElement("button"); b.type = "button"; b.className = "btn gold"; b.textContent = "Zur Karte"; b.addEventListener("click", closeModal); body.appendChild(b);
+}
+
+/* ---------- Eingaben ---------- */
+const KEYMAP = { ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down", ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right" };
+function action(){
+  if (!player || modalOpen()) return;
+  const nb = nearBuilding(player);
+  if (nb) openBuilding(nb.id); else toast("Geht zu einer Tür oder tippt auf ein Gebäude.");
+}
+function bindInputs(){
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape"){ if (modal2) closeModal2(); else if (modal && modal.closable !== false && modal.kind !== "start") closeModal(); return; }
+    if (modalOpen()) return;
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT") return;
+    const d = KEYMAP[e.code]; if (d){ keys[d] = true; e.preventDefault(); return; }
+    if ((e.code === "Space" || e.code === "Enter" || e.code === "KeyE") && !(tag === "BUTTON" && e.code !== "KeyE")){ e.preventDefault(); action(); }
+  });
+  document.addEventListener("keyup", e => { const d = KEYMAP[e.code]; if (d) keys[d] = false; });
+  window.addEventListener("blur", () => Object.keys(keys).forEach(k => keys[k] = false));
+  $$("#dpad button").forEach(b => {
+    const d = b.dataset.dir;
+    const on = e => { e.preventDefault(); keys[d] = true; b.classList.add("on"); try { b.setPointerCapture(e.pointerId); } catch(_){} };
+    const off = () => { keys[d] = false; b.classList.remove("on"); };
+    b.addEventListener("pointerdown", on); b.addEventListener("pointerup", off); b.addEventListener("pointercancel", off); b.addEventListener("lostpointercapture", off);
+    b.addEventListener("contextmenu", e => e.preventDefault());
+  });
+  $("#actBtn").addEventListener("click", action);
+  $("#menuBtn").addEventListener("click", openMenu);
+  $("#musicBtn").addEventListener("click", () => { S.music = !S.music; save(); renderMusicBtn(); updateMusic(); if (S.music && !Music.playing) toast("Dieser Browser kann keine Musik abspielen."); });
+  $("#endBtn").addEventListener("click", () => showEnd(false));
+  /* Tippen direkt auf die Karte: zum nächstgelegenen Gebäude laufen */
+  $("#world").addEventListener("click", e => {
+    if (!player || modalOpen()) return;
+    const r = e.target.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * MW, y = (e.clientY - r.top) / r.height * MH;
+    const b = BUILDINGS.find(b => x >= b.x && x < b.x + b.w && y >= b.y && y < b.y + b.h);
+    if (b){ if (!walkTo(player, b.id, () => openBuilding(b.id))) openBuilding(b.id); }
+  });
+}
+
+/* =====================================================================
+   BEAMER-ANSICHT (nur für die Lehrkraft) – mit Musik
+   ===================================================================== */
+const Music = (() => {
+  /* Musik nur für die Beamer-Ansicht, im Browser erzeugt (keine Audiodateien).
+     1) „Die Gedanken sind frei“ – Volkslied um 1800, gemeinfrei; eigene Chiptune-Fassung, läuft in Schleife.
+     2) Nationalhymne – Melodie: Joseph Haydn (1797), gemeinfrei; schlichte Fassung, wird einmal gespielt.
+     Notenquellen: Essener Volksliedsammlung (via music21) bzw. Notensatz „Das Lied der Deutschen“ (LilyPond, Wiki Jurtenland), abgeglichen mit dem Melodie-Incipit „Austrian Hymn“ (Hymnary.org). */
+  const PC = { C:0, D:2, E:4, F:5, G:7, A:9, B:11 };
+  function midi(n){ const m = /^([A-G])(b|#)?(\d)$/.exec(n); return (parseInt(m[3], 10) + 1) * 12 + PC[m[1]] + (m[2] === "b" ? -1 : m[2] === "#" ? 1 : 0); }
+  const hz = (n, tr) => 440 * Math.pow(2, (midi(n) + (tr || 0) - 69) / 12);
+
+  /* --- Die Gedanken sind frei (C-Dur, 3/4, Auftakt) --- */
+  const GED_MEL = [["G4",.5],["G4",.5],
+    ["C5",1],["C5",1],["E5",.5],["C5",.5], ["G4",2],["G4",1], ["F4",1],["D4",1],["G4",1], ["E4",1],["C4",1],["G4",1],
+    ["C5",1],["C5",1],["E5",.5],["C5",.5], ["G4",2],["G4",1], ["F4",1],["D4",1],["G4",1], ["E4",1],["C4",1],["C5",1],
+    ["B4",1],["D5",1.5],["B4",.5], ["C5",1],["E5",1],["C5",1], ["B4",1],["D5",1.5],["B4",.5], ["C5",1],["E5",1],["C5",1],
+    ["A4",1],["A4",1],["C5",.5],["A4",.5], ["G4",2],["G4",.5],["E5",.5], ["E5",.5],["D5",.5],["C5",1],["B4",1], ["C5",2]];
+  const GED_CH = ["C","C","G7","C","C","C","G7","C","G","C","G","C","F","C","G7","C"];
+  const CH = { C: ["C3", ["E3","G3"]], G: ["G2", ["B2","D3"]], G7: ["G2", ["B2","F3"]], F: ["F2", ["A2","C3"]] };
+  function gedBass(){
+    const ev = [];
+    GED_CH.forEach((c, i) => { const start = 1 + i * 3, len = i === GED_CH.length - 1 ? 2 : 3, [root, dy] = CH[c];
+      ev.push([root, start, 0.9, 0.30]);
+      for (let b = 1; b < len; b++) dy.forEach(n => ev.push([n, start + b, 0.45, 0.07]));
+    });
+    return ev;
+  }
+  /* --- Nationalhymne (Es-Dur, 4/4) --- */
+  const H1 = [["Eb4",1.5],["F4",.5],["G4",1],["F4",1], ["Ab4",1],["G4",1],["F4",.5],["D4",.5],["Eb4",1], ["C5",1],["Bb4",1],["Ab4",1],["G4",1], ["F4",1],["G4",.5],["Eb4",.5],["Bb4",2]];
+  /* Abschnitte nach dem Notensatz: A (Z. 1–2) zweimal, B (Z. 5–6) einmal, C (Z. 7–8) zweimal */
+  const H2 = [["F4",1],["G4",1],["F4",.5],["D4",.5],["Bb3",1], ["Ab4",1],["G4",1],["F4",.5],["D4",.5],["Bb3",1],
+    ["Bb4",1],["Ab4",1],["G4",1.5],["G4",.5], ["A4",1],["A4",.5],["Bb4",.5],["Bb4",2]];
+  const H3 = [["Eb5",1.5],["D5",.5],["D5",.5],["C5",.5],["Bb4",1], ["C5",1.5],["Bb4",.5],["Bb4",.5],["Ab4",.5],["G4",1],
+    ["F4",1.5],["G4",.25],["Ab4",.25],["Bb4",.5],["C5",.5],["Ab4",.5],["F4",.5], ["Eb4",1],["G4",.5],["F4",.5],["Eb4",2]];
+  const HYM_MEL = H1.concat(H1, H2, H3, H3);
+  const HB1 = [["Eb3",1.5],["Eb3",.5],["Eb3",1],["Bb2",1], ["D3",1],["Eb3",1],["Bb2",1],["Eb3",1], ["Ab3",1],["G3",1],["D3",1],["Eb3",1], ["Ab2",1],["A2",1],["Bb2",2]];
+  const HB2 = [["Bb2",1],["Bb2",1],["Bb2",1],["Bb2",1], ["Bb2",1],["Bb2",1],["Bb2",1],["Bb2",1],
+    ["G2",1],["Ab2",.5],["Bb2",.5],["C3",1.5],["C3",.5], ["F3",1.5],["F2",.5],["Bb2",2]];
+  const HB3 = [["G3",1.5],["G3",.5],["Ab3",1],["Eb3",1], ["Ab3",1.5],["G3",.5],["F3",1],["Eb3",1],
+    ["Bb2",1],["Ab2",1],["G2",1],["Ab2",1], ["Bb2",1],["Bb2",1],["Eb2",2]];
+  const HYM_BASS = HB1.concat(HB1, HB2, HB3, HB3);
+  const seq = list => { let t = 0; return list.map(([n, d]) => { const e = [n, t, d]; t += d; return e; }); };
+  const total = list => list.reduce((s, x) => s + x[1], 0);
+
+  const SONGS = {
+    gedanken: { bpm: 112, tr: 2, loop: true, beats: total(GED_MEL),
+      voices: () => [ { wave: "pulse", g: 0.34, ev: seq(GED_MEL) }, { wave: "square", g: 0.02, oct: 12, ev: seq(GED_MEL), short: true }, { wave: "triangle", ev: gedBass() } ] },
+    hymne: { bpm: 74, tr: 0, loop: false, beats: total(HYM_MEL),
+      voices: () => [ { wave: "square", g: 0.10, ev: seq(HYM_MEL), legato: true }, { wave: "triangle", g: 0.12, oct: -12, ev: seq(HYM_MEL), legato: true }, { wave: "triangle", g: 0.30, ev: seq(HYM_BASS), legato: true } ] }
+  };
+
+  let ctx = null, master = null, pulse = null, timer = 0, endTimer = 0, nextLoop = 0, current = null, vol = 0.5, onEnd = null, looping = false, gap = 0;
+  function ensure(){
+    if (ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+    ctx = new AC(); newMaster();
+    const n = 32, re = new Float32Array(n), im = new Float32Array(n); for (let i = 1; i < n; i++){ im[i] = (2 / (i * Math.PI)) * Math.sin(i * Math.PI * 0.25); }
+    pulse = ctx.createPeriodicWave(re, im); return true;
+  }
+  let probe = null;
+  function newMaster(){ master = ctx.createGain(); master.gain.value = vol * 0.35; master.connect(ctx.destination); if (!probe){ probe = ctx.createAnalyser(); probe.fftSize = 2048; } master.connect(probe); }
+  function tone(wave, f, t0, dur, g, legato){
+    const o = ctx.createOscillator(), a = ctx.createGain();
+    if (wave === "pulse") o.setPeriodicWave(pulse); else o.type = wave;
+    o.frequency.value = f;
+    const att = legato ? 0.04 : 0.01, hold = legato ? 0.85 : 0.7, rel = legato ? 0.98 : 0.95;
+    a.gain.setValueAtTime(0, t0); a.gain.linearRampToValueAtTime(g, t0 + att); a.gain.setValueAtTime(g, t0 + dur * hold); a.gain.linearRampToValueAtTime(0, t0 + dur * rel);
+    o.connect(a); a.connect(master); o.start(t0); o.stop(t0 + dur);
+  }
+  function schedule(song, t0){
+    const B = 60 / song.bpm;
+    song.voices().forEach(v => v.ev.forEach(e => {
+      const [n, t, d, g] = e;
+      tone(v.wave, hz(n, song.tr + (v.oct || 0)), t0 + t * B, (v.short ? d * 0.5 : d) * B, g != null && v.g == null ? g : v.g, v.legato);
+    }));
+    return song.beats * B;
+  }
+  function tick(){ if (!current || !looping) return; while (nextLoop < ctx.currentTime + 1.5){ nextLoop += schedule(current, nextLoop) + gap; } }
+  function stop(){
+    clearInterval(timer); clearTimeout(endTimer); current = null;
+    if (ctx){ try { master.disconnect(); } catch(e){} newMaster(); }
+  }
+  return {
+    /* opts.loop: auch ein sonst einmaliges Stück wiederholen; opts.gap: Pause zwischen Durchläufen (Sekunden) */
+    play(name, done, opts){
+      if (!ensure()) return false;
+      if (ctx.state === "suspended") ctx.resume();
+      stop(); current = SONGS[name]; onEnd = done || null;
+      looping = current.loop || !!(opts && opts.loop); gap = (opts && opts.gap) || 0;
+      const t0 = ctx.currentTime + 0.1;
+      if (looping){ nextLoop = t0; tick(); timer = setInterval(tick, 300); }
+      else { const len = schedule(current, t0); endTimer = setTimeout(() => { current = null; if (onEnd) onEnd(); }, (len + 0.4) * 1000); }
+      return true;
+    },
+    stop,
+    setVolume(v){ vol = v; if (master) master.gain.value = v * 0.35; },
+    get playing(){ return !!current; },
+    get looping(){ return !!current && looping; },
+    get song(){ return current === SONGS.gedanken ? "gedanken" : current === SONGS.hymne ? "hymne" : null; },
+    /* Pegel des Ausgangs (für den automatischen Test, ob wirklich Ton entsteht) */
+    _level(){ if (!probe) return 0; const a = new Float32Array(probe.fftSize); probe.getFloatTimeDomainData(a); let q = 0; for (let i = 0; i < a.length; i++) q += a[i] * a[i]; return Math.sqrt(q / a.length); },
+    _beats: () => ({ gedanken: SONGS.gedanken.beats, hymne: SONGS.hymne.beats, hymneBass: total(HYM_BASS) })
+  };
+})();
+
+/* =====================================================================
+   QR-CODE (Byte-Modus, Fehlerkorrektur M) – damit die iPads die Adresse scannen können
+   (übernommen aus „Akte Weimar“)
+   ===================================================================== */
+var QR = (function(){
+  var ECC=[-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26], BLK=[-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16];
+  function rawModules(v){ var r=(16*v+128)*v+64; if(v>=2){ var na=Math.floor(v/7)+2; r-=(25*na-10)*na-55; if(v>=7) r-=36; } return r; }
+  function dataCw(v){ return Math.floor(rawModules(v)/8) - ECC[v]*BLK[v]; }
+  function gmul(x,y){ var z=0; for(var i=7;i>=0;i--){ z=(z<<1)^((z>>>7)*0x11D); z^=((y>>>i)&1)*x; } return z&255; }
+  function rsDiv(deg){ var r=[]; for(var i=0;i<deg;i++) r.push(0); r[deg-1]=1; var root=1; for(i=0;i<deg;i++){ for(var j=0;j<r.length;j++){ r[j]=gmul(r[j],root); if(j+1<r.length) r[j]^=r[j+1]; } root=gmul(root,2); } return r; }
+  function rsRem(data,div){ var r=div.map(function(){return 0;}); data.forEach(function(b){ var f=b^r.shift(); r.push(0); div.forEach(function(c,i){ r[i]^=gmul(c,f); }); }); return r; }
+  function utf8(s){ var b=[]; var e=unescape(encodeURIComponent(s)); for(var i=0;i<e.length;i++) b.push(e.charCodeAt(i)); return b; }
+  function make(text){
+    var data=utf8(text), v;
+    for(v=1; v<=20; v++){ if(4+(v<10?8:16)+data.length*8 <= dataCw(v)*8) break; }
+    if(v>20) return null;
+    var bits=[]; function put(val,len){ for(var i=len-1;i>=0;i--) bits.push((val>>>i)&1); }
+    put(4,4); put(data.length, v<10?8:16); data.forEach(function(b){ put(b,8); });
+    var cap=dataCw(v)*8; put(0, Math.min(4, cap-bits.length)); while(bits.length%8) bits.push(0);
+    var bytes=[]; for(var i=0;i<bits.length;i+=8){ var x=0; for(var j=0;j<8;j++) x=(x<<1)|bits[i+j]; bytes.push(x); }
+    for(var p=0xEC; bytes.length<dataCw(v); p^=0xEC^0x11) bytes.push(p);
+    /* Blöcke + Fehlerkorrektur, verschränkt */
+    var nb=BLK[v], el=ECC[v], raw=Math.floor(rawModules(v)/8), nShort=nb-raw%nb, shortLen=Math.floor(raw/nb), blocks=[], div=rsDiv(el), k=0;
+    for(i=0;i<nb;i++){ var dat=bytes.slice(k, k+shortLen-el+(i<nShort?0:1)); k+=dat.length; var ec=rsRem(dat,div); if(i<nShort) dat.push(0); blocks.push(dat.concat(ec)); }
+    var cw=[]; for(i=0;i<blocks[0].length;i++) for(j=0;j<blocks.length;j++) if(i!==shortLen-el || j>=nShort) cw.push(blocks[j][i]);
+    /* Matrix */
+    var size=v*4+17, M=[], F=[]; for(i=0;i<size;i++){ M.push(new Array(size).fill(false)); F.push(new Array(size).fill(false)); }
+    function sf(x,y,d){ M[y][x]=d; F[y][x]=true; }
+    for(i=0;i<size;i++){ sf(6,i,i%2===0); sf(i,6,i%2===0); }
+    [[3,3],[size-4,3],[3,size-4]].forEach(function(c){ for(var dy=-4;dy<=4;dy++) for(var dx=-4;dx<=4;dx++){ var d=Math.max(Math.abs(dx),Math.abs(dy)), xx=c[0]+dx, yy=c[1]+dy; if(xx>=0&&xx<size&&yy>=0&&yy<size) sf(xx,yy,d!==2&&d!==4); } });
+    var al=[]; if(v>1){ var na=Math.floor(v/7)+2, stp=Math.ceil((v*4+4)/(na*2-2))*2; al=[6]; for(var pos=size-7; al.length<na; pos-=stp) al.splice(1,0,pos); }
+    for(i=0;i<al.length;i++) for(j=0;j<al.length;j++){ if((i===0&&j===0)||(i===0&&j===al.length-1)||(i===al.length-1&&j===0)) continue; for(var dy2=-2;dy2<=2;dy2++) for(var dx2=-2;dx2<=2;dx2++) sf(al[i]+dx2, al[j]+dy2, Math.max(Math.abs(dx2),Math.abs(dy2))!==1); }
+    function fmt(mask){ var d=(0<<3)|mask, r=d; for(var i=0;i<10;i++) r=(r<<1)^((r>>>9)*0x537); var b=((d<<10)|r)^0x5412; function g(i){return ((b>>>i)&1)!==0;}
+      for(i=0;i<=5;i++) sf(8,i,g(i)); sf(8,7,g(6)); sf(8,8,g(7)); sf(7,8,g(8)); for(i=9;i<15;i++) sf(14-i,8,g(i));
+      for(i=0;i<8;i++) sf(size-1-i,8,g(i)); for(i=8;i<15;i++) sf(8,size-15+i,g(i)); sf(8,size-8,true); }
+    fmt(0);
+    if(v>=7){ var r=v; for(i=0;i<12;i++) r=(r<<1)^((r>>>11)*0x1F25); var vb=(v<<12)|r; for(i=0;i<18;i++){ var bt=((vb>>>i)&1)!==0, a=size-11+i%3, bb=Math.floor(i/3); sf(a,bb,bt); sf(bb,a,bt); } }
+    var bi=0; for(var right=size-1; right>=1; right-=2){ if(right===6) right=5; for(var vert=0; vert<size; vert++) for(j=0;j<2;j++){ var x=right-j, up=((right+1)&2)===0, y=up?size-1-vert:vert; if(!F[y][x] && bi<cw.length*8){ M[y][x]=((cw[bi>>>3]>>>(7-(bi&7)))&1)!==0; bi++; } } }
+    var mask=2; for(y=0;y<size;y++) for(x=0;x<size;x++){ if(!F[y][x] && x%3===0) M[y][x]=!M[y][x]; }
+    fmt(mask);
+    return M;
+  }
+  function svg(text){
+    var M=make(text); if(!M) return "";
+    var n=M.length, q=4, s=n+2*q, d="";
+    for(var y=0;y<n;y++) for(var x=0;x<n;x++) if(M[y][x]) d+="M"+(x+q)+" "+(y+q)+"h1v1h-1z";
+    return "<svg viewBox='0 0 "+s+" "+s+"' shape-rendering='crispEdges' role='img' aria-label='QR-Code zur Schüleransicht'><rect width='"+s+"' height='"+s+"' fill='#fff'/><path d='"+d+"' fill='#000'/></svg>";
+  }
+  return { make: make, svg: svg };
+})();
+
+function startBeamer(){
+  document.body.classList.add("beamer");
+  $("#app").classList.add("hidden");
+  const root = $("#beamerRoot"); root.classList.remove("hidden");
+  const link = location.href.split("#")[0];
+  root.innerHTML = '<div id="beamer"><div><h1>' + esc(CONFIG.meta.title) + '</h1><p class="sub">' + esc(CONFIG.meta.subtitle) + '</p><div class="bw"><canvas id="bWorld" width="448" height="288" style="width:100%;display:block;image-rendering:pixelated"></canvas></div>' +
+    '<div class="card2" style="margin-top:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div id="bQR" style="background:#fff;padding:10px;border-radius:10px;width:220px;height:220px;flex:0 0 220px">' + QR.svg(link) + '</div><div style="flex:1;min-width:240px"><h2>Link für eure iPads</h2><p style="margin:0 0 8px;font-size:20px">QR-Code scannen oder Adresse eingeben:</p><div id="bLink">' + esc(link) + '</div></div></div></div>' +
+    '<div><div class="card2"><h2>Zeit und Musik</h2><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><div id="bTimer">0:00</div><div class="row" style="margin:0"><button id="bStart" class="btn gold" type="button">Start</button><button id="bReset" class="btn ghost" type="button" style="color:#fff;border-color:#fff">Zurücksetzen</button></div></div><p style="margin:10px 0 6px;font-size:20px">Spielmusik: „Die Gedanken sind frei“</p><div class="row" style="margin:0"><button id="bMusic" class="btn gold" type="button">▶ Musik an</button><label style="display:flex;align-items:center;gap:10px;font-size:20px">Lautstärke <input id="bVol" type="range" min="0" max="1" step="0.05" value="0.5"></label></div><p style="margin:12px 0 6px;font-size:20px">Zum Abschluss: Nationalhymne</p><div class="row" style="margin:0"><button id="bHymn" class="btn ghost" type="button" style="color:#fff;border-color:#e2b33c">▶ Nationalhymne abspielen</button></div></div>' +
+    '<div class="card2"><h2>So geht\'s</h2><ol><li>Link öffnen, Teamnamen eingeben.</li><li>Zur markierten Station laufen und „Betreten“ tippen.</li><li>Aufgaben lösen, Stempel sammeln, Sicherungsblatt ausfüllen.</li><li>Am Ausgang das Lösungswort eingeben.</li></ol></div>' +
+    '<div class="card2"><h2>Rollen – wechseln nach jeder Station</h2><ul><li><b>Steuerung:</b> bedient das iPad</li><li><b>Grundgesetz:</b> liest im Dossier</li><li><b>Akte:</b> liest Fall und Material vor</li><li><b>Protokoll:</b> füllt das Sicherungsblatt aus</li></ul></div>' +
+    '</div></div>';
+  const musicUi = () => { $("#bMusic").textContent = Music.song === "gedanken" ? "⏸ Musik aus" : "▶ Musik an"; $("#bHymn").textContent = Music.song === "hymne" ? "⏹ Hymne stoppen" : "▶ Nationalhymne abspielen"; };
+  $("#bMusic").addEventListener("click", () => {
+    if (Music.song === "gedanken") Music.stop();
+    else if (!Music.play("gedanken")) toast("Dieser Browser kann keine Musik erzeugen.");
+    musicUi();
+  });
+  $("#bHymn").addEventListener("click", () => {
+    if (Music.song === "hymne") Music.stop();
+    else if (!Music.play("hymne", musicUi)) toast("Dieser Browser kann keine Musik erzeugen.");
+    musicUi();
+  });
+  $("#bVol").addEventListener("input", e => Music.setVolume(parseFloat(e.target.value)));
+  let tStart = 0, tAcc = 0, running = false;
+  const show = () => { $("#bTimer").textContent = fmtTime(tAcc + (running ? Date.now() - tStart : 0)); };
+  $("#bStart").addEventListener("click", () => { if (running){ tAcc += Date.now() - tStart; running = false; $("#bStart").textContent = "Weiter"; } else { tStart = Date.now(); running = true; $("#bStart").textContent = "Pause"; } show(); });
+  $("#bReset").addEventListener("click", () => { running = false; tAcc = 0; $("#bStart").textContent = "Start"; show(); });
+  setInterval(show, 500);
+  /* Demo-Figur läuft von Gebäude zu Gebäude */
+  buildGrid(); S = freshState(); renderBackground();
+  const c = $("#bWorld").getContext("2d"), demo = makePlayer(null), order = ["pav","pz","fs","rh","vh","bt","br","aus","zus"]; let oi = 0, last = 0;
+  const go = () => { walkTo(demo, order[oi % order.length], () => setTimeout(go, 700)); oi++; };
+  go();
+  const loop = ts => { const t = ts / 1000, dt = Math.min(0.05, last ? t - last : 0); last = t; stepPlayer(demo, dt); c.imageSmoothingEnabled = false; c.drawImage(bgCanvas, 0, 0); drawPlayer(c, demo); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+
+/* =====================================================================
+   START
+   ===================================================================== */
+function init(){
+  if (/beamer/i.test(location.hash) || /beamer/i.test(location.search)){ startBeamer(); return; }
+  $("#app").classList.remove("hidden");
+  const saved = store.get();
+  if (saved && saved.v === 1) S = Object.assign(freshState(), saved);
+  buildGrid();
+  let pos = S.pos;
+  if (pos && (isSolidPx(pos.x - 5, pos.y - 4) || isSolidPx(pos.x + 5, pos.y))) pos = null;
+  player = makePlayer(pos);
+  worldCtx = $("#world").getContext("2d");
+  refreshWorld(); bindInputs(); renderMusicBtn();
+  /* Browser spielen Ton erst nach einer Berührung: gespeicherte Einstellung „Musik an“ beim ersten Antippen fortsetzen */
+  if (S.music){ const resume = () => { updateMusic(); document.removeEventListener("pointerdown", resume, true); document.removeEventListener("keydown", resume, true); }; document.addEventListener("pointerdown", resume, true); document.addEventListener("keydown", resume, true); }
+  rafId = requestAnimationFrame(frame);
+  const ww = $("#worldWrap"), fitLabels = () => ww.classList.toggle("compact", ww.clientWidth < 680);
+  fitLabels(); window.addEventListener("resize", fitLabels); if (window.ResizeObserver) new ResizeObserver(fitLabels).observe(ww);
+  setInterval(() => { if (S.start && !modalOpen()) save(); }, 5000);
+  window.addEventListener("pagehide", save);
+  if (!S.group) openStart();
+  else if (!S.introSeen) openIntro();
+  else if (S.finish) showEnd(false);
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>

@@ -173,6 +173,17 @@ window.INHALTE = {
     },
 
     {
+      id: "sitzungswoche",
+      name: "Escape Game: Die Sitzungswoche",
+      bereich: "ggk-politik",
+      pfad: "ggk/politik/sitzungswoche",
+      status: "aktiv",
+      kurz: "Wer macht hier eigentlich die Gesetze? Als Praktikumsteam ein fiktives Handyverbot durchs Regierungsviertel begleiten – von Demokratieprinzipien und Parteiverbot über Fraktion, Plebiszite und Lobbyismus bis zu Bundesrat und Föderalismus.",
+      faecher: ["ggk"],
+      material: ["Escape Game", "Begehbare Spielwelt", "Beamer-Ansicht mit Musik"]
+    },
+
+    {
       id: "akte-weimar",
       name: "Escape Game: Akte Weimar",
       bereich: "ggk-geschichte",

@@ -56,9 +56,13 @@ schule/
 │   ├── README.md
 │   ├── politik/
 │   │   ├── index.html
-│   │   └── wahlprogramme-2025/
+│   │   ├── wahlprogramme-2025/
+│   │   │   ├── index.html      Lehrseite
+│   │   │   ├── zuordnung.html  Zuordnungsspiel, eigene Adresse für QR-Code
+│   │   │   └── README.md
+│   │   └── sitzungswoche/
 │   │       ├── index.html      Lehrseite
-│   │       ├── zuordnung.html  Zuordnungsspiel, eigene Adresse für QR-Code
+│   │       ├── spiel.html      Escape Game „Die Sitzungswoche“, eigene Adresse für QR-Code
 │   │       └── README.md
 │   └── geschichte/
 │       └── index.html          Themenbereich angelegt, noch „geplant“

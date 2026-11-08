@@ -4,7 +4,7 @@ Fach mit eigenen Inhaltsseiten (`rolle: "fach"` in `data/inhalte.js`).
 
 | Ordner        | Themenbereich | Inhalt                                                     |
 |---------------|---------------|------------------------------------------------------------|
-| `politik/`    | Politik       | Gemeinschaftskundliche Themen: politisches System, Parteien und Wahlen, Teilhabe |
+| `politik/`    | Politik       | Gemeinschaftskundliche Themen: politisches System, Parteien und Wahlen, Teilhabe; Escape Game „Die Sitzungswoche“ (Wiederholung BPE 2.1/2.2) |
 | `geschichte/` | Geschichte    | Historische Themen: Escape Game „Akte Weimar“ (Weimarer Republik, 1933, Lehren für das Grundgesetz) |
 
 Pfadschema: `ggk/<themenbereich>/<thema>/` – also Fach → Themenbereich → Thema,
