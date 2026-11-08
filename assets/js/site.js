@@ -1,37 +1,3 @@
-Claude
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Site js zum kopieren · TXT
 /* =====================================================================
    Lernplattform – gemeinsames Skript
    ---------------------------------------------------------------------
@@ -40,12 +6,12 @@ Site js zum kopieren · TXT
    Build-System, keine externen Abhängigkeiten, kein fetch – die Seiten
    funktionieren deshalb sowohl auf GitHub Pages als auch beim lokalen
    Öffnen.
- 
+
    Jede Seite meldet sich am Ende mit  Schule.seite({...})  an:
      tiefe : Anzahl der Ordnerebenen unter der Wurzel (Startseite = 0)
      typ   : "start" | "fach" | "bereich" | "thema"
      id    : id aus inhalte.js (bei "start" leer)
- 
+
    Fachfarben: Jedes Fach, jeder Bereich und jedes Thema bekommt eine
    Akzentfarbe. Sie wird in dieser Reihenfolge bestimmt:
      1. Feld  farbe  im Eintrag in data/inhalte.js (optional)
@@ -53,10 +19,10 @@ Site js zum kopieren · TXT
      3. Standard: blau
    Erlaubte Farbnamen: blau, gruen, bernstein, rot, violett, beere, schiefer
    ===================================================================== */
- 
+
 (function () {
   "use strict";
- 
+
   var SYMBOLE = {
     fabrik:   '<path d="M3 21V9l6 4V9l6 4V4h6v17H3z"/>',
     buch:     '<path d="M4 4h9a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4V4z"/><path d="M20 4h-3a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h3V4z"/>',
@@ -71,7 +37,7 @@ Site js zum kopieren · TXT
     lkw:      '<path d="M2 7h11v9H2zM13 10h4l4 3v3h-8z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>',
     pfeilunten: '<path d="M6 9l6 6 6-6"/>'
   };
- 
+
   /* Fachfarben: Schlüssel ist der Ordnername (Fach) bzw. der Ordnerpfad (Bereich). */
   var FARBNAMEN = ["blau", "gruen", "bernstein", "rot", "violett", "beere", "schiefer"];
   var FARBEN = {
@@ -88,22 +54,22 @@ Site js zum kopieren · TXT
     "pruefungsvorbereitung": "schiefer",
     "methodenkoffer": "schiefer"
   };
- 
+
   function svg(name) {
     var d = SYMBOLE[name] || SYMBOLE.seite;
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
   }
- 
+
   function esc(s) {
     return String(s === undefined || s === null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
- 
+
   var D = window.INHALTE || { faecher: [], bereiche: [], themen: [] };
   var cfg = { tiefe: 0, typ: "start", id: "" };
   var wurzel = "";   // relativer Weg zur Wurzel, z. B. "../../"
- 
+
   function finde(liste, id) {
     for (var i = 0; i < liste.length; i++) if (liste[i].id === id) return liste[i];
     return null;
@@ -117,7 +83,7 @@ Site js zum kopieren · TXT
   function bereicheIn(fachId) {
     return D.bereiche.filter(function (b) { return b.fach === fachId; });
   }
- 
+
   /* ----------------------------- Farben ---------------------------- */
   function farbname(name) {
     return FARBNAMEN.indexOf(name) !== -1 ? name : "blau";
@@ -139,28 +105,28 @@ Site js zum kopieren · TXT
     var b = finde(D.bereiche, t.bereich);
     return b ? bereichFarbe(b) : "blau";
   }
- 
+
   /* ----------------------------- Kopf ----------------------------- */
   function kopf() {
     var el = document.getElementById("kopf");
     if (!el) return;
     var aktiv = cfg.typ === "start" ? "" : (cfg.typ === "fach" ? cfg.id : wurzelFachVon());
- 
+
     var coach = null;
     for (var i = 0; i < D.faecher.length; i++) {
       if (D.faecher[i].ordner === "ki-coaches") { coach = D.faecher[i]; break; }
     }
- 
+
     var eintraege = D.faecher.map(function (f) {
       var cur = f.id === aktiv ? ' aria-current="page"' : "";
       return '<li class="f-' + fachFarbe(f) + '"><a href="' + wurzel + esc(f.ordner) + '/"' + cur + '>' +
                '<span class="punkt" aria-hidden="true"></span>' + esc(f.name) + "</a></li>";
     }).join("");
- 
+
     var coachLink = coach
       ? '<a href="' + wurzel + esc(coach.ordner) + '/"' + (coach.id === aktiv ? ' aria-current="page"' : "") + '>Lerncoaches</a>'
       : "";
- 
+
     el.innerHTML =
       '<header class="kopf">' +
         '<div class="kopf-inner">' +
@@ -183,18 +149,18 @@ Site js zum kopieren · TXT
           '</nav>' +
         '</div>' +
       '</header>';
- 
+
     var btn = el.querySelector(".nav-schalter");
     var nav = el.querySelector(".nav");
     btn.addEventListener("click", function () {
       var offen = nav.classList.toggle("offen");
       btn.setAttribute("aria-expanded", offen ? "true" : "false");
     });
- 
+
     var huelle = el.querySelector(".fachmenue-huelle");
     var mBtn = el.querySelector(".fachmenue-schalter");
     var menue = el.querySelector(".fachmenue");
- 
+
     function menueZu(fokus) {
       menue.hidden = true;
       mBtn.setAttribute("aria-expanded", "false");
@@ -212,7 +178,7 @@ Site js zum kopieren · TXT
       if (e.key === "Escape" && !menue.hidden) menueZu(true);
     });
   }
- 
+
   function wurzelFachVon() {
     if (cfg.typ === "bereich") {
       var b = finde(D.bereiche, cfg.id);
@@ -225,15 +191,15 @@ Site js zum kopieren · TXT
     }
     return "";
   }
- 
+
   /* -------------------------- Breadcrumbs ------------------------- */
   function krumen() {
     var el = document.getElementById("krumen");
     if (!el) return;
     if (cfg.typ === "start") return;   // auf der Startseite gibt es nichts zu verfolgen
- 
+
     var teile = [{ name: "Startseite", href: wurzel }];
- 
+
     if (cfg.typ === "fach") {
       teile.push({ name: (finde(D.faecher, cfg.id) || {}).name || cfg.id });
     } else if (cfg.typ === "bereich") {
@@ -249,7 +215,7 @@ Site js zum kopieren · TXT
       teile.push({ name: br.name, href: wurzel + br.ordner + "/" });
       teile.push({ name: t.name });
     }
- 
+
     var html = teile.map(function (p, i) {
       var letzte = i === teile.length - 1;
       var stueck = letzte || !p.href
@@ -257,19 +223,19 @@ Site js zum kopieren · TXT
         : '<a href="' + esc(p.href) + '">' + esc(p.name) + "</a>";
       return (i ? '<span class="trenn" aria-hidden="true">&rsaquo;</span>' : "") + stueck;
     }).join("");
- 
+
     el.innerHTML = '<nav class="krumen" aria-label="Du bist hier">' +
                      '<div class="krumen-inner">' + html + "</div>" +
                    "</nav>";
   }
- 
+
   /* ---------------------------- Kacheln --------------------------- */
   function kachel(o) {
     var symbol = '<span class="kachel-symbol">' + svg(o.icon) + "</span>";
     var material = o.material && o.material.length
       ? '<div class="material">' + o.material.map(function (m) { return "<span>" + esc(m) + "</span>"; }).join("") + "</div>"
       : "";
- 
+
     if (o.status === "geplant" || !o.href) {
       return '<li class="kachel geplant"><div class="inaktiv">' + symbol +
              "<h3>" + esc(o.name) + "</h3><p>" + esc(o.kurz) + "</p>" +
@@ -279,7 +245,7 @@ Site js zum kopieren · TXT
            "<h3>" + esc(o.name) + "</h3><p>" + esc(o.kurz) + "</p>" + material +
            '<span class="pfeil">' + esc(o.pfeil || "Öffnen") + ' &rarr;</span></a></li>';
   }
- 
+
   function liste(el, eintraege) {
     if (!eintraege.length) {
       el.outerHTML = '<p class="lead">Für diesen Bereich sind noch keine Materialien veröffentlicht.</p>';
@@ -288,39 +254,39 @@ Site js zum kopieren · TXT
     el.className = "kacheln";
     el.innerHTML = eintraege.map(kachel).join("");
   }
- 
+
   function kachelflaechen() {
     var behaelter = document.querySelectorAll("[data-kacheln]");
     Array.prototype.forEach.call(behaelter, function (el) {
       var art = el.getAttribute("data-kacheln");
       var id = el.getAttribute("data-id") || cfg.id;
- 
+
       if (art === "faecher") {
         liste(el, D.faecher.map(function (f) {
           return { name: f.name, kurz: f.kurz, icon: f.icon, status: f.status,
                    farbe: fachFarbe(f), pfeil: "Themen ansehen",
                    href: wurzel + f.ordner + "/" };
         }));
- 
+
       } else if (art === "bereiche") {
         liste(el, bereicheIn(id).map(function (b) {
           return { name: b.name, kurz: b.kurz, icon: "ordner", status: b.status,
                    farbe: bereichFarbe(b), pfeil: "Themen ansehen",
                    href: b.status === "aktiv" ? wurzel + b.ordner + "/" : null };
         }));
- 
+
       } else if (art === "themen") {
         liste(el, themenIn(id).map(themaZuKachel));
- 
+
       } else if (art === "themen-fach") {
         liste(el, themenFuerFach(id).map(themaZuKachel));
- 
+
       } else if (art === "veroeffentlicht") {
         liste(el, D.themen.filter(function (t) { return t.status === "aktiv"; }).map(themaZuKachel));
       }
     });
   }
- 
+
   function themaZuKachel(t) {
     return {
       name: t.name, kurz: t.kurz, icon: t.icon || "seite", status: t.status,
@@ -328,7 +294,7 @@ Site js zum kopieren · TXT
       href: t.status === "aktiv" && t.pfad ? wurzel + t.pfad + "/" : null
     };
   }
- 
+
   /* ------------------------------ Fuß ----------------------------- */
   function fuss() {
     var el = document.getElementById("fuss");
@@ -340,7 +306,7 @@ Site js zum kopieren · TXT
         '<div><a href="' + wurzel + '">Startseite</a></div>' +
       "</div></footer>";
   }
- 
+
   /* ----------------------------- Start ---------------------------- */
   window.Schule = {
     seite: function (c) {
@@ -356,5 +322,3 @@ Site js zum kopieren · TXT
     symbol: svg
   };
 })();
- 
-Claude hat die Antwort abgeschlossen
