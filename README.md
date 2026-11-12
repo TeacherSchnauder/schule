@@ -38,6 +38,13 @@ schule/
 │
 ├── ggk/                        Fach mit eigenen Inhaltsseiten (Politik, Geschichte)
 │
+├── rechtslehre/                Fach mit eigenen Inhaltsseiten
+│   └── vertragsrecht/
+│       └── kaufvertragsstoerungen/
+│           ├── index.html      Lehrseite
+│           ├── spiel.html      Lernspiel „Wissenslauf“ (eigene Adresse)
+│           └── README.md
+│
 ├── ki-coaches/                 Fach mit eigenen Inhaltsseiten: KI-Prompts
 │   ├── index.html              Übersicht + gemeinsame Hinweise zur Nutzung
 │   ├── rechtslehre/
@@ -53,14 +60,14 @@ schule/
 │       ├── index.html
 │       └── vip-lernbegleiter/  Themenseite + coach.html (Prompt nur einmal, Themenkarten-Felder)
 │
-├── awl/  bwl/  vwl/  rechtslehre/
+├── awl/  bwl/  vwl/
 ├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
 
 ### Fächer mit Inhalt und Fächer als Verweis
 
 Inhaltsseiten liegen **genau einmal** im fachsystematischen Baum, derzeit unter
-`wirtschaft/`, `ggk/` und `ki-coaches/`. Die übrigen Fachordner (`awl/`, `bwl/`, `vwl/`, …) enthalten
+`wirtschaft/`, `ggk/`, `rechtslehre/` und `ki-coaches/`. Die übrigen Fachordner (`awl/`, `bwl/`, `vwl/`, …) enthalten
 keine Kopien, sondern Übersichtsseiten, die auf dieselben Themen verweisen.
 
 Cross-Docking wird dadurch unter Wirtschaft, BWL und AWL angezeigt, existiert

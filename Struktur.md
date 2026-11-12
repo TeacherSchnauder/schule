@@ -3,9 +3,8 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 15.10.2026 – abgeglichen mit dem Repository auf GitHub
-(Commit „KI-Coaches: Lerncoach Allgemeine Wirtschaftslehre ergänzt“, 08.10.2026)
-plus VIP-Lernbegleiter Bevölkerung unter `ki-coaches/fws/`.
+**Stand:** 12.11.2026 – Rechtslehre ist jetzt ein Fach mit eigenem Inhalt
+(Themenbereich Vertragsrecht, erstes Lernspiel „Wissenslauf“).
 
 ---
 
@@ -67,6 +66,15 @@ schule/
 │   └── geschichte/
 │       └── index.html          Themenbereich angelegt, noch „geplant“
 │
+├── rechtslehre/                Fach mit eigenem Inhalt
+│   ├── index.html              Themenbereiche + alle Materialien zur Rechtslehre
+│   └── vertragsrecht/
+│       ├── index.html
+│       └── kaufvertragsstoerungen/
+│           ├── index.html      Lehrseite
+│           ├── spiel.html      Lernspiel „Wissenslauf“, eigene Adresse für QR-Code
+│           └── README.md
+│
 ├── ki-coaches/                 Fach mit eigenem Inhalt (KI-Prompts, fachübergreifend)
 │   ├── index.html              Übersicht + gemeinsame „Hinweise zur Nutzung“ (#nutzung)
 │   ├── README.md
@@ -90,7 +98,7 @@ schule/
 │           ├── coach.html      Schülerseite: Themenkarte, Prompt, Arbeitsweise, KI-Protokoll
 │           └── README.md
 │
-├── awl/  bwl/  vwl/  rechtslehre/        Fachseiten, die verlinken
+├── awl/  bwl/  vwl/            Fachseiten, die verlinken
 └── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
 
@@ -99,13 +107,19 @@ schule/
 ## Zwei Arten von Fächern
 
 **Fächer mit eigenem Inhalt** (`rolle: "fach"`) tragen die Inhaltsseiten im
-eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `ki-coaches/`. Ihre Fachseite zeigt
+eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `rechtslehre/`, `ki-coaches/`. Ihre Fachseite zeigt
 die Themenbereiche als Kacheln.
 
 **Fächer als Verweis** (`rolle: "sammlung"`) haben keine eigenen Inhaltsseiten.
 Sie zeigen Themen aus anderen Fachbäumen, damit ein Thema nur einmal existiert
 und trotzdem unter mehreren Fächern auftaucht: `awl/`, `bwl/`, `vwl/`,
-`rechtslehre/`, `lernfelder/`, `pruefungsvorbereitung/`, `methodenkoffer/`.
+`lernfelder/`, `pruefungsvorbereitung/`, `methodenkoffer/`.
+
+Die Fachseite von Rechtslehre zeigt beides: die eigenen Themenbereiche
+(`data-kacheln="bereiche"`) und darunter alle Themen mit `"rechtslehre"` in
+`faecher` (`data-kacheln="themen-fach"`), also auch den Lerncoach unter
+`ki-coaches/`. Das Feld `rolle` ist nur Dokumentation; `site.js` wertet es
+nicht aus.
 
 Cross-Docking liegt also physisch unter `wirtschaft/beschaffung/`, erscheint
 aber auch auf den Seiten von BWL und AWL – gesteuert über das Feld `faecher`
@@ -266,6 +280,34 @@ Ausführliche Lehrkraft-Hinweise mit Lösungswegen oder Lösungslinks werden
 **nicht** im Repository abgelegt, sondern lokal bzw. in Moodle
 (Beispiel: `lehrkraft-hinweise.md` zu Wahlprogramme 2025). Auf der Lehrseite
 stehen nur Einordnung und Einsatzhinweise ohne Lösungen.
+
+---
+
+## Lernspiel „Wissenslauf“
+
+Jump-and-run-Lernspiel: Vor jedem Tor steht eine Auswahlfrage, die Antworten
+liegen auf Spuren. Das Spiel ist fachneutral; jedes Fragenset ist eine eigene
+`spiel.html` neben einer Themenseite im Fachbaum, zum Beispiel
+`rechtslehre/vertragsrecht/kaufvertragsstoerungen/spiel.html`.
+
+**Neues Set anlegen**
+
+1. Ordner des Themas anlegen und `index.html`, `spiel.html` und `README.md`
+   aus `rechtslehre/vertragsrecht/kaufvertragsstoerungen/` kopieren.
+2. In `spiel.html` den Inhalt der Konstante `SAMPLE` durch das neue Fragenset
+   ersetzen (Editor-Format, erstellt mit dem Claude-Skill
+   „wissenslauf-quiz-autor“). Keine Backticks und kein `${` in den Fragen.
+3. In `spiel.html` die drei Speicherschlüssel umbenennen, z. B. `_rl_kv` →
+   `_awl_geld`: `wl_q_v3_…`, `wl_best_v3_…`, `wl_log_v1_…`. Alle Seiten unter
+   `teacherschnauder.github.io` teilen sich den Browserspeicher; gleiche
+   Schlüssel würden Fragen, Bestwerte und Lernkompass verschiedener Sets
+   vermischen.
+4. `<title>` in `spiel.html`, Lehrseite, `Schule.seite({ … id: … })` und den
+   Themeneintrag in `data/inhalte.js` anpassen.
+
+**Hinweise:** Fragen und Lösungen stehen im Quelltext und sind öffentlich – nur
+Übungsfragen, keine Klassenarbeitsfragen. Der Lernkompass bleibt im Browser
+des Geräts; der Export lässt sich in den passenden KI-Coach einfügen.
 
 ---
 

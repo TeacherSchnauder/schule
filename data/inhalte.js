@@ -40,7 +40,7 @@ window.INHALTE = {
 
     { id: "rechtslehre", name: "Rechtslehre", ordner: "rechtslehre", icon: "waage",
       kurz: "Rechtsgeschäfte, Vertragsrecht, Verwaltungsrecht.",
-      status: "aktiv", rolle: "sammlung" },
+      status: "aktiv", rolle: "fach" },
 
     { id: "ggk", name: "GGK", ordner: "ggk", icon: "globus",
       kurz: "Geschichte mit Gemeinschaftskunde – Politik und Geschichte.",
@@ -91,6 +91,10 @@ window.INHALTE = {
     { id: "ggk-geschichte", fach: "ggk", name: "Geschichte",
       ordner: "ggk/geschichte", status: "aktiv",
       kurz: "Historische Themen des Bildungsplans." },
+
+    { id: "recht-vertragsrecht", fach: "rechtslehre", name: "Vertragsrecht",
+      ordner: "rechtslehre/vertragsrecht", status: "aktiv",
+      kurz: "Zustandekommen von Verträgen, Pflichten aus dem Kaufvertrag und Störungen bei der Erfüllung." },
 
     { id: "ki-rechtslehre", fach: "ki-coaches", name: "Rechtslehre",
       ordner: "ki-coaches/rechtslehre", status: "aktiv",
@@ -192,6 +196,17 @@ window.INHALTE = {
       kurz: "Was lernen wir für Bonn? Als Archivteam des Parlamentarischen Rates fünf Siegel öffnen – von der Weimarer Verfassung über die Zerstörung der Demokratie 1933 zu den Lehren des Grundgesetzes.",
       faecher: ["ggk"],
       material: ["Escape Game", "Beamer-Ansicht mit Musik", "Glossar"]
+    },
+
+    {
+      id: "wissenslauf-kaufvertragsstoerungen",
+      name: "Wissenslauf: Kaufvertragsstörungen",
+      bereich: "recht-vertragsrecht",
+      pfad: "rechtslehre/vertragsrecht/kaufvertragsstoerungen",
+      status: "aktiv",
+      kurz: "Jump-and-run-Lernspiel zu Lieferverzug, Zahlungsverzug mit Verzugszinsen und Annahmeverzug – fünf Levels von Begriffen über Fälle und Fristen bis zum Urteil, mit Lernkompass.",
+      faecher: ["rechtslehre", "pruefungsvorbereitung"],
+      material: ["Jump-and-run-Lernspiel", "5 Levels", "Lernkompass"]
     },
 
     {
