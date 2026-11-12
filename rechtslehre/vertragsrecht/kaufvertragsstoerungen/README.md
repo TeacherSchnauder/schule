@@ -21,17 +21,22 @@ https://teacherschnauder.github.io/schule/rechtslehre/vertragsrecht/kaufvertrags
   (`#` Level | Startzeit, `?` Frage, `+` richtig, `-` falsch, `!` Erklärung).
   Backticks (`` ` ``) und `${` dürfen in den Fragen nicht vorkommen.
 - Neue Fragen erstellt der Claude-Skill „wissenslauf-quiz-autor“. Für ein
-  anderes Thema `spiel.html` kopieren, `SAMPLE` ersetzen und die drei
+  anderes Thema `spiel.html` kopieren, `SAMPLE` ersetzen und die
   Speicherschlüssel umbenennen (siehe unten).
 - Die Seite lädt nichts von fremden Servern; die Schriften Baloo 2 und Nunito
   (SIL Open Font License 1.1) sind eingebettet.
+- **Schülerversion ohne Editor:** Der Knopf „Fragen bearbeiten“ ist entfernt,
+  und das Spiel verwendet immer die Fragen aus `SAMPLE`
+  (`let QTEXT = SAMPLE;`). Schüler können die Fragen also nicht ändern; jede
+  neue Fassung der Datei wirkt sofort bei allen. Fragen ändert nur die
+  Lehrkraft, indem sie `spiel.html` neu hochlädt.
 - Gespeichert wird nur im Browser des Geräts (`localStorage`), mit eigenen
-  Schlüsseln für dieses Set: `wl_q_v3_rl_kv` (Fragen aus dem Editor),
-  `wl_best_v3_rl_kv` (Bestwerte), `wl_log_v1_rl_kv` (Lernkompass). Alle Seiten
-  unter `teacherschnauder.github.io` teilen sich den Browserspeicher; ohne
-  eigene Schlüssel würden sich Sets gegenseitig überschreiben.
-- Wer im Editor eigene Fragen gespeichert hat, sieht diese statt neuer
-  Fassungen von `SAMPLE`. Zurück: „Fragen bearbeiten“ → „Beispielfragen“ → „Speichern“.
+  Schlüsseln für dieses Set: `wl_best_v3_rl_kv` (Bestwerte) und
+  `wl_log_v1_rl_kv` (Lernkompass). Alle Seiten unter
+  `teacherschnauder.github.io` teilen sich den Browserspeicher; ohne eigene
+  Schlüssel würden sich Sets gegenseitig überschreiben.
+- Der Lernkompass-Export bittet den KI-Coach, im Chat weiterzuüben; er erzeugt
+  kein Quiz zum Einfügen mehr.
 
 ## Einträge in `data/inhalte.js`
 

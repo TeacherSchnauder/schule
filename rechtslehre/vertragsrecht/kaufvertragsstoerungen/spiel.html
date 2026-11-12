@@ -240,7 +240,6 @@ details textarea{margin-top:8px}
         </div>
         <div class="row">
           <button class="btn primary" id="bCompass">Lernkompass</button>
-          <button class="btn" id="bEdit">Fragen bearbeiten</button>
         </div>
       </div>
     </div>
@@ -297,7 +296,7 @@ details textarea{margin-top:8px}
           <button class="btn quiet" id="lkBack">Zur Levelauswahl</button>
           <button class="btn quiet danger" id="lkReset">Lernkompass zurücksetzen</button>
         </div>
-        <p class="note">Alles bleibt nur in diesem Browser gespeichert. Den kopierten Text beim KI-Lerncoach einfügen. Dessen neue Fragen im Spielformat kannst du unter „Fragen bearbeiten“ wieder einsetzen.</p>
+        <p class="note">Alles bleibt nur in diesem Browser gespeichert. Den kopierten Text beim KI-Lerncoach einfügen. Er erklärt dir deine Lücken und übt im Chat mit dir weiter.</p>
       </div>
     </div>
 
@@ -719,7 +718,7 @@ function parse(text){
 
 /* ---------- Speicher ---------- */
 const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
-let QTEXT = LS.get('wl_q_v3_rl_kv') || SAMPLE;
+let QTEXT = SAMPLE; /* Schülerversion: feste Fragen, kein Editor */
 let LEVELS = parse(QTEXT).levels;
 if(!LEVELS.length){ QTEXT=SAMPLE; LEVELS=parse(SAMPLE).levels; }
 let BEST={}; try{ BEST=JSON.parse(LS.get('wl_best_v3_rl_kv')||'{}')||{}; }catch(e){ BEST={}; }
@@ -1021,16 +1020,8 @@ function buildExport(){
   L.push('2. Leite aus meinen falschen Wahlen ab, welche Fehlvorstellungen dahinterstecken könnten. Kennzeichne das als Vermutung.');
   L.push('3. Erkläre die drei wichtigsten Lücken knapp und verständlich, mit je einem Alltagsbeispiel.');
   L.push('4. Erstelle ein neues Quiz mit 8 bis 10 Fragen: Schwerpunkt auf „Nicht gewusst“ und „Wackelig“, ähnliche, aber nicht identische Fragen (anderer Fall, anderer Kontext). Ein bis zwei Fragen zur Festigung der sicheren Inhalte. Steigere die Anforderung von Wissen über Anwenden bis Beurteilen. Nutze meine tatsächlichen Fehlwahlen als Vorlage für plausible falsche Antworten.');
-  L.push('5. Gib das Quiz exakt in diesem Format aus, damit ich es im Spiel unter „Fragen bearbeiten“ einfügen kann (3 oder 4 Antworten pro Frage, genau eine mit +):');
-  L.push('```');
-  L.push('# Training: <Thema> | 10');
-  L.push('? <Frage>');
-  L.push('+ <richtige Antwort>');
-  L.push('- <falsche Antwort>');
-  L.push('- <falsche Antwort>');
-  L.push('! <kurze Erklärung, gegebenenfalls mit Quelle oder Paragraf>');
-  L.push('```');
-  L.push('6. Weise in der Erklärungszeile darauf hin, wenn etwas vereinfacht oder fachlich umstritten ist.');
+  L.push('5. Stelle mir die Fragen hier im Chat einzeln, mit 3 oder 4 Antwortmöglichkeiten. Warte jeweils auf meine Antwort, gib dann kurz Rückmeldung mit Begründung und erst danach die nächste Frage.');
+  L.push('6. Weise in deiner Rückmeldung darauf hin, wenn etwas vereinfacht oder fachlich umstritten ist.');
   L.push('Hinweis: Bei 3 bis 4 Antwortmöglichkeiten kann eine einzelne richtige Antwort geraten sein. „Sicher“ heißt deshalb: zweimal in Folge richtig.');
   return L.join('\n');
 }
@@ -1482,7 +1473,7 @@ $('#lkReset').onclick=()=>{
 /* ---------- Editor ---------- */
 function edStatus(msg,cls){ const s=$('#edStatus'); s.textContent=msg; s.className=cls||''; }
 function edErrors(list){ const ul=$('#edErrs'); ul.textContent=''; list.slice(0,8).forEach(t=>ul.append(el('li',null,t))); if(list.length>8) ul.append(el('li',null,`… und ${list.length-8} weitere Hinweise`)); }
-$('#bEdit').onclick=()=>{ $('#edText').value=QTEXT; edStatus(''); edErrors([]); show('editor'); };
+if($('#bEdit')) $('#bEdit').onclick=()=>{ $('#edText').value=QTEXT; edStatus(''); edErrors([]); show('editor'); };
 $('#edBack').onclick=toMenu;
 $('#edSample').onclick=()=>{ $('#edText').value=SAMPLE; edStatus('Beispielfragen eingesetzt. Zum Übernehmen „Speichern“ wählen.'); edErrors([]); };
 $('#edSave').onclick=()=>{

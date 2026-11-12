@@ -305,6 +305,10 @@ liegen auf Spuren. Das Spiel ist fachneutral; jedes Fragenset ist eine eigene
 4. `<title>` in `spiel.html`, Lehrseite, `Schule.seite({ … id: … })` und den
    Themeneintrag in `data/inhalte.js` anpassen.
 
+**Schülerversion:** Die `spiel.html` auf der Plattform hat keinen Editor; der
+Knopf „Fragen bearbeiten“ ist entfernt und `QTEXT` ist fest auf `SAMPLE`
+gesetzt. Fragen ändert nur die Lehrkraft durch Neuhochladen der Datei.
+
 **Hinweise:** Fragen und Lösungen stehen im Quelltext und sind öffentlich – nur
 Übungsfragen, keine Klassenarbeitsfragen. Der Lernkompass bleibt im Browser
 des Geräts; der Export lässt sich in den passenden KI-Coach einfügen.
