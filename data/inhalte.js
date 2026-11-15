@@ -161,6 +161,16 @@ window.INHALTE = {
       faecher: ["wirtschaft", "bwl", "awl", "pruefungsvorbereitung"],
       material: ["Übungswerkzeug", "Lorenzkurve", "Neun-Felder-Matrix"]
     },
+    {
+      id: "lagerkennzahlen",
+      name: "Lagerkennzahlen",
+      bereich: "beschaffung",
+      pfad: "wirtschaft/beschaffung/lagerkennzahlen",
+      status: "aktiv",
+      kurz: "Wie wirtschaftlich arbeitet das Lager? Durchschnittlichen Lagerbestand, Umschlagshäufigkeit, Lagerdauer und Lagerzinsen berechnen, deuten und im Branchenvergleich beurteilen – mit Lernpfad in sechs Stufen bis zur Abituraufgabe.",
+      faecher: ["wirtschaft", "bwl", "pruefungsvorbereitung"],
+      material: ["Lernpfad mit Prüfmodus", "Branchenvergleich", "Planspiel", "Abituraufgabe"]
+    },
     { id: "make-or-buy", name: "Make-or-Buy", bereich: "beschaffung", status: "geplant",
       kurz: "Eigenfertigung oder Fremdbezug – Kostenvergleich und qualitative Kriterien.",
       faecher: ["wirtschaft", "bwl"] },

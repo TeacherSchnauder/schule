@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lagerkennzahlen · Lernplattform</title>
+<meta name="description" content="Lagerkennzahlen: durchschnittlichen Lagerbestand, Umschlagshäufigkeit, Lagerdauer und Lagerzinsen berechnen, deuten und im Branchenvergleich beurteilen – mit Lernpfad in sechs Stufen bis zur Abituraufgabe.">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<style>
+  table.daten td.zahl,table.daten th.zahl{text-align:right;font-variant-numeric:tabular-nums}
+  .formelkarte{background:var(--blau-050);border:1px solid var(--blau-100);border-radius:var(--radius);padding:14px 18px;margin:6px 0 14px}
+  .formelkarte p{margin:6px 0;font-size:1rem}
+  .formelkarte b{color:var(--blau-900)}
+</style>
+</head>
+<body>
+<div id="kopf"></div>
+<div id="krumen"></div>
+
+<main class="inhalt">
+
+  <div class="titelblock">
+    <p class="augenbraue">Beschaffung · Lagerhaltung</p>
+    <h1>Lagerkennzahlen</h1>
+    <p class="lead">Ein Lager bindet Kapital und verursacht Kosten. Ob es wirtschaftlich arbeitet, lässt sich an wenigen Kennzahlen ablesen: Wie viel liegt im Durchschnitt im Lager, wie oft wird es umgeschlagen und wie lange bleibt die Ware dort? Auf dieser Seite finden Sie die Formeln, ein Rechenbeispiel, Hinweise zur Deutung der Zahlen und zum Vergleich mit anderen Unternehmen sowie einen Lernpfad mit Aufgaben bis zum Abiturniveau.</p>
+    <div class="knopfzeile">
+      <a class="knopf primaer" href="rechner.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>
+        Lernpfad starten
+      </a>
+      <a class="knopf sekundaer" href="#kennzahlen">Zu den Formeln</a>
+    </div>
+  </div>
+
+  <!-- ============================ Kennzahlen ============================ -->
+  <section>
+    <h2 id="kennzahlen">Die Kennzahlen</h2>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th style="width:24%">Kennzahl</th><th>Aussage</th><th style="width:34%">Berechnung</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Durchschnittlicher Lagerbestand</strong> (Ø LB)</td><td>Wie viel Ware (in € oder Stück) liegt im Jahresdurchschnitt im Lager? Daraus ergibt sich das gebundene Kapital.</td><td>Summe der Bestände ÷ Anzahl der Stichtage (siehe Inventurarten)</td></tr>
+          <tr><td><strong>Umschlagshäufigkeit</strong> (UH)</td><td>Wie oft wird der durchschnittliche Lagerbestand im Jahr verbraucht und ersetzt?</td><td>Wareneinsatz ÷ Ø Lagerbestand</td></tr>
+          <tr><td><strong>Durchschnittliche Lagerdauer</strong> (Ø LD)</td><td>Wie viele Tage liegt eine Ware im Durchschnitt im Lager? So lange ist ihr Wert als Kapital gebunden.</td><td>360 ÷ Umschlagshäufigkeit</td></tr>
+          <tr><td><strong>Lagerzinssatz</strong> (LZZ)</td><td>Der Teil des Jahreszinses, der auf die durchschnittliche Lagerdauer entfällt.</td><td>Jahreszinssatz · Ø Lagerdauer ÷ 360</td></tr>
+          <tr><td><strong>Lagerzinsen</strong> (LZ)</td><td>Zinskosten des im Lager gebundenen Kapitals.</td><td>Ø Lagerbestand · Lagerzinssatz ÷ 100</td></tr>
+          <tr><td><strong>Kosten der Lagerhaltung</strong></td><td>Alle Kosten des Lagers: Zinsen auf das gebundene Kapital und Lagerhaltungskosten (Raum, Personal, Energie, Versicherung, Schwund, Verderb).</td><td>Lagerzinsen + Lagerhaltungskosten</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p class="hinweis"><strong>Wareneinsatz, nicht Umsatz.</strong> Der Lagerbestand ist zu Einstandspreisen bewertet. Damit Zähler und Nenner der Umschlagshäufigkeit zusammenpassen, muss auch der Abgang zu Einstandspreisen bewertet sein: der Wareneinsatz (Lagerabgang). Die Umsatzerlöse enthalten zusätzlich den Gewinnaufschlag und würden die Umschlagshäufigkeit zu hoch ausweisen.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Inventurarten ============================ -->
+  <section>
+    <h2 id="inventurarten">Der durchschnittliche Lagerbestand: drei Inventurarten</h2>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th style="width:24%">Inventurart</th><th>Berechnung</th><th>Stichtage</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jahresinventur</strong></td><td>(Anfangsbestand + Endbestand) ÷ 2</td><td>2</td></tr>
+          <tr><td><strong>Quartalsinventur</strong></td><td>(Anfangsbestand + 4 Quartalsendbestände) ÷ 5</td><td>5</td></tr>
+          <tr><td><strong>Monatsinventur</strong></td><td>(Anfangsbestand + 12 Monatsendbestände) ÷ 13</td><td>13</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p>Man teilt durch die Zahl der Bestandswerte, nicht durch die Zahl der Perioden: Zum Endbestand jedes Zeitraums kommt der Anfangsbestand hinzu, daher 5 bzw. 13. Je mehr Stichtage, desto besser werden Schwankungen im Jahresverlauf erfasst. Sind die Bestände zum Jahreswechsel ungewöhnlich niedrig oder hoch, verzerrt die Jahresinventur den Durchschnitt. Bei Vergleichen muss deshalb dieselbe Inventurart zugrunde liegen.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Beispiel ============================ -->
+  <section>
+    <h2 id="beispiel">Rechenbeispiel</h2>
+    <div class="schmal">
+      <p>Ein Großhandel hat zu Jahresbeginn Waren im Wert von 400.000 € auf Lager, am Jahresende 600.000 €. Der Wareneinsatz zu Einstandspreisen beträgt 2.500.000 €, der Jahreszinssatz 9 %.</p>
+      <div class="formelkarte">
+        <p><b>Ø Lagerbestand</b> = (400.000 € + 600.000 €) ÷ 2 = 500.000 €</p>
+        <p><b>Umschlagshäufigkeit</b> = 2.500.000 € ÷ 500.000 € = 5</p>
+        <p><b>Ø Lagerdauer</b> = 360 ÷ 5 = 72 Tage</p>
+        <p><b>Lagerzinssatz</b> = 9 % · 72 ÷ 360 = 1,8 %</p>
+        <p><b>Lagerzinsen</b> = 500.000 € · 1,8 ÷ 100 = 9.000 €</p>
+      </div>
+      <p><strong>Deutung:</strong> Das Lager wird fünfmal im Jahr umgeschlagen. Eine Ware liegt im Durchschnitt 72 Tage im Lager; in dieser Zeit ist ihr Wert gebunden und verursacht Zinskosten. Ob 5 gut oder schlecht ist, zeigt erst der Vergleich mit der Branche.</p>
+    </div>
+    <div class="schmal">
+      <p class="hinweis"><strong>Didaktische Vereinfachung:</strong> Die Formel „Ø Lagerbestand · Lagerzinssatz ÷ 100“ bezieht die Zinsen auf die durchschnittliche Lagerdauer. Das gebundene Kapital liegt aber das ganze Jahr im Lager. Betriebswirtschaftlich genauer sind die jährlichen Zinskosten: Ø Lagerbestand · Jahreszinssatz ÷ 100 (im Beispiel 45.000 €). Für Klausur und Abitur gilt die im Unterricht eingeführte Formel; die Vertiefung steht im Lernpfad (Stufe 6).</p>
+    </div>
+  </section>
+
+  <!-- ============================ Deutung ============================ -->
+  <section>
+    <h2 id="deutung">Zahlen deuten: Ursache und Wirkung</h2>
+    <div class="schmal">
+      <p>Die Kennzahlen hängen zusammen. Wer die Wirkungskette beherrscht, kann Veränderungen vorhersagen und begründen:</p>
+      <p><strong>Ø Lagerbestand sinkt</strong> (bei gleichem Wareneinsatz) → Umschlagshäufigkeit steigt → Lagerdauer sinkt → Lagerzinssatz sinkt → Lagerzinsen sinken, und zwar überproportional, weil sowohl der Bestand als auch der Lagerzinssatz kleiner werden.</p>
+    </div>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th style="width:34%">Veränderung (ceteris paribus)</th><th class="zahl">UH</th><th class="zahl">Ø LD</th><th class="zahl">Lagerzinsen</th><th>Folgen</th></tr></thead>
+        <tbody>
+          <tr><td>Absatz steigt, Bestand gleich</td><td class="zahl">↑</td><td class="zahl">↓</td><td class="zahl">↓</td><td>Dasselbe gebundene Kapital trägt mehr Absatz; Lieferbereitschaft prüfen.</td></tr>
+          <tr><td>Bestand sinkt, Absatz gleich</td><td class="zahl">↑</td><td class="zahl">↓</td><td class="zahl">↓</td><td>Weniger Kapitalbindung und Lagerkosten; Risiko von Fehlmengen steigt.</td></tr>
+          <tr><td>Absatz bricht ein, Bestand gleich</td><td class="zahl">↓</td><td class="zahl">↑</td><td class="zahl">↑</td><td>Gefahr von Überbeständen und Ladenhütern.</td></tr>
+          <tr><td>Absatz und Bestand steigen gleich stark</td><td class="zahl">=</td><td class="zahl">=</td><td class="zahl">↑</td><td>Gleiche Effizienz, aber absolut mehr gebundenes Kapital.</td></tr>
+          <tr><td>Jahreszinssatz steigt</td><td class="zahl">=</td><td class="zahl">=</td><td class="zahl">↑</td><td>Kapitalbindung wird teurer; Bestandsabbau lohnt sich stärker.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ Branchenvergleich ============================ -->
+  <section>
+    <h2 id="vergleich">Kennzahlen vergleichen und beurteilen</h2>
+    <div class="schmal">
+      <p>Eine einzelne Kennzahl sagt wenig. Aussagekräftig wird sie im Vergleich: mit dem Vorjahr, mit anderen Unternehmen oder mit dem Branchendurchschnitt. Dabei gelten drei Regeln:</p>
+      <ul class="liste">
+        <li><strong>Nur innerhalb einer Branche vergleichen.</strong> Typische Muster: Frische Lebensmittel haben eine hohe Umschlagshäufigkeit und kurze Lagerdauer, weil sie verderben. Hochwertiger Schmuck oder Ersatzteile für viele Maschinengenerationen haben eine niedrige, ohne dass das Lager schlecht geführt wäre.</li>
+        <li><strong>Die Datengrundlage prüfen.</strong> Gleiche Inventurart, gleiche Bewertung (Einstandspreise), gleicher Zeitraum.</li>
+        <li><strong>Zielkonflikte mitdenken.</strong> Ein niedriger Bestand spart Kapitalkosten, gefährdet aber die Lieferbereitschaft. Bestand ist kein Selbstzweck, er dient der Versorgung der Produktion bzw. der Kunden.</li>
+      </ul>
+      <p>Weicht ein Unternehmen deutlich vom Branchendurchschnitt ab, fragt man nach den <strong>Ursachen</strong> (z. B. zu hohe Sicherheitsbestände, zu große Bestellmengen, Ladenhüter, schwacher Absatz) und leitet daraus <strong>Maßnahmen</strong> ab.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Optimierung ============================ -->
+  <section>
+    <h2 id="optimierung">Das Lager optimieren</h2>
+    <div class="tabellenrahmen">
+      <table class="daten">
+        <thead><tr><th style="width:30%">Ansatz</th><th>Wirkung</th><th style="width:30%">Zu bedenken</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Sicherheitsbestand überprüfen</strong></td><td>Senkt den durchschnittlichen Bestand dauerhaft.</td><td>Fehlmengenrisiko; erst Ursachen von Schwankungen beseitigen.</td></tr>
+          <tr><td><strong>Bestellmengen optimieren</strong> (optimale Bestellmenge)</td><td>Kleinere Bestellmengen senken den durchschnittlichen Bestand.</td><td>Bestellkosten steigen: Zielkonflikt.</td></tr>
+          <tr><td><strong>Bestellverfahren anpassen</strong> (Bestellpunkt-, Bestellrhythmusverfahren)</td><td>Bestellt wird bedarfsgerecht statt auf Vorrat.</td><td>Laufende Bestandsüberwachung nötig.</td></tr>
+          <tr><td><strong>JIT oder Delivery on demand für hochwertige A-Güter</strong> (ABC/XYZ-Analyse)</td><td>Kaum Lagerbestand bei teuren, regelmäßig gebrauchten Gütern.</td><td>Abhängigkeit vom Lieferanten, mehr Transporte (ökologisch problematisch).</td></tr>
+          <tr><td><strong>Ladenhüter abbauen</strong></td><td>Beseitigt gebundenes Kapital ohne Nutzen.</td><td>Einmaliger Verlust durch Preisnachlässe.</td></tr>
+          <tr><td><strong>Absatz fördern</strong> (Aktionen, Werbung)</td><td>Erhöht den Wareneinsatz und damit die Umschlagshäufigkeit.</td><td>Kosten der Maßnahme.</td></tr>
+          <tr><td><strong>Freiplatzsystem und ABC-Strategie</strong></td><td>Bessere Flächennutzung, kürzere Wege, geringere Lagerhaltungskosten.</td><td>Aufwand der Umstellung. Ökonomische und ökologische Ziele gehen hier oft in dieselbe Richtung (Zielharmonie).</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ Lernpfad ============================ -->
+  <section>
+    <h2 id="lernpfad">Lernpfad</h2>
+    <div class="schmal">
+      <p>Der Lernpfad führt in sechs Stufen vom sicheren Formelwissen zum Abiturniveau: Formeln lernen und im Baukasten zusammensetzen, mit Zufallsaufgaben rechnen (Jahres-, Quartals- und Monatsinventur mit Lagerkarte), Zahlen in Worte fassen und Wirkungen vorhersagen, vier Unternehmen im Branchenvergleich beurteilen, ein Jahr als Lagermanager im Planspiel erleben und zum Schluss eine komplette Abituraufgabe lösen. Eine Stufe wird erst nach Bestehen der vorherigen frei. Der Fortschritt bleibt auf dem eigenen Gerät gespeichert.</p>
+    </div>
+    <div class="rahmen">
+      <iframe id="rechner-rahmen" src="rechner.html" title="Lernpfad Lagerkennzahlen" loading="lazy"></iframe>
+    </div>
+    <div class="knopfzeile">
+      <a class="knopf sekundaer" href="rechner.html">Lernpfad in eigenem Fenster öffnen</a>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p class="hinweis"><strong>Hinweis zu den Daten:</strong> Die Branchenwerte der Fallkarten und alle Werte des Planspiels sind fiktive Modellwerte für den Unterricht und keine amtliche Statistik. Das Planspiel ist ein vereinfachtes Modell.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Merkkasten ============================ -->
+  <section>
+    <h2 id="zusammenfassung">Zusammenfassung</h2>
+    <div class="merkkasten">
+      <h2 style="margin:0 0 12px;font-size:1.25rem">Lagerkennzahlen</h2>
+      <dl>
+        <div><dt>Durchschnittlicher Lagerbestand</dt><dd>Jahresinventur: (AB + EB) ÷ 2 · Quartalsinventur: (AB + 4 Quartalsendbestände) ÷ 5 · Monatsinventur: (AB + 12 Monatsendbestände) ÷ 13</dd></div>
+        <div><dt>Umschlagshäufigkeit und Lagerdauer</dt><dd>UH = Wareneinsatz ÷ Ø Lagerbestand · Ø Lagerdauer = 360 ÷ UH. Wareneinsatz zu Einstandspreisen, nicht Umsatz.</dd></div>
+        <div><dt>Lagerzinssatz und Lagerzinsen</dt><dd>LZZ = Jahreszinssatz · Ø Lagerdauer ÷ 360 · LZ = Ø Lagerbestand · LZZ ÷ 100. Kosten der Lagerhaltung = Lagerzinsen + Lagerhaltungskosten.</dd></div>
+        <div><dt>Wirkungskette</dt><dd>Bestand ↓ → UH ↑ → Lagerdauer ↓ → Lagerzinssatz ↓ → Lagerzinsen ↓. Bei gleichem Absatz und Bestand ändert ein höherer Zins nur Lagerzinssatz und Lagerzinsen.</dd></div>
+        <div><dt>Beurteilen</dt><dd>Nur innerhalb einer Branche vergleichen, Datengrundlage prüfen, Zielkonflikt Kapitalbindung gegen Lieferbereitschaft beachten.</dd></div>
+        <div><dt>Optimieren</dt><dd>Sicherheitsbestand und Bestellmengen überprüfen, Bestellverfahren anpassen, JIT für hochwertige A-Güter, Ladenhüter abbauen, Absatz fördern, Freiplatzsystem mit ABC-Strategie.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<div id="fuss"></div>
+
+<script src="../../../data/inhalte.js"></script>
+<script src="../../../assets/js/site.js"></script>
+<script>Schule.seite({ tiefe: 3, typ: "thema", id: "lagerkennzahlen" });</script>
+<script>
+  (function(){
+    var rahmen = document.getElementById("rechner-rahmen");
+    window.addEventListener("message", function(e){
+      if(!rahmen || e.source !== rahmen.contentWindow) return;
+      var d = e.data;
+      if(d && d.typ === "rechner-hoehe" && d.hoehe > 300 && d.hoehe < 9000) rahmen.style.height = (d.hoehe + 4) + "px";
+    });
+  })();
+</script>
+</body>
+</html>

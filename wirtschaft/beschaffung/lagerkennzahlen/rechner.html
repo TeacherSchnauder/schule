@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lagerkennzahlen – Lernpfad zum Abitur | BPE 6.3</title>
+<style>
+:root{
+  --blau:#1f5fa8; --blau-d:#174a83; --blau-h:#e8f0fa;
+  --grau:#2b2f36; --grau-m:#5b6270; --grau-h:#f3f5f8; --linie:#d5dbe3;
+  --gruen:#1e7b4a; --gruen-h:#e5f3ea; --rot:#b3261e; --rot-h:#fbeae8; --gelb:#7a5600; --gelb-h:#fff3d4;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--grau);background:var(--grau-h);line-height:1.5;font-size:17px}
+a{color:var(--blau)}
+header.top{background:var(--grau);color:#fff}
+header.top .in{max-width:1040px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header.top .logo{font-weight:700;font-size:19px;letter-spacing:.2px;color:#fff;text-decoration:none}
+header.top .logo small{display:block;font-weight:400;font-size:13px;color:#c9ced8}
+header.top nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+header.top nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid #4a505b;font-size:15px}
+header.top nav a.aktiv,header.top nav a:hover{background:var(--blau);border-color:var(--blau)}
+.lehrkraft{background:var(--gelb-h);color:var(--gelb);border-bottom:1px solid #e9d49a;font-size:14px}
+.lehrkraft .in{max-width:1040px;margin:0 auto;padding:8px 20px}
+main{max-width:1040px;margin:0 auto;padding:20px}
+h1{font-size:26px;margin:0 0 8px}
+h2{font-size:22px;margin:0 0 10px}
+h3{font-size:19px;margin:0 0 8px}
+h4{font-size:17px;margin:0 0 8px}
+.karte{background:#fff;border:1px solid var(--linie);border-radius:var(--r);padding:18px 20px;margin:0 0 16px}
+.klein{font-size:14px;color:var(--grau-m)}
+.fiktiv{font-size:13px;color:var(--grau-m);font-style:italic;margin:8px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--blau);color:#fff;border:1px solid var(--blau);border-radius:8px;padding:9px 16px;font-size:16px;cursor:pointer;min-height:44px;text-decoration:none;font-family:inherit}
+.btn:hover{background:var(--blau-d)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sek{background:#fff;color:var(--blau)}
+.btn.sek:hover{background:var(--blau-h)}
+.btn.klein{min-height:36px;padding:6px 12px;font-size:15px}
+.aktionen{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.linkbtn{background:none;border:0;color:var(--grau-m);text-decoration:underline;cursor:pointer;font-size:14px;padding:6px;font-family:inherit}
+.zurueck{display:inline-block;margin-bottom:10px;text-decoration:none;font-size:15px}
+.badge{display:inline-block;background:var(--blau-h);color:var(--blau-d);border-radius:999px;padding:1px 10px;font-size:13px;font-weight:600;margin-right:6px;vertical-align:2px}
+.badge.vert{background:var(--gelb-h);color:var(--gelb)}
+.hinweis{border-radius:8px;padding:12px 14px;margin:10px 0;border:1px solid var(--linie);background:var(--grau-h)}
+.hinweis.gut{background:var(--gruen-h);border-color:#b9dcc6}
+.hinweis.schlecht{background:var(--rot-h);border-color:#efc2bc}
+.hinweis.info{background:var(--blau-h);border-color:#c3d6ee}
+.hinweis.vert{background:var(--gelb-h);border-color:#e9d49a}
+.ziel{display:flex;gap:10px;align-items:flex-start}
+/* Lernpfad */
+ol.stufen{list-style:none;padding:0;margin:0 0 16px}
+ol.stufen li{background:#fff;border:1px solid var(--linie);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center}
+ol.stufen li.gesperrt{opacity:.6}
+.nr{width:44px;height:44px;border-radius:50%;background:var(--blau-h);color:var(--blau-d);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px}
+li.fertig .nr{background:var(--gruen);color:#fff}
+li.gesperrt .nr{background:#e4e7ec;color:var(--grau-m)}
+.balken{height:8px;background:#e4e7ec;border-radius:99px;overflow:hidden;margin-top:6px}
+.balken i{display:block;height:100%;background:var(--blau);border-radius:99px}
+li.fertig .balken i{background:var(--gruen)}
+/* Tabs/Chips */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.tabs button,.chip{background:#fff;border:1px solid var(--linie);border-radius:999px;padding:7px 14px;font-size:15px;cursor:pointer;color:var(--grau);font-family:inherit;min-height:40px}
+.tabs button.aktiv,.chip.aktiv{background:var(--blau);color:#fff;border-color:var(--blau)}
+.chip.erledigt{border-color:var(--gruen);color:var(--gruen)}
+.chip.erledigt.aktiv{background:var(--gruen);color:#fff}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+/* Felder */
+.felder{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.feld label{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.eing{display:flex;align-items:center;gap:6px}
+.eing input,input.std,select.std,textarea{width:100%;font-size:17px;padding:9px 10px;border:1px solid #b9c1cc;border-radius:7px;font-family:inherit;background:#fff;color:var(--grau)}
+.eing .einh{font-size:15px;color:var(--grau-m);min-width:34px}
+.feld .rm{font-size:14px;min-height:20px;margin-top:4px}
+.feld.ok input{border-color:var(--gruen);background:var(--gruen-h)}
+.feld.ok .rm{color:var(--gruen)}
+.feld.folge input{border-color:#c79a2b;background:var(--gelb-h)}
+.feld.folge .rm{color:var(--gelb)}
+.feld.falsch input{border-color:var(--rot);background:var(--rot-h)}
+.feld.falsch .rm{color:var(--rot)}
+.loes{display:block;color:var(--grau);font-weight:600}
+textarea{resize:vertical;line-height:1.45}
+label.zeile{display:block;margin-bottom:10px;font-size:15px;font-weight:600}
+label.zeile input,label.zeile select{margin-top:4px}
+/* Tabellen */
+.tab{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;margin:6px 0}
+.tab th,.tab td{padding:6px 10px;border-bottom:1px solid var(--linie);text-align:left;vertical-align:top}
+.tab th{background:var(--grau-h);font-size:14px}
+.tab td.z,.tab th.z{text-align:right;white-space:nowrap}
+.tabwrap{overflow-x:auto}
+.tab tr.markiert td{background:var(--blau-h)}
+/* MC */
+.optionen{display:grid;gap:8px;margin:10px 0}
+.opt{text-align:left;background:#fff;border:1px solid #b9c1cc;border-radius:8px;padding:11px 14px;font-size:16px;cursor:pointer;color:var(--grau);font-family:inherit;line-height:1.4}
+.opt:hover:not(:disabled){border-color:var(--blau);background:var(--blau-h)}
+.opt.ok{border-color:var(--gruen);background:var(--gruen-h)}
+.opt.falsch{border-color:var(--rot);background:var(--rot-h)}
+.opt:disabled{cursor:default}
+.frage{font-weight:600;font-size:18px;margin:4px 0}
+label.cb{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--linie);border-radius:8px;margin:6px 0;cursor:pointer;background:#fff}
+label.cb input{width:20px;height:20px;margin-top:2px;flex:none}
+label.cb.ok{border-color:var(--gruen);background:var(--gruen-h)}
+label.cb.falsch{border-color:var(--rot);background:var(--rot-h)}
+label.cb .warum{display:block;font-size:14px;color:var(--grau-m)}
+/* Formeln */
+.bruch{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:2px 4px}
+.bruch .z{border-bottom:2px solid var(--grau);padding:0 8px 2px;text-align:center}
+.bruch .n{padding:2px 8px 0;text-align:center}
+.formel{font-size:17px;margin:8px 0}
+.lernkarten{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.lk{background:#fff;border:1px solid var(--linie);border-radius:var(--r);padding:14px;min-height:150px;cursor:pointer;text-align:left;font-family:inherit;font-size:16px;color:var(--grau)}
+.lk:hover{border-color:var(--blau)}
+.lk .vorn{font-weight:700;color:var(--blau-d)}
+.lk.offen{background:var(--blau-h)}
+.bau{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.slot{min-height:58px;border:2px dashed #b9c1cc;border-radius:9px;padding:6px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;cursor:pointer;background:#fff;position:relative}
+.slot.aktiv{border-color:var(--blau);background:var(--blau-h)}
+.slot .sn{font-size:12px;font-weight:700;color:var(--grau-m);text-transform:uppercase;letter-spacing:.5px;margin-right:6px}
+.strich{height:3px;background:var(--grau);border-radius:2px;margin:0 10px}
+.palette{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kachel{background:#fff;border:1px solid #9aa6b5;border-radius:8px;padding:7px 11px;font-size:15px;cursor:pointer;font-family:inherit;color:var(--grau);min-height:40px}
+.kachel:hover:not(:disabled){border-color:var(--blau);background:var(--blau-h)}
+.kachel:disabled{opacity:.3}
+.kachel.gesetzt{background:var(--blau);color:#fff;border-color:var(--blau)}
+.opbtn{background:var(--grau);color:#fff;border:0;border-radius:6px;width:34px;height:34px;font-size:18px;cursor:pointer}
+/* Rechenweg */
+.weg{border-left:3px solid var(--blau);padding-left:14px;margin:10px 0}
+.schritt{margin-bottom:12px}
+.schritt .t{font-weight:700}
+.schritt .l{font-variant-numeric:tabular-nums}
+details.wegbox summary{cursor:pointer;color:var(--blau);font-weight:600;padding:6px 0}
+/* Prognose */
+.prog{width:100%;border-collapse:collapse}
+.prog td{padding:6px 4px;border-bottom:1px solid var(--linie)}
+.pf{display:flex;gap:6px}
+.pf button{width:48px;height:42px;border:1px solid #9aa6b5;background:#fff;border-radius:8px;font-size:20px;cursor:pointer;color:var(--grau)}
+.pf button.gew{background:var(--blau);color:#fff;border-color:var(--blau)}
+.pf button.richtig{outline:3px solid var(--gruen);outline-offset:1px}
+.pf button.gew.falschgew{background:var(--rot);border-color:var(--rot)}
+.regler label{display:block;margin:10px 0 2px;font-weight:600;font-size:15px}
+.regler input[type=range]{width:100%;height:30px}
+.gauge{display:grid;grid-template-columns:150px 1fr 120px;gap:10px;align-items:center;margin:6px 0;font-size:15px}
+.gauge .bar{height:14px;background:#e4e7ec;border-radius:99px;position:relative;overflow:visible}
+.gauge .bar i{display:block;height:100%;background:var(--blau);border-radius:99px}
+.gauge .bar b{position:absolute;top:-4px;width:2px;height:22px;background:var(--grau)}
+.gauge .wert{text-align:right;font-variant-numeric:tabular-nums}
+/* Planspiel */
+.massn{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin:10px 0}
+.mk{text-align:left;background:#fff;border:1px solid #9aa6b5;border-radius:10px;padding:12px;font-family:inherit;font-size:15px;color:var(--grau);cursor:pointer;line-height:1.4}
+.mk strong{display:block;font-size:16px;margin-bottom:4px}
+.mk.gew{border:2px solid var(--blau);background:var(--blau-h)}
+.mk:disabled{opacity:.45;cursor:not-allowed}
+.status{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:8px 0}
+.status div{background:var(--grau-h);border-radius:8px;padding:8px 10px;font-size:14px}
+.status div b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.sterne{font-size:30px;letter-spacing:4px}
+.besser{color:var(--gruen);font-weight:600}
+.schlechter{color:var(--rot);font-weight:600}
+.timer{font-variant-numeric:tabular-nums;font-weight:700}
+.raster2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fuss{text-align:center;margin:20px 0 40px}
+@media (max-width:760px){
+  .raster2{grid-template-columns:1fr}
+  ol.stufen li{grid-template-columns:44px 1fr}
+  ol.stufen li .rechts{grid-column:1/-1}
+  .gauge{grid-template-columns:1fr;gap:2px}
+  .gauge .wert{text-align:left}
+  main{padding:14px}
+}
+@media print{header.top,.lehrkraft,.aktionen,.fuss,.zurueck{display:none}body{background:#fff}.karte{border:1px solid #999}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <a class="logo" href="#home">Lagerkennzahlen<small>Lernpfad zum Abitur · VBL BPE 6.3</small></a>
+  <nav id="nav"></nav>
+</div></header>
+<div id="lehrkraftleiste"></div>
+<main id="main"></main>
+
+<script>
+"use strict";
+/* =========================================================
+   Lagerkennzahlen – Lernpfad (BPE 6.3, Wirtschaftsgymnasium BW)
+   Reines HTML/CSS/JavaScript, keine externen Abhängigkeiten.
+   Fortschritt wird im localStorage dieses Geräts gespeichert.
+   Lehrkraft-Ansicht (alle Stufen frei): über „Lehrkraft-Zugang“ mit Kennwort freischalten.
+   Im Kennwort-Vergleich wird nur der SHA-256-Hash gespeichert, nicht das Kennwort selbst.
+   ========================================================= */
+
+/* ---------- Hilfsfunktionen ---------- */
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+function fmt(x, d) { if (x === null || x === undefined || !isFinite(x)) return '–'; d = (d === undefined ? 2 : d); return x.toLocaleString('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function fmtN(x, max) { if (x === null || x === undefined || !isFinite(x)) return '–'; return x.toLocaleString('de-DE', { maximumFractionDigits: (max === undefined ? 2 : max) }); }
+const eur = x => fmt(x, 2) + ' €';
+const eur0 = x => fmt(x, 0) + ' €';
+const minus = x => (Math.round(x) === 0 ? '0 €' : '−' + eur0(x));
+const proz = (x, d) => fmtN(x, d === undefined ? 2 : d) + ' %';
+const stk = x => fmtN(x, 2) + ' St.';
+const tage = x => fmtN(x, 2) + ' Tage';
+function parseZahl(s) {
+  if (s === null || s === undefined) return null;
+  s = String(s).trim().replace(/€|%|Stück|St\.?|Tage|Tag|mal|\s/gi, '').replace(/−/g, '-');
+  if (!s) return null;
+  if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
+  else if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+  const v = Number(s);
+  return isFinite(v) ? v : null;
+}
+function istNah(v, e, tol) {
+  if (v === null || v === undefined || e === null || e === undefined || !isFinite(v) || !isFinite(e)) return false;
+  tol = (tol === undefined ? 0.01 : tol);
+  if (Math.abs(e) < 1e-9) return Math.abs(v) < 0.01;
+  return Math.abs(v - e) <= Math.abs(e) * tol + 1e-9;
+}
+const rnd = (a, b) => a + Math.random() * (b - a);
+const rint = (a, b) => Math.floor(rnd(a, b + 1));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const rund = (x, st) => Math.round(x / st) * st;
+function mischen(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function gleicheMenge(a, b) { if (a.length !== b.length) return false; const x = a.slice().sort().join('|'), y = b.slice().sort().join('|'); return x === y; }
+function el(html) { const t = document.createElement('div'); t.innerHTML = html.trim(); return t.firstElementChild; }
+function bruch(z, n) { return `<span class="bruch"><span class="z">${z}</span><span class="n">${n}</span></span>`; }
+function tabelle(kopf, zeilen, rechtsAb) {
+  rechtsAb = rechtsAb === undefined ? 1 : rechtsAb;
+  return `<div class="tabwrap"><table class="tab">${kopf ? `<thead><tr>${kopf.map((k, i) => `<th class="${i >= rechtsAb ? 'z' : ''}">${k}</th>`).join('')}</tr></thead>` : ''}<tbody>${zeilen.map(r => `<tr>${r.map((c, i) => `<td class="${i >= rechtsAb ? 'z' : ''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function weg(schritte) {
+  return `<div class="weg">${schritte.map(s => `<div class="schritt"><div class="t">${s[0]}</div><div class="l">${s[1]}</div>${s[2] ? `<div class="l">= ${s[2]}</div>` : ''}<div class="l">= <strong>${s[3]}</strong></div>${s[4] ? `<div class="klein">${s[4]}</div>` : ''}</div>`).join('')}</div>`;
+}
+function berechne(dlb, we, jz) { const uh = we / dlb, dld = 360 / uh, lzz = jz * dld / 360, lz = dlb * lzz / 100; return { dlb, we, jz, uh, dld, lzz, lz }; }
+const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const FIRMEN = ['Holzmann Bürobedarf GmbH', 'Brenner Sportartikel KG', 'Kaiser Elektrogroßhandel GmbH', 'Fischer Werkzeughandel e. K.', 'Lindner Gartenbedarf OHG', 'Sauter Haustechnik GmbH', 'ESS GmbH'];
+
+/* ---------- Fortschritt ---------- */
+const KEY = 'lagerkennzahlen-lernpfad-v1';
+const PWD_HASH = '5e484a66e24c206a06328a66ccc831f27ea3045576eec35c12070acf1bc3ac99';
+const LK_KEY = 'lagerkennzahlen-lehrkraft';
+let LEHRKRAFT = localStorage.getItem(LK_KEY) === PWD_HASH;
+function leer() { return { s1: { bau: {}, quiz: 0, passed: false }, s2: { solved: {}, passed: false }, s3: { worte: 0, prog: 0, passed: false }, s4: { cards: {}, passed: false }, s5: { played: false, sterne: 0, passed: false }, s6: { best: 0, gesamt: 0, passed: false }, name: '' }; }
+function laden() { try { const r = localStorage.getItem(KEY); if (r) { const o = JSON.parse(r); const l = leer(); Object.keys(l).forEach(k => { if (o[k] !== undefined) l[k] = (typeof l[k] === 'object' ? Object.assign(l[k], o[k]) : o[k]); }); return l; } } catch (e) { } return leer(); }
+let P = laden();
+function speichern() { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { } }
+function frei(n) { if (LEHRKRAFT || n === 1) return true; return !!P['s' + (n - 1)].passed; }
+function rechnerFrei() { return LEHRKRAFT || P.s2.passed; }
+
+const STUFEN = [
+  { n: 1, titel: 'Formeln sicher', kurz: 'Lernkarten, Formel-Baukasten und Begriffsquiz', ziel: 'Alle 7 Formeln im Baukasten richtig bauen und im Begriffsquiz mindestens 10 von 12 Fragen richtig beantworten.' },
+  { n: 2, titel: 'Rechnen', kurz: 'Zufallsaufgaben im Prüfmodus: Jahres-, Quartals- und Monatsinventur (Lagerkarte)', ziel: 'Je eine Aufgabe jeder Art vollständig richtig lösen, ohne vorher den Rechenweg anzuzeigen.' },
+  { n: 3, titel: 'Interpretieren', kurz: 'Zahlen in Worte fassen und Wirkungen vorhersagen („Was passiert, wenn …?“)', ziel: 'Mindestens 4 von 5 Deutungen richtig und mindestens 7 von 10 Prognosen im ersten Versuch richtig.' },
+  { n: 4, titel: 'Branchenvergleich', kurz: 'Vier Unternehmen beurteilen – Ursachen erkennen, Maßnahmen begründen', ziel: 'Alle vier Fallkarten vollständig bearbeiten.' },
+  { n: 5, titel: 'Lager optimieren', kurz: 'Planspiel: ein Jahr als Lagermanager der ESS GmbH', ziel: 'Ein komplettes Jahr spielen und die eigene Strategie schriftlich beurteilen.' },
+  { n: 6, titel: 'Abi-Aufgabe (Endboss)', kurz: 'Komplette Abituraufgabe mit Bewertungseinheiten (BE)', ziel: 'Bei den Rechenteilen mindestens 10 von 14 BE im ersten Prüfdurchgang.' }
+];
+function fortschritt(n) {
+  const s = P['s' + n];
+  if (s.passed) return 1;
+  switch (n) {
+    case 1: return (Object.keys(s.bau).length / 7) * 0.5 + Math.min(s.quiz / 10, 1) * 0.5;
+    case 2: return Object.keys(s.solved).length / 3;
+    case 3: return (Math.min(s.worte / 4, 1) + Math.min(s.prog / 7, 1)) / 2;
+    case 4: return Object.keys(s.cards).length / 4;
+    case 5: return s.played ? 0.6 : 0;
+    case 6: return Math.min(s.best / 10, 1) * 0.9;
+  }
+  return 0;
+}
+function bestanden(n) {
+  if (P['s' + n].passed) return;
+  P['s' + n].passed = true; speichern();
+  const b = el(`<div class="hinweis gut banner"><strong>Stufe ${n} bestanden!</strong> ${n < 6 ? `<a class="btn klein" href="#s${n + 1}">Weiter zu Stufe ${n + 1}</a>` : `<a class="btn klein" href="#nachweis">Abschlussnachweis anzeigen</a>`}</div>`);
+  const m = $('#main'); m.insertBefore(b, m.firstChild); window.scrollTo({ top: 0, behavior: 'smooth' });
+  navZeichnen();
+}
+
+/* ---------- Bausteine ---------- */
+let UID = 0;
+function feldGruppe(box, felder) {
+  const id = ++UID;
+  box.innerHTML = `<div class="felder">${felder.map(f => `
+    <div class="feld" data-k="${f.key}">
+      <label for="f${id}_${f.key}">${f.label}</label>
+      <div class="eing"><input id="f${id}_${f.key}" inputmode="decimal" autocomplete="off" spellcheck="false"><span class="einh">${f.einheit || ''}</span></div>
+      <div class="rm" aria-live="polite"></div>
+    </div>`).join('')}</div>`;
+  const inp = k => $(`#f${id}_${k}`, box);
+  felder.forEach((f, i) => inp(f.key).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const nx = felder[i + 1]; if (nx) inp(nx.key).focus(); } }));
+  return {
+    werte() { const o = {}; felder.forEach(f => o[f.key] = parseZahl(inp(f.key).value)); return o; },
+    pruefen() {
+      const o = this.werte(); const st = {};
+      felder.forEach(f => {
+        const v = o[f.key]; const fb = $(`.feld[data-k="${f.key}"]`, box); const rm = $('.rm', fb);
+        fb.classList.remove('ok', 'falsch', 'folge');
+        let s;
+        if (v === null) s = 'leer';
+        else if (istNah(v, f.wahr, f.tol)) s = 'ok';
+        else { let e; try { e = f.folge ? f.folge(o) : undefined; } catch (_) { e = undefined; } s = istNah(v, e, f.tol) ? 'folge' : 'falsch'; }
+        st[f.key] = s;
+        if (s === 'ok') { fb.classList.add('ok'); rm.textContent = '✓ richtig'; }
+        else if (s === 'folge') { fb.classList.add('folge'); rm.textContent = '✓ richtig weitergerechnet (Folgefehler aus einem vorherigen Feld)'; }
+        else if (s === 'leer') { fb.classList.add('falsch'); rm.textContent = 'Bitte einen Wert eintragen.'; }
+        else {
+          fb.classList.add('falsch'); let h = null;
+          (f.hinweise || []).some(fn => { try { h = fn(v, o); } catch (_) { h = null; } return !!h; });
+          if (!h && istNah(v * 100, f.wahr) && f.einheit === '%') h = 'Gib den Wert in Prozent an (z. B. 5 statt 0,05).';
+          rm.textContent = h || 'Noch nicht richtig – prüfe Formel, Einsetzen und Rundung.';
+        }
+      });
+      return st;
+    },
+    loesungen() { felder.forEach(f => { const rm = $(`.feld[data-k="${f.key}"] .rm`, box); if (!$('.loes', rm)) rm.insertAdjacentHTML('beforeend', `<span class="loes">Lösung: ${fmtN(f.wahr, f.dez === undefined ? 2 : f.dez)} ${f.einheit || ''}</span>`); }); }
+  };
+}
+function mcRunde(box, fragen, opt) {
+  opt = opt || {};
+  const reihe = mischen(fragen).map(q => Object.assign({}, q, { perm: mischen(q.o.map((t, k) => k)) }));
+  let i = 0, punkte = 0;
+  function zeige() {
+    if (i >= reihe.length) {
+      const ok = opt.ziel ? punkte >= opt.ziel : true;
+      box.innerHTML = `<div class="karte"><h3>Auswertung: ${punkte} von ${reihe.length} richtig</h3>
+        <div class="hinweis ${ok ? 'gut' : 'schlecht'}">${ok ? 'Ziel erreicht.' : `Ziel: mindestens ${opt.ziel} richtig. Lies die Erklärungen und versuche es noch einmal – die Reihenfolge ändert sich.`}</div>
+        <button class="btn" data-a="neu">Noch einmal</button></div>`;
+      $('[data-a=neu]', box).onclick = () => mcRunde(box, fragen, opt);
+      if (opt.onEnde) opt.onEnde(punkte, reihe.length);
+      return;
+    }
+    const q = reihe[i];
+    box.innerHTML = `<div class="karte"><div class="klein">Frage ${i + 1} von ${reihe.length} · bisher ${punkte} richtig</div>
+      <p class="frage">${q.f}</p>
+      <div class="optionen">${q.perm.map(k => `<button class="opt" data-k="${k}">${q.o[k]}</button>`).join('')}</div>
+      <div class="erkl"></div></div>`;
+    $$('.opt', box).forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, ok = k === 0; if (ok) punkte++;
+      $$('.opt', box).forEach(x => { x.disabled = true; if (+x.dataset.k === 0) x.classList.add('ok'); else if (x === b) x.classList.add('falsch'); });
+      $('.erkl', box).innerHTML = `<div class="hinweis ${ok ? 'gut' : 'schlecht'}"><strong>${ok ? 'Richtig.' : 'Nicht richtig.'}</strong> ${q.e}</div><button class="btn" data-a="w">${i + 1 < reihe.length ? 'Nächste Frage' : 'Zur Auswertung'}</button>`;
+      $('[data-a=w]', box).onclick = () => { i++; zeige(); };
+    });
+  }
+  zeige();
+}
+function einzelwahl(box, d, onRichtig) {
+  // d: {f, o:[{t, ok, e}]}; mehrere Versuche erlaubt
+  const ord = mischen(d.o.map((x, i) => i));
+  box.innerHTML = `<div class="optionen">${ord.map(i => `<button class="opt" data-i="${i}">${d.o[i].t}</button>`).join('')}</div><div class="erkl"></div>`;
+  $$('.opt', box).forEach(b => b.onclick = () => {
+    const o = d.o[+b.dataset.i];
+    if (o.ok) { $$('.opt', box).forEach(x => x.disabled = true); b.classList.add('ok'); $('.erkl', box).innerHTML = `<div class="hinweis gut"><strong>Richtig.</strong> ${o.e}</div>`; onRichtig && onRichtig(); }
+    else { b.classList.add('falsch'); b.disabled = true; $('.erkl', box).innerHTML = `<div class="hinweis schlecht"><strong>Nicht überzeugend.</strong> ${o.e}</div>`; }
+  });
+}
+function mehrfachwahl(box, d, onRichtig) {
+  const ord = mischen(d.o.map((x, i) => i));
+  box.innerHTML = `${ord.map(i => `<label class="cb" data-i="${i}"><input type="checkbox"><span>${d.o[i].t}<span class="warum"></span></span></label>`).join('')}<div class="aktionen"><button class="btn" data-a="p">Prüfen</button></div><div class="erkl"></div>`;
+  $('[data-a=p]', box).onclick = () => {
+    let alle = true;
+    $$('label.cb', box).forEach(l => {
+      const o = d.o[+l.dataset.i], an = $('input', l).checked; l.classList.remove('ok', 'falsch'); $('.warum', l).textContent = '';
+      if (an !== o.ok) { alle = false; if (an) { l.classList.add('falsch'); $('.warum', l).textContent = o.e; } }
+      else if (an) l.classList.add('ok');
+    });
+    if (alle) {
+      $$('label.cb', box).forEach(l => { const o = d.o[+l.dataset.i]; $('.warum', l).textContent = o.e; $('input', l).disabled = true; });
+      $('.erkl', box).innerHTML = '<div class="hinweis gut"><strong>Alles richtig zugeordnet.</strong> Die Begründungen stehen jetzt bei jeder Aussage.</div>';
+      $('[data-a=p]', box).disabled = true; onRichtig && onRichtig();
+    } else {
+      $('.erkl', box).innerHTML = '<div class="hinweis schlecht">Noch nicht ganz. Rot markierte Aussagen passen nicht – und eventuell fehlen noch zutreffende Aussagen.</div>';
+    }
+  };
+}
+function textCheck(box, d) {
+  // d: {items:[], min, onAufgedeckt(), onZahl(n)}
+  const min = d.min || 150;
+  box.innerHTML = `<textarea rows="7" placeholder="Formuliere deine Antwort in ganzen Sätzen. Begründe mit Zahlen."></textarea>
+    <div class="klein zl"></div>
+    <div class="aktionen"><button class="btn" disabled data-a="e">Mit Erwartungshorizont abgleichen</button></div><div class="ehz"></div>`;
+  const ta = $('textarea', box), btn = $('[data-a=e]', box), zl = $('.zl', box);
+  if (d.text) ta.value = d.text;
+  const upd = () => { const n = ta.value.trim().length; zl.textContent = n < min ? `${n} / mindestens ${min} Zeichen – erst schreiben, dann abgleichen.` : `${n} Zeichen`; btn.disabled = n < min; if (d.onText) d.onText(ta.value); };
+  ta.oninput = upd; upd();
+  btn.onclick = () => {
+    btn.disabled = true; ta.readOnly = true;
+    $('.ehz', box).innerHTML = `<div class="hinweis info"><strong>Erwartungshorizont:</strong> Hake ehrlich ab, was deine Antwort <em>tatsächlich</em> enthält. Was fehlt, ergänzt du in Gedanken – oder schreibst es ins Heft.</div>
+      ${d.items.map((t, i) => `<label class="cb"><input type="checkbox" data-i="${i}"><span>${t}</span></label>`).join('')}<div class="klein be"></div>`;
+    const zaehle = () => { const n = $$('.ehz input:checked', box).length; if (d.onZahl) d.onZahl(n); $('.be', box).textContent = d.maxBE ? `Selbsteinschätzung: ${Math.min(n, d.maxBE)} von ${d.maxBE} BE` : `${n} von ${d.items.length} Punkten enthalten`; };
+    $$('.ehz input', box).forEach(c => c.onchange = zaehle); zaehle();
+    if (d.onAufgedeckt) d.onAufgedeckt();
+  };
+}
+function tabs(box, defs, start) {
+  box.innerHTML = `<div class="tabs" role="tablist">${defs.map((d, i) => `<button role="tab" data-i="${i}">${d.t}</button>`).join('')}</div><div class="tabinhalt"></div>`;
+  const inh = $('.tabinhalt', box);
+  function zeige(i) { $$('.tabs > button', box).forEach((b, k) => b.classList.toggle('aktiv', k === i)); inh.innerHTML = ''; defs[i].r(inh); }
+  $$('.tabs > button', box).forEach(b => b.onclick = () => zeige(+b.dataset.i));
+  zeige(start || 0);
+  return { zeige, beschriften(i, t) { $$('.tabs > button', box)[i].textContent = t; } };
+}
+function kopf(m, n) {
+  const s = STUFEN[n - 1];
+  m.innerHTML = `<a class="zurueck" href="#home">← Lernpfad</a>
+    <div class="karte"><h2>Stufe ${n}: ${s.titel}</h2><p>${s.kurz}</p>
+    <div class="hinweis ${P['s' + n].passed ? 'gut' : 'info'}"><strong>${P['s' + n].passed ? '✓ Bestanden.' : 'Ziel dieser Stufe:'}</strong> ${s.ziel}${P['s' + n].passed && n < 6 ? ` <a href="#s${n + 1}">Weiter zu Stufe ${n + 1} →</a>` : ''}</div></div>`;
+  const c = document.createElement('div'); m.appendChild(c); return c;
+}
+
+/* =========================================================
+   STARTSEITE
+   ========================================================= */
+function viewHome(m) {
+  const alle = STUFEN.every(s => P['s' + s.n].passed);
+  m.innerHTML = `
+  <div class="karte"><h1>Lagerkennzahlen – dein Lernpfad zum Abitur</h1>
+    <p>Du bist im Lagermanagement der <strong>ESS GmbH</strong> und sollst beurteilen, wie wirtschaftlich das Lager arbeitet. In sechs Stufen arbeitest du dich vom sicheren Formelwissen über das Rechnen und Interpretieren bis zur kompletten Abituraufgabe vor. Jede Stufe wird frei, sobald du die vorherige bestanden hast.</p>
+    <p class="klein">Dein Fortschritt wird nur auf diesem Gerät im Browser gespeichert. Wenn du den Browserverlauf löschst, ist er weg.</p></div>
+  <ol class="stufen">${STUFEN.map(s => {
+    const f = frei(s.n), p = fortschritt(s.n), fertig = P['s' + s.n].passed;
+    return `<li class="${fertig ? 'fertig' : ''} ${f ? '' : 'gesperrt'}">
+      <div class="nr">${fertig ? '✓' : (f ? s.n : '🔒')}</div>
+      <div><strong>Stufe ${s.n}: ${s.titel}</strong><div class="klein">${s.kurz}</div><div class="balken"><i style="width:${Math.round(p * 100)}%"></i></div></div>
+      <div class="rechts">${f ? `<a class="btn ${fertig ? 'sek' : ''}" href="#s${s.n}">${fertig ? 'Wiederholen' : (p > 0 ? 'Weiter' : 'Starten')}</a>` : `<span class="klein">erst nach Stufe ${s.n - 1}</span>`}</div>
+    </li>`;
+  }).join('')}</ol>
+  <div class="karte"><h3>Werkzeug: Lagerkennzahlen-Rechner</h3>
+    <p>Freier Rechner mit Rechenweg und Branchenvergleich – zum Kontrollieren eigener Aufgaben aus Buch und Abiturtrainer.</p>
+    ${rechnerFrei() ? '<a class="btn" href="#rechner">Rechner öffnen</a>' : '<p class="klein">🔒 Wird nach Stufe 2 freigeschaltet – erst selbst rechnen können, dann rechnen lassen.</p>'}</div>
+  ${alle ? '<div class="karte hinweis gut"><strong>Lernpfad abgeschlossen!</strong> <a class="btn klein" href="#nachweis">Abschlussnachweis anzeigen</a></div>' : ''}
+  <div class="fuss">${LEHRKRAFT ? '' : '<button class="linkbtn" id="lkzug">Lehrkraft-Zugang</button><div id="lk_box"></div>'}<button class="linkbtn" id="reset">Fortschritt auf diesem Gerät zurücksetzen</button><div id="resetfrage"></div></div>`;
+  if (!LEHRKRAFT) $('#lkzug').onclick = lehrkraftZugang;
+  $('#reset').onclick = () => {
+    $('#resetfrage').innerHTML = `<div class="hinweis schlecht" style="display:inline-block">Wirklich den gesamten Fortschritt löschen? <button class="btn klein" id="rj">Ja, löschen</button> <button class="btn sek klein" id="rn">Abbrechen</button></div>`;
+    $('#rj').onclick = () => { P = leer(); speichern(); route(); };
+    $('#rn').onclick = () => { $('#resetfrage').innerHTML = ''; };
+  };
+}
+
+/* =========================================================
+   STUFE 1 – FORMELN
+   ========================================================= */
+const KACHELN = {
+  AB: 'Anfangsbestand', EB: 'Endbestand', Q4: 'Summe der 4 Quartalsendbestände', M12: 'Summe der 12 Monatsendbestände',
+  WE: 'Wareneinsatz (Lagerabgang)', UM: 'Umsatzerlöse', WZ: 'Wareneingang (Zugänge)', DLB: 'Ø Lagerbestand', UH: 'Umschlagshäufigkeit', DLD: 'Ø Lagerdauer',
+  JZ: 'Jahreszinssatz', LZZ: 'Lagerzinssatz', n360: '360', n365: '365', n100: '100', n2: '2', n4: '4', n5: '5', n12: '12', n13: '13'
+};
+const FORMELN = [
+  { id: 'jahr', name: 'Ø Lagerbestand (Jahresinventur)', z: ['AB', 'EB'], op: '+', n: ['n2'] },
+  { id: 'quartal', name: 'Ø Lagerbestand (Quartalsinventur)', z: ['AB', 'Q4'], op: '+', n: ['n5'] },
+  { id: 'monat', name: 'Ø Lagerbestand (Monatsinventur)', z: ['AB', 'M12'], op: '+', n: ['n13'] },
+  { id: 'uh', name: 'Umschlagshäufigkeit', z: ['WE'], op: '+', n: ['DLB'] },
+  { id: 'dld', name: 'Ø Lagerdauer in Tagen', z: ['n360'], op: '+', n: ['UH'] },
+  { id: 'lzz', name: 'Lagerzinssatz in %', z: ['JZ', 'DLD'], op: '×', n: ['n360'] },
+  { id: 'lz', name: 'Lagerzinsen in €', z: ['DLB', 'LZZ'], op: '×', n: ['n100'] }
+];
+const LERNKARTEN = [
+  ['Ø Lagerbestand – Jahresinventur', bruch('Anfangsbestand + Endbestand', '2'), 'Nur zwei Stichtage. Ungenau, wenn die Bestände im Jahresverlauf schwanken.'],
+  ['Ø Lagerbestand – Quartalsinventur', bruch('Anfangsbestand + 4 Quartalsendbestände', '5'), 'Fünf Stichtage – genauer als die Jahresinventur.'],
+  ['Ø Lagerbestand – Monatsinventur', bruch('Anfangsbestand + 12 Monatsendbestände', '13'), '13 Stichtage – bildet Schwankungen im Jahresverlauf am besten ab.'],
+  ['Umschlagshäufigkeit (UH)', bruch('Wareneinsatz (Lagerabgang)', 'Ø Lagerbestand') + ' &nbsp;oder&nbsp; ' + bruch('360', 'Ø Lagerdauer'), 'Wie oft wird der Ø Lagerbestand im Jahr verbraucht und ersetzt? Beide Größen zu Einstandspreisen (oder beide in Stück)!'],
+  ['Ø Lagerdauer (DLD)', bruch('360', 'Umschlagshäufigkeit'), 'Wie viele Tage liegt eine Ware im Durchschnitt im Lager? So lange ist ihr Wert als Kapital gebunden.'],
+  ['Lagerzinssatz (LZZ)', bruch('Jahreszinssatz × Ø Lagerdauer', '360'), 'Der Teil des Jahreszinses, der auf die Ø Lagerdauer entfällt (in %).'],
+  ['Lagerzinsen (LZ)', bruch('Ø Lagerbestand × Lagerzinssatz', '100'), 'Zinskosten des im Lager gebundenen Kapitals – nach der eingeführten Formel bezogen auf die Ø Lagerdauer (Vertiefung in Stufe 6).'],
+  ['Kosten der Lagerhaltung', 'Lagerzinsen + Lagerhaltungskosten', 'Lagerhaltungskosten: Raum, Personal, Energie, Versicherung, Schwund, Verderb …']
+];
+const QUIZ1 = [
+  { f: 'Warum teilt man bei der Monatsinventur durch 13?', o: ['Anfangsbestand + 12 Monatsendbestände ergeben 13 Bestandswerte.', 'Ein Jahr hat 13 Abrechnungsperioden zu je vier Wochen.', 'Zu den 12 Monaten kommt ein Sicherheitszuschlag hinzu.', 'Weil der Endbestand doppelt gezählt wird.'], e: 'Man bildet den Durchschnitt aller Stichtagswerte: Anfangsbestand am 1.1. plus die 12 Monatsendbestände – das sind 13 Werte.' },
+  { f: 'Was steht bei der Umschlagshäufigkeit im Zähler?', o: ['Der Wareneinsatz (Lagerabgang) zu Einstandspreisen', 'Die Umsatzerlöse', 'Der Wareneingang (Summe der Zugänge)', 'Der Endbestand'], e: 'Der Lagerbestand ist zu Einstandspreisen bewertet. Damit Zähler und Nenner zusammenpassen, muss auch der Abgang zu Einstandspreisen bewertet sein – das ist der Wareneinsatz. Umsatzerlöse enthalten zusätzlich den Gewinnaufschlag.' },
+  { f: 'Die Umschlagshäufigkeit beträgt 8. Wie lang ist die durchschnittliche Lagerdauer?', o: ['45 Tage', '45,6 Tage', '8 Tage', '2.880 Tage'], e: '360 / 8 = 45 Tage. 45,6 Tage erhält man nur, wenn man fälschlich mit 365 Tagen rechnet.' },
+  { f: 'Was drückt der Lagerzinssatz aus?', o: ['Den Teil des Jahreszinses, der auf die Zeit entfällt, in der die Ware durchschnittlich im Lager liegt', 'Den Zinssatz, den die Bank für ein ganzes Jahr verlangt', 'Die Rendite, die das Lager erwirtschaftet', 'Den Anteil der Lagerkosten am Umsatz'], e: 'LZZ = Jahreszinssatz × Ø Lagerdauer / 360. Liegt eine Ware z. B. 90 Tage im Lager, entfällt ein Viertel des Jahreszinses auf sie.' },
+  { f: 'Ø Lagerdauer 30 Tage, Jahreszinssatz 9 %. Wie hoch ist der Lagerzinssatz?', o: ['0,75 %', '9 %', '2,7 %', '0,3 %'], e: '9 % × 30 / 360 = 0,75 %.' },
+  { f: 'Welche Inventurart bildet den durchschnittlichen Lagerbestand am genauesten ab?', o: ['Die Monatsinventur, weil 13 Stichtage die Schwankungen im Jahresverlauf besser erfassen', 'Die Jahresinventur, weil Anfangs- und Endbestand am zuverlässigsten gezählt werden', 'Die Quartalsinventur, weil sie gesetzlich vorgeschrieben ist', 'Alle drei liefern immer dasselbe Ergebnis'], e: 'Je mehr Stichtage, desto besser werden Schwankungen erfasst. Sind die Bestände ausgerechnet zum Jahreswechsel besonders niedrig oder hoch, verzerrt die Jahresinventur den Durchschnitt.' },
+  { f: 'Ø Lagerbestand 200.000 €, Lagerzinssatz 1,5 %. Wie hoch sind die Lagerzinsen?', o: ['3.000 €', '30.000 €', '300 €', '133.333 €'], e: '200.000 € × 1,5 / 100 = 3.000 €.' },
+  { f: 'Mit welcher Formel lässt sich die Umschlagshäufigkeit ebenfalls berechnen?', o: ['360 / Ø Lagerdauer', 'Ø Lagerdauer / 360', 'Ø Lagerbestand / Wareneinsatz', 'Wareneinsatz × Ø Lagerbestand'], e: 'Aus DLD = 360 / UH folgt durch Umstellen UH = 360 / DLD.' },
+  { f: 'Warum wird der Lagerbestand mit Einstandspreisen und nicht mit Verkaufspreisen bewertet?', o: ['Gebunden ist nur das Kapital, das für die Beschaffung ausgegeben wurde – der Gewinnaufschlag ist noch nicht verdient.', 'Weil Verkaufspreise geheim sind.', 'Weil Einstandspreise immer höher sind als Verkaufspreise.', 'Das ist reine Konvention, ökonomisch macht es keinen Unterschied.'], e: 'Kapitalbindung entsteht durch das, was für die Ware bezahlt wurde. Der Gewinn entsteht erst beim Verkauf.' },
+  { f: 'Wie setzen sich die Kosten der Lagerhaltung zusammen?', o: ['Lagerzinsen + Lagerhaltungskosten (z. B. Raum, Personal, Versicherung, Schwund)', 'Nur aus den Lagerzinsen', 'Wareneinsatz + Lagerzinsen', 'Lagerzinsen − Lagerhaltungskosten'], e: 'Zu den Zinsen auf das gebundene Kapital kommen alle Kosten des Lagerbetriebs hinzu.' },
+  { f: 'Mit wie vielen Tagen rechnet man im kaufmännischen Rechnen ein Jahr?', o: ['360', '365', '366', '250'], e: 'Kaufmännisch: 1 Jahr = 360 Tage, 1 Monat = 30 Tage.' },
+  { f: 'Bei der Quartalsinventur teilt man die Summe der Bestände durch …', o: ['5', '4', '13', '2'], e: 'Anfangsbestand + 4 Quartalsendbestände = 5 Werte.' }
+];
+function viewS1(m) {
+  const c = kopf(m, 1);
+  const pruefe = () => { if (Object.keys(P.s1.bau).length >= 7 && P.s1.quiz >= 10) bestanden(1); };
+  tabs(c, [
+    { t: '1 Einprägen', r: box => {
+      box.innerHTML = `<div class="karte"><p>Lies den Namen, sag die Formel laut oder schreib sie auf – dann tippe die Karte an und prüfe dich selbst.</p>
+        <div class="aktionen"><button class="btn sek klein" data-a="alle">Alle aufdecken</button><button class="btn sek klein" data-a="zu">Alle verdecken</button></div></div>
+        <div class="lernkarten">${LERNKARTEN.map((k, i) => `<button class="lk" data-i="${i}"><div class="vorn">${k[0]}</div><div class="hinten" hidden><div class="formel">${k[1]}</div><div class="klein">${k[2]}</div></div><div class="klein tipp">Antippen zum Aufdecken</div></button>`).join('')}</div>`;
+      const setz = (b, offen) => { b.classList.toggle('offen', offen); $('.hinten', b).hidden = !offen; $('.tipp', b).hidden = offen; };
+      $$('.lk', box).forEach(b => b.onclick = () => setz(b, !b.classList.contains('offen')));
+      $('[data-a=alle]', box).onclick = () => $$('.lk', box).forEach(b => setz(b, true));
+      $('[data-a=zu]', box).onclick = () => $$('.lk', box).forEach(b => setz(b, false));
+    } },
+    { t: '2 Formel-Baukasten', r: box => baukasten(box, pruefe) },
+    { t: '3 Begriffsquiz', r: box => {
+      const b = document.createElement('div'); box.appendChild(b);
+      mcRunde(b, QUIZ1, { ziel: 10, onEnde: (p) => { P.s1.quiz = Math.max(P.s1.quiz, p); speichern(); pruefe(); } });
+    } }
+  ]);
+}
+function baukasten(box, pruefe) {
+  let idx = FORMELN.findIndex(f => !P.s1.bau[f.id]); if (idx < 0) idx = 0;
+  let Z; const neu = () => { Z = { z: [], n: [], op: '+', slot: 'z', geloest: false }; }; neu();
+  function hinweis(f) {
+    const alle = Z.z.concat(Z.n);
+    if (alle.includes('UM')) return 'Umsatzerlöse enthalten den Gewinnaufschlag. Lagerbestände sind zu Einstandspreisen bewertet – deshalb rechnet man mit dem Wareneinsatz.';
+    if (alle.includes('WZ')) return 'Der Wareneingang (Zugänge) misst, was ins Lager kommt – die Umschlagshäufigkeit misst, was verbraucht wird (Abgang).';
+    if (alle.includes('n365')) return 'Im kaufmännischen Rechnen hat das Jahr 360 Tage.';
+    if (f.id === 'monat' && alle.includes('n12')) return 'Es sind 13 Werte: der Anfangsbestand und 12 Monatsendbestände.';
+    if (f.id === 'quartal' && alle.includes('n4')) return 'Es sind 5 Werte: der Anfangsbestand und 4 Quartalsendbestände.';
+    if (gleicheMenge(Z.z, f.n) && gleicheMenge(Z.n, f.z)) return 'Fast – Zähler und Nenner sind vertauscht.';
+    if (gleicheMenge(Z.z, f.z) && gleicheMenge(Z.n, f.n) && Z.op !== f.op) return `Die Bausteine stimmen, aber das Rechenzeichen im Zähler nicht. Tippe auf das Zeichen, um es umzuschalten.`;
+    if (f.id === 'lz' && alle.includes('JZ')) return 'Nach der eingeführten Formel rechnet man die Lagerzinsen mit dem Lagerzinssatz, nicht mit dem Jahreszinssatz.';
+    if (f.id === 'lzz' && alle.includes('UH')) return 'Der Lagerzinssatz verknüpft den Jahreszins mit der Zeit, die die Ware im Lager liegt.';
+    if (!Z.n.length) return 'Der Nenner fehlt noch.';
+    return 'Noch nicht richtig. Überlege, was die Kennzahl aussagen soll – und welche Größen dafür ins Verhältnis gesetzt werden.';
+  }
+  function zeichne() {
+    const f = FORMELN[idx];
+    const teile = s => Z[s].map((k, i) => (i > 0 && s === 'z' ? `<button class="opbtn" data-op="1" title="Rechenzeichen umschalten">${Z.op}</button>` : (i > 0 ? '<span>+</span>' : '')) + `<button class="kachel gesetzt" data-weg="${s}" data-k="${k}">${KACHELN[k]}</button>`).join('');
+    box.innerHTML = `<div class="chips">${FORMELN.map((x, i) => `<button class="chip ${i === idx ? 'aktiv' : ''} ${P.s1.bau[x.id] ? 'erledigt' : ''}" data-i="${i}">${P.s1.bau[x.id] ? '✓ ' : ''}${x.name}</button>`).join('')}</div>
+      <div class="karte"><h3>Baue die Formel: ${f.name}</h3>
+      <p class="klein">Tippe auf „Zähler“ oder „Nenner“, dann auf die passenden Kacheln. Eine gesetzte Kachel entfernst du durch Antippen. Bei zwei Bausteinen im Zähler schaltest du das Rechenzeichen per Antippen um (+ / ×).</p>
+      <div class="bau">
+        <div class="slot ${Z.slot === 'z' ? 'aktiv' : ''}" data-slot="z"><span class="sn">Zähler</span>${teile('z')}</div>
+        <div class="strich"></div>
+        <div class="slot ${Z.slot === 'n' ? 'aktiv' : ''}" data-slot="n"><span class="sn">Nenner</span>${teile('n')}</div>
+      </div>
+      <div class="palette">${Object.keys(KACHELN).map(k => `<button class="kachel" data-k="${k}" ${Z.z.includes(k) || Z.n.includes(k) || Z.geloest ? 'disabled' : ''}>${KACHELN[k]}</button>`).join('')}</div>
+      <div class="aktionen"><button class="btn" data-a="p" ${Z.geloest ? 'disabled' : ''}>Prüfen</button><button class="btn sek" data-a="l">Leeren</button></div>
+      <div class="rmb"></div></div>
+      <p class="klein">${Object.keys(P.s1.bau).length} von 7 Formeln gelöst.</p>`;
+    $$('.chip', box).forEach(b => b.onclick = () => { idx = +b.dataset.i; neu(); zeichne(); });
+    $$('.slot', box).forEach(s => s.onclick = e => { if (e.target.closest('button')) return; Z.slot = s.dataset.slot; zeichne(); });
+    $$('.palette .kachel', box).forEach(b => b.onclick = () => { if (Z[Z.slot].length >= 2) { Z.slot = Z.slot === 'z' ? 'n' : 'z'; if (Z[Z.slot].length >= 2) return; } Z[Z.slot].push(b.dataset.k); zeichne(); });
+    $$('[data-weg]', box).forEach(b => b.onclick = () => { if (Z.geloest) return; const s = b.dataset.weg; Z[s].splice(Z[s].indexOf(b.dataset.k), 1); zeichne(); });
+    $$('[data-op]', box).forEach(b => b.onclick = () => { if (Z.geloest) return; Z.op = Z.op === '+' ? '×' : '+'; zeichne(); });
+    $('[data-a=l]', box).onclick = () => { neu(); zeichne(); };
+    $('[data-a=p]', box).onclick = () => {
+      const ok = gleicheMenge(Z.z, f.z) && gleicheMenge(Z.n, f.n) && (f.z.length < 2 || Z.op === f.op);
+      const rm = $('.rmb', box);
+      if (ok) {
+        Z.geloest = true; P.s1.bau[f.id] = true; speichern();
+        const lk = LERNKARTEN[['jahr', 'quartal', 'monat', 'uh', 'dld', 'lzz', 'lz'].indexOf(f.id)];
+        const naechste = FORMELN.findIndex(x => !P.s1.bau[x.id]);
+        zeichne();
+        $('.rmb', box).innerHTML = `<div class="hinweis gut"><strong>Richtig!</strong><div class="formel">${f.name} = ${lk[1]}</div><div class="klein">${lk[2]}</div></div>${naechste >= 0 ? '<button class="btn" data-a="n">Nächste Formel</button>' : '<div class="hinweis gut">Alle 7 Formeln gelöst. Weiter mit dem Begriffsquiz (Reiter 3).</div>'}`;
+        const nb = $('[data-a=n]', box); if (nb) nb.onclick = () => { idx = naechste; neu(); zeichne(); };
+        pruefe();
+      } else rm.innerHTML = `<div class="hinweis schlecht">${hinweis(f)}</div>`;
+    };
+  }
+  zeichne();
+}
+
+/* =========================================================
+   STUFE 2 – RECHNEN (Prüfmodus)
+   ========================================================= */
+function stdFelder(L, d) {
+  const F = [
+    { key: 'dlb', label: 'Ø Lagerbestand', einheit: '€', wahr: L.dlb, hinweise: [
+      v => d.typ === 'jahr' && istNah(v, d.ab + d.eb) ? 'Die Summe muss noch durch 2 geteilt werden.' : null,
+      v => d.typ === 'quartal' && istNah(v, d.summe / 4) ? 'Es sind 5 Werte (Anfangsbestand + 4 Quartalsendbestände) – also durch 5 teilen.' : null,
+      v => d.typ === 'quartal' && istNah(v, d.summe) ? 'Die Summe muss noch durch 5 geteilt werden.' : null] },
+    { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: L.uh, folge: o => d.we / o.dlb, hinweise: [
+      (v, o) => (istNah(v, d.um / L.dlb) || (o.dlb && istNah(v, d.um / o.dlb))) ? 'Du hast die Umsatzerlöse verwendet. Richtig ist der Wareneinsatz zu Einstandspreisen.' : null,
+      v => istNah(v, L.dlb / d.we) ? 'Zähler und Nenner vertauscht: Wareneinsatz / Ø Lagerbestand.' : null] },
+    { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: L.dld, folge: o => 360 / o.uh, hinweise: [
+      (v, o) => (istNah(v, 365 / L.uh) || (o.uh && istNah(v, 365 / o.uh))) ? 'Kaufmännisch rechnet man mit 360 Tagen.' : null] },
+    { key: 'lzz', label: 'Lagerzinssatz', einheit: '%', wahr: L.lzz, folge: o => d.jz * o.dld / 360, hinweise: [
+      v => istNah(v, d.jz) ? 'Das ist der Jahreszinssatz. Der Lagerzinssatz bezieht ihn auf die Ø Lagerdauer: Jahreszinssatz × DLD / 360.' : null] },
+    { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: L.lz, folge: o => o.dlb * o.lzz / 100, hinweise: [
+      (v, o) => (istNah(v, L.dlb * d.jz / 100) || (o.dlb && istNah(v, o.dlb * d.jz / 100))) ? 'Du hast mit dem Jahreszinssatz gerechnet. Nach der eingeführten Formel: Ø Lagerbestand × Lagerzinssatz / 100.' : null,
+      v => istNah(v, L.dlb * L.lzz) ? 'Prozentsatz: durch 100 teilen.' : null] }
+  ];
+  return F;
+}
+function wegStd(L, d, dlbZeile) {
+  return weg([
+    dlbZeile,
+    ['Umschlagshäufigkeit', 'Wareneinsatz / Ø Lagerbestand', `${eur(d.we)} / ${eur(L.dlb)}`, fmtN(L.uh) + '-mal', d.um ? 'Die Umsatzerlöse sind hier eine Falle: Sie enthalten den Gewinnaufschlag.' : ''],
+    ['Ø Lagerdauer', '360 / Umschlagshäufigkeit', `360 / ${fmtN(L.uh, 4)}`, tage(L.dld)],
+    ['Lagerzinssatz', 'Jahreszinssatz × Ø Lagerdauer / 360', `${proz(d.jz)} × ${fmtN(L.dld, 4)} / 360`, proz(L.lzz, 4)],
+    ['Lagerzinsen', 'Ø Lagerbestand × Lagerzinssatz / 100', `${eur(L.dlb)} × ${fmtN(L.lzz, 4)} / 100`, eur(L.lz)]
+  ]);
+}
+function aufgJahr() {
+  const uh = pick([3, 4, 4.5, 5, 6, 7.5, 8, 9, 10, 12]), dlb = rund(rnd(150000, 900000), 5000);
+  const ab = rund(dlb * rnd(0.7, 1.3), 5000), eb = 2 * dlb - ab, we = uh * dlb, um = rund(we * rnd(1.25, 1.6), 1000), jz = pick([6, 7.2, 8, 9, 10, 12]);
+  const L = berechne(dlb, we, jz), firma = pick(FIRMEN), d = { typ: 'jahr', ab, eb, we, um, jz };
+  return {
+    typ: 'jahr', titel: 'Jahresinventur',
+    situation: `Die ${firma} hat folgende Daten für das abgelaufene Geschäftsjahr ermittelt:`,
+    daten: tabelle(['Angabe', 'Wert'], [['Lagerbestand 01.01. (Anfangsbestand)', eur(ab)], ['Lagerbestand 31.12. (Endbestand)', eur(eb)], ['Umsatzerlöse', eur(um)], ['Wareneinsatz zu Einstandspreisen', eur(we)], ['Jahreszinssatz', proz(jz)]]),
+    auftrag: 'Ermitteln Sie den durchschnittlichen Lagerbestand, die Umschlagshäufigkeit, die durchschnittliche Lagerdauer, den Lagerzinssatz und die Lagerzinsen.',
+    felder: stdFelder(L, d),
+    weg: wegStd(L, d, ['Ø Lagerbestand (Jahresinventur)', '(Anfangsbestand + Endbestand) / 2', `(${eur(ab)} + ${eur(eb)}) / 2`, eur(L.dlb)])
+  };
+}
+function aufgQuartal() {
+  const uh = pick([3, 4, 5, 6, 8, 9, 10, 12]), basis = rund(rnd(120000, 600000), 5000);
+  const w = []; for (let i = 0; i < 5; i++) w.push(rund(basis * rnd(0.75, 1.25), 1000));
+  let s = w.reduce((a, b) => a + b, 0); const rest = s % 5000; if (rest) { w[4] += 5000 - rest; s += 5000 - rest; }
+  const dlb = s / 5, we = uh * dlb, um = rund(we * rnd(1.25, 1.6), 1000), jz = pick([6, 8, 9, 10, 12]);
+  const L = berechne(dlb, we, jz), firma = pick(FIRMEN), d = { typ: 'quartal', summe: s, we, um, jz };
+  const stichtage = ['01.01. (Anfangsbestand)', '31.03.', '30.06.', '30.09.', '31.12.'];
+  return {
+    typ: 'quartal', titel: 'Quartalsinventur',
+    situation: `Die ${firma} führt eine Quartalsinventur durch. Folgende Lagerbestände (zu Einstandspreisen) wurden ermittelt:`,
+    daten: tabelle(['Stichtag', 'Lagerbestand'], w.map((x, i) => [stichtage[i], eur(x)])) + tabelle(null, [['Umsatzerlöse des Jahres', eur(um)], ['Wareneinsatz des Jahres zu Einstandspreisen', eur(we)], ['Jahreszinssatz', proz(jz)]]),
+    auftrag: 'Ermitteln Sie den durchschnittlichen Lagerbestand, die Umschlagshäufigkeit, die durchschnittliche Lagerdauer, den Lagerzinssatz und die Lagerzinsen.',
+    felder: stdFelder(L, d),
+    weg: wegStd(L, d, ['Ø Lagerbestand (Quartalsinventur)', '(Anfangsbestand + 4 Quartalsendbestände) / 5', `(${w.map(x => fmt(x, 0)).join(' + ')}) € / 5`, eur(L.dlb)])
+  };
+}
+function lagerkarteErzeugen() {
+  const wert = pick([86, 145, 240, 480, 750, 1250, 1954, 2400]), ab = rund(rnd(120, 300), 5);
+  let best = ab; const zeilen = [{ d: '01.01.', zu: '', ab: '', b: ab }], me = [], ohne = rint(2, 10); let verbrauch = 0, zug = 0;
+  const viel = (ohne + rint(1, 4)) % 12;
+  for (let m = 0; m < 12; m++) {
+    let anz = m === ohne ? 0 : (m === viel ? 3 : pick([1, 1, 2, 2, 3]));
+    const tg = mischen([3, 5, 7, 9, 11, 12, 14, 16, 18, 19, 21, 22, 24, 26, 28]).slice(0, anz).sort((a, b) => a - b);
+    tg.forEach(t => {
+      let abgang = best > 90 && (best > 260 || Math.random() < 0.62), q;
+      if (abgang) { q = rund(rnd(10, 60), 5); if (best - q < 25) abgang = false; }
+      if (!abgang) q = rund(rnd(20, 90), 5);
+      if (abgang) { best -= q; verbrauch += q; } else { best += q; zug += q; }
+      zeilen.push({ d: String(t).padStart(2, '0') + '.' + String(m + 1).padStart(2, '0') + '.', zu: abgang ? '' : q, ab: abgang ? q : '', b: best });
+    });
+    me.push(best);
+  }
+  const dlbEx = (ab + me.reduce((a, b) => a + b, 0)) / 13, dlb = Math.round(dlbEx);
+  return { wert, ab, zeilen, me, ohne, verbrauch, zug, dlbEx, dlb, nr: '2026/' + rint(1000, 9999) };
+}
+function lagerkarteHTML(K) {
+  return `<div class="tabwrap"><table class="tab"><thead><tr><th>Datum</th><th class="z">Zugang</th><th class="z">Abgang</th><th class="z">Bestand</th></tr></thead><tbody>${K.zeilen.map(z => `<tr><td>${z.d}</td><td class="z">${z.zu === '' ? '' : fmt(z.zu, 0)}</td><td class="z">${z.ab === '' ? '' : fmt(z.ab, 0)}</td><td class="z">${fmt(z.b, 0)}</td></tr>`).join('')}</tbody></table></div><p class="klein">Lagerkarte Artikel ${K.nr} · Angaben in Mengeneinheiten (Stück) · Lagerwert je Stück: ${eur(K.wert)}</p>`;
+}
+function lagerkarteFelder(K, L, jz) {
+  const sumME = K.me.reduce((a, b) => a + b, 0);
+  const bewegungen = K.zeilen.map(z => z.b);
+  const ohneLeer = (K.ab + sumME - K.me[K.ohne]) / 12;
+  return [
+    { key: 'dlb', label: 'Ø Lagerbestand (Monatsinventur)', einheit: 'St.', wahr: L.dlb, dez: 0, hinweise: [
+      v => istNah(v, (K.ab + sumME) / 12) ? 'Es sind 13 Werte: Anfangsbestand + 12 Monatsendbestände.' : null,
+      v => istNah(v, sumME / 12) ? 'Der Anfangsbestand gehört mit zu den 13 Werten.' : null,
+      v => istNah(v, bewegungen.reduce((a, b) => a + b, 0) / bewegungen.length) ? 'Du hast alle Buchungen gemittelt. Gesucht sind nur die Bestände am Monatsende.' : null,
+      v => (istNah(v, ohneLeer) || istNah(v, (K.ab + sumME - K.me[K.ohne]) / 13)) ? `Achtung, im ${MONATE[K.ohne]} gab es keine Bewegung. Der Monatsendbestand ist dann der Bestand des Vormonats – er zählt trotzdem mit.` : null] },
+    { key: 'verbr', label: 'Verbrauch (Wareneinsatz)', einheit: 'St.', wahr: K.verbrauch, dez: 0, hinweise: [v => istNah(v, K.zug) ? 'Das ist die Summe der Zugänge. Verbrauch = Summe der Abgänge.' : null] },
+    { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: L.uh, folge: o => o.verbr / o.dlb, hinweise: [v => istNah(v, L.dlb / K.verbrauch) ? 'Zähler und Nenner vertauscht.' : null] },
+    { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: L.dld, folge: o => 360 / o.uh, hinweise: [(v, o) => (istNah(v, 365 / L.uh) || (o.uh && istNah(v, 365 / o.uh))) ? 'Kaufmännisch rechnet man mit 360 Tagen.' : null] },
+    { key: 'kap', label: 'Ø gebundenes Kapital', einheit: '€', wahr: L.kap, folge: o => o.dlb * K.wert, hinweise: [v => istNah(v, L.dlb) ? 'Der Ø Lagerbestand in Stück muss noch mit dem Lagerwert je Stück multipliziert werden.' : null] },
+    { key: 'lzz', label: 'Lagerzinssatz', einheit: '%', wahr: L.lzz, folge: o => jz * o.dld / 360, hinweise: [v => istNah(v, jz) ? 'Das ist der Jahreszinssatz. LZZ = Jahreszinssatz × DLD / 360.' : null] },
+    { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: L.lz, folge: o => o.kap * o.lzz / 100, hinweise: [(v, o) => (istNah(v, L.kap * jz / 100) || (o.kap && istNah(v, o.kap * jz / 100))) ? 'Du hast mit dem Jahreszinssatz gerechnet. Nach der eingeführten Formel: gebundenes Kapital × Lagerzinssatz / 100.' : null] }
+  ];
+}
+function lagerkarteLoesung(K, jz) {
+  const uh = K.verbrauch / K.dlb, dld = 360 / uh, kap = K.dlb * K.wert, lzz = jz * dld / 360, lz = kap * lzz / 100;
+  return { dlb: K.dlb, uh, dld, kap, lzz, lz };
+}
+function lagerkarteWeg(K, L, jz) {
+  const sumME = K.me.reduce((a, b) => a + b, 0);
+  return `<p><strong>Monatsendbestände ablesen</strong> (letzter Bestand im jeweiligen Monat):</p>` +
+    tabelle(['Stichtag', 'Bestand (St.)'], [['01.01. Anfangsbestand', fmt(K.ab, 0)]].concat(K.me.map((x, i) => [MONATE[i] + (i === K.ohne ? ' <span class="klein">(keine Bewegung → Bestand des Vormonats)</span>' : ''), fmt(x, 0)]))) +
+    weg([
+      ['Ø Lagerbestand (Monatsinventur)', '(Anfangsbestand + 12 Monatsendbestände) / 13', `(${fmt(K.ab, 0)} + ${fmt(sumME, 0)}) / 13`, fmtN(K.dlbEx) + ' St. ≈ ' + fmt(K.dlb, 0) + ' St.', 'Gerundet auf ganze Stück und mit diesem Wert weitergerechnet (wie in den Musterlösungen).'],
+      ['Verbrauch', 'Summe aller Abgänge', K.zeilen.filter(z => z.ab !== '').map(z => fmt(z.ab, 0)).join(' + '), fmt(K.verbrauch, 0) + ' St.'],
+      ['Umschlagshäufigkeit', 'Verbrauch / Ø Lagerbestand', `${fmt(K.verbrauch, 0)} / ${fmt(K.dlb, 0)}`, fmtN(L.uh, 4) + '-mal'],
+      ['Ø Lagerdauer', '360 / Umschlagshäufigkeit', `360 / ${fmtN(L.uh, 4)}`, tage(L.dld)],
+      ['Ø gebundenes Kapital', 'Ø Lagerbestand × Lagerwert je Stück', `${fmt(K.dlb, 0)} St. × ${eur(K.wert)}`, eur(L.kap)],
+      ['Lagerzinssatz', 'Jahreszinssatz × Ø Lagerdauer / 360', `${proz(jz)} × ${fmtN(L.dld, 4)} / 360`, proz(L.lzz, 4)],
+      ['Lagerzinsen', 'Ø gebundenes Kapital × Lagerzinssatz / 100', `${eur(L.kap)} × ${fmtN(L.lzz, 4)} / 100`, eur(L.lz)]
+    ]);
+}
+function aufgMonat() {
+  const K = lagerkarteErzeugen(), jz = pick([6, 8, 9, 10, 12]), L = lagerkarteLoesung(K, jz);
+  return {
+    typ: 'monat', titel: 'Monatsinventur (Lagerkarte)',
+    situation: `Im Rahmen der Überprüfung der Teilelagerhaltung soll Artikel ${K.nr} analysiert werden. Der Jahreszinssatz beträgt ${proz(jz)}.`,
+    daten: lagerkarteHTML(K),
+    auftrag: 'Ermitteln Sie den durchschnittlichen Lagerbestand (Monatsinventur), den Verbrauch, die Umschlagshäufigkeit, die durchschnittliche Lagerdauer, das durchschnittlich gebundene Kapital, den Lagerzinssatz und die Lagerzinsen. Runden Sie den Ø Lagerbestand auf ganze Stück.',
+    felder: lagerkarteFelder(K, L, jz),
+    weg: lagerkarteWeg(K, L, jz)
+  };
+}
+const TYPEN2 = [{ id: 'jahr', name: 'Jahresinventur', gen: aufgJahr }, { id: 'quartal', name: 'Quartalsinventur', gen: aufgQuartal }, { id: 'monat', name: 'Monatsinventur (Lagerkarte)', gen: aufgMonat }];
+function viewS2(m) {
+  const c = kopf(m, 2);
+  c.innerHTML = `<div class="karte"><p>Wähle eine Aufgabenart – jede Aufgabe hat neue Zahlen. Gib Dezimalzahlen mit Komma ein. Gerundete Zwischenergebnisse sind in Ordnung (Toleranz 1 %).</p>
+    <p class="klein">Eine Aufgabe zählt, wenn alle Felder richtig sind und du vorher nicht den Rechenweg angezeigt hast. Folgefehler werden gelb markiert: richtig weitergerechnet, aber die Aufgabe ist damit noch nicht fehlerfrei.</p>
+    <div class="aktionen" id="typwahl"></div></div><div id="aufg"></div>`;
+  const typwahl = () => { $('#typwahl', c).innerHTML = TYPEN2.map(t => `<button class="btn ${P.s2.solved[t.id] ? 'sek' : ''}" data-t="${t.id}">${P.s2.solved[t.id] ? '✓ ' : ''}${t.name}</button>`).join(''); $$('#typwahl button', c).forEach(b => b.onclick = () => zeige(b.dataset.t)); };
+  typwahl();
+  function zeige(typ) {
+    const A = TYPEN2.find(t => t.id === typ).gen(); let verraten = false, fertig = false;
+    const box = $('#aufg', c);
+    box.innerHTML = `<div class="karte"><h3>${A.titel}</h3><p>${A.situation}</p>${A.daten}</div>
+      <div class="karte"><h4><span class="badge">Ermitteln · AFB I–II</span></h4><p>${A.auftrag}</p><div class="fg"></div>
+      <div class="aktionen"><button class="btn" data-a="p">Prüfen</button><button class="btn sek" data-a="w">Rechenweg anzeigen</button><button class="btn sek" data-a="n">Neue Aufgabe dieser Art</button></div>
+      <div class="rmb"></div><div class="wegbox"></div></div>`;
+    const G = feldGruppe($('.fg', box), A.felder);
+    $('[data-a=p]', box).onclick = () => {
+      const st = G.pruefen(); const alle = Object.values(st).every(s => s === 'ok');
+      const rm = $('.rmb', box);
+      if (alle && !verraten && !fertig) { fertig = true; P.s2.solved[typ] = true; speichern(); typwahl(); rm.innerHTML = '<div class="hinweis gut"><strong>Alles richtig – Aufgabe gezählt.</strong> Schau dir trotzdem den Rechenweg an, wenn du unsicher warst.</div>'; if (Object.keys(P.s2.solved).length >= 3) bestanden(2); }
+      else if (alle) rm.innerHTML = `<div class="hinweis gut">Alles richtig.${verraten ? ' (Zählt nicht, weil der Rechenweg schon angezeigt wurde – probier eine neue Aufgabe.)' : ''}</div>`;
+      else { const n = Object.values(st).filter(s => s === 'ok').length; rm.innerHTML = `<div class="hinweis schlecht">${n} von ${A.felder.length} Feldern richtig. Korrigiere die markierten Felder und prüfe erneut.</div>`; }
+    };
+    $('[data-a=w]', box).onclick = () => { if (!fertig) verraten = true; $('.wegbox', box).innerHTML = `<h4>Rechenweg</h4>${A.weg}`; G.loesungen(); };
+    $('[data-a=n]', box).onclick = () => zeige(typ);
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+/* =========================================================
+   STUFE 3 – INTERPRETIEREN
+   ========================================================= */
+const WORTE = [
+  { f: 'ESS GmbH: Umschlagshäufigkeit 4,8. Welche Deutung ist richtig?', o: ['Der durchschnittliche Lagerbestand wird im Jahr rechnerisch 4,8-mal vollständig verbraucht und wieder ersetzt.', 'Das Lager wird 4,8-mal pro Monat aufgefüllt.', 'Jede Ware liegt 4,8 Tage im Lager.', 'Der Umsatz ist 4,8-mal so hoch wie der Lagerbestand.'], e: 'Die UH setzt den Jahresverbrauch ins Verhältnis zum Ø Bestand. Mit dem Umsatz hat sie nichts zu tun – im Zähler steht der Wareneinsatz zu Einstandspreisen.' },
+  { f: 'ESS GmbH: Ø Lagerdauer 75 Tage. Welche Deutung ist richtig?', o: ['Eine Ware liegt im Durchschnitt 75 Tage im Lager, bevor sie verbraucht wird – so lange ist ihr Wert als Kapital gebunden.', 'Alle Waren liegen genau 75 Tage im Lager.', 'Die Lieferzeit der Lieferanten beträgt 75 Tage.', 'Das Lager muss alle 75 Tage komplett neu bestellt werden.'], e: 'Es ist ein Durchschnittswert: Manche Artikel liegen wenige Tage, Ladenhüter viele Monate. Die Lieferzeit ist eine ganz andere Größe.' },
+  { f: 'ESS GmbH: Lagerzinssatz 5 %. Welche Deutung ist richtig?', o: ['Für die Zeit, in der eine Ware durchschnittlich im Lager liegt (75 Tage), fallen Zinskosten von 5 % ihres Wertes an.', 'Die Bank verlangt 5 % Zinsen pro Jahr.', 'Das Lager erwirtschaftet eine Rendite von 5 %.', '5 % der Waren verderben im Lager.'], e: 'Der Lagerzinssatz ist der auf die Ø Lagerdauer umgerechnete Jahreszins. Hier: 5 % bei 75 Tagen entspricht einem Jahreszinssatz von 24 %.' },
+  { f: 'ESS GmbH: Lagerzinsen 31.250 €. Was bedeutet dieser Betrag?', o: ['Es sind die (kalkulatorischen) Zinskosten dafür, dass Kapital im Lager gebunden ist und nicht anders verwendet werden kann.', 'Diesen Betrag überweist die ESS GmbH in jedem Fall an ihre Bank.', 'Das ist die Miete für die Lagerhalle.', 'Das ist der Gewinn, den das Lager abwirft.'], e: 'Ist das Lager mit Eigenkapital finanziert, entgehen Zinserträge (Opportunitätskosten); bei Fremdfinanzierung fallen echte Zinsen an. Die Miete gehört zu den Lagerhaltungskosten.' },
+  { f: 'ESS GmbH: UH 4,8, Branchendurchschnitt 18 (gleicher Absatz). Welche Aussage ist richtig?', o: ['Die ESS GmbH bindet für denselben Absatz rund 3,75-mal so viel Kapital im Lager wie der Branchendurchschnitt.', 'Die ESS GmbH verkauft 3,75-mal weniger als die Branche.', 'Die ESS GmbH ist sicher weniger profitabel als die Branche.', 'Die Branche hat 18-mal so viel Ware auf Lager.'], e: 'Bei gleichem Wareneinsatz gilt: Ø Lagerbestand = Wareneinsatz / UH. 18 / 4,8 = 3,75. Über die Gesamtprofitabilität sagt die Kennzahl allein nichts.' }
+];
+const BASIS3 = { lb: 500000, we: 3000000, jz: 8 };
+const SZEN = [
+  { t: 'Der Absatz steigt: Der Wareneinsatz erhöht sich um 20 %. Der Ø Lagerbestand bleibt gleich.', f: { lb: 1, we: 1.2 }, kette: 'Gleicher Bestand, mehr Abgang → der Bestand wird öfter umgeschlagen (UH = WE / Ø LB ↑) → jede Ware liegt kürzer im Lager (DLD = 360 / UH ↓) → kürzere Lagerdauer, kleinerer Lagerzinssatz (LZZ = JZ × DLD / 360 ↓) → bei gleichem Ø LB sinken die Lagerzinsen.', folgen: 'Dasselbe gebundene Kapital trägt mehr Absatz – positiv. Prüfen, ob die Lieferbereitschaft bei höherem Absatz noch reicht.', vert: 'In der Jahresbetrachtung bleiben die Zinskosten des gebundenen Kapitals gleich (Ø LB × Jahreszinssatz), denn es ist ja gleich viel Kapital gebunden. Warum die Formel trotzdem sinkende Lagerzinsen zeigt, klärt die Vertiefung in Stufe 6.' },
+  { t: 'Für A-Artikel wird Just-in-time-Belieferung eingeführt. Der Ø Lagerbestand sinkt um 40 %, der Absatz bleibt gleich.', f: { lb: 0.6, we: 1 }, kette: 'Weniger Bestand bei gleichem Abgang → UH ↑ → DLD ↓ → LZZ ↓ → Ø LB ↓ und LZZ ↓ → Lagerzinsen sinken deutlich.', folgen: 'Weniger Kapitalbindung, weniger Lagerfläche, geringeres Risiko von Veralterung und Schwund. Aber: höhere Abhängigkeit vom Lieferanten, Fehlmengenrisiko bei Lieferstörungen, mehr Transporte (ökologisch problematisch).' },
+  { t: 'Der Jahreszinssatz steigt von 8 % auf 12 %. Bestand und Absatz bleiben gleich.', f: { lb: 1, we: 1, jz: 12 }, kette: 'Der Zins ändert nichts an Mengen und Zeiten → UH und DLD bleiben gleich. LZZ = JZ × DLD / 360 steigt proportional zum Jahreszins → Lagerzinsen ↑.', folgen: 'Bei steigenden Zinsen wird Kapitalbindung im Lager teurer – Bestandsabbau lohnt sich stärker.' },
+  { t: 'Wegen eines Mengenrabatts kauft das Unternehmen in großen Mengen ein. Der Ø Lagerbestand steigt um 40 %, der Absatz bleibt gleich (Rabatt vernachlässigt).', f: { lb: 1.4, we: 1 }, kette: 'Mehr Bestand bei gleichem Abgang → UH ↓ → DLD ↑ → LZZ ↑ → Ø LB ↑ und LZZ ↑ → Lagerzinsen ↑.', folgen: 'Dem Preisvorteil (niedrigerer Einstandspreis, weniger Bestellvorgänge) stehen höhere Lagerkosten und mehr Kapitalbindung gegenüber – dieselbe Abwägung wie bei der optimalen Bestellmenge.' },
+  { t: 'Absatzeinbruch: Der Wareneinsatz sinkt um 30 %. Der Lagerbestand wird nicht angepasst.', f: { lb: 1, we: 0.7 }, kette: 'Gleicher Bestand, weniger Abgang → UH ↓ → DLD ↑ → LZZ ↑ → Lagerzinsen ↑.', folgen: 'Gefahr von Überbeständen und Ladenhütern. Einkauf an den Absatz anpassen (Bestellmengen, Meldebestand überprüfen).' },
+  { t: 'Die Einstandspreise aller Waren steigen um 10 %. Die Mengen (Bestand und Absatz in Stück) bleiben gleich.', f: { lb: 1.1, we: 1.1 }, kette: 'Ø LB in € und Wareneinsatz in € steigen im gleichen Verhältnis → UH bleibt gleich → DLD und LZZ bleiben gleich. Weil der Ø LB in € steigt, steigen die Lagerzinsen.', folgen: 'Preissteigerungen erhöhen die Kapitalbindung, obwohl nicht mehr Ware im Lager liegt. Kennzahlen in € und in Stück unterscheiden.' },
+  { t: 'Das Unternehmen wächst: Absatz und Ø Lagerbestand steigen jeweils um 20 %.', f: { lb: 1.2, we: 1.2 }, kette: 'Zähler und Nenner der UH steigen gleich stark → UH, DLD, LZZ unverändert. Höherer Ø LB → Lagerzinsen ↑.', folgen: 'Die Effizienz des Lagers bleibt gleich, absolut ist aber mehr Kapital gebunden – das muss finanziert werden.' },
+  { t: 'Das Unternehmen wechselt von der Jahres- zur Monatsinventur. Zum Jahreswechsel sind die Bestände saisonbedingt besonders niedrig, im Jahresverlauf deutlich höher. Der ermittelte Ø Lagerbestand steigt dadurch um 15 %.', f: { lb: 1.15, we: 1 }, kette: 'Die Jahresinventur hat nur die zwei niedrigen Stichtage erfasst und den Ø Bestand unterschätzt. Gemessener Ø LB ↑ → UH ↓ → DLD ↑ → LZZ ↑ → Lagerzinsen ↑.', folgen: 'Im Lager hat sich nichts verändert – nur die Messung ist genauer. Kennzahlen sind nur so gut wie ihre Datengrundlage. Bei Vergleichen muss dieselbe Inventurart verwendet werden.' },
+  { t: 'Absatz und Ø Lagerbestand sinken jeweils um 20 %.', f: { lb: 0.8, we: 0.8 }, kette: 'Zähler und Nenner der UH sinken gleich stark → UH, DLD, LZZ unverändert. Niedrigerer Ø LB → Lagerzinsen ↓.', folgen: 'Weniger Kapital gebunden, aber nur, weil das Geschäft geschrumpft ist. Die Effizienz des Lagers hat sich nicht verbessert.' },
+  { t: 'Die Miete für die Lagerhalle steigt um 15 %. Bestand, Absatz und Jahreszins bleiben gleich.', f: { lb: 1, we: 1 }, kette: 'Die Miete gehört zu den Lagerhaltungskosten (Raumkosten), nicht zu den Lagerzinsen. Bestand, Abgang und Zins sind unverändert → keine der fünf Kennzahlen ändert sich.', folgen: 'Die Kosten der Lagerhaltung (Lagerzinsen + Lagerhaltungskosten) steigen trotzdem. Das spricht für Flächeneinsparung, z. B. durch Freiplatzsystem und ABC-Strategie.' }
+];
+const KZ3 = [['lb', 'Ø Lagerbestand (€)'], ['uh', 'Umschlagshäufigkeit'], ['dld', 'Ø Lagerdauer'], ['lzz', 'Lagerzinssatz'], ['lz', 'Lagerzinsen']];
+function kz3(lb, we, jz) { const r = berechne(lb, we, jz); return { lb, uh: r.uh, dld: r.dld, lzz: r.lzz, lz: r.lz }; }
+function richtung(a, b) { return Math.abs(b - a) <= Math.abs(a) * 1e-6 ? '=' : (b > a ? '↑' : '↓'); }
+function fmtKz(k, v) { return k === 'lb' || k === 'lz' ? eur(v) : k === 'uh' ? fmtN(v) + '-mal' : k === 'dld' ? tage(v) : proz(v, 3); }
+let S3 = null; // Sitzungsstand Prognosen
+function viewS3(m) {
+  const c = kopf(m, 3);
+  if (!S3) S3 = { i: 0, punkte: 0, fertig: false };
+  const pruefe = () => { if (P.s3.worte >= 4 && P.s3.prog >= 7) bestanden(3); };
+  tabs(c, [
+    { t: 'A Zahlen in Worte', r: box => {
+      box.insertAdjacentHTML('beforeend', '<div class="karte"><p>Ausgangsdaten (Arbeitsblatt ESS GmbH): Ø Lagerbestand 625.000 €, Wareneinsatz 3.000.000 €, UH 4,8, Ø Lagerdauer 75 Tage, Lagerzinssatz 5 %, Lagerzinsen 31.250 €. Branchendurchschnitt: UH 18, Ø Lagerdauer 20 Tage.</p><p class="klein">Ziel: mindestens 4 von 5 richtig.</p></div>');
+      const b = document.createElement('div'); box.appendChild(b);
+      mcRunde(b, WORTE, { ziel: 4, onEnde: p => { P.s3.worte = Math.max(P.s3.worte, p); speichern(); pruefe(); } });
+    } },
+    { t: 'B Was passiert, wenn …?', r: box => prognose(box, pruefe) },
+    { t: 'C Regler-Labor', r: box => labor(box) }
+  ]);
+}
+function prognose(box, pruefe) {
+  const B = kz3(BASIS3.lb, BASIS3.we, BASIS3.jz);
+  if (S3.fertig) {
+    box.innerHTML = `<div class="karte"><h3>Ergebnis: ${S3.punkte} von 10 Prognosen im ersten Versuch richtig</h3>
+      <div class="hinweis ${S3.punkte >= 7 ? 'gut' : 'schlecht'}">${S3.punkte >= 7 ? 'Ziel erreicht. Probiere jetzt das Regler-Labor (Reiter C).' : 'Ziel: mindestens 7. Starte eine neue Runde – die Reihenfolge ändert sich.'}</div>
+      <button class="btn" data-a="neu">Neue Runde</button></div>`;
+    $('[data-a=neu]', box).onclick = () => { S3 = { i: 0, punkte: 0, fertig: false, ord: mischen(SZEN.map((x, i) => i)) }; prognose(box, pruefe); };
+    return;
+  }
+  if (!S3.ord) S3.ord = mischen(SZEN.map((x, i) => i));
+  const sz = SZEN[S3.ord[S3.i]];
+  const N = kz3(BASIS3.lb * sz.f.lb, BASIS3.we * sz.f.we, sz.f.jz || BASIS3.jz);
+  const wahl = {};
+  box.innerHTML = `<div class="karte"><div class="klein">Szenario ${S3.i + 1} von 10 · bisher ${S3.punkte} im ersten Versuch richtig</div>
+    <p class="klein">Ausgangslage: Ø Lagerbestand 500.000 €, Wareneinsatz 3.000.000 €, Jahreszinssatz 8 % (ceteris paribus – alles andere bleibt gleich).</p>
+    <p class="frage">${sz.t}</p>
+    <p>Sage für jede Kennzahl voraus: steigt sie (↑), sinkt sie (↓) oder bleibt sie gleich (=)?</p>
+    <table class="prog">${KZ3.map(k => `<tr><td>${k[1]}</td><td><div class="pf" data-k="${k[0]}">${['↑', '↓', '='].map(p => `<button data-p="${p}" aria-label="${k[1]} ${p}">${p}</button>`).join('')}</div></td></tr>`).join('')}</table>
+    <div class="aktionen"><button class="btn" data-a="p">Prognose prüfen</button></div><div class="aus"></div></div>`;
+  $$('.pf button', box).forEach(b => b.onclick = () => { const k = b.parentNode.dataset.k; if (box.dataset.gesperrt) return; wahl[k] = b.dataset.p; $$('button', b.parentNode).forEach(x => x.classList.toggle('gew', x === b)); });
+  $('[data-a=p]', box).onclick = () => {
+    if (KZ3.some(k => !wahl[k[0]])) { $('.aus', box).innerHTML = '<div class="hinweis schlecht">Bitte für alle fünf Kennzahlen eine Prognose abgeben.</div>'; return; }
+    box.dataset.gesperrt = '1';
+    let alle = true;
+    KZ3.forEach(k => { const soll = richtung(B[k[0]], N[k[0]]); const pf = $(`.pf[data-k="${k[0]}"]`, box); $$('button', pf).forEach(x => { if (x.dataset.p === soll) x.classList.add('richtig'); if (x.classList.contains('gew') && x.dataset.p !== soll) x.classList.add('falschgew'); }); if (wahl[k[0]] !== soll) alle = false; });
+    if (alle) S3.punkte++;
+    $('[data-a=p]', box).disabled = true;
+    $('.aus', box).innerHTML = `<div class="hinweis ${alle ? 'gut' : 'schlecht'}"><strong>${alle ? 'Alle fünf richtig.' : 'Nicht alles richtig – grün umrandet ist die richtige Antwort.'}</strong></div>
+      ${tabelle(['Kennzahl', 'vorher', 'nachher', ''], KZ3.map(k => [k[1], fmtKz(k[0], B[k[0]]), fmtKz(k[0], N[k[0]]), richtung(B[k[0]], N[k[0]])]))}
+      <div class="hinweis info"><strong>Wirkungskette:</strong> ${sz.kette}</div>
+      <div class="hinweis"><strong>Folgen für das Unternehmen:</strong> ${sz.folgen}</div>
+      ${sz.vert ? `<div class="hinweis vert"><span class="badge vert">Vertiefung</span> ${sz.vert}</div>` : ''}
+      <button class="btn" data-a="w">${S3.i < 9 ? 'Nächstes Szenario' : 'Auswertung'}</button>`;
+    $('[data-a=w]', box).onclick = () => {
+      S3.i++;
+      if (S3.i >= 10) { S3.fertig = true; P.s3.prog = Math.max(P.s3.prog, S3.punkte); speichern(); pruefe(); }
+      delete box.dataset.gesperrt; prognose(box, pruefe);
+    };
+  };
+}
+function labor(box) {
+  if (!S3 || (!S3.fertig && P.s3.prog < 7 && !LEHRKRAFT)) { box.innerHTML = '<div class="karte"><p>🔒 Das Regler-Labor öffnet sich, sobald du eine Runde „Was passiert, wenn …?“ abgeschlossen hast. Erst vorhersagen, dann ausprobieren!</p></div>'; return; }
+  const B = kz3(BASIS3.lb, BASIS3.we, BASIS3.jz);
+  box.innerHTML = `<div class="karte"><h3>Regler-Labor</h3><p>Verändere die drei Ausgangsgrößen und beobachte die Kennzahlen. Der schwarze Strich zeigt den Ausgangswert. Stelle dir vorher immer die Frage: Was erwarte ich?</p>
+    <div class="regler">
+      <label>Ø Lagerbestand: <span id="v_lb"></span></label><input type="range" id="r_lb" min="100000" max="1500000" step="10000" value="${BASIS3.lb}">
+      <label>Wareneinsatz: <span id="v_we"></span></label><input type="range" id="r_we" min="500000" max="6000000" step="50000" value="${BASIS3.we}">
+      <label>Jahreszinssatz: <span id="v_jz"></span></label><input type="range" id="r_jz" min="1" max="15" step="0.5" value="${BASIS3.jz}">
+    </div><div id="gauges" style="margin-top:14px"></div>
+    <div class="aktionen"><button class="btn sek" id="r_reset">Zurück auf Ausgangswerte</button></div>
+    <div class="hinweis info klein">Beobachtungsaufträge: (1) Wie musst du Bestand und Wareneinsatz verändern, damit die UH gleich bleibt? (2) Halbiere den Bestand: Um wie viel Prozent sinken die Lagerzinsen – und warum ist das mehr als 50 %? (3) Welcher Regler beeinflusst nur LZZ und Lagerzinsen?</div></div>`;
+  const max = { lb: 1500000, uh: 30, dld: 600, lzz: 15, lz: 120000 };
+  const upd = () => {
+    const lb = +$('#r_lb', box).value, we = +$('#r_we', box).value, jz = +$('#r_jz', box).value, N = kz3(lb, we, jz);
+    $('#v_lb', box).textContent = eur0(lb); $('#v_we', box).textContent = eur0(we); $('#v_jz', box).textContent = proz(jz, 1);
+    $('#gauges', box).innerHTML = KZ3.map(k => `<div class="gauge"><span>${k[1]}</span><span class="bar"><i style="width:${Math.min(100, N[k[0]] / max[k[0]] * 100)}%"></i><b style="left:${Math.min(100, B[k[0]] / max[k[0]] * 100)}%"></b></span><span class="wert">${fmtKz(k[0], N[k[0]])}</span></div>`).join('');
+  };
+  $$('input[type=range]', box).forEach(r => r.oninput = upd);
+  $('#r_reset', box).onclick = () => { $('#r_lb', box).value = BASIS3.lb; $('#r_we', box).value = BASIS3.we; $('#r_jz', box).value = BASIS3.jz; upd(); };
+  upd();
+}
+
+/* =========================================================
+   STUFE 4 – BRANCHENVERGLEICH
+   ========================================================= */
+const FAELLE = [
+  {
+    id: 'ess', name: 'ESS GmbH', branche: 'Maschinenbau · Lager für Handelswaren',
+    situation: 'Die Daten stammen aus dem Arbeitsblatt. Der Lagerzinssatz ist mit 5 % vorgegeben.',
+    daten: tabelle(['Angabe', 'ESS GmbH', 'Branche (Freiplatzsystem)'], [['Lagerbestand 01.01.', eur(550000), ''], ['Lagerbestand 31.12.', eur(700000), ''], ['Wareneinsatz', eur(3000000), 'gleicher Absatz'], ['Umschlagshäufigkeit', '?', '18'], ['Ø Lagerdauer', '?', '20 Tage'], ['Lagerzinssatz', '5 %', '1,33 %']]),
+    quelle: 'Branchenwerte laut Arbeitsblatt (Branchenverband der metallverarbeitenden Betriebe) – Modellwerte für den Unterricht.',
+    auftragA: 'Ermitteln Sie Ø Lagerbestand, UH, Ø Lagerdauer und Lagerzinsen. Ermitteln Sie außerdem, wie viel Kapital die ESS GmbH im Vergleich zum Branchendurchschnitt (gleicher Wareneinsatz) zusätzlich im Lager bindet.',
+    felder: [
+      { key: 'dlb', label: 'Ø Lagerbestand', einheit: '€', wahr: 625000 },
+      { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: 4.8, folge: o => 3000000 / o.dlb },
+      { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: 75, folge: o => 360 / o.uh },
+      { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: 31250, folge: o => o.dlb * 0.05 },
+      { key: 'mehr', label: 'Mehr gebundenes Kapital als die Branche', einheit: '€', wahr: 625000 - 3000000 / 18, folge: o => o.dlb - 3000000 / 18, hinweise: [v => istNah(v, 3000000 / 18) ? 'Das ist der Ø Lagerbestand der Branche (Wareneinsatz / 18). Gesucht ist die Differenz zur ESS GmbH.' : null] }
+    ],
+    urteil: { f: 'Beurteilen Sie die Lagerhaltung der ESS GmbH im Branchenvergleich.', o: [
+      { t: 'Deutlich unwirtschaftlich: Für denselben Absatz ist rund 3,75-mal so viel Kapital gebunden, die Ware liegt fast viermal so lange im Lager.', ok: true, e: 'Die Abweichung ist so groß, dass sie sich nicht mit Besonderheiten erklären lässt – hier besteht klarer Handlungsbedarf.' },
+      { t: 'Gut, denn der hohe Bestand sichert die Lieferbereitschaft – es besteht kein Handlungsbedarf.', ok: false, e: 'Lieferbereitschaft ist ein wichtiges Argument, rechtfertigt aber keine fast vierfache Lagerdauer. Außerdem liegen keine Daten vor, die eine höhere Lieferbereitschaft belegen.' },
+      { t: 'Die Werte sind nicht vergleichbar, weil die Branche ihren Bestand in Stück angibt.', ok: false, e: 'UH und Lagerdauer sind Verhältniszahlen ohne Einheit – sie sind unabhängig von € oder Stück vergleichbar.' },
+      { t: 'Die ESS GmbH steht besser da, weil ihre Lagerzinsen höher sind.', ok: false, e: 'Höhere Lagerzinsen sind Kosten – sie verschlechtern das Ergebnis.' }] },
+    ursachen: { f: 'Welche Ursachen können die Abweichung vom Branchendurchschnitt erklären?', o: [
+      { t: 'Zu hohe Sicherheitsbestände', ok: true, e: 'Erhöhen den Ø Bestand dauerhaft.' },
+      { t: 'Zu große Bestellmengen, z. B. um Mengenrabatte mitzunehmen', ok: true, e: 'Große Bestellmengen erhöhen den Ø Bestand (Ø Bestand ≈ Sicherheitsbestand + ½ Bestellmenge).' },
+      { t: 'Ladenhüter und veraltete Ware im Lager', ok: true, e: 'Sie binden Kapital, ohne zum Absatz beizutragen.' },
+      { t: 'Schwache Absatzentwicklung bei unverändertem Einkauf', ok: true, e: 'Weniger Abgang bei gleichem Bestand senkt die UH.' },
+      { t: 'Ein höherer Jahreszinssatz', ok: false, e: 'Der Zins verändert LZZ und Lagerzinsen, aber nicht UH und Lagerdauer.' },
+      { t: 'Die Bewertung des Lagers zu Einstandspreisen', ok: false, e: 'Das ist die vorgeschriebene und übliche Bewertung – auch die Branche bewertet so.' }] },
+    empf: 'Formulieren Sie eine begründete Handlungsempfehlung an die Geschäftsleitung.',
+    ehz: ['Bestände senken: Sicherheitsbestand überprüfen, Bestellmengen optimieren (optimale Bestellmenge)', 'Ladenhüter abbauen (Abverkauf, Aktionen)', 'Beschaffungsverfahren differenzieren: ABC/XYZ-Analyse, JIT oder Delivery on demand für hochwertige A-Güter, Bestellpunktverfahren', 'Absatzseite stärken, damit der Umschlag steigt', 'Einsparpotenzial mit Zahlen begründet (z. B. rund 458.000 € weniger Kapitalbindung)', 'Zielkonflikt beachtet: Bestandssenkung darf die Lieferbereitschaft nicht gefährden']
+  },
+  {
+    id: 'frisch', name: 'Frischemarkt Kessler e. K.', branche: 'Lebensmitteleinzelhandel · Obst und Gemüse',
+    situation: 'Der Inhaber möchte wissen, ob sein Frischelager wirtschaftlich arbeitet. Der Ø Lagerbestand wurde per Monatsinventur ermittelt. Jahreszinssatz: 8 %.',
+    daten: tabelle(['Angabe', 'Kessler', 'Branche'], [['Ø Lagerbestand (Monatsinventur)', eur(40000), ''], ['Wareneinsatz', eur(1200000), ''], ['Umschlagshäufigkeit', '?', '45'], ['Ø Lagerdauer', '?', '8 Tage'], ['Abschriften wegen Verderb (in % des Wareneinsatzes)', '2,8 %', '1,5 %']]),
+    quelle: 'Branchenwerte fiktiv (plausible Modellwerte für den Unterricht, keine amtliche Statistik).',
+    auftragA: 'Ermitteln Sie UH, Ø Lagerdauer, Lagerzinssatz, Lagerzinsen und die Abschriften wegen Verderb in €.',
+    felder: [
+      { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: 30 },
+      { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: 12, folge: o => 360 / o.uh },
+      { key: 'lzz', label: 'Lagerzinssatz', einheit: '%', wahr: 8 * 12 / 360, folge: o => 8 * o.dld / 360 },
+      { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: 40000 * (8 * 12 / 360) / 100, folge: o => 40000 * o.lzz / 100 },
+      { key: 'verderb', label: 'Abschriften wegen Verderb', einheit: '€', wahr: 33600 }
+    ],
+    urteil: { f: 'Beurteilen Sie die Lagerhaltung von Frischemarkt Kessler.', o: [
+      { t: 'Die Lagerdauer ist für Frischware zu lang. Das eigentliche Problem ist der Verderb (rund 33.600 €), nicht die Kapitalbindung (Lagerzinsen nur rund 107 €).', ok: true, e: 'Bei verderblicher Ware entscheidet die Lagerdauer über Qualität und Abschriften. Die Zinskosten sind hier fast bedeutungslos.' },
+      { t: 'Mit einer UH von 30 ist das Lager hervorragend – die ESS GmbH schafft nur 4,8.', ok: false, e: 'Kennzahlen darf man nur innerhalb einer Branche vergleichen. Im Lebensmittelhandel ist eine hohe UH normal; Kessler liegt unter dem Branchenwert.' },
+      { t: 'Das Hauptproblem sind die Lagerzinsen. Der Inhaber sollte mit der Bank einen niedrigeren Zins verhandeln.', ok: false, e: 'Die Lagerzinsen betragen nur rund 107 €. Ein niedrigerer Zins würde praktisch nichts ändern.' },
+      { t: 'Eine Beurteilung ist nicht möglich, weil die Monatsinventur verwendet wurde.', ok: false, e: 'Die Monatsinventur ist die genaueste Methode – sie erschwert die Beurteilung nicht.' }] },
+    ursachen: { f: 'Welche Ursachen können die längere Lagerdauer erklären?', o: [
+      { t: 'Zu große Liefermengen je Anlieferung', ok: true, e: 'Größere Liefermengen erhöhen den Ø Bestand.' },
+      { t: 'Ungenaue Absatzplanung (Wetter, Wochentage, Feiertage)', ok: true, e: 'Wer den Absatz überschätzt, bestellt zu viel.' },
+      { t: 'Zu seltene Belieferung (z. B. nur zweimal pro Woche)', ok: true, e: 'Seltenere Lieferungen erfordern größere Mengen je Lieferung.' },
+      { t: 'Ein zu breites Sortiment für die Zahl der Kunden', ok: true, e: 'Viele Artikel mit geringem Absatz drehen sich langsam.' },
+      { t: 'Ein zu hoher Jahreszinssatz', ok: false, e: 'Der Zins beeinflusst die Lagerdauer nicht.' },
+      { t: 'Die Bewertung der Ware zu Einstandspreisen', ok: false, e: 'Das ist die übliche Bewertung und erklärt keine Abweichung.' }] },
+    empf: 'Formulieren Sie eine begründete Handlungsempfehlung an den Inhaber.',
+    ehz: ['Erkannt: Bei Frischware ist die Lagerdauer wegen Verderb wichtig, nicht wegen der Zinsen', 'Häufigere, kleinere Lieferungen (Bestellrhythmus anpassen)', 'Bestellmengen an eine bessere Absatzprognose koppeln', 'Abverkauf vor dem Verderb (Preisreduktion, Weitergabe z. B. an Tafeln)', 'Sortiment straffen', 'Ökologische Abwägung: weniger Lebensmittelverschwendung, aber mehr Lieferfahrten']
+  },
+  {
+    id: 'schmuck', name: 'Juwelier Brandt GmbH', branche: 'Schmuck- und Uhreneinzelhandel',
+    situation: 'Die Geschäftsführerin ist beunruhigt, weil ein Berater gesagt hat, „eine UH unter 2 ist katastrophal“. Jahreszinssatz: 6 %.',
+    daten: tabelle(['Stichtag', 'Lagerbestand'], [['01.01.', eur(820000)], ['31.03.', eur(780000)], ['30.06.', eur(760000)], ['30.09.', eur(800000)], ['31.12.', eur(840000)]]) + tabelle(['Angabe', 'Brandt', 'Branche'], [['Wareneinsatz', eur(1200000), ''], ['Umschlagshäufigkeit', '?', '1,2'], ['Ø Lagerdauer', '?', '300 Tage']]),
+    quelle: 'Branchenwerte fiktiv (plausible Modellwerte für den Unterricht, keine amtliche Statistik).',
+    auftragA: 'Ermitteln Sie Ø Lagerbestand (Quartalsinventur), UH, Ø Lagerdauer, Lagerzinssatz und Lagerzinsen.',
+    felder: [
+      { key: 'dlb', label: 'Ø Lagerbestand', einheit: '€', wahr: 800000, hinweise: [v => istNah(v, 4000000 / 4) ? 'Fünf Werte – durch 5 teilen.' : null] },
+      { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: 1.5, folge: o => 1200000 / o.dlb },
+      { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: 240, folge: o => 360 / o.uh },
+      { key: 'lzz', label: 'Lagerzinssatz', einheit: '%', wahr: 4, folge: o => 6 * o.dld / 360 },
+      { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: 32000, folge: o => o.dlb * o.lzz / 100 }
+    ],
+    urteil: { f: 'Beurteilen Sie die Aussage des Beraters und die Lagerhaltung von Brandt.', o: [
+      { t: 'Brandt schneidet besser ab als der Branchendurchschnitt. Eine niedrige UH ist bei Schmuck branchentypisch und für sich allein kein Zeichen schlechter Lagerhaltung.', ok: true, e: 'Der Maßstab ist die eigene Branche. Pauschale Grenzwerte („unter 2 ist katastrophal“) ignorieren das Geschäftsmodell.' },
+      { t: 'Brandt arbeitet unwirtschaftlich, denn die UH liegt weit unter der der ESS GmbH (4,8).', ok: false, e: 'Ein Vergleich zwischen Maschinenbau und Juwelier ist nicht aussagekräftig.' },
+      { t: 'Brandt sollte seine UH auf das Niveau des Lebensmittelhandels steigern.', ok: false, e: 'Das wäre mit dem Geschäftsmodell (Auswahl, Beratung, Einzelstücke) nicht vereinbar.' },
+      { t: 'Weil die Branche schlechter ist, gibt es bei Brandt keinerlei Optimierungsbedarf.', ok: false, e: 'Besser als der Durchschnitt heißt nicht optimal. Auch Brandt hat Potenzial (siehe Teil d).' }] },
+    ursachen: { f: 'Welche Gründe erklären, warum eine niedrige UH beim Juwelier branchentypisch bzw. weniger problematisch ist?', o: [
+      { t: 'Hochwertige Einzelstücke werden selten verkauft', ok: true, e: 'Geringe Verkaufsfrequenz je Artikel → niedriger Umschlag.' },
+      { t: 'Kundinnen und Kunden erwarten Auswahl und Beratung vor Ort', ok: true, e: 'Das Sortiment muss breit sein, auch wenn sich viele Stücke langsam verkaufen.' },
+      { t: 'Gold und Edelsteine sind wertbeständig – kaum Risiko von Verderb oder Veralterung', ok: true, e: 'Lange Lagerdauer ist deshalb weniger riskant als bei Mode oder Lebensmitteln.' },
+      { t: 'Saisonspitzen (Weihnachten, Hochzeiten) erfordern Vorrat', ok: true, e: 'Bestände müssen vor der Saison aufgebaut werden.' },
+      { t: 'Schmuck muss wegen kurzer Haltbarkeit schnell verkauft werden', ok: false, e: 'Das Gegenteil ist der Fall – Schmuck ist sehr lange haltbar.' },
+      { t: 'Juweliere arbeiten grundsätzlich Just in time', ok: false, e: 'Dann wäre die UH hoch. Typisch ist ein großer Ausstellungsbestand.' }] },
+    empf: 'Formulieren Sie eine begründete Stellungnahme für die Geschäftsführerin – einschließlich möglicher Verbesserungen.',
+    ehz: ['Ergebnis im Branchenvergleich als gut eingeordnet', 'Begründet, warum ein Vergleich nur innerhalb der Branche sinnvoll ist', 'Potenzial benannt: Kommissionsware vom Hersteller (Kapitalbindung liegt beim Lieferanten)', 'Teure Einzelstücke auf Kundenwunsch bestellen (Delivery on demand)', 'Modische Ware mit Veralterungsrisiko gesondert betrachten', 'Hohe Lagerhaltungskosten (Versicherung, Sicherheitstechnik) erwähnt']
+  },
+  {
+    id: 'agrar', name: 'Agrartechnik Ruf KG', branche: 'Ersatzteilhandel für Landmaschinen',
+    situation: 'Ein Controller schlägt vor, den Ersatzteilbestand auf Branchenniveau zu senken. Der Vertriebsleiter warnt: „Unsere Kunden kaufen bei uns, weil wir fast jedes Teil sofort liefern.“ Jahreszinssatz: 8 %.',
+    daten: tabelle(['Angabe', 'Ruf KG', 'Branche'], [['Ø Lagerbestand (Monatsinventur)', eur(1500000), ''], ['Wareneinsatz', eur(3000000), ''], ['Umschlagshäufigkeit', '?', '2,5'], ['Ø Lagerdauer', '?', '144 Tage'], ['Lieferbereitschaft (sofort lieferbare Anfragen)', '99 %', '94 %']]),
+    quelle: 'Branchenwerte fiktiv (plausible Modellwerte für den Unterricht, keine amtliche Statistik).',
+    auftragA: 'Ermitteln Sie UH, Ø Lagerdauer, Lagerzinssatz und Lagerzinsen. Berechnen Sie anschließend, welche Lagerzinsen bei gleichem Wareneinsatz und Branchen-UH anfallen würden (mit neu berechnetem Lagerzinssatz), und das Einsparpotenzial.',
+    felder: [
+      { key: 'uh', label: 'Umschlagshäufigkeit', einheit: 'mal', wahr: 2 },
+      { key: 'dld', label: 'Ø Lagerdauer', einheit: 'Tage', wahr: 180, folge: o => 360 / o.uh },
+      { key: 'lzz', label: 'Lagerzinssatz', einheit: '%', wahr: 4, folge: o => 8 * o.dld / 360 },
+      { key: 'lz', label: 'Lagerzinsen', einheit: '€', wahr: 60000, folge: o => 1500000 * o.lzz / 100 },
+      { key: 'dlbneu', label: 'Ø Lagerbestand bei Branchen-UH', einheit: '€', wahr: 1200000 },
+      { key: 'lzneu', label: 'Lagerzinsen bei Branchen-UH', einheit: '€', wahr: 38400, folge: o => o.dlbneu * (8 * 144 / 360) / 100, hinweise: [v => istNah(v, 1200000 * 0.04) ? 'Bei kürzerer Lagerdauer (144 Tage) sinkt auch der Lagerzinssatz: 8 % × 144 / 360 = 3,2 %.' : null] },
+      { key: 'spar', label: 'Einsparpotenzial', einheit: '€', wahr: 21600, folge: o => o.lz - o.lzneu }
+    ],
+    urteil: { f: 'Beurteilen Sie den Vorschlag des Controllers.', o: [
+      { t: 'Die Lagerhaltung ist nicht eindeutig schlecht: Den höheren Kosten steht eine deutlich höhere Lieferbereitschaft gegenüber. Beides muss gemeinsam beurteilt werden.', ok: true, e: 'Hier liegt ein Zielkonflikt vor: Kapitalbindung gegen Servicegrad. Entscheidend ist, ob die hohe Lieferbereitschaft mehr einbringt als die rund 21.600 € Einsparpotenzial.' },
+      { t: 'Eindeutig unwirtschaftlich: Der Bestand muss sofort auf Branchenniveau gesenkt werden.', ok: false, e: 'Das übersieht, dass die Lieferbereitschaft ein Wettbewerbsvorteil sein kann.' },
+      { t: 'Die Lieferbereitschaft spielt für die Beurteilung von Lagerkennzahlen keine Rolle.', ok: false, e: 'Doch: Bestand ist kein Selbstzweck – er dient der Versorgung. Kennzahlen müssen im Zusammenhang gesehen werden.' },
+      { t: 'Ruf steht besser da als die Branche, weil höhere Lagerzinsen mehr Sicherheit bedeuten.', ok: false, e: 'Lagerzinsen sind Kosten, keine Sicherheit. Die Sicherheit kommt aus dem Bestand – und der kostet.' }] },
+    ursachen: { f: 'Welche Gründe können den höheren Bestand rechtfertigen?', o: [
+      { t: 'Ersatzteile für viele Maschinengenerationen müssen vorrätig sein', ok: true, e: 'Breites, tiefes Sortiment → viele Teile mit geringem Umschlag.' },
+      { t: 'Der Bedarf entsteht unvorhersehbar (Pannen, Verschleiß)', ok: true, e: 'Unsicherer Bedarf erfordert höhere Sicherheitsbestände.' },
+      { t: 'Ein Maschinenstillstand in der Ernte ist für Kunden extrem teuer – schnelle Lieferung ist ein Wettbewerbsvorteil', ok: true, e: 'Kunden zahlen für Verfügbarkeit, z. B. über höhere Preise oder Treue.' },
+      { t: 'Hohe Lieferbereitschaft bindet Kunden und kann höhere Preise rechtfertigen', ok: true, e: 'Der Servicegrad ist Teil des Leistungsversprechens.' },
+      { t: 'Ersatzteile verderben schnell', ok: false, e: 'Metallteile sind lange haltbar – das wäre eher ein Argument für niedrige Bestände.' },
+      { t: 'Der Jahreszinssatz ist niedriger als in der Branche', ok: false, e: 'Darüber liegen keine Angaben vor, und der Zins erklärt keine höhere Lagerdauer.' }] },
+    empf: 'Formulieren Sie eine begründete Empfehlung: Soll der Bestand auf Branchenniveau gesenkt werden?',
+    ehz: ['Zielkonflikt Kapitalbindung ↔ Lieferbereitschaft benannt', 'Einsparpotenzial (21.600 €) dem Nutzen der hohen Lieferbereitschaft gegenübergestellt', 'Differenzierung nach Teilen (ABC/XYZ-Analyse): regelmäßig gebrauchte Teile knapper disponieren, sporadische Teile ggf. über Lieferant oder Zentrallager', 'Saisonale Steuerung: vor der Ernte hoher, im Winter niedrigerer Bestand', 'Begründetes Fazit mit eigener Entscheidung']
+  }
+];
+function viewS4(m) {
+  const c = kopf(m, 4);
+  c.insertAdjacentHTML('beforeend', '<div class="hinweis info">Jede Fallkarte hat vier Teile: a) rechnen, b) beurteilen, c) Ursachen bzw. Gründe erkennen, d) eine Empfehlung schreiben und mit dem Erwartungshorizont abgleichen. Merke: <strong>Kennzahlen vergleicht man innerhalb einer Branche – und nie ohne den Zusammenhang.</strong></div>');
+  const b = document.createElement('div'); c.appendChild(b);
+  const T = tabs(b, FAELLE.map((F, i) => ({ t: (P.s4.cards[F.id] ? '✓ ' : '') + F.name, r: box => fall(box, F, () => T.beschriften(i, '✓ ' + F.name)) })));
+}
+function fall(box, F, onFertig) {
+  const st = { a: false, b: false, c: false, d: false };
+  box.innerHTML = `<div class="karte"><h3>${F.name}</h3><p class="klein">${F.branche}</p><p>${F.situation}</p>${F.daten}<p class="fiktiv">${F.quelle}</p></div>
+    <div class="karte"><h4><span class="badge">Ermitteln · AFB I–II</span> a)</h4><p>${F.auftragA}</p><div class="fg"></div><div class="aktionen"><button class="btn" data-a="pa">Prüfen</button></div><div class="rma"></div></div>
+    <div class="karte"><h4><span class="badge">Beurteilen · AFB III</span> b) ${F.urteil.f}</h4><div class="tb"></div></div>
+    <div class="karte"><h4><span class="badge">Erläutern · AFB II</span> c) ${F.ursachen.f}</h4><p class="klein">Wähle alle zutreffenden Aussagen.</p><div class="tc"></div></div>
+    <div class="karte"><h4><span class="badge">Beurteilen · AFB III</span> d) ${F.empf}</h4><div class="td"></div></div>
+    <div class="fstatus"></div>`;
+  const fertig = () => {
+    const n = Object.values(st).filter(Boolean).length;
+    $('.fstatus', box).innerHTML = `<div class="hinweis ${n === 4 ? 'gut' : ''}">${n === 4 ? `<strong>Fallkarte abgeschlossen.</strong> ${Object.keys(P.s4.cards).length} von 4 Fallkarten erledigt.` : `${n} von 4 Teilen erledigt.`}</div>`;
+    if (n === 4 && !P.s4.cards[F.id]) { P.s4.cards[F.id] = true; speichern(); onFertig(); if (Object.keys(P.s4.cards).length >= 4) bestanden(4); }
+  };
+  const G = feldGruppe($('.fg', box), F.felder);
+  $('[data-a=pa]', box).onclick = () => { const s = G.pruefen(); const ok = Object.values(s).every(x => x === 'ok'); $('.rma', box).innerHTML = ok ? '<div class="hinweis gut">Alle Werte richtig.</div>' : '<div class="hinweis schlecht">Noch nicht alle Werte richtig.</div>'; if (ok) { st.a = true; fertig(); } };
+  einzelwahl($('.tb', box), F.urteil, () => { st.b = true; fertig(); });
+  mehrfachwahl($('.tc', box), F.ursachen, () => { st.c = true; fertig(); });
+  textCheck($('.td', box), { items: F.ehz, onAufgedeckt: () => { st.d = true; fertig(); } });
+  fertig();
+}
+
+/* =========================================================
+   STUFE 5 – PLANSPIEL
+   ========================================================= */
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function szenario(seed) { const r = mulberry32(seed); const q = []; for (let i = 0; i < 4; i++) q.push({ basis: Math.round(7500 * (0.94 + 0.12 * r()) / 50) * 50, uS: r(), sS: 1000 + 1500 * r(), uL: r(), sL: 1500 + 1500 * r() }); return q; }
+const PS = { preis: 100, db: 40, fehlk: 15, bestellBasis: 6000 };
+const MASSN = {
+  laden: { n: 'Ladenhüter abverkaufen', t: '1.000 St. kaum gefragte Ware werden mit Preisnachlass verkauft: einmalig 15.000 € Verlust, danach dauerhaft weniger Bestand.', ok: s => !s.laden, tu: s => { s.laden = true; s.L = 0; s.einmal += 15000; } },
+  prognose: { n: 'Absatzprognose verbessern', t: 'Einmalig 8.000 € (Software, Absprachen mit Großkunden). Unerwartete Nachfragespitzen fallen um 40 % kleiner aus.', ok: s => !s.prognose, tu: s => { s.prognose = true; s.einmal += 8000; } },
+  koop: { n: 'Lieferantenkooperation (EDI, Bestellpunktverfahren)', t: 'Einmalig 12.000 €. Lieferverzögerungen werden seltener (25 % → 10 % je Quartal) und um 30 % kleiner.', ok: s => !s.koop, tu: s => { s.koop = true; s.einmal += 12000; } },
+  bestell: { n: 'Kleinere Bestellmengen, häufiger bestellen', t: 'Ø Bestand −1.000 St. Bestellkosten steigen: 1. Schritt +3.000 €, 2. Schritt weitere +6.000 € je Quartal (höchstens 2 Schritte).', ok: s => s.stufe < 2 && s.HQ > 250, tu: s => { s.stufe++; s.HQ = Math.max(250, s.HQ - 1000); } },
+  jit: { n: 'Just in time für A-Artikel', t: 'Ø Bestand −1.500 St. Koordinations- und Transportkosten +5.000 € je Quartal. Lieferverzögerungen treffen härter (+1.000 St. Bedarf, der überbrückt werden muss).', ok: s => !s.jit && s.HQ > 250, tu: s => { s.jit = true; s.HQ = Math.max(250, s.HQ - 1500); } },
+  sbab: { n: 'Sicherheitsbestand senken', t: '−1.000 St. Sicherheitsbestand. Spart Lagerkosten – aber Nachfragespitzen und Lieferverzögerungen können dann zu Fehlmengen führen.', ok: s => s.SB >= 1000, tu: s => { s.SB -= 1000; } },
+  sbauf: { n: 'Sicherheitsbestand erhöhen', t: '+1.000 St. Sicherheitsbestand. Mehr Schutz vor Fehlmengen, aber höhere Lagerkosten.', ok: s => s.SB <= 4000, tu: s => { s.SB += 1000; } },
+  abc: { n: 'ABC-Strategie im Freiplatzsystem', t: 'Einmalig 15.000 €. Kürzere Wege und bessere Flächennutzung: Lagerhaltungskostensatz −2 Prozentpunkte.', ok: s => !s.abc, tu: s => { s.abc = true; s.satz -= 0.02; s.einmal += 15000; } },
+  gross: { n: 'Großeinkauf mit 3 % Mengenrabatt', t: 'Der Einkauf dieses Quartals ist 3 % günstiger. Dafür liegen in diesem Quartal 3.000 St. und im nächsten 1.500 St. mehr im Lager (nur einmal möglich).', ok: s => !s.gross, tu: s => { s.gross = true; s.grossJetzt = 3000; s.grossNaechst = 1500; s.rabatt = true; } },
+  werbung: { n: 'Verkaufsaktion', t: '25.000 € Werbekosten. Zusätzlicher Absatz in diesem Quartal: +1.000 St. (beim zweiten Mal nur noch +600 St.). Höchstens zweimal.', ok: s => s.werbung < 2, tu: s => { s.werbung++; s.extra = s.werbung === 1 ? 1000 : 600; s.einmal += 25000; } }
+};
+function startZustand() { return { SB: 2500, HQ: 2750, L: 1000, satz: 0.20, stufe: 0, jit: false, koop: false, prognose: false, abc: false, laden: false, gross: false, werbung: 0, uebertrag: 0, hist: [] }; }
+function quartal(s, z, q, wahl) {
+  s.einmal = 0; s.extra = 0; s.grossJetzt = 0; s.grossNaechst = 0; s.rabatt = false;
+  const uebertrag = s.uebertrag; s.uebertrag = 0;
+  if (q === 2) s.satz += 0.02;
+  wahl.forEach(id => MASSN[id].tu(s));
+  s.uebertrag = s.grossNaechst;
+  const lager = s.SB + s.HQ + s.L + s.grossJetzt + uebertrag;
+  // Nachfragespitze: die Nachfrage entsteht immer; mit besserer Prognose ist ein Teil davon vorhergesehen und eingeplant,
+  // sodass nur der unerwartete Rest aus dem Sicherheitsbestand gedeckt werden muss.
+  const spitze = z.uS < 0.35 ? Math.round(z.sS / 10) * 10 : 0;
+  const unerwartet = Math.round(spitze * (s.prognose ? 0.6 : 1) / 10) * 10;
+  const verzug = z.uL < (s.koop ? 0.10 : 0.25) ? Math.round((z.sL + (s.jit ? 1000 : 0)) * (s.koop ? 0.7 : 1) / 10) * 10 : 0;
+  const nachfrage = z.basis + s.extra + spitze;
+  const fehl = Math.round(Math.min(Math.max(0, unerwartet + verzug - s.SB), nachfrage * 0.5));
+  const absatz = nachfrage - fehl;
+  const bestellk = PS.bestellBasis + (s.stufe >= 1 ? 3000 : 0) + (s.stufe >= 2 ? 6000 : 0) + (s.jit ? 5000 : 0);
+  const r = {
+    q, wahl: wahl.slice(), lager, spitze, unerwartet, verzug, nachfrage, fehl, absatz, satz: s.satz,
+    db: absatz * PS.db, rabatt: s.rabatt ? absatz * PS.preis * 0.03 : 0,
+    lagerk: lager * PS.preis * s.satz / 4, bestellk, fehlk: fehl * PS.fehlk, einmal: s.einmal,
+    SB: s.SB
+  };
+  r.ergebnis = r.db + r.rabatt - r.lagerk - r.bestellk - r.fehlk - r.einmal;
+  r.uh = 4 * absatz / lager; r.lb = absatz / nachfrage;
+  s.hist.push(r);
+  return r;
+}
+function jahr(h) {
+  const lager = h.reduce((a, r) => a + r.lager, 0) / h.length, absatz = h.reduce((a, r) => a + r.absatz, 0), nachfrage = h.reduce((a, r) => a + r.nachfrage, 0);
+  const sum = k => h.reduce((a, r) => a + r[k], 0);
+  return { lager, absatz, uh: absatz / lager, dld: 360 / (absatz / lager), lb: absatz / nachfrage, fehl: sum('fehl'), lagerk: sum('lagerk'), bestellk: sum('bestellk'), fehlk: sum('fehlk'), einmal: sum('einmal'), ergebnis: sum('ergebnis'), db: sum('db'), rabatt: sum('rabatt') };
+}
+let PSP = null;
+function viewS5(m) {
+  const c = kopf(m, 5);
+  const box = document.createElement('div'); c.appendChild(box);
+  if (PSP && PSP.q < 4) { spielZeichnen(box); return; }
+  if (PSP && PSP.q >= 4) { auswertung(box); return; }
+  startseite(box);
+}
+function startseite(box) {
+  const vorschlag = rint(1000, 9999);
+  box.innerHTML = `<div class="karte"><h3>Lagermanager der ESS GmbH – ein Jahr in vier Quartalen</h3>
+    <p>Die Ausgangslage entspricht dem Arbeitsblatt: Ø Lagerbestand 6.250 St. (625.000 €), Absatz rund 30.000 St. pro Jahr, Umschlagshäufigkeit 4,8. Die Geschäftsleitung erwartet, dass du das Lager wirtschaftlicher machst, <strong>ohne die Kunden im Stich zu lassen</strong>.</p>
+    <p>Pro Quartal wählst du bis zu zwei Maßnahmen. Danach passiert, was passiert: Nachfragespitzen und Lieferverzögerungen testen, ob dein Sicherheitsbestand reicht. Fehlmengen kosten Deckungsbeitrag und zusätzlich Strafzahlungen und Eilbeschaffung.</p>
+    <h4>Ziele (je ein Stern)</h4>
+    <p>★ Ergebnis besser als ohne Maßnahmen &nbsp; ★ Umschlagshäufigkeit im Jahr mindestens 8 &nbsp; ★ Lieferbereitschaft mindestens 98 %</p>
+    <details class="wegbox"><summary>Modellannahmen anzeigen</summary>
+      ${tabelle(['Größe', 'Wert'], [['Einstandspreis / Verkaufspreis', '100 € / 140 € je St. (Deckungsbeitrag 40 € je St.)'], ['Ø Lagerbestand', 'Sicherheitsbestand + ½ Bestellmenge + Ladenhüter = 2.500 + 2.750 + 1.000 St.'], ['Lagerhaltungskostensatz', '20 % p. a. vom Ø Lagerbestand (enthält Zinsen auf das gebundene Kapital, Raum, Versicherung, Schwund)'], ['Bestellkosten', '6.000 € je Quartal'], ['Fehlmengenkosten', '15 € je St. zusätzlich zum entgangenen Deckungsbeitrag'], ['Nachfragespitze', 'Wahrscheinlichkeit 35 % je Quartal, 1.000–2.500 St.'], ['Lieferverzögerung', 'Wahrscheinlichkeit 25 % je Quartal, 1.500–3.000 St. müssen überbrückt werden']], 1).replace(/class="z"/g, '')}
+      <p class="klein">Vereinfachtes Modell mit fiktiven Werten. Anders als in den Stufen 1–4 werden hier alle Lagerkosten über einen Lagerhaltungskostensatz pro Jahr erfasst – wie bei der optimalen Bestellmenge.</p>
+    </details>
+    <label class="zeile" style="max-width:320px;margin-top:12px">Szenario-Nummer <input class="std" id="seed" inputmode="numeric" value="${vorschlag}"></label>
+    <p class="klein">Gleiche Nummer = gleiche Ereignisse. So kann die ganze Klasse dasselbe Jahr spielen und Strategien vergleichen.</p>
+    <div class="aktionen"><button class="btn" id="los">Spiel starten</button></div></div>`;
+  $('#los', box).onclick = () => {
+    const seed = parseInt($('#seed', box).value, 10) || vorschlag;
+    PSP = { seed, Z: szenario(seed), S: startZustand(), B: startZustand(), q: 0, wahl: [], letzte: null };
+    spielZeichnen(box);
+  };
+}
+function spielZeichnen(box) {
+  const S = PSP.S, q = PSP.q, lagerPlan = S.SB + S.HQ + S.L + S.uebertrag;
+  const aktiv = ['laden', 'prognose', 'koop', 'jit', 'abc'].filter(k => S[k]).map(k => MASSN[k].n).concat(S.stufe ? [`Bestellmengen verkleinert (${S.stufe}×)`] : []);
+  box.innerHTML = `${PSP.letzte ? quartalsbericht(PSP.letzte, PSP.B.hist[PSP.letzte.q]) : ''}
+    <div class="karte"><h3>Quartal ${q + 1} von 4 <span class="klein">· Szenario ${PSP.seed}</span></h3>
+    ${q === 2 ? '<div class="hinweis vert"><strong>Ereignis:</strong> Die Hausbank erhöht den Kontokorrentzins. Ab diesem Quartal steigt der Lagerhaltungskostensatz um 2 Prozentpunkte.</div>' : ''}
+    <div class="status">
+      <div>Sicherheitsbestand<b>${fmt(S.SB, 0)} St.</b></div>
+      <div>½ Bestellmenge<b>${fmt(S.HQ, 0)} St.</b></div>
+      <div>Ladenhüter<b>${fmt(S.L, 0)} St.</b></div>
+      <div>Ø Lagerbestand (geplant)<b>${fmt(lagerPlan, 0)} St.</b></div>
+      <div>Lagerhaltungskostensatz<b>${proz((S.satz + (q === 2 ? 0.02 : 0)) * 100, 0)} p. a.</b></div>
+    </div>
+    ${aktiv.length ? `<p class="klein">Aktive Maßnahmen: ${aktiv.join(' · ')}</p>` : ''}
+    <h4>Wähle bis zu zwei Maßnahmen für dieses Quartal</h4>
+    <div class="massn">${Object.keys(MASSN).map(k => { const M = MASSN[k], ok = M.ok(S), gew = PSP.wahl.includes(k); return `<button class="mk ${gew ? 'gew' : ''}" data-k="${k}" ${ok ? '' : 'disabled'}><strong>${gew ? '✓ ' : ''}${M.n}</strong>${M.t}${ok ? '' : '<br><em>nicht (mehr) möglich</em>'}</button>`; }).join('')}</div>
+    <div class="aktionen"><button class="btn" id="qab">Quartal ${q + 1} abschließen${PSP.wahl.length ? ` (${PSP.wahl.length} Maßnahme${PSP.wahl.length > 1 ? 'n' : ''})` : ' ohne Maßnahme'}</button></div></div>
+    ${PSP.S.hist.length ? verlauf() : ''}`;
+  $$('.mk', box).forEach(b => b.onclick = () => { const k = b.dataset.k; const i = PSP.wahl.indexOf(k); if (i >= 0) PSP.wahl.splice(i, 1); else if (PSP.wahl.length < 2) PSP.wahl.push(k); spielZeichnen(box); });
+  $('#qab', box).onclick = () => {
+    const r = quartal(PSP.S, PSP.Z[q], q, PSP.wahl); quartal(PSP.B, PSP.Z[q], q, []);
+    PSP.letzte = r; PSP.wahl = []; PSP.q++;
+    if (PSP.q >= 4) auswertung(box); else { spielZeichnen(box); box.scrollIntoView({ behavior: 'smooth' }); }
+  };
+}
+function quartalsbericht(r, b) {
+  const ev = [];
+  if (r.spitze) ev.push(r.unerwartet < r.spitze ? `Nachfragespitze: +${fmt(r.spitze, 0)} St., davon dank besserer Prognose nur ${fmt(r.unerwartet, 0)} St. unerwartet.` : `Unerwartete Nachfragespitze: +${fmt(r.spitze, 0)} St.`);
+  if (r.verzug) ev.push(`Lieferverzögerung: ${fmt(r.verzug, 0)} St. mussten aus dem Sicherheitsbestand überbrückt werden.`);
+  if (!ev.length) ev.push('Ein ruhiges Quartal ohne Störungen.');
+  const fehlTxt = r.fehl ? `<strong class="schlechter">Fehlmenge: ${fmt(r.fehl, 0)} St.</strong> Der Sicherheitsbestand (${fmt(r.SB, 0)} St.) reichte nicht.` : (r.spitze || r.verzug ? '<span class="besser">Alles durch den Sicherheitsbestand abgedeckt.</span>' : '');
+  return `<div class="karte"><h3>Bericht Quartal ${r.q + 1}</h3><p>${ev.join(' ')} ${fehlTxt}</p>
+    ${tabelle(['', 'Deine Strategie', 'ohne Maßnahmen'], [
+      ['Ø Lagerbestand', fmt(r.lager, 0) + ' St.', fmt(b.lager, 0) + ' St.'],
+      ['UH (aufs Jahr hochgerechnet)', fmtN(r.uh), fmtN(b.uh)],
+      ['Lieferbereitschaft', proz(r.lb * 100, 1), proz(b.lb * 100, 1)],
+      ['Deckungsbeitrag', eur0(r.db), eur0(b.db)],
+      ['Lagerhaltungskosten', minus(r.lagerk), minus(b.lagerk)],
+      ['Bestell-/Transportkosten', minus(r.bestellk), minus(b.bestellk)],
+      ['Fehlmengenkosten', minus(r.fehlk), minus(b.fehlk)],
+      ['Einmalige Kosten (Maßnahmen)', minus(r.einmal), '–'],
+      ['Rabattersparnis', eur0(r.rabatt), '–'],
+      ['<strong>Quartalsergebnis</strong>', `<strong>${eur0(r.ergebnis)}</strong>`, eur0(b.ergebnis)]
+    ])}</div>`;
+}
+function verlauf() {
+  const h = PSP.S.hist, b = PSP.B.hist;
+  return `<div class="karte"><h4>Bisheriger Verlauf</h4>${tabelle(['Quartal', 'Ø Lager (St.)', 'UH (hochger.)', 'Lieferber.', 'Ergebnis', 'Differenz zu „ohne Maßnahmen“'], h.map((r, i) => {
+    const d = r.ergebnis - b[i].ergebnis; return [`Q${i + 1}`, fmt(r.lager, 0), fmtN(r.uh), proz(r.lb * 100, 1), eur0(r.ergebnis), `<span class="${d >= 0 ? 'besser' : 'schlechter'}">${d >= 0 ? '+' : ''}${eur0(d)}</span>`];
+  }))}</div>`;
+}
+function auswertung(box) {
+  const J = jahr(PSP.S.hist), B = jahr(PSP.B.hist);
+  const sterne = (J.ergebnis > B.ergebnis ? 1 : 0) + (J.uh >= 8 ? 1 : 0) + (J.lb >= 0.98 ? 1 : 0);
+  P.s5.played = true; P.s5.sterne = Math.max(P.s5.sterne, sterne); speichern();
+  box.innerHTML = `${quartalsbericht(PSP.letzte, PSP.B.hist[3])}
+    <div class="karte"><h3>Jahresauswertung · Szenario ${PSP.seed}</h3>
+    <div class="sterne" aria-label="${sterne} von 3 Sternen">${'★'.repeat(sterne)}${'☆'.repeat(3 - sterne)}</div>
+    ${tabelle(['Kennzahl', 'Deine Strategie', 'ohne Maßnahmen'], [
+      ['Ø Lagerbestand', `${fmt(J.lager, 0)} St. (${eur0(J.lager * 100)})`, `${fmt(B.lager, 0)} St. (${eur0(B.lager * 100)})`],
+      ['Umschlagshäufigkeit', fmtN(J.uh), fmtN(B.uh)],
+      ['Ø Lagerdauer', tage(J.dld), tage(B.dld)],
+      ['Lieferbereitschaft', proz(J.lb * 100, 1), proz(B.lb * 100, 1)],
+      ['Fehlmengen', fmt(J.fehl, 0) + ' St.', fmt(B.fehl, 0) + ' St.'],
+      ['Lagerhaltungskosten', eur0(J.lagerk), eur0(B.lagerk)],
+      ['Einmalige Kosten', eur0(J.einmal), '–'],
+      ['<strong>Jahresergebnis</strong>', `<strong>${eur0(J.ergebnis)}</strong>`, eur0(B.ergebnis)]
+    ])}
+    <p>${J.ergebnis > B.ergebnis ? `<span class="besser">Deine Strategie bringt ${eur0(J.ergebnis - B.ergebnis)} mehr als „nichts tun“.</span>` : `<span class="schlechter">Deine Strategie bringt ${eur0(B.ergebnis - J.ergebnis)} weniger als „nichts tun“.</span>`}
+    ${J.uh < 8 ? ' Die Umschlagshäufigkeit liegt unter 8.' : ''} ${J.lb < 0.98 ? ' Die Lieferbereitschaft liegt unter 98 %.' : ''}</p>
+    <div class="hinweis info klein">Einmalige Maßnahmen (Kooperation, ABC-Strategie, Prognose) belasten das erste Jahr, wirken aber dauerhaft. Im Folgejahr wären sie bereits bezahlt – denk bei der Beurteilung an die Amortisation.</div></div>
+    <div class="karte"><h4><span class="badge">Beurteilen · AFB III</span> Beurteile deine Strategie</h4>
+    <p>Welche Maßnahme hat am meisten gebracht? Wo trat ein Zielkonflikt auf? Warum ist der Branchenwert (UH 18) nicht ohne Weiteres erreichbar? Was würdest du im nächsten Jahr anders machen?</p><div class="tr"></div></div>
+    <div class="aktionen"><button class="btn sek" id="nochmal">Gleiches Szenario neu spielen</button><button class="btn sek" id="neu">Neues Szenario</button></div>`;
+  textCheck($('.tr', box), { items: ['Zielkonflikt Kapitalbindung ↔ Lieferbereitschaft benannt', 'Kosten und Nutzen einmaliger Maßnahmen abgewogen (Amortisation über mehrere Jahre)', 'Erkannt: erst Ursachen beseitigen (Prognose, Lieferantenkooperation), dann Sicherheitsbestand senken', 'Optimum bei der Bestellmenge erkannt: Bestellkosten steigen, Lagerkosten sinken', 'Rolle des Zufalls bedacht – Vergleich mit „ohne Maßnahmen“ statt nur mit dem Ergebnis', 'Ökologische Aspekte: weniger Lagerfläche gegenüber mehr Transporten bei kleineren Liefermengen'], onAufgedeckt: () => bestanden(5) });
+  $('#nochmal', box).onclick = () => { const seed = PSP.seed; PSP = { seed, Z: szenario(seed), S: startZustand(), B: startZustand(), q: 0, wahl: [], letzte: null }; spielZeichnen(box); };
+  $('#neu', box).onclick = () => { PSP = null; startseite(box); };
+}
+
+/* =========================================================
+   STUFE 6 – ABI-ENDBOSS
+   ========================================================= */
+let ENDB = null;
+function genEndboss() {
+  let K, L, uhB, jz;
+  for (let v = 0; v < 50; v++) { K = lagerkarteErzeugen(); jz = pick([6, 8, 9, 10, 12]); L = lagerkarteLoesung(K, jz); if (L.uh < 4.5) break; }
+  uhB = Math.max(3, Math.ceil(L.uh + 1.5 + Math.random() * 3));
+  const dlbNeu = Math.round(K.verbrauch / uhB), kapNeu = dlbNeu * K.wert, lzA = kapNeu * L.lzz / 100, spA = L.lz - lzA;
+  const dldNeu = 360 / uhB, lzzNeu = jz * dldNeu / 360, lzB = kapNeu * lzzNeu / 100, spB = L.lz - lzB;
+  return { K, L, jz, uhB, dlbNeu, kapNeu, lzA, spA, dldNeu, lzzNeu, lzB, spB, be1: null, be3: null, be2: 0, be4: 0 };
+}
+function viewS6(m) {
+  const c = kopf(m, 6);
+  if (!ENDB) ENDB = genEndboss();
+  endboss(c);
+}
+function endboss(c) {
+  const E = ENDB, K = E.K, L = E.L;
+  c.innerHTML = `<div class="karte"><h3>Abituraufgabe: Lagerkennzahlen der ESS GmbH</h3>
+    <p class="klein">Bearbeitungszeit: ca. 30 Minuten · 24 BE · Hilfsmittel: Taschenrechner. <button class="btn sek klein" id="tstart">Zeit starten</button> <span class="timer" id="timer"></span></p>
+    <p>Im Hinblick auf mögliche Kosteneinsparungen soll die Teilelagerhaltung der ESS GmbH überprüft werden. Für Artikel ${K.nr} liegt die Lagerkarte vor (Material 1). Der Jahreszinssatz beträgt ${proz(E.jz)}. Für die Branche wurde eine Umschlagshäufigkeit von ${fmtN(E.uhB)} ermittelt.</p>
+    <h4>Material 1</h4>${lagerkarteHTML(K)}</div>
+    <div class="karte"><h4><span class="badge">AFB I–II · 7 BE</span> 1. Ermitteln Sie</h4><p>den durchschnittlichen Lagerbestand (Monatsinventur, auf ganze Stück gerundet), den Verbrauch, die Umschlagshäufigkeit, die durchschnittliche Lagerdauer, das durchschnittlich gebundene Kapital, den Lagerzinssatz und die Lagerzinsen.</p>
+      <div class="g1"></div><div class="aktionen"><button class="btn" data-a="p1">Teilaufgabe 1 prüfen</button></div><div class="rm1"></div></div>
+    <div class="karte"><h4><span class="badge">AFB II · 4 BE</span> 2. Erläutern Sie zwei Möglichkeiten, wie die ESS GmbH die Umschlagshäufigkeit dieses Artikels erhöhen kann.</h4><div class="t2"></div></div>
+    <div class="karte"><h4><span class="badge">AFB II · 7 BE</span> 3. Berechnen Sie die Lagerzinsen, die eingespart werden könnten, wenn bei gleichem Verbrauch die Branchen-Umschlagshäufigkeit erreicht würde.</h4>
+      <p>a) Gehen Sie vereinfacht davon aus, dass der Lagerzinssatz gleich bleibt.<br>b) Ermitteln Sie das Ergebnis mit dem neu zu berechnenden Lagerzinssatz.<br><span class="klein">Runden Sie den neuen Ø Lagerbestand auf ganze Stück.</span></p>
+      <div class="g3"></div><div class="aktionen"><button class="btn" data-a="p3">Teilaufgabe 3 prüfen</button></div><div class="rm3"></div><div class="vt"></div></div>
+    <div class="karte"><h4><span class="badge">AFB III · 6 BE</span> 4. Beurteilen Sie, ob die Geschäftsleitung den Branchendurchschnitt anstreben sollte. Berücksichtigen Sie dabei auch die Lieferbereitschaft und ökologische Aspekte.</h4><div class="t4"></div></div>
+    <div class="karte" id="bilanz"></div>
+    <div class="aktionen"><button class="btn sek" id="neuA">Neue Abi-Aufgabe (neue Zahlen)</button><button class="btn sek" id="weg6">Musterlösung Rechenteile anzeigen</button></div>
+    <div id="muster"></div>`;
+  // Timer
+  let tId = null; $('#tstart', c).onclick = () => { if (tId) return; const ende = Date.now() + 30 * 60000; const t = () => { const r = Math.max(0, ende - Date.now()); $('#timer', c).textContent = `${String(Math.floor(r / 60000)).padStart(2, '0')}:${String(Math.floor(r / 1000) % 60).padStart(2, '0')}`; if (!r || !document.body.contains(c)) clearInterval(tId); }; t(); tId = setInterval(t, 1000); };
+  const f1 = lagerkarteFelder(K, L, E.jz);
+  const G1 = feldGruppe($('.g1', c), f1);
+  const o1 = () => G1.werte();
+  const v = (o, k, fb) => (o[k] !== null && o[k] !== undefined ? o[k] : fb);
+  const f3 = [
+    { key: 'dlbneu', label: 'Neuer Ø Lagerbestand', einheit: 'St.', wahr: E.dlbNeu, dez: 0, folge: () => Math.round(v(o1(), 'verbr', K.verbrauch) / E.uhB), hinweise: [x => istNah(x, K.verbrauch * E.uhB) ? 'Umstellen: Ø LB = Verbrauch / UH.' : null] },
+    { key: 'kapneu', label: 'Neues Ø gebundenes Kapital', einheit: '€', wahr: E.kapNeu, folge: o => o.dlbneu * K.wert },
+    { key: 'lza', label: 'a) Lagerzinsen bei gleichem LZZ', einheit: '€', wahr: E.lzA, folge: o => o.kapneu * v(o1(), 'lzz', L.lzz) / 100 },
+    { key: 'spa', label: 'a) Einsparung', einheit: '€', wahr: E.spA, folge: o => v(o1(), 'lz', L.lz) - o.lza },
+    { key: 'lzzneu', label: 'b) Neuer Lagerzinssatz', einheit: '%', wahr: E.lzzNeu, hinweise: [x => istNah(x, L.lzz) ? 'Das ist der alte Lagerzinssatz. Die neue Lagerdauer beträgt 360 / Branchen-UH.' : null] },
+    { key: 'lzb', label: 'b) Lagerzinsen mit neuem LZZ', einheit: '€', wahr: E.lzB, folge: o => o.kapneu * o.lzzneu / 100 },
+    { key: 'spb', label: 'b) Einsparung', einheit: '€', wahr: E.spB, folge: o => v(o1(), 'lz', L.lz) - o.lzb }
+  ];
+  const G3 = feldGruppe($('.g3', c), f3);
+  const zaehl = st => Object.values(st).filter(s => s === 'ok' || s === 'folge').length;
+  const bilanz = () => {
+    const auto = (E.be1 || 0) + (E.be3 || 0), ges = auto + E.be2 + E.be4;
+    const fertig = E.be1 !== null && E.be3 !== null;
+    if (fertig) { P.s6.best = Math.max(P.s6.best, auto); P.s6.gesamt = Math.max(P.s6.gesamt, ges); speichern(); if (auto >= 10) bestanden(6); }
+    $('#bilanz', c).innerHTML = `<h4>Bewertung</h4>${tabelle(['Teilaufgabe', 'BE'], [['1 (Rechnen, automatisch)', E.be1 === null ? 'noch nicht geprüft' : `${E.be1} / 7`], ['2 (Selbsteinschätzung)', `${E.be2} / 4`], ['3 (Rechnen, automatisch)', E.be3 === null ? 'noch nicht geprüft' : `${E.be3} / 7`], ['4 (Selbsteinschätzung)', `${E.be4} / 6`], ['<strong>Summe</strong>', `<strong>${ges} / 24</strong>`]])}
+      <p class="klein">Gewertet wird der erste Prüfdurchgang. Richtig weitergerechnete Folgefehler bekommen volle BE – wie im Abitur üblich. ${fertig ? (auto >= 10 ? '<span class="besser">Rechenteile: Ziel erreicht.</span>' : '<span class="schlechter">Rechenteile: unter 10 von 14 BE – übe mit einer neuen Aufgabe.</span>') : ''}</p>`;
+  };
+  $('[data-a=p1]', c).onclick = () => { const st = G1.pruefen(); const n = zaehl(st); if (E.be1 === null) { E.be1 = n; } $('.rm1', c).innerHTML = `<div class="hinweis ${n === 7 ? 'gut' : 'schlecht'}">Erstbewertung: ${E.be1} / 7 BE. ${n < 7 ? 'Du kannst jetzt korrigieren – die Bewertung ändert sich dadurch nicht mehr.' : ''}</div>`; bilanz(); };
+  $('[data-a=p3]', c).onclick = () => {
+    const st = G3.pruefen(); const n = zaehl(st); if (E.be3 === null) E.be3 = n;
+    $('.rm3', c).innerHTML = `<div class="hinweis ${n === 7 ? 'gut' : 'schlecht'}">Erstbewertung: ${E.be3} / 7 BE.</div>`; bilanz(); vertiefung($('.vt', c), E);
+  };
+  textCheck($('.t2', c), { maxBE: 4, items: ['Senkung des Ø Lagerbestands bei gleichem Verbrauch erläutert (z. B. Sicherheitsbestand senken, kleinere Bestellmengen)', 'Erhöhung des Verbrauchs/Absatzes bei gleichem Ø Lagerbestand erläutert (z. B. Absatzförderung)', 'Mit der Formel UH = Verbrauch / Ø Lagerbestand begründet', 'Konkretes Beschaffungsverfahren genannt (z. B. JIT, Bestellpunktverfahren, Delivery on demand)'], onZahl: n => { E.be2 = Math.min(n, 4); bilanz(); } });
+  textCheck($('.t4', c), { maxBE: 6, items: ['Einsparpotenzial aus Teilaufgabe 3 als Argument genutzt', 'Risiko benannt: geringerer Sicherheitsbestand gefährdet die Lieferbereitschaft (Fehlmengen, Produktionsstillstand)', 'Vergleichbarkeit mit der Branche hinterfragt (Sortiment, Kunden, Bedeutung des Teils)', 'Ökologische Aspekte: weniger Lagerfläche und Flächenversiegelung, aber ggf. mehr Transporte bei kleineren Liefermengen', 'Konkrete Maßnahmen genannt (z. B. ABC/XYZ-Analyse, Bestellpunktverfahren, JIT für A-Güter)', 'Begründetes Fazit mit eigener Entscheidung'], onZahl: n => { E.be4 = Math.min(n, 6); bilanz(); } });
+  bilanz();
+  $('#neuA', c).onclick = () => { ENDB = genEndboss(); endboss(c); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  $('#weg6', c).onclick = () => {
+    if (E.be1 === null) E.be1 = 0; if (E.be3 === null) E.be3 = 0; bilanz();
+    $('#muster', c).innerHTML = `<div class="karte"><h3>Musterlösung Teilaufgabe 1</h3>${lagerkarteWeg(K, L, E.jz)}
+      <h3>Musterlösung Teilaufgabe 3</h3>${weg([
+        ['Neuer Ø Lagerbestand', 'Verbrauch / Branchen-UH', `${fmt(K.verbrauch, 0)} / ${fmtN(E.uhB)}`, `${fmtN(K.verbrauch / E.uhB)} St. ≈ ${fmt(E.dlbNeu, 0)} St.`],
+        ['Neues Ø gebundenes Kapital', 'Ø Lagerbestand × Lagerwert je Stück', `${fmt(E.dlbNeu, 0)} St. × ${eur(K.wert)}`, eur(E.kapNeu)],
+        ['a) Lagerzinsen (gleicher LZZ)', 'Kapital × Lagerzinssatz / 100', `${eur(E.kapNeu)} × ${fmtN(L.lzz, 4)} / 100`, eur(E.lzA)],
+        ['a) Einsparung', 'Lagerzinsen alt − Lagerzinsen neu', `${eur(L.lz)} − ${eur(E.lzA)}`, eur(E.spA)],
+        ['b) Neue Lagerdauer', '360 / Branchen-UH', `360 / ${fmtN(E.uhB)}`, tage(E.dldNeu)],
+        ['b) Neuer Lagerzinssatz', 'Jahreszinssatz × Ø Lagerdauer / 360', `${proz(E.jz)} × ${fmtN(E.dldNeu, 4)} / 360`, proz(E.lzzNeu, 4)],
+        ['b) Lagerzinsen (neuer LZZ)', 'Kapital × Lagerzinssatz / 100', `${eur(E.kapNeu)} × ${fmtN(E.lzzNeu, 4)} / 100`, eur(E.lzB)],
+        ['b) Einsparung', 'Lagerzinsen alt − Lagerzinsen neu', `${eur(L.lz)} − ${eur(E.lzB)}`, eur(E.spB)]
+      ])}<p class="klein">Werden die Rechenteile vor dem Prüfen aufgedeckt, zählen sie mit 0 BE.</p></div>`;
+    vertiefung($('.vt', c), E);
+  };
+}
+function vertiefung(box, E) {
+  if (box.dataset.da) return; box.dataset.da = '1';
+  const L = E.L, kapAlt = L.kap, qK = E.kapNeu / kapAlt, qZ = E.lzB / L.lz;
+  const jahrAlt = kapAlt * E.jz / 100, jahrNeu = E.kapNeu * E.jz / 100;
+  box.innerHTML = `<div class="hinweis vert"><span class="badge vert">Vertiefung · freiwillig</span>
+    <p><strong>Beobachtung:</strong> Das gebundene Kapital sinkt in Teilaufgabe 3b auf ${proz(qK * 100, 1)} des Ausgangswerts – die Lagerzinsen aber auf ${proz(qZ * 100, 1)}. Warum sinken die Lagerzinsen so viel stärker?</p><div class="vmc"></div></div>`;
+  einzelwahl($('.vmc', box), { o: [
+    { t: 'Nach der Formel „Ø Lagerbestand × Lagerzinssatz“ sinken zwei Faktoren gleichzeitig: der Bestand und – über die kürzere Lagerdauer – der Lagerzinssatz.', ok: true, e: `Genau: ${proz(qK * 100, 1)} × ${proz(qK * 100, 1)} ≈ ${proz(qK * qK * 100, 1)}. Der Effekt wirkt doppelt (quadratisch).` },
+    { t: 'Weil der Jahreszinssatz gesunken ist.', ok: false, e: 'Der Jahreszinssatz ist unverändert geblieben.' },
+    { t: 'Das ist ein Rundungsfehler.', ok: false, e: 'Der Unterschied ist viel zu groß für Rundungsdifferenzen.' }
+  ] }, () => {
+    box.insertAdjacentHTML('beforeend', `<div class="hinweis vert"><p><strong>Was steckt dahinter?</strong> Die Formel „Ø Lagerbestand × Lagerzinssatz“ berechnet die Zinsen für <em>eine</em> durchschnittliche Lagerdauer. Das durchschnittlich gebundene Kapital liegt aber das <em>ganze Jahr</em> im Lager. Betriebswirtschaftlich genauer sind die jährlichen Zinskosten:</p>
+      <div class="formel">Ø gebundenes Kapital × Jahreszinssatz = Wareneinsatz × Lagerzinssatz</div>
+      ${tabelle(['', 'vorher', 'nachher', 'Einsparung'], [['Jährliche Zinskosten auf das gebundene Kapital', eur(jahrAlt), eur(jahrNeu), eur(jahrAlt - jahrNeu)], ['Lagerzinsen nach der Unterrichtsformel', eur(L.lz), eur(E.lzB), eur(E.spB)]])}
+      <p>In der Jahresbetrachtung sinken die Zinskosten genau im Verhältnis des gebundenen Kapitals. Prüfe selbst: Lagerzinsen nach der Unterrichtsformel × Umschlagshäufigkeit = Jahreszinskosten (${eur(L.lz)} × ${fmtN(L.uh, 4)} ≈ ${eur(L.lz * L.uh)}).</p>
+      <p><strong>Für Klausur und Abitur:</strong> Rechne nach der im Unterricht eingeführten Formel. Die Jahresbetrachtung hilft dir zu verstehen, warum Kapitalbindung teuer ist. Frag im Zweifel deine Lehrkraft, ob du sie in einer Beurteilung ergänzend anführen sollst.</p></div>`);
+  });
+}
+
+/* =========================================================
+   FREIER RECHNER
+   ========================================================= */
+function viewRechner(m) {
+  m.innerHTML = `<a class="zurueck" href="#home">← Lernpfad</a>
+  <div class="karte"><h2>Werkzeug: Lagerkennzahlen-Rechner</h2><p>Zum Kontrollieren eigener Rechnungen. Erst selbst rechnen, dann vergleichen!</p></div>
+  <div class="raster2">
+    <div class="karte">
+      <label class="zeile">Inventurart<select class="std" id="r_art"><option value="jahr">Jahresinventur</option><option value="quartal">Quartalsinventur</option><option value="monat">Monatsinventur</option></select></label>
+      <div id="r_best"></div>
+      <label class="zeile">Wareneinsatz zu Einstandspreisen (€)<input class="std" id="r_we" inputmode="decimal"></label>
+      <label class="zeile">Zinsangabe<select class="std" id="r_zart"><option value="jz">Jahreszinssatz gegeben</option><option value="lzz">Lagerzinssatz direkt gegeben</option></select></label>
+      <label class="zeile"><span id="r_zlab">Jahreszinssatz (%)</span><input class="std" id="r_z" inputmode="decimal"></label>
+      <label class="zeile">Sonstige Lagerhaltungskosten (€, optional)<input class="std" id="r_lhk" inputmode="decimal"></label>
+      <label class="zeile">Umschlagshäufigkeit der Branche (optional)<input class="std" id="r_uhb" inputmode="decimal"></label>
+      <div class="aktionen"><button class="btn sek" id="r_bsp">Beispiel: Arbeitsblatt ESS GmbH</button><button class="btn sek" id="r_leer">Leeren</button></div>
+    </div>
+    <div class="karte" id="r_aus"><p class="klein">Ergebnisse erscheinen hier, sobald die nötigen Werte eingetragen sind.</p></div>
+  </div>`;
+  const bestFelder = () => {
+    const a = $('#r_art').value, n = a === 'jahr' ? ['Anfangsbestand 01.01.', 'Endbestand 31.12.'] : a === 'quartal' ? ['Anfangsbestand 01.01.', 'Bestand 31.03.', 'Bestand 30.06.', 'Bestand 30.09.', 'Bestand 31.12.'] : ['Anfangsbestand 01.01.'].concat(MONATE.map(x => 'Ende ' + x));
+    $('#r_best').innerHTML = `<div class="felder" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">${n.map((t, i) => `<label class="zeile">${t} (€)<input class="std rb" data-i="${i}" inputmode="decimal"></label>`).join('')}</div>`;
+    $$('.rb').forEach(i => i.oninput = rechne);
+  };
+  function rechne() {
+    const a = $('#r_art').value, best = $$('.rb').map(i => parseZahl(i.value));
+    const we = parseZahl($('#r_we').value), z = parseZahl($('#r_z').value), zart = $('#r_zart').value, lhk = parseZahl($('#r_lhk').value), uhb = parseZahl($('#r_uhb').value);
+    const aus = $('#r_aus');
+    if (best.some(x => x === null) || we === null || z === null) { aus.innerHTML = '<p class="klein">Bitte alle Bestände, den Wareneinsatz und die Zinsangabe eintragen.</p>'; return; }
+    const div = a === 'jahr' ? 2 : a === 'quartal' ? 5 : 13, summe = best.reduce((x, y) => x + y, 0), dlb = summe / div;
+    if (dlb <= 0 || we <= 0) { aus.innerHTML = '<p class="klein">Bestand und Wareneinsatz müssen größer als 0 sein.</p>'; return; }
+    const uh = we / dlb, dld = 360 / uh, lzz = zart === 'jz' ? z * dld / 360 : z, jz = zart === 'jz' ? z : z * 360 / dld, lz = dlb * lzz / 100;
+    let html = `<h3>Ergebnisse</h3>${tabelle(['Kennzahl', 'Wert'], [['Ø Lagerbestand', eur(dlb)], ['Umschlagshäufigkeit', fmtN(uh) + '-mal'], ['Ø Lagerdauer', tage(dld)], ['Lagerzinssatz', proz(lzz, 4)], ['Lagerzinsen', eur(lz)]].concat(lhk !== null ? [['Kosten der Lagerhaltung', eur(lz + lhk)]] : []))}
+      <details class="wegbox" open><summary>Rechenweg</summary>${weg([
+        ['Ø Lagerbestand', a === 'jahr' ? '(AB + EB) / 2' : a === 'quartal' ? '(AB + 4 Quartalsendbestände) / 5' : '(AB + 12 Monatsendbestände) / 13', `${eur(summe)} / ${div}`, eur(dlb)],
+        ['Umschlagshäufigkeit', 'Wareneinsatz / Ø Lagerbestand', `${eur(we)} / ${eur(dlb)}`, fmtN(uh, 4)],
+        ['Ø Lagerdauer', '360 / UH', `360 / ${fmtN(uh, 4)}`, tage(dld)],
+        zart === 'jz' ? ['Lagerzinssatz', 'Jahreszinssatz × DLD / 360', `${proz(z)} × ${fmtN(dld, 4)} / 360`, proz(lzz, 4)] : ['Lagerzinssatz', 'vorgegeben', '', proz(lzz, 4), `Entspricht einem Jahreszinssatz von ${proz(jz)} (LZZ × 360 / DLD).`],
+        ['Lagerzinsen', 'Ø Lagerbestand × LZZ / 100', `${eur(dlb)} × ${fmtN(lzz, 4)} / 100`, eur(lz)]
+      ].concat(lhk !== null ? [['Kosten der Lagerhaltung', 'Lagerzinsen + Lagerhaltungskosten', `${eur(lz)} + ${eur(lhk)}`, eur(lz + lhk)]] : []))}</details>`;
+    if (uhb !== null && uhb > 0) {
+      const dlbB = we / uhb, dldB = 360 / uhb, lzzB = jz * dldB / 360, lzB = dlbB * lzzB / 100;
+      html += `<h3>Branchenvergleich</h3>${tabelle(['', 'Unternehmen', 'Branche (bei gleichem Wareneinsatz)'], [['Umschlagshäufigkeit', fmtN(uh), fmtN(uhb)], ['Ø Lagerdauer', tage(dld), tage(dldB)], ['Ø Lagerbestand', eur(dlb), eur(dlbB)], ['Lagerzinssatz', proz(lzz, 3), proz(lzzB, 3)], ['Lagerzinsen', eur(lz), eur(lzB)]])}
+        <div class="hinweis info">${dlb > dlbB ? `Bei gleichem Wareneinsatz käme der Branchendurchschnitt mit ${eur0(dlbB)} Ø Lagerbestand aus. Im Unternehmen sind <strong>${eur0(dlb - dlbB)} mehr Kapital</strong> gebunden (Faktor ${fmtN(dlb / dlbB)}). Mögliches Einsparpotenzial bei den Lagerzinsen: ${eur0(lz - lzB)}.` : `Das Unternehmen bindet ${eur0(dlbB - dlb)} weniger Kapital als der Branchendurchschnitt.`}
+        <br><span class="klein">Vorsicht: Ein Branchenvergleich ist nur aussagekräftig, wenn Sortiment, Geschäftsmodell und Lieferbereitschaft vergleichbar sind.</span></div>`;
+    }
+    aus.innerHTML = html;
+  }
+  $('#r_art').onchange = () => { bestFelder(); rechne(); };
+  $('#r_zart').onchange = () => { $('#r_zlab').textContent = $('#r_zart').value === 'jz' ? 'Jahreszinssatz (%)' : 'Lagerzinssatz (%)'; rechne(); };
+  ['#r_we', '#r_z', '#r_lhk', '#r_uhb'].forEach(s => $(s).oninput = rechne);
+  $('#r_bsp').onclick = () => { $('#r_art').value = 'jahr'; bestFelder(); const b = $$('.rb'); b[0].value = '550.000'; b[1].value = '700.000'; $('#r_we').value = '3.000.000'; $('#r_zart').value = 'lzz'; $('#r_zlab').textContent = 'Lagerzinssatz (%)'; $('#r_z').value = '5'; $('#r_uhb').value = '18'; $('#r_lhk').value = ''; rechne(); };
+  $('#r_leer').onclick = () => { viewRechner(m); };
+  bestFelder();
+}
+
+/* =========================================================
+   ABSCHLUSSNACHWEIS
+   ========================================================= */
+function viewNachweis(m) {
+  const d = new Date().toLocaleDateString('de-DE');
+  m.innerHTML = `<a class="zurueck" href="#home">← Lernpfad</a>
+  <div class="karte"><h2>Abschlussnachweis Lernpfad Lagerkennzahlen</h2>
+  <label class="zeile" style="max-width:420px">Dein Name<input class="std" id="nname" value="${(P.name || '').replace(/"/g, '&quot;')}"></label>
+  ${tabelle(['Stufe', 'Ergebnis', 'Status'], [
+    ['1 Formeln sicher', `${Object.keys(P.s1.bau).length}/7 Formeln · Quiz ${P.s1.quiz}/12`, P.s1.passed ? '✓' : '–'],
+    ['2 Rechnen', `${Object.keys(P.s2.solved).length}/3 Aufgabenarten fehlerfrei`, P.s2.passed ? '✓' : '–'],
+    ['3 Interpretieren', `Deutungen ${P.s3.worte}/5 · Prognosen ${P.s3.prog}/10`, P.s3.passed ? '✓' : '–'],
+    ['4 Branchenvergleich', `${Object.keys(P.s4.cards).length}/4 Fallkarten`, P.s4.passed ? '✓' : '–'],
+    ['5 Lager optimieren', `Planspiel: ${'★'.repeat(P.s5.sterne)}${'☆'.repeat(3 - P.s5.sterne)}`, P.s5.passed ? '✓' : '–'],
+    ['6 Abi-Aufgabe', `Rechenteile bestes Ergebnis ${P.s6.best}/14 BE · gesamt ${P.s6.gesamt}/24 BE`, P.s6.passed ? '✓' : '–']
+  ], 9)}
+  <p>Stand: ${d}</p>
+  <p class="klein">Mach einen Screenshot dieser Seite und lade ihn bei Classroom hoch. Die Selbsteinschätzungen (Teilaufgaben 2 und 4) beruhen auf deinen eigenen Häkchen.</p></div>`;
+  $('#nname').oninput = e => { P.name = e.target.value; speichern(); };
+}
+
+/* =========================================================
+   ROUTING
+   ========================================================= */
+const VIEWS = { home: viewHome, s1: viewS1, s2: viewS2, s3: viewS3, s4: viewS4, s5: viewS5, s6: viewS6, rechner: viewRechner, nachweis: viewNachweis };
+function navZeichnen() {
+  const h = (location.hash || '#home').slice(1);
+  $('#nav').innerHTML = `<a href="#home" class="${h === 'home' ? 'aktiv' : ''}">Lernpfad</a><a href="#rechner" class="${h === 'rechner' ? 'aktiv' : ''}">${rechnerFrei() ? '' : '🔒 '}Rechner</a>`;
+}
+function route() {
+  const h = (location.hash || '#home').slice(1);
+  const m = $('#main');
+  navZeichnen(); lehrkraftLeiste();
+  const n = /^s(\d)$/.test(h) ? +h[1] : 0;
+  if (n && !frei(n)) { m.innerHTML = `<div class="karte"><h2>🔒 Stufe ${n} ist noch gesperrt</h2><p>Bestehe zuerst Stufe ${n - 1}.</p><a class="btn" href="#s${n - 1}">Zu Stufe ${n - 1}</a></div>`; return; }
+  if (h === 'rechner' && !rechnerFrei()) { m.innerHTML = '<div class="karte"><h2>🔒 Der Rechner ist noch gesperrt</h2><p>Er wird freigeschaltet, sobald du Stufe 2 (Rechnen) bestanden hast. Erst selbst rechnen können, dann rechnen lassen.</p><a class="btn" href="#home">Zum Lernpfad</a></div>'; return; }
+  (VIEWS[h] || viewHome)(m);
+  window.scrollTo(0, 0);
+}
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function lehrkraftLeiste() {
+  $('#lehrkraftleiste').innerHTML = LEHRKRAFT ? '<div class="lehrkraft"><div class="in"><strong>Lehrkraft-Ansicht:</strong> Alle Stufen und der Rechner sind frei. <button class="linkbtn" id="lk_out">Abmelden</button></div></div>' : '';
+  const o = $('#lk_out'); if (o) o.onclick = () => { localStorage.removeItem(LK_KEY); LEHRKRAFT = false; route(); };
+}
+function lehrkraftZugang() {
+  const box = $('#lk_box'); if (!box) return;
+  box.innerHTML = `<div class="karte" style="max-width:420px;margin:0 auto"><label class="zeile">Kennwort<input class="std" id="lk_pw" type="password" autocomplete="off"></label>
+    <div class="aktionen"><button class="btn" id="lk_ok">Freischalten</button><button class="btn sek" id="lk_no">Abbrechen</button></div><div class="klein" id="lk_msg"></div></div>`;
+  $('#lk_no').onclick = () => { box.innerHTML = ''; };
+  const pruefe = async () => {
+    try {
+      const h = await sha256Hex($('#lk_pw').value);
+      if (h === PWD_HASH) { localStorage.setItem(LK_KEY, h); LEHRKRAFT = true; route(); }
+      else $('#lk_msg').textContent = 'Das Kennwort stimmt nicht.';
+    } catch (e) { $('#lk_msg').textContent = 'Die Prüfung ist in diesem Browser nicht verfügbar (HTTPS nötig).'; }
+  };
+  $('#lk_ok').onclick = pruefe;
+  $('#lk_pw').addEventListener('keydown', e => { if (e.key === 'Enter') pruefe(); });
+  $('#lk_pw').focus();
+}
+window.addEventListener('hashchange', route);
+route();
+</script>
+<script>
+/* Höhenmeldung an die Lehrseite (eingebettet per iframe) */
+(function(){
+  if (window.parent === window) return;
+  var letzte = 0;
+  function melde(){
+    window.requestAnimationFrame(function(){
+      var h = document.documentElement.scrollHeight;
+      if (Math.abs(h - letzte) > 4){ letzte = h; try { window.parent.postMessage({ typ: "rechner-hoehe", hoehe: h }, "*"); } catch (e) {} }
+    });
+  }
+  if (window.ResizeObserver) new ResizeObserver(melde).observe(document.body);
+  window.addEventListener("load", melde);
+  window.addEventListener("hashchange", melde);
+})();
+</script>
+</body>
+</html>
