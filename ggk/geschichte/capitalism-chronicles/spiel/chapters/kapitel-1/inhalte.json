@@ -1,0 +1,1993 @@
+{
+  "kapitel": {
+    "nummer": "I",
+    "titel": "Marx & Engels: Der Preis des Fortschritts",
+    "ort": "Manchester, Sommer 1845",
+    "hinweisFiktion": "Belegt ist die Reise von Marx und Engels nach Manchester im Sommer 1845. Gespräche, Besuche und Nebenfiguren sind erfunden. Das Titelbild ist eine Stimmungsvorlage, keine historische Fotografie."
+  },
+  "marken": {
+    "tatsache": {
+      "name": "Tatsache",
+      "text": "historisch belegt"
+    },
+    "theorie": {
+      "name": "Theorie",
+      "text": "Marx' und Engels' Deutung"
+    },
+    "vereinfachung": {
+      "name": "Vereinfachung",
+      "text": "für das Spiel verkürzt"
+    },
+    "kontroverse": {
+      "name": "Kontroverse",
+      "text": "in der Wissenschaft umstritten"
+    },
+    "erfunden": {
+      "name": "Erfunden",
+      "text": "Figur des Spiels"
+    }
+  },
+  "personen": {
+    "marx": {
+      "name": "Karl Marx",
+      "fiktiv": false
+    },
+    "engels": {
+      "name": "Friedrich Engels",
+      "fiktiv": false
+    },
+    "mary": {
+      "name": "Mary, Spinnerin",
+      "fiktiv": true
+    },
+    "whitlow": {
+      "name": "Mr. Whitlow, Fabrikant",
+      "fiktiv": true
+    },
+    "pym": {
+      "name": "Mr. Pym, Kontorist",
+      "fiktiv": true
+    },
+    "ellen": {
+      "name": "Ellen, Wäscherin",
+      "fiktiv": true
+    },
+    "tom": {
+      "name": "Tom, ihr Sohn",
+      "fiktiv": true
+    },
+    "holt": {
+      "name": "Joseph Holt, Chartist",
+      "fiktiv": true
+    },
+    "grimshaw": {
+      "name": "Mr. Grimshaw, Sprecher der Fabrikanten",
+      "fiktiv": true
+    }
+  },
+  "stationen": [
+    {
+      "nr": 1,
+      "roemisch": "I",
+      "name": "Die Stadt",
+      "fund": "Zwei Städte in einer",
+      "gebaut": true
+    },
+    {
+      "nr": 2,
+      "roemisch": "II",
+      "name": "Die Spinnerei",
+      "fund": "Mehrwert",
+      "gebaut": true
+    },
+    {
+      "nr": 3,
+      "roemisch": "III",
+      "name": "Das Kontor",
+      "fund": "Akkumulation",
+      "gebaut": true
+    },
+    {
+      "nr": 4,
+      "roemisch": "IV",
+      "name": "Das Arbeiterviertel",
+      "fund": "Verelendung, Ursache strittig",
+      "gebaut": true
+    },
+    {
+      "nr": 5,
+      "roemisch": "V",
+      "name": "Die Versammlung",
+      "fund": "Anklageschrift",
+      "gebaut": true
+    }
+  ],
+  "tagebuch": [
+    {
+      "id": "s_bahn",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Die erste Fernbahn der Welt",
+      "text": "Am 15. September 1830 wurde die Liverpool and Manchester Railway eröffnet. Sie gilt als erste Eisenbahn zwischen zwei Städten, die nach Fahrplan und ausschließlich mit Dampflokomotiven fuhr. Gebaut wurde sie vor allem, um Rohbaumwolle schneller vom Hafen Liverpool zu den Spinnereien Manchesters und Garn und Stoffe zurück zum Hafen zu bringen. Der Bahnhof im Spiel ist nachempfunden, kein bestimmter historischer Bau.",
+      "quelle": "University of Manchester Library, Rylands Collections: „The Liverpool and Manchester Railway“ (2022); Grace's Guide to British Industrial History: „Liverpool and Manchester Railway“"
+    },
+    {
+      "id": "s_baumwolle",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Woher die Baumwolle kommt",
+      "text": "In England wächst keine Baumwolle. Zwischen 1840 und 1860 kamen rund drei Viertel bis vier Fünftel der britischen Rohbaumwolle aus den Südstaaten der USA. Dort wurde sie überwiegend von versklavten Menschen angebaut und geerntet. Liverpool war der wichtigste Einfuhrhafen; von dort gelangten die Ballen nach Manchester.",
+      "quelle": "Thomas Ellison: The Cotton Trade of Great Britain (1886), nach: Journal of American Studies (Cambridge University Press), „British Humanitarians and American Cotton, 1840–1860“; David Olusoga: Black and British (2016)"
+    },
+    {
+      "id": "s_kanal",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Kohle auf dem Wasserweg",
+      "text": "Kanäle brachten Kohle billig in die Stadt. Als 1761 der Bridgewater Canal die Kohlegruben von Worsley mit Manchester verband, sank der Kohlepreis in Manchester etwa auf die Hälfte. Ein Pferd zog auf dem Kanal ein Boot mit rund 30 Tonnen Last, ein Vielfaches einer Fuhre auf der Straße. Billige Kohle trieb die Dampfmaschinen der Spinnereien an. Der Kanal im Spiel ist nachempfunden.",
+      "quelle": "Encyclopaedia Britannica: „Bridgewater Canal“"
+    },
+    {
+      "id": "s_wachstum",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Die Stadt, die zu schnell wuchs",
+      "text": "Zwischen 1801 und 1841 hat sich die Einwohnerzahl Manchesters mehr als verdreifacht; die Londons hat sich im selben Zeitraum nur verdoppelt. Die Arbeit in den Spinnereien zog Menschen vom Land in die Stadt. Wohnungen, Wasser und Kanalisation hielten mit diesem Wachstum nicht Schritt. Der Historiker Asa Briggs nannte Manchester später die „Schockstadt“ ihres Zeitalters.",
+      "quelle": "Encyclopedia.com: „Manchester“ (nach den Volkszählungen 1801–1851); Asa Briggs: Victorian Cities (1963)"
+    },
+    {
+      "id": "s_fabrikgesetz",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Die Fabrikgesetze von 1833 und 1844",
+      "text": "Seit 1833 durften Kinder unter neun Jahren nicht mehr in Textilfabriken arbeiten. Erstmals überwachten staatliche Fabrikinspektoren das Gesetz – anfangs vier für rund 3.000 Fabriken. Das Gesetz von 1844 senkte das Mindestalter auf acht Jahre, begrenzte aber die Arbeit der 8- bis 13-Jährigen auf 6½ Stunden am Tag. Frauen und Jugendliche bis 18 durften höchstens 12 Stunden arbeiten. Für erwachsene Männer galt keine Grenze.",
+      "quelle": "UK Parliament: „The 1833 Factory Act“; The National Archives: „1833 Factory Act“ (Unterrichtsmaterial); The Peel Web: „Factory Legislation 1802–1878“"
+    },
+    {
+      "id": "d_reise",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Sommer 1845: Marx und Engels in Manchester",
+      "text": "Belegt ist: Im Juli und August 1845 reisten Marx und Engels gemeinsam nach England. In Manchester lasen sie in der Chetham's Library ökonomische Schriften. Erfunden sind in diesem Spiel alle Gespräche, Besuche und Nebenfiguren."
+    },
+    {
+      "id": "p_marx",
+      "reiter": "personen",
+      "marke": "tatsache",
+      "titel": "Karl Marx (1818–1883)",
+      "text": "Philosoph und Journalist, seit Anfang 1845 im Exil in Brüssel. Im Sommer 1845 ist er 27 Jahre alt. Seine ökonomische Theorie steht noch am Anfang."
+    },
+    {
+      "id": "p_engels",
+      "reiter": "personen",
+      "marke": "tatsache",
+      "titel": "Friedrich Engels (1820–1895)",
+      "text": "Sohn eines Textilfabrikanten aus Barmen. Von 1842 bis 1844 arbeitete er im Kontor der Firma Ermen & Engels in Manchester. 1845 erscheint sein Buch „Die Lage der arbeitenden Klasse in England“. Im Sommer 1845 ist er 24 Jahre alt."
+    },
+    {
+      "id": "p_mary",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Mary, Spinnerin",
+      "text": "Arbeitet zwölf Stunden am Tag an einer Spinnmaschine von Whitlow & Co. Die Figur ist erfunden. Sie steht für die vielen Frauen, die in den Baumwollspinnereien arbeiteten."
+    },
+    {
+      "id": "p_whitlow",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Mr. Whitlow, Fabrikant",
+      "text": "Besitzer der Spinnerei, erfunden wie seine Firma. Er hat mit geliehenem Geld gebaut und muss sich gegen die Konkurrenz behaupten. Er ist kein Bösewicht: Er handelt so, wie der Wettbewerb es von ihm verlangt."
+    },
+    {
+      "id": "b_ware",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Arbeitskraft als Ware",
+      "text": "Mary verkauft nicht ihr Garn, sondern ihre Arbeitskraft für einen Tag. Der Lohn ist nach Marx der Preis dieser Ware. Was Mary in der gekauften Zeit herstellt, gehört dem Fabrikanten."
+    },
+    {
+      "id": "b_modell",
+      "reiter": "begriffe",
+      "marke": "vereinfachung",
+      "titel": "Rechenbeispiel, kein Lohnzettel",
+      "text": "3 Schilling Tageslohn und ½ Schilling Neuwert je Stunde stammen aus Marx' eigenem Rechenbeispiel im „Kapital“. Es sind Modellzahlen, keine belegten Löhne aus Manchester."
+    },
+    {
+      "id": "b_arbeitszeit",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Notwendige Arbeitszeit und Mehrarbeit",
+      "text": "Notwendige Arbeitszeit: die Stunden, in denen Mary den Wert ihres Lohns erarbeitet (hier 6 von 12). Mehrarbeit: die Stunden danach. Auch in ihnen entsteht Wert; er fällt dem Fabrikanten zu."
+    },
+    {
+      "id": "b_mehrwert",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Mehrwert und Mehrwertrate",
+      "text": "Mehrwert = Neuwert minus Lohn (hier 6 − 3 = 3 Schilling). Mehrwertrate = Mehrwert geteilt durch Lohn (hier 100 %). Für Marx ist der Mehrwert die Quelle des Gewinns. Er entsteht, obwohl der Lohn vollständig und pünktlich gezahlt wird."
+    },
+    {
+      "id": "d_garn",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Marx' Garn-Beispiel",
+      "text": "Marx rechnet im „Kapital“ mit einem Spinner: Der Tageswert der Arbeitskraft beträgt 3 Schilling. In 6 Stunden schafft der Spinner diesen Wert neu. Er arbeitet aber 12 Stunden und schafft 6 Schilling Neuwert. Die Differenz von 3 Schilling ist der Mehrwert. Baumwolle und Spindeln (24 Schilling) geben ihren Wert nur an das Garn weiter.",
+      "zitat": "Das Kunststück ist endlich gelungen. Geld ist in Kapital verwandelt.",
+      "quelle": "Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 5"
+    },
+    {
+      "id": "b_voraus",
+      "reiter": "begriffe",
+      "marke": "vereinfachung",
+      "titel": "Marx denkt voraus",
+      "text": "Die Theorie des Mehrwerts arbeitete Marx erst zwischen 1857 und 1867 aus. Im Spiel entwickelt er sie schon 1845 im Gespräch. Das ist eine Verdichtung, keine historische Tatsache."
+    },
+    {
+      "id": "d_zehn",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Blick voraus: das Zehnstundengesetz von 1847",
+      "text": "1847 beschloss das britische Parlament, die Arbeitszeit von Frauen und Jugendlichen in Textilfabriken auf zehn Stunden am Tag zu begrenzen. Vorausgegangen war ein jahrelanger Streit zwischen Arbeitern, Reformern und Fabrikanten. Im Sommer 1845, in dem das Spiel handelt, galt das Gesetz noch nicht.",
+      "quelle": "Factories Act 1847 („Ten Hours Act“)"
+    },
+    {
+      "id": "b_relativ",
+      "reiter": "begriffe",
+      "marke": "vereinfachung",
+      "titel": "Relativer Mehrwert",
+      "text": "Wird der Arbeitstag kürzer, kann der Mehrwert gleich bleiben, wenn die notwendige Arbeitszeit sinkt (hier von 6 auf 5 Stunden). Marx nennt das relativen Mehrwert. Vereinfacht: Im Spiel schafft die schnellere Maschine mehr Wert je Stunde. Bei Marx sinkt die notwendige Arbeitszeit auf Dauer vor allem, weil die Güter billiger werden, von denen die Arbeiter leben. Die dichtere Arbeit an schnelleren Maschinen beschreibt er als zweiten Weg.",
+      "quelle": "Karl Marx: Das Kapital, Bd. 1, Kap. 10 und 13"
+    },
+    {
+      "id": "b_entfremdung",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Entfremdung",
+      "text": "Marx unterscheidet 1844 vier Formen: Entfremdung vom Produkt, von der eigenen Tätigkeit, vom menschlichen Wesen (der Fähigkeit, frei und schöpferisch tätig zu sein) und vom anderen Menschen."
+    },
+    {
+      "id": "d_entfremdung",
+      "reiter": "dokumente",
+      "marke": "kontroverse",
+      "titel": "Marx über entfremdete Arbeit (1844)",
+      "text": "Marx schrieb den Satz 1844 in Paris, ein Jahr vor der Reise nach Manchester. Die Manuskripte blieben unveröffentlicht und wurden erst 1932 gedruckt. Ob diese frühe Theorie zum späteren Marx des „Kapital“ passt, ist in der Forschung umstritten.",
+      "zitat": "Der Arbeiter fühlt sich daher erst außer der Arbeit bei sich und in der Arbeit außer sich.",
+      "quelle": "Karl Marx: Ökonomisch-philosophische Manuskripte (1844), MEW Ergänzungsband 1, S. 514"
+    },
+    {
+      "id": "b_awl",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Arbeitswertlehre",
+      "text": "Marx' Rechnung setzt voraus, dass nur Arbeit neuen Wert schafft. Diese Lehre übernahm er von den Ökonomen Adam Smith und David Ricardo. Die heutige Volkswirtschaftslehre erklärt Preise anders: aus Nutzen, Knappheit, Angebot und Nachfrage. Dort gelten auch Kapital, unternehmerische Leistung und Risiko als Quellen von Einkommen. Ob Gewinn „unbezahlte Arbeit“ ist, hängt also von der Werttheorie ab, die man zugrunde legt."
+    },
+    {
+      "id": "b_einwand",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Whitlows Einwand",
+      "text": "Der Fabrikant plant, leiht Geld und trägt das Risiko des Scheiterns. In Marx' Rechnung kommt das nicht vor. Marx' Entgegnung: Leitung ist Arbeit und kann bezahlt werden; der Gewinn fließt dem Eigentümer aber auch dann zu, wenn er die Leitung anderen überlässt. Kritiker halten dagegen: Ohne Aussicht auf Gewinn würde niemand Kapital einsetzen und Verluste riskieren. Die Frage kehrt in Kapitel III zurück."
+    },
+    {
+      "id": "f_zweistaedte",
+      "reiter": "funde",
+      "marke": "tatsache",
+      "titel": "Fund I: Zwei Städte in einer",
+      "text": "Manchester wächst durch Dampf, Baumwolle und Kanäle. Dabei zerfällt die Stadt in zwei Teile: Wer in den Villen am Stadtrand wohnt und in der Geschäftsstadt arbeitet, kann das Elend der Arbeiterviertel übersehen. Engels beschreibt diese Trennung als Kenner und als Kritiker."
+    },
+    {
+      "id": "f_mehrwert",
+      "reiter": "funde",
+      "marke": "theorie",
+      "titel": "Fund II: Mehrwert",
+      "text": "Nach Marx entsteht der Gewinn des Fabrikanten aus unbezahlter Mehrarbeit: Mary schafft an einem Tag mehr Wert, als sie als Lohn erhält. Die Rechnung beruht auf der Arbeitswertlehre. Whitlows Einwand bleibt als offene Frage stehen."
+    },
+    {
+      "id": "p_pym",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Mr. Pym, Kontorist",
+      "text": "Führt seit zwanzig Jahren die Bücher von Whitlow & Co. Die Figur ist erfunden. Er achtet darauf, dass jede Zahl stimmt, und hält sich aus allem anderen heraus."
+    },
+    {
+      "id": "d_hauptbuch",
+      "reiter": "dokumente",
+      "marke": "vereinfachung",
+      "titel": "Hauptbuch von Whitlow & Co., Geschäftsjahr 1844",
+      "text": "Erlös aus dem Garnverkauf: 10.000 Pfund. Kosten: Baumwolle 6.000 Pfund, Löhne 2.000 Pfund, Kohle, Zinsen und Abnutzung der Maschinen 1.000 Pfund. Es bleibt ein Gewinn von 1.000 Pfund. Die Zahlen sind für das Spiel erfunden und gerundet."
+    },
+    {
+      "id": "d_preisliste",
+      "reiter": "dokumente",
+      "marke": "vereinfachung",
+      "titel": "Preisliste der Konkurrenz",
+      "text": "Whitlow & Co. verkauft das Pfund Garn für 12 Pence. Die Firma Ashworth Bros. bietet dieselbe Sorte für 10,8 Pence an, also 10 % billiger. Firma und Preise sind erfunden."
+    },
+    {
+      "id": "d_angebot",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Angebot: selbsttätige Spinnmaschine",
+      "text": "Der Ingenieur Richard Roberts aus Manchester ließ 1825 eine selbsttätige Spinnmaschine patentieren und verbesserte sie 1830. Sie führte Handgriffe aus, für die vorher gelernte, gut bezahlte Spinner nötig waren. Erfunden ist das Angebot im Spiel: 1.000 Pfund für neue Maschinen, die die Kosten je Pfund Garn um 1,2 Pence senken.",
+      "quelle": "Science Museum Group: „Richard Roberts“; Grace’s Guide to British Industrial History: „Richard Roberts“"
+    },
+    {
+      "id": "b_kapital",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Produktionsmittel, Arbeitskraft, Kapital",
+      "text": "Produktionsmittel sind Gebäude, Maschinen und Rohstoffe. Arbeitskraft ist die Fähigkeit zu arbeiten, die die Beschäftigten für eine bestimmte Zeit verkaufen. Kapital ist bei Marx kein Ding, sondern Geld, das eingesetzt wird, um mehr Geld zu werden. Es nimmt nacheinander die Gestalt von Produktionsmitteln, Arbeitskraft und Waren an. Vereinfacht: Im Spiel steht „Geldkapital“ als dritte Gruppe neben den beiden anderen."
+    },
+    {
+      "id": "b_modell3",
+      "reiter": "begriffe",
+      "marke": "vereinfachung",
+      "titel": "Drei Geschäftsjahre: ein Modell",
+      "text": "Das Spiel mit den drei Geschäftsjahren ist ein Modell mit erfundenen Zahlen. Es nimmt an, dass die Konkurrenz jedes Jahr billiger wird, dass allein der Preis über den Absatz entscheidet und dass höhere Löhne nur die Kosten erhöhen. In der Wirklichkeit gab es auch Fabrikanten, die Landhäuser kauften und trotzdem überlebten, und Betriebe, die mit besser bezahlten Arbeitern mehr leisteten."
+    },
+    {
+      "id": "d_akkumulation",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Marx über den Zwang zur Akkumulation",
+      "zitat": "Akkumuliert, akkumuliert! Das ist Moses und die Propheten!",
+      "text": "Akkumulation heißt Anhäufung: Der Mehrwert wird nicht verbraucht, sondern wieder in den Betrieb gesteckt. Marx verspottet mit dem Satz die Ökonomen seiner Zeit, für die das Sparen und Investieren das höchste Gebot war. Zugleich meint er es ernst: Die Konkurrenz zwingt jeden Fabrikanten dazu.",
+      "quelle": "Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 22, Abschnitt 3"
+    },
+    {
+      "id": "b_konkurrenz",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Konkurrenzzwang",
+      "text": "Nach Marx investiert der Fabrikant nicht aus Gier, sondern weil er sonst untergeht: Wer nicht billiger produziert, verliert seine Kunden an den, der es tut. Der Zwang geht vom Wettbewerb aus, nicht vom Charakter des Einzelnen."
+    },
+    {
+      "id": "b_kreislauf",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Der Kreislauf des Kapitals",
+      "text": "Geld kauft Waren (Baumwolle, Maschinen, Arbeitskraft). In der Produktion entsteht Garn, das mehr wert ist als die eingesetzten Waren. Der Verkauf bringt mehr Geld als am Anfang. Dieses Geld wird wieder eingesetzt. Marx schreibt kurz: G – W – G′ (Geld, Ware, mehr Geld)."
+    },
+    {
+      "id": "d_personifiziert",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Marx über den Fabrikanten",
+      "zitat": "Als Kapitalist ist er nur personifiziertes Kapital.",
+      "text": "In heutiger Sprache: Als Kapitalist ist er nur das Kapital in Person. Marx beurteilt den Fabrikanten nicht als guten oder schlechten Menschen. Er beschreibt eine Rolle, die jeder ausfüllen muss, der im Wettbewerb bestehen will.",
+      "quelle": "Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 8, Abschnitt 1"
+    },
+    {
+      "id": "d_produktivkraft",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Blick voraus: Marx und Engels über die Leistung der Bourgeoisie (1848)",
+      "zitat": "Die Bourgeoisie hat in ihrer kaum hundertjährigen Klassenherrschaft massenhaftere und kolossalere Produktionskräfte geschaffen als alle vergangenen Generationen zusammen.",
+      "text": "Bourgeoisie nennen Marx und Engels die Klasse der Kapitaleigner. Der Satz steht im „Manifest der Kommunistischen Partei“, das drei Jahre nach der Reise erscheint. Die schärfsten Kritiker des Kapitalismus erkennen darin seine Leistung an.",
+      "quelle": "Karl Marx, Friedrich Engels: Manifest der Kommunistischen Partei (1848), Kap. I"
+    },
+    {
+      "id": "b_garn",
+      "reiter": "begriffe",
+      "marke": "tatsache",
+      "titel": "Garn wird billig",
+      "text": "Ein Pfund Baumwollgarn einer gängigen Sorte (Nr. 40) kostete in England 1784 knapp 11 Schilling, 1832 noch etwa 1 Schilling. Baumwollstoff wurde vom Luxusgut zur Massenware, die sich auch Arbeiterfamilien leisten konnten.",
+      "quelle": "nach Edward Baines: History of the Cotton Manufacture in Great Britain (1835), wiedergegeben bei G. von Schulze-Gaevernitz; Angaben gerundet"
+    },
+    {
+      "id": "b_annahme3",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Woran Marx’ Erwartung hängt",
+      "text": "Marx erwartet, dass die Konkurrenz kleine Betriebe verdrängt und die Löhne niedrig hält. Diese Erwartung setzt voraus, dass die Löhne trotz steigender Produktivität nicht steigen und dass weder der Staat noch organisierte Arbeiter daran etwas ändern. Ob das zutrifft, kann 1845 niemand wissen. Die Frage kehrt in Kapitel II zurück."
+    },
+    {
+      "id": "f_akkumulation",
+      "reiter": "funde",
+      "marke": "theorie",
+      "titel": "Fund III: Akkumulation",
+      "text": "Nach Marx zwingt die Konkurrenz jeden Fabrikanten, den Gewinn wieder zu investieren. Er folgert daraus: Das Kapital wächst und sammelt sich bei wenigen, die Löhne bleiben unter Druck. Marx sieht zugleich die Kehrseite: Die Produktivkraft steigt gewaltig, und die Waren werden billiger."
+    },
+    {
+      "id": "s_irk",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Der Irk",
+      "zitat": "ein schmaler, pechschwarzer, stinkender Fluß",
+      "text": "So beschreibt Engels den Irk in seinem Buch von 1845. Der Fluss floss durch die Altstadt von Manchester. An seinen Ufern lagen Gerbereien, Färbereien und Gaswerke, die ihre Abwässer hineinleiteten, und dicht bebaute Höfe. Engels schreibt als parteilicher Beobachter; amtliche Berichte der Zeit schildern die Zustände aber ähnlich. Der Hof im Spiel ist nachempfunden.",
+      "quelle": "Friedrich Engels: Die Lage der arbeitenden Klasse in England (1845), Kap. „Die großen Städte“"
+    },
+    {
+      "id": "s_pumpe",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Wasser aus dem Hof",
+      "text": "In den Arbeitervierteln hatte kaum ein Haus einen eigenen Wasseranschluss. Das Wasser kam von einer Pumpe oder einem Hahn, den sich viele Familien teilten, oft nur für wenige Stunden am Tag. Brunnen lagen häufig dicht neben Abortgruben. Dass verunreinigtes Wasser krank macht, war noch nicht bekannt.",
+      "quelle": "Edwin Chadwick: Report on the Sanitary Condition of the Labouring Population of Great Britain (1842)"
+    },
+    {
+      "id": "s_abort",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Ein Abort für viele",
+      "text": "Eine Kanalisation gab es in diesen Vierteln nicht. Engels und die amtlichen Berichte beschreiben Höfe, in denen sich viele Familien einen einzigen Abort teilten. Die Gruben wurden selten geleert, Abfall blieb im Hof liegen.",
+      "quelle": "Friedrich Engels: Die Lage der arbeitenden Klasse in England (1845); Edwin Chadwick: Sanitary Report (1842)"
+    },
+    {
+      "id": "p_ellen",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Ellen, Wäscherin",
+      "text": "Wohnt mit ihrem Mann, vier Kindern und einem Untermieter in einem Kellerraum am Irk. Ihr Mann ist Handlanger in einer Färberei. Die Figur ist erfunden."
+    },
+    {
+      "id": "p_tom",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Tom, neun Jahre",
+      "text": "Ellens ältester Sohn. Er arbeitet halbe Tage in einer Spinnerei und setzt dort Spulen auf. Die Figur ist erfunden."
+    },
+    {
+      "id": "d_wohnung",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Engels über die Wohnungen der Arbeiter",
+      "zitat": "Daher altern sie früh und sterben jung.",
+      "text": "Engels zählt in seinem Buch auf, was er gesehen und in amtlichen Berichten gelesen hat: feuchte Kellerwohnungen, schlechte Luft, zu wenig Schlaf, schlechtes Essen. Den Satz schreibt er als Ergebnis dieser Aufzählung. Kellerwohnungen waren in Manchester und Liverpool verbreitet; das ist auch durch amtliche Zählungen belegt.",
+      "quelle": "Friedrich Engels: Die Lage der arbeitenden Klasse in England (1845), Kap. „Resultate“"
+    },
+    {
+      "id": "d_chadwick",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Chadwicks Tabelle (1842)",
+      "text": "Der Beamte Edwin Chadwick ließ für die Regierung auswerten, in welchem Alter die Menschen im Durchschnitt starben. Manchester: Oberschicht 38 Jahre, Handwerker und Händler 20, Arbeiter 17. Ländliche Grafschaft Rutland: Oberschicht 52, Handwerker und Händler 41, Arbeiter 38. Schon der Statistiker William Farr wandte damals ein, dass dieses Maß keine Lebenserwartung ist.",
+      "quelle": "Edwin Chadwick: Report on the Sanitary Condition of the Labouring Population of Great Britain (1842); zur Kritik: J. Hanley, Medical History 46 (2002)"
+    },
+    {
+      "id": "b_durchschnitt",
+      "reiter": "begriffe",
+      "marke": "tatsache",
+      "titel": "Durchschnittsalter ist keine Lebenserwartung",
+      "text": "Ein durchschnittliches Sterbealter von 17 Jahren heißt nicht, dass die meisten mit 17 starben. Sehr viele Kinder starben in den ersten Lebensjahren und zogen den Durchschnitt nach unten. Wer die Kindheit überlebte, wurde deutlich älter. Die Zahl zeigt vor allem eine sehr hohe Kindersterblichkeit. In einer schnell wachsenden Stadt mit vielen jungen Familien fällt sie außerdem niedriger aus als auf dem Land."
+    },
+    {
+      "id": "b_ursachen",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Zusammenhang ist noch keine Ursache",
+      "text": "Fabrikstadt und früher Tod treten zusammen auf. Daraus allein folgt nicht, was die Ursache ist. Infrage kommen die Wirtschaftsordnung (niedrige Löhne, lange Arbeitstage), die Stadt (kein sauberes Wasser, keine Kanalisation, zu wenige Wohnungen, kaum Verwaltung) und das Wissen der Zeit (Krankheitserreger waren unbekannt). Welche Ursache wie schwer wiegt, ist aus Chadwicks Tabelle nicht abzulesen."
+    },
+    {
+      "id": "d_miasma",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Was man 1845 über Krankheiten wusste",
+      "text": "Chadwick und die meisten Ärzte glaubten, Krankheiten entstünden durch üble Ausdünstungen („Miasmen“). Das war falsch, führte aber zu richtigen Maßnahmen: Abwasser ableiten, sauberes Wasser zuführen. 1854 zeigte der Arzt John Snow in London, dass sich die Cholera über das Trinkwasser verbreitete. Den Erreger wies Robert Koch 1883/84 nach.",
+      "quelle": "UK Parliament: „The 1848 Public Health Act“; Science Museum London: „John Snow“; Robert Koch-Institut: „Robert Koch“"
+    },
+    {
+      "id": "d_publichealth",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Blick voraus: das Gesundheitsgesetz von 1848",
+      "text": "1848 beschloss das Parlament den Public Health Act. Er schuf eine zentrale Gesundheitsbehörde. Städte konnten örtliche Gesundheitsämter einrichten, die für Abwasserkanäle, Wasserversorgung und Straßenreinigung zuständig waren. Das meiste war freiwillig; verpflichtend wurde es nur dort, wo mehr als 23 von 1.000 Einwohnern im Jahr starben. Chadwicks Bericht war ein wichtiger Anstoß. Im Sommer 1845 gab es das Gesetz noch nicht.",
+      "quelle": "UK Parliament: „The 1848 Public Health Act“; The Health Foundation: „Public Health Act 1848“"
+    },
+    {
+      "id": "b_reform",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Zwei Antworten auf dasselbe Elend",
+      "text": "Engels sieht die Ursache in der Wirtschaftsordnung selbst und will sie überwinden. Er wirft der Gesellschaft vor, sie wisse um die Folgen und ändere nichts; er nennt das „sozialen Mord“. Chadwick sieht die Ursache in fehlender Kanalisation, verdorbenem Wasser und fehlenden Regeln. Er will reformieren und rechnet vor, dass Vorbeugen billiger ist als Armenhilfe für Kranke, Witwen und Waisen. Beide stützen sich auf dieselben Zahlen."
+    },
+    {
+      "id": "f_verelendung",
+      "reiter": "funde",
+      "marke": "kontroverse",
+      "titel": "Fund IV: Verelendung, Ursache strittig",
+      "text": "Das Elend der Arbeiter in Manchester ist belegt und messbar. Strittig ist die Ursache: das Wirtschaftssystem (Engels, Marx) oder fehlende Infrastruktur und fehlende Regeln (Chadwick). Entscheiden lässt sich das erst, wenn man weiß, was geschieht, wenn Kanalisation und Schutzgesetze kommen und der Kapitalismus bleibt."
+    },
+    {
+      "id": "s_dampf",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Dampf statt Wasserrad",
+      "text": "Die ersten Spinnereien standen an schnell fließenden Flüssen auf dem Land, denn Wasserräder trieben ihre Maschinen an. Seit etwa 1800 setzten immer mehr Spinnereien Dampfmaschinen ein. Damit konnten die Fabriken in die Städte ziehen, nahe an Kohle, Kanälen und Arbeitskräften. Über Manchester stand fortan der Rauch Hunderter Schornsteine.",
+      "quelle": "Encyclopaedia Britannica: „Industrial Revolution“ und „Manchester“"
+    },
+    {
+      "id": "s_villen",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Wo die Fabrikanten wohnen",
+      "zitat": "die höhere in den entfernteren villenartigen Gartenhäusern von Chorlton und Ardwick oder auf den luftigen Höhen",
+      "text": "So beschreibt Engels, wo die reiche Bourgeoisie Manchesters wohnte: draußen, in Gartenhäusern am Stadtrand. Die Arbeiter wohnten dicht gedrängt um das Geschäftsviertel im Zentrum. Der Wegweiser im Spiel ist nachempfunden.",
+      "quelle": "Friedrich Engels: Die Lage der arbeitenden Klasse in England (1845), Kap. „Die großen Städte“"
+    },
+    {
+      "id": "d_zweistaedte",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Engels über die Bauweise Manchesters",
+      "zitat": "Die Stadt selbst ist eigentümlich gebaut, so daß man jahrelang in ihr wohnen und täglich hinein- und herausgehen kann …",
+      "text": "Engels fährt sinngemäß fort: … ohne je ein Arbeiterviertel zu betreten oder Arbeitern zu begegnen. Die Hauptstraßen seien von Läden gesäumt, hinter denen die Arbeiterviertel verborgen lägen. Wer aus den Villen in die Geschäftsstadt fahre, sehe das Elend nicht.",
+      "quelle": "Friedrich Engels: Die Lage der arbeitenden Klasse in England (1845), Kap. „Die großen Städte“; Fortsetzung paraphrasiert"
+    },
+    {
+      "id": "b_industrialisierung",
+      "reiter": "begriffe",
+      "marke": "tatsache",
+      "titel": "Industrialisierung, Urbanisierung, soziale Frage",
+      "text": "Industrialisierung: Maschinen, Dampfkraft und Fabriken ersetzen Handarbeit. Urbanisierung: Die Menschen ziehen in die Städte, die Städte wachsen schnell. Soziale Frage: So nannte man im 19. Jahrhundert die Not der Fabrikarbeiter und den Streit darüber, wie man ihr begegnen soll."
+    },
+    {
+      "id": "b_quellenkritik",
+      "reiter": "begriffe",
+      "marke": "kontroverse",
+      "titel": "Engels als Zeuge",
+      "text": "Engels kannte die Welt der Fabrikanten von innen: Sein Vater war Teilhaber von Ermen & Engels. Er schrieb aber als Kritiker mit einem klaren Ziel. Sein Buch ist darum zugleich Augenzeugenbericht und Anklageschrift. Historiker prüfen seine Angaben an anderen Quellen, etwa an amtlichen Berichten. Vieles bestätigen sie, manches halten sie für zugespitzt."
+    },
+    {
+      "id": "s_charter",
+      "reiter": "stadt",
+      "marke": "tatsache",
+      "titel": "Die Chartisten",
+      "text": "1838 veröffentlichte die Londoner Arbeitervereinigung die „People’s Charter“ mit sechs Forderungen: Wahlrecht für jeden Mann ab 21 Jahren, geheime Wahl, gleich große Wahlkreise, Diäten für Abgeordnete, kein Vermögen als Bedingung für einen Sitz im Parlament, jährliche Wahlen. Am 24. September 1838 versammelten sich Zehntausende auf dem Kersal Moor bei Salford. 1842 unterschrieben über drei Millionen Menschen eine Bittschrift; das Unterhaus lehnte sie mit 287 zu 49 Stimmen ab. Die Versammlung im Spiel ist erfunden.",
+      "quelle": "Malcolm Chase: Chartism. University of Leeds (2016); Victorian Web: „Chartism: The Framework of Events“; Gale: Amy J. Lloyd, „Chartism“"
+    },
+    {
+      "id": "p_holt",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Joseph Holt, Chartist",
+      "text": "Weber aus Salford, seit die Maschinen ihm die Arbeit genommen haben, Redner der Chartisten. Die Figur ist erfunden."
+    },
+    {
+      "id": "p_grimshaw",
+      "reiter": "personen",
+      "marke": "erfunden",
+      "titel": "Mr. Grimshaw, Sprecher der Fabrikanten",
+      "text": "Vertritt die Fabrikanten der Stadt. Er argumentiert so, wie der Ökonom Nassau Senior 1837 gegen kürzere Arbeitszeiten argumentierte. Die Figur ist erfunden, die Position ist belegt."
+    },
+    {
+      "id": "b_klassen",
+      "reiter": "begriffe",
+      "marke": "theorie",
+      "titel": "Bourgeoisie und Proletariat",
+      "text": "Bourgeoisie nennen Marx und Engels die Klasse, der Fabriken, Maschinen und Rohstoffe gehören. Proletariat nennen sie die Klasse derer, die nichts besitzen als ihre Arbeitskraft. Für Marx entscheidet die Stellung zu den Produktionsmitteln, zu welcher Klasse jemand gehört, nicht Bildung oder Einkommen."
+    },
+    {
+      "id": "d_klassenkampf",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Blick voraus: der erste Satz des Manifests (1848)",
+      "zitat": "Die Geschichte aller bisherigen Gesellschaft ist die Geschichte von Klassenkämpfen.",
+      "text": "Mit diesem Satz beginnt das „Manifest der Kommunistischen Partei“, das Marx und Engels drei Jahre nach der Reise schrieben. Es ist eine Kampfschrift, keine neutrale Analyse.",
+      "quelle": "Karl Marx, Friedrich Engels: Manifest der Kommunistischen Partei (1848), Kap. I"
+    },
+    {
+      "id": "d_senior",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Nassau Senior und die „letzte Stunde“",
+      "text": "Der Oxforder Ökonom Nassau Senior rechnete 1837 vor, in einer Spinnerei mit elfeinhalb Stunden Arbeit entstehe der ganze Reingewinn in der letzten Stunde. Kürzere Arbeitszeiten würden die Fabriken deshalb ruinieren. Marx widmete der Rechnung im „Kapital“ einen eigenen Abschnitt. Auch Ökonomen, die Marx’ Werttheorie ablehnen, halten Seniors Rechnung für fehlerhaft: Wird kürzer gearbeitet, braucht die Fabrik auch weniger Baumwolle und Betriebskapital. Das Zehnstundengesetz kam 1847; die britische Baumwollindustrie wuchs danach weiter.",
+      "quelle": "Nassau W. Senior: Letters on the Factory Act (1837); Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 7, Abschnitt 3 „Seniors ‚letzte Stunde‘“; J. Bradford DeLong: „Senior’s ‚Last Hour‘“"
+    },
+    {
+      "id": "d_allen",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Die Diagnose geprüft: Engels’ Pause",
+      "text": "Der Wirtschaftshistoriker Robert C. Allen hat für Großbritannien zusammengestellt, wie sich Produktion und Löhne entwickelten. Zwischen 1780 und 1840 stieg die Produktion je Arbeiter um 46 %, der Reallohn nur um 12 %. Die Forschung nennt diese Jahrzehnte „Engels’ Pause“. Was nach 1840 geschah, bleibt bis Kapitel II in der Zeitkapsel verschlossen.",
+      "quelle": "Robert C. Allen: Engels’ pause. Technical change, capital accumulation, and inequality in the British industrial revolution. Explorations in Economic History 46 (2009)"
+    },
+    {
+      "id": "d_prognosen",
+      "reiter": "dokumente",
+      "marke": "theorie",
+      "titel": "Marx’ drei Prognosen",
+      "text": "1. Die Arbeiter verelenden weiter. Marx (1867): „Die Akkumulation von Reichtum auf dem einen Pol ist also zugleich Akkumulation von Elend, Arbeitsqual, Sklaverei, Unwissenheit, Brutalisierung und moralischer Degradation auf dem Gegenpol“.\n2. Das Kapital sammelt sich bei immer weniger Eigentümern. Marx (1867): „Je ein Kapitalist schlägt viele tot.“\n3. Der Kapitalismus bricht durch Krisen und Klassenkampf zusammen. Marx und Engels (1848) über die Bourgeoisie: „Sie produziert vor allem ihren eigenen Totengräber.“\nAlle drei Sätze schrieben Marx und Engels erst nach 1845. Im Spiel spricht Marx sie schon in Manchester aus.",
+      "quelle": "Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 23, Abschnitt 4 und Kap. 24, Abschnitt 7; Manifest der Kommunistischen Partei (1848), Kap. I"
+    },
+    {
+      "id": "f_anklage",
+      "reiter": "funde",
+      "marke": "theorie",
+      "titel": "Fund V: Die Anklageschrift",
+      "text": "Marx’ Anklage gegen den Kapitalismus stützt sich auf vier Belege: Mehrwert, Entfremdung, Zwang zur Akkumulation und messbares Elend. Drei Einwände der Gegenseite ließen sich widerlegen. Zwei haben standgehalten: das Risiko des Unternehmers und die billigeren Waren. Drei Prognosen liegen versiegelt in der Zeitkapsel."
+    }
+  ],
+  "belege": [
+    {
+      "id": "beleg_rechnung",
+      "titel": "Rechnung vom Pult",
+      "text": "12 Stunden Arbeit, 6 Schilling Neuwert, 3 Schilling Lohn, 3 Schilling Mehrwert. Mehrwertrate 100 %."
+    },
+    {
+      "id": "beleg_zehn",
+      "titel": "Zehnstundentag",
+      "text": "10 Stunden an der schnelleren Maschine: wieder 6 Schilling Neuwert und 3 Schilling Mehrwert. Die notwendige Arbeitszeit sinkt von 6 auf 5 Stunden."
+    },
+    {
+      "id": "beleg_mary",
+      "titel": "Marys Bericht",
+      "text": "Vier Formen der Entfremdung an der Maschine: vom Produkt, von der Tätigkeit, vom menschlichen Wesen, vom anderen Menschen."
+    },
+    {
+      "id": "beleg_whitlow",
+      "titel": "Whitlows Einwand",
+      "text": "Risiko, Kapital und Leitung kommen in Marx' Rechnung nicht vor. Sie beruht auf der Arbeitswertlehre."
+    },
+    {
+      "id": "beleg_kontor",
+      "titel": "Drei Geschäftsjahre",
+      "text": "Nur wer den Gewinn in neue Maschinen steckt, hält mit der Konkurrenz mit. Der Zwang kommt aus dem Wettbewerb, nicht aus dem Charakter des Fabrikanten."
+    },
+    {
+      "id": "beleg_manifest",
+      "titel": "Marx über die Produktivkräfte",
+      "text": "Marx und Engels selbst: Die Bourgeoisie hat gewaltige Produktivkräfte geschaffen. Garn und Stoff werden billiger, auch für Arbeiterfamilien."
+    },
+    {
+      "id": "beleg_chadwick",
+      "titel": "Chadwicks Tabelle",
+      "text": "Durchschnittliches Sterbealter in Manchester: Oberschicht 38, Arbeiter 17 Jahre, Abstand 21 Jahre. Landarbeiter in Rutland: 38 Jahre."
+    },
+    {
+      "id": "beleg_geruecht",
+      "titel": "Gerücht aus dem Hof",
+      "text": "Ein Aufseher in einer anderen Spinnerei soll Kinder mit dem Riemen schlagen. Ellen hat es gehört, gesehen hat sie es nicht."
+    },
+    {
+      "id": "beleg_senior",
+      "titel": "Seniors „letzte Stunde“",
+      "text": "Die Gegenseite behauptet, der ganze Gewinn entstehe in der letzten Arbeitsstunde. Die Rechnung gilt heute als fehlerhaft."
+    }
+  ],
+  "station2": {
+    "ziele": {
+      "weg": "Folgt der Straße am Kanal zur Spinnerei.",
+      "hof": "Betretet den Spinnsaal im großen Bau.",
+      "mary": "Sprecht mit der Spinnerin an der Maschine.",
+      "uhr": "Untersucht die Fabrikuhr an der Stirnwand.",
+      "pult": "Rechnet am Pult des Aufsehers.",
+      "maschine": "Stellt die neue Maschine ein.",
+      "mary2": "Sprecht noch einmal mit Mary.",
+      "whitlow": "Mr. Whitlow will euch sprechen.",
+      "fertig": "Verlasst den Saal. Das Tor zum Geschäftsviertel ist offen.",
+      "fertigHof": "Geht durch das offene Tor an der Nordseite des Hofs zur Geschäftsstraße."
+    },
+    "uhr": {
+      "titel": "Die Fabrikuhr",
+      "einleitung": "Dreht die Uhr durch Marys Arbeitstag. Links wächst der Wert, den sie neu schafft. Rechts steht ihr Tageslohn.",
+      "auftrag": "Stellt die Stunde ein, in der Mary den Wert ihres Lohns erarbeitet hat, und markiert sie.",
+      "knopf": "Hier ist der Lohn erarbeitet",
+      "zuFrueh": "Nach {h} Stunden hat Mary erst {n} Schilling Neuwert geschaffen. Das ist weniger als ihr Tageslohn von 3 Schilling.",
+      "zuSpaet": "Nach {h} Stunden hat Mary schon {n} Schilling Neuwert geschaffen, mehr als ihren Lohn. Sucht die Stunde, in der beide Balken gleich hoch sind.",
+      "hilfen": [
+        "Engels: „Schau auf die beiden Balken, nicht auf den Zeiger. Wann sind sie gleich hoch?“",
+        "Jede Stunde schafft ½ Schilling Neuwert. Wie viele Stunden braucht es für 3 Schilling?"
+      ],
+      "erfolg": "Nach 6 Stunden hat Mary den Wert ihres Lohns erarbeitet. Marx nennt diese Zeit die notwendige Arbeitszeit. Dreht die Uhr jetzt bis zum Ende des Arbeitstags.",
+      "ende": "In den zweiten 6 Stunden arbeitet Mary weiter. Marx nennt das Mehrarbeit: Der Wert, der jetzt entsteht, fällt dem Fabrikanten zu.",
+      "weiter": "Ins Tagebuch"
+    },
+    "rechnen": {
+      "titel": "Am Pult des Aufsehers",
+      "angaben": [
+        "Arbeitstag: 12 Stunden",
+        "Neuwert je Stunde: ½ Schilling",
+        "Tageslohn: 3 Schilling"
+      ],
+      "fragen": [
+        {
+          "id": "neuwert",
+          "frage": "Wie viel Neuwert schafft Mary an einem ganzen Arbeitstag?",
+          "einheit": "Schilling",
+          "loesung": 6,
+          "fehler": {
+            "3": "3 Schilling sind Marys Lohn. Gefragt ist der Wert, den 12 Stunden Arbeit neu schaffen.",
+            "12": "12 ist die Zahl der Stunden. Jede Stunde schafft aber nur ½ Schilling Neuwert.",
+            "24": "Hier wurde verdoppelt statt halbiert: Jede Stunde schafft ½ Schilling, nicht 2."
+          },
+          "sonst": "Das stimmt noch nicht. Rechnet die Arbeitsstunden mal den Neuwert je Stunde.",
+          "hilfen": [
+            "Engels: „Zähl nicht das Garn. Zähl die Stunden, jede bringt einen halben Schilling.“",
+            "12 Stunden × ½ Schilling = ?"
+          ],
+          "weg": "12 Stunden × ½ Schilling = 6 Schilling Neuwert."
+        },
+        {
+          "id": "mehrwert",
+          "frage": "Mary erhält 3 Schilling Lohn. Wie viel vom Neuwert bleibt beim Fabrikanten? Marx nennt diesen Rest Mehrwert.",
+          "einheit": "Schilling",
+          "loesung": 3,
+          "fehler": {
+            "6": "6 Schilling sind der gesamte Neuwert. Davon erhält Mary 3 Schilling als Lohn.",
+            "9": "Der Lohn kommt nicht zum Neuwert hinzu, er wird aus ihm bezahlt.",
+            "0": "Dann müsste Mary den ganzen Neuwert als Lohn erhalten. Sie bekommt aber nur 3 von 6 Schilling."
+          },
+          "sonst": "Das stimmt noch nicht. Zieht vom Neuwert ab, was Mary als Lohn erhält.",
+          "hilfen": [
+            "Engels: „Was bleibt vom Neuwert, wenn der Lohn bezahlt ist?“",
+            "6 Schilling Neuwert − 3 Schilling Lohn = ?"
+          ],
+          "weg": "6 Schilling Neuwert − 3 Schilling Lohn = 3 Schilling Mehrwert."
+        },
+        {
+          "id": "rate",
+          "frage": "Marx vergleicht den Mehrwert mit dem Lohn. Wie viel Prozent des Lohns beträgt der Mehrwert?",
+          "einheit": "%",
+          "loesung": 100,
+          "fehler": {
+            "50": "50 % wäre der Anteil des Mehrwerts am Neuwert. Marx vergleicht den Mehrwert aber mit dem Lohn.",
+            "3": "3 Schilling ist der Mehrwert selbst. Gesucht ist sein Verhältnis zum Lohn in Prozent.",
+            "1": "Das Verhältnis 1 zu 1 stimmt. Gebt es in Prozent an.",
+            "200": "200 % wäre der Neuwert im Verhältnis zum Lohn. Gefragt ist nur der Mehrwert."
+          },
+          "sonst": "Das stimmt noch nicht. Teilt den Mehrwert durch den Lohn.",
+          "hilfen": [
+            "Engels: „Vergleiche, was Whitlow für die Arbeit zahlt, mit dem, was er darüber hinaus erhält.“",
+            "3 Schilling Mehrwert : 3 Schilling Lohn = 1. Wie viel Prozent sind das?"
+          ],
+          "weg": "3 Schilling Mehrwert : 3 Schilling Lohn = 1 = 100 %. Marx nennt das die Mehrwertrate."
+        }
+      ]
+    },
+    "maschine": {
+      "titel": "Die neue Maschine",
+      "einleitung": "Der Arbeitstag endet jetzt nach 10 Stunden. Mr. Whitlow will weiter 3 Schilling Mehrwert am Tag. Stellt ein, wie viel Neuwert Mary an der schnelleren Maschine je Stunde schafft.",
+      "knopf": "So einstellen",
+      "zuWenig": "Bei {p} Schilling je Stunde entstehen in 10 Stunden {n} Schilling Neuwert. Nach Abzug des Lohns bleiben {m} Schilling Mehrwert, weniger als die 3 Schilling vorher.",
+      "zuViel": "Bei {p} Schilling je Stunde bleiben {m} Schilling Mehrwert, mehr als vorher. Gesucht ist die Einstellung, bei der der Mehrwert genau gleich bleibt.",
+      "hilfen": [
+        "Engels: „Er braucht am Abend dieselben 6 Schilling Neuwert, nur in 10 statt in 12 Stunden.“",
+        "6 Schilling Neuwert : 10 Stunden = ? Schilling je Stunde"
+      ],
+      "erfolg": "10 Stunden × 0,6 Schilling = 6 Schilling Neuwert. Der Mehrwert bleibt bei 3 Schilling, obwohl der Arbeitstag kürzer ist.",
+      "frage": {
+        "id": "notwendig",
+        "frage": "Wie viele Stunden braucht Mary jetzt, um den Wert ihres Lohns zu erarbeiten?",
+        "einheit": "Stunden",
+        "loesung": 5,
+        "fehler": {
+          "6": "6 Stunden waren es an der alten Maschine. Jetzt schafft Mary 0,6 Schilling je Stunde.",
+          "4": "4 Stunden × 0,6 Schilling wären erst 2,4 Schilling.",
+          "10": "10 Stunden dauert der ganze Arbeitstag. Gefragt ist nur der Teil, der den Lohn ersetzt."
+        },
+        "sonst": "Das stimmt noch nicht. Teilt den Lohn durch den Neuwert je Stunde.",
+        "hilfen": [
+          "Engels: „Der Lohn ist derselbe, aber jede Stunde bringt jetzt mehr.“",
+          "3 Schilling Lohn : 0,6 Schilling je Stunde = ?"
+        ],
+        "weg": "3 Schilling : 0,6 Schilling je Stunde = 5 Stunden. Die notwendige Arbeitszeit sinkt von 6 auf 5 Stunden. Marx nennt den so gewonnenen Mehrwert relativen Mehrwert."
+      }
+    },
+    "entfremdung": {
+      "titel": "Marys Arbeitstag",
+      "einleitung": "Mary hat von vier Erfahrungen erzählt. Ordnet jede einer Form der Entfremdung zu: erst eine Aussage antippen, dann das passende Feld.",
+      "karten": [
+        {
+          "id": "k1",
+          "text": "„Das Garn sehe ich nie wieder. Es gehört Mr. Whitlow, sobald es von der Spindel läuft.“",
+          "ziel": "produkt",
+          "hinweis": "In dieser Aussage geht es um das, was Mary herstellt, und darum, wem es gehört."
+        },
+        {
+          "id": "k2",
+          "text": "„Die Maschine gibt den Takt vor. Ich knüpfe gerissene Fäden, immer derselbe Handgriff.“",
+          "ziel": "taetigkeit",
+          "hinweis": "In dieser Aussage geht es um das Arbeiten selbst: Wer bestimmt, was Mary tut und wie schnell?"
+        },
+        {
+          "id": "k3",
+          "text": "„Früher habe ich mir beim Nähen Muster ausgedacht. Hier denke ich nichts, ich arbeite nur, um zu essen.“",
+          "ziel": "wesen",
+          "hinweis": "In dieser Aussage geht es um eine Fähigkeit, die verkümmert: selbst etwas zu gestalten."
+        },
+        {
+          "id": "k4",
+          "text": "„Wer zu langsam ist, wird ersetzt. Draußen warten andere auf meinen Platz.“",
+          "ziel": "mensch",
+          "hinweis": "In dieser Aussage geht es um Marys Verhältnis zu anderen Arbeiterinnen und Arbeitern."
+        }
+      ],
+      "felder": [
+        {
+          "id": "produkt",
+          "titel": "vom Produkt",
+          "text": "Was sie herstellt, gehört einem anderen."
+        },
+        {
+          "id": "taetigkeit",
+          "titel": "von der Tätigkeit",
+          "text": "Die Arbeit ist fremdbestimmt."
+        },
+        {
+          "id": "wesen",
+          "titel": "vom menschlichen Wesen",
+          "text": "Die Fähigkeit, frei und schöpferisch tätig zu sein, wird zum bloßen Mittel zum Überleben."
+        },
+        {
+          "id": "mensch",
+          "titel": "vom anderen Menschen",
+          "text": "Menschen begegnen einander als Konkurrenten."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Frag bei jeder Aussage: Wovon ist sie hier getrennt?“",
+        "Die vier Felder betreffen der Reihe nach: das hergestellte Ding, das Tun, die eigene Fähigkeit, die Mitmenschen."
+      ],
+      "passt": "Passt: Entfremdung ",
+      "erfolg": "Marx nennt das Entfremdung: Die Arbeit gehört nicht zu Mary, sie steht ihr als etwas Fremdes gegenüber."
+    },
+    "denkpause": {
+      "titel": "Denkpause",
+      "frage": "Mr. Whitlow fragt nach seinem Risiko. Auf welcher Annahme beruht Marx' Rechnung?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Der Fabrikant zahlt weniger Lohn, als vereinbart war.",
+          "richtig": false,
+          "rueck": "Nein. In Marx' Rechnung wird der Lohn vollständig und pünktlich gezahlt. Der Mehrwert entsteht trotz erfülltem Vertrag."
+        },
+        {
+          "id": "b",
+          "text": "Nur Arbeit schafft neuen Wert. Maschinen und Baumwolle geben ihren Wert bloß weiter.",
+          "richtig": true,
+          "rueck": "Richtig. Das ist die Arbeitswertlehre. Nur wenn sie gilt, ist der ganze Neuwert das Werk der Spinnerin."
+        },
+        {
+          "id": "c",
+          "text": "Das Garn wird teurer verkauft, als es wert ist.",
+          "richtig": false,
+          "rueck": "Nein. Bei Marx werden Waren zu ihrem Wert verkauft. Der Mehrwert entsteht in der Produktion, nicht durch einen Aufschlag beim Verkauf."
+        },
+        {
+          "id": "d",
+          "text": "Mary arbeitet schneller als andere Spinnerinnen.",
+          "richtig": false,
+          "rueck": "Nein. Marx rechnet mit durchschnittlicher Arbeit. Die Rechnung gilt für jede Spinnerin im Saal."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Sieh dir an, wem die Rechnung den ganzen Neuwert zuschreibt.“",
+        "Maschine, Kapital und Risiko tauchen in der Rechnung nicht als Quelle von Wert auf. Welche Annahme steckt dahinter?"
+      ],
+      "notiz": {
+        "titel": "Eure Notiz für das Tribunal",
+        "frage": "Was leistet ein Fabrikant wie Whitlow, das in Marx' Rechnung nicht vorkommt? Was könnte Marx darauf antworten? Notiert Stichpunkte.",
+        "hinweis": "Die Notiz bleibt auf diesem Gerät gespeichert. Bitte keine Namen eintragen.",
+        "min": 12
+      }
+    },
+    "abschluss": {
+      "titel": "Weiter",
+      "text": "Das Tor zur Geschäftsstraße ist offen."
+    }
+  },
+  "steuerung": {
+    "tastatur": "W und S oder die Pfeiltasten: der Straße folgen. In Höfen und Räumen: W, A, S, D. Maus ziehen: umsehen. E oder Leertaste: ansprechen und untersuchen. Unterwegs gibt es Dinge zu untersuchen: Ein Messingring am Boden zeigt sie an, wenn ihr nah genug seid.",
+    "touch": "Links auf den Bildschirm drücken und ziehen: gehen. Rechts wischen: umsehen. Den Messingknopf antippen: ansprechen und untersuchen. Unterwegs gibt es Dinge zu untersuchen: Ein Messingring am Boden zeigt sie an, wenn ihr nah genug seid."
+  },
+  "infopunkte": [
+    {
+      "id": "info_bahn",
+      "eintrag": "s_bahn",
+      "text": "Die Eisenbahn ansehen",
+      "radius": 4.6
+    },
+    {
+      "id": "info_villen",
+      "eintrag": "s_villen",
+      "text": "Wegweiser lesen",
+      "radius": 4.4
+    },
+    {
+      "id": "info_baumwolle",
+      "eintrag": "s_baumwolle",
+      "text": "Baumwollballen untersuchen",
+      "radius": 4.4
+    },
+    {
+      "id": "info_dampf",
+      "eintrag": "s_dampf",
+      "text": "Zu den Schornsteinen aufblicken",
+      "radius": 4.4
+    },
+    {
+      "id": "info_kanal",
+      "eintrag": "s_kanal",
+      "text": "Den Lastkahn ansehen",
+      "radius": 4.4
+    },
+    {
+      "id": "info_wachstum",
+      "eintrag": "s_wachstum",
+      "text": "Über den Kanal blicken",
+      "radius": 4.4
+    },
+    {
+      "id": "info_fabrikgesetz",
+      "eintrag": "s_fabrikgesetz",
+      "text": "Aushang am Tor lesen",
+      "radius": 5.2
+    }
+  ],
+  "notizTitel": {
+    "s1_denkpause": "Eure Notiz zu Engels als Zeuge",
+    "s2_denkpause": "Eure Notiz zu Whitlows Einwand",
+    "s3_denkpause": "Eure Notiz: Woran hängt Marx’ Erwartung?",
+    "s4_denkpause": "Eure offene Frage für Kapitel II",
+    "s5_zeitkapsel": "Eure Tipps in der Zeitkapsel"
+  },
+  "station3": {
+    "ziele": {
+      "hof": "Geht durch das Tor an der Nordseite des Hofs.",
+      "weg": "Folgt der Straße zum Kontor von Whitlow & Co.",
+      "rein": "Betretet das Kontor.",
+      "pym": "Sprecht mit dem Kontoristen.",
+      "dokumente": "Untersucht Hauptbuch, Preisliste und Maschinenangebot ({n} von 3).",
+      "rechnen": "Rechnet am Stehpult nach.",
+      "ordnen": "Ordnet mit Mr. Pym das Inventar.",
+      "jahre": "Mr. Whitlow erwartet euch an seinem Schreibtisch.",
+      "kreislauf": "Seht euch den Kassenschrank an.",
+      "fenster": "Tretet ans Fenster.",
+      "fertig": "Verlasst das Kontor. Der Torbogen zur Gasse ist offen."
+    },
+    "rechnen": {
+      "titel": "Am Stehpult",
+      "angaben": [
+        "Erlös: 10.000 Pfund",
+        "Baumwolle: 6.000 Pfund",
+        "Löhne: 2.000 Pfund",
+        "Kohle, Zinsen, Abnutzung: 1.000 Pfund",
+        "Garnpreis Whitlow: 12 Pence",
+        "Garnpreis Ashworth: 10,8 Pence"
+      ],
+      "fragen": [
+        {
+          "id": "gewinn",
+          "frage": "Wie hoch war der Gewinn von Whitlow & Co. im Jahr 1844?",
+          "einheit": "Pfund",
+          "loesung": 1000,
+          "fehler": {
+            "9000": "9.000 Pfund sind die gesamten Kosten. Gefragt ist, was vom Erlös nach Abzug der Kosten bleibt.",
+            "10000": "10.000 Pfund ist der Erlös. Davon gehen die Kosten ab.",
+            "4000": "Hier fehlt ein Kostenposten. Zieht Baumwolle, Löhne und die übrigen Kosten ab.",
+            "2000": "Auch Kohle, Zinsen und Abnutzung der Maschinen sind Kosten.",
+            "1": "Gebt den Betrag in Pfund an, nicht in Tausend."
+          },
+          "sonst": "Das stimmt noch nicht. Zieht vom Erlös alle drei Kostenposten ab.",
+          "hilfen": [
+            "Engels: „Mr. Pym zählt erst zusammen, was hinausging, und zieht es dann vom Erlös ab.“",
+            "10.000 − 6.000 − 2.000 − 1.000 = ?"
+          ],
+          "weg": "10.000 − 9.000 = 1.000 Pfund Gewinn."
+        },
+        {
+          "id": "preis",
+          "frage": "Um wie viel Prozent ist das Garn von Ashworth billiger als das von Whitlow?",
+          "einheit": "%",
+          "loesung": 10,
+          "fehler": {
+            "1.2": "1,2 Pence ist der Unterschied je Pfund. Gesucht ist sein Anteil an Whitlows Preis in Prozent.",
+            "90": "90 % ist Ashworths Preis im Verhältnis zu Whitlows. Gefragt ist, um wie viel er darunter liegt.",
+            "11.11": "Hier wurde durch Ashworths Preis geteilt. Bezugsgröße ist Whitlows Preis von 12 Pence.",
+            "12": "12 Pence ist Whitlows Preis. Gesucht ist der Unterschied in Prozent."
+          },
+          "sonst": "Das stimmt noch nicht. Teilt den Preisunterschied durch Whitlows Preis.",
+          "hilfen": [
+            "Engels: „Erst der Unterschied in Pence, dann sein Anteil an Whitlows Preis.“",
+            "12 − 10,8 = 1,2 Pence. 1,2 : 12 = ?"
+          ],
+          "weg": "1,2 Pence : 12 Pence = 0,1 = 10 %. Ashworth unterbietet Whitlow um ein Zehntel."
+        }
+      ]
+    },
+    "ordnen": {
+      "titel": "Was gehört wozu?",
+      "mehrfach": true,
+      "einleitung": "Mr. Pym führt das Inventar. Ordnet die sechs Posten: erst einen Posten antippen, dann die passende Gruppe.",
+      "karten": [
+        {
+          "id": "o1",
+          "text": "Spinnmaschinen im Saal",
+          "ziel": "pm",
+          "hinweis": "Maschinen arbeiten nicht von selbst. Sie sind Mittel, mit denen produziert wird."
+        },
+        {
+          "id": "o2",
+          "text": "Baumwollballen im Lager",
+          "ziel": "pm",
+          "hinweis": "Rohstoffe gehen in das Produkt ein. Sie zählen zu den Mitteln der Produktion."
+        },
+        {
+          "id": "o3",
+          "text": "Marys zwölf Stunden am Tag",
+          "ziel": "ak",
+          "hinweis": "Hier geht es um das, was Mary verkauft: ihre Fähigkeit zu arbeiten, für eine bestimmte Zeit."
+        },
+        {
+          "id": "o4",
+          "text": "1.000 Pfund Gewinn in der Kasse",
+          "ziel": "gk",
+          "hinweis": "Das Geld ist noch nicht ausgegeben. Es wartet darauf, eingesetzt zu werden."
+        },
+        {
+          "id": "o5",
+          "text": "Fabrikgebäude und Dampfmaschine",
+          "ziel": "pm",
+          "hinweis": "Gebäude und Antrieb werden gebraucht, um zu produzieren, gehen aber nicht ins Garn ein."
+        },
+        {
+          "id": "o6",
+          "text": "Kredit der Bank für den Bau der Fabrik",
+          "ziel": "gk",
+          "hinweis": "Geliehenes Geld ist Geld, das sich vermehren soll: Die Bank will Zinsen, Whitlow will Gewinn."
+        }
+      ],
+      "felder": [
+        {
+          "id": "pm",
+          "titel": "Produktionsmittel",
+          "text": "Gebäude, Maschinen, Rohstoffe"
+        },
+        {
+          "id": "ak",
+          "titel": "Arbeitskraft",
+          "text": "die Fähigkeit zu arbeiten, auf Zeit verkauft"
+        },
+        {
+          "id": "gk",
+          "titel": "Geldkapital",
+          "text": "Geld, das eingesetzt wird, um mehr Geld zu werden"
+        }
+      ],
+      "hilfen": [
+        "Engels: „Frag bei jedem Posten: Ist es ein Ding zum Produzieren, die Arbeit eines Menschen oder Geld?“",
+        "Vier Posten sind Dinge oder Menschen im Betrieb, zwei sind Geldbeträge."
+      ],
+      "passt": "Passt: ",
+      "erfolg": "Für Marx ist das alles zusammen Kapital, sobald es eingesetzt wird, um Mehrwert zu erzielen."
+    },
+    "jahre": {
+      "titel": "Drei Geschäftsjahre",
+      "einleitung": "Ihr führt Whitlow & Co. durch drei Jahre. Jedes Jahr entscheidet ihr, was mit dem Gewinn geschieht. Ashworth Bros. kauft jedes Jahr neue Maschinen und senkt den Garnpreis jedes Jahr um 1,2 Pence. Ziel: Nach drei Jahren soll die Firma noch Gewinn machen.",
+      "optionen": [
+        {
+          "id": "haus",
+          "titel": "Landhaus",
+          "text": "Die Kosten bleiben gleich."
+        },
+        {
+          "id": "lohn",
+          "titel": "Höhere Löhne",
+          "text": "Die Kosten steigen um 0,6 Pence je Pfund."
+        },
+        {
+          "id": "maschine",
+          "titel": "Neue Maschinen",
+          "text": "Die Kosten sinken um 1,2 Pence je Pfund."
+        }
+      ],
+      "ergebnis": {
+        "gut": "Kosten {k} Pence, Marktpreis {p} Pence je Pfund Garn. Die Firma hält mit und macht wieder 1.000 Pfund Gewinn.",
+        "null": "Kosten {k} Pence, Marktpreis {p} Pence. Ihr müsst zum Preis von Ashworth verkaufen. Es bleibt kein Gewinn.",
+        "verlust": "Kosten {k} Pence, Marktpreis {p} Pence. Jedes Pfund Garn bringt Verlust. Die Kunden kaufen bei Ashworth."
+      },
+      "wahlText": {
+        "haus": "Der Gewinn fließt in ein Landhaus in Cheshire.",
+        "lohn": "Die Löhne steigen. Das Garn wird in der Herstellung teurer.",
+        "maschine": "Der Gewinn fließt in selbsttätige Spinnmaschinen."
+      },
+      "ende": {
+        "pleite": "Ohne Gewinn kann Whitlow die Zinsen nicht mehr zahlen. Die Bank kündigt den Kredit, die Spinnerei schließt. Auch Mary verliert ihre Arbeit.",
+        "erfolg": "Die Firma hat drei Jahre überstanden. Der gesamte Gewinn steckt in Maschinen. Whitlow hat kein Landhaus, Mary keinen höheren Lohn, und nächstes Jahr beginnt alles von vorn."
+      },
+      "hilfen": [
+        "Engels: „Sieh nicht auf Whitlow. Sieh auf Ashworth: Was tut der jedes Jahr?“",
+        "Die Firma macht nur Gewinn, wenn ihre Kosten mindestens so schnell sinken wie der Marktpreis."
+      ],
+      "frage": {
+        "titel": "Was zeigt der Versuch?",
+        "frage": "Was folgert Marx aus dem, was ihr in den drei Jahren erlebt habt?",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Fabrikanten sind von Natur aus gierig.",
+            "richtig": false,
+            "rueck": "Gerade nicht. Auch ein großzügiger Fabrikant musste in eurem Versuch investieren, sonst wäre er untergegangen."
+          },
+          {
+            "id": "b",
+            "text": "Die Konkurrenz zwingt jeden Fabrikanten, den Gewinn wieder zu investieren. Der Zwang liegt im Wettbewerb, nicht im Charakter.",
+            "richtig": true,
+            "rueck": "Richtig. Marx nennt das den Zwang zur Akkumulation."
+          },
+          {
+            "id": "c",
+            "text": "Neue Maschinen lohnen sich nie.",
+            "richtig": false,
+            "rueck": "Im Gegenteil: Ohne sie hat die Firma in eurem Versuch nicht überlebt."
+          },
+          {
+            "id": "d",
+            "text": "Höhere Löhne sind in jedem Fall unmöglich.",
+            "richtig": false,
+            "rueck": "Das zeigt das Modell nicht. Es zeigt nur, was geschieht, wenn ein einzelner Fabrikant allein die Löhne erhöht und die Konkurrenz nicht."
+          }
+        ],
+        "hilfen": [
+          "Engels: „Hätte ein gütigerer Mann an Whitlows Stelle anders handeln können?“",
+          "Überlegt, wer in eurem Versuch die Entscheidung erzwungen hat: Whitlow, Mary oder Ashworth?"
+        ]
+      },
+      "start": "Heute: Kosten 10,8 Pence, Verkaufspreis 12 Pence je Pfund Garn, Gewinn 1.000 Pfund."
+    },
+    "kreislauf": {
+      "titel": "Der Weg des Geldes",
+      "einleitung": "Im Kassenschrank beginnt und endet ein Kreislauf. Bringt die fünf Schritte in die richtige Reihenfolge: erst einen Schritt antippen, dann die Stelle.",
+      "karten": [
+        {
+          "id": "c1",
+          "text": "Geld liegt in der Kasse.",
+          "ziel": "f1",
+          "hinweis": "Der Kreislauf beginnt mit dem, was Whitlow am Anfang hat."
+        },
+        {
+          "id": "c2",
+          "text": "Whitlow kauft Baumwolle, Maschinen und Arbeitskraft.",
+          "ziel": "f2",
+          "hinweis": "Bevor produziert werden kann, muss eingekauft werden."
+        },
+        {
+          "id": "c3",
+          "text": "Im Spinnsaal entsteht Garn.",
+          "ziel": "f3",
+          "hinweis": "Die Produktion liegt zwischen Einkauf und Verkauf."
+        },
+        {
+          "id": "c4",
+          "text": "Das Garn wird verkauft: Es kommt mehr Geld zurück, als ausgegeben wurde.",
+          "ziel": "f4",
+          "hinweis": "Erst der Verkauf macht aus dem Garn wieder Geld."
+        },
+        {
+          "id": "c5",
+          "text": "Das zusätzliche Geld fließt in neue Maschinen.",
+          "ziel": "f5",
+          "hinweis": "Dieser Schritt macht aus dem einmaligen Geschäft einen Kreislauf, der immer größer wird."
+        }
+      ],
+      "felder": [
+        {
+          "id": "f1",
+          "titel": "1.",
+          "text": "Anfang"
+        },
+        {
+          "id": "f2",
+          "titel": "2.",
+          "text": ""
+        },
+        {
+          "id": "f3",
+          "titel": "3.",
+          "text": ""
+        },
+        {
+          "id": "f4",
+          "titel": "4.",
+          "text": ""
+        },
+        {
+          "id": "f5",
+          "titel": "5.",
+          "text": "und wieder von vorn"
+        }
+      ],
+      "hilfen": [
+        "Engels: „Folge einem einzelnen Pfund Sterling durch die Firma.“",
+        "Reihenfolge der Stationen: Kasse, Einkauf, Spinnsaal, Verkauf, Reinvestition."
+      ],
+      "passt": "Richtig: Schritt ",
+      "erfolg": "Geld, Ware, mehr Geld: Marx schreibt G – W – G′. Wird das Mehr wieder eingesetzt, wächst das Kapital von Runde zu Runde."
+    },
+    "garn": {
+      "titel": "Wem nützt das billigere Garn?",
+      "frage": "Garn und Stoff werden von Jahr zu Jahr billiger. Wem nützt das nach Marx’ und Engels’ eigener Einschätzung?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Nur dem Adel.",
+          "richtig": false,
+          "rueck": "Der Adel konnte sich feine Stoffe schon vorher leisten."
+        },
+        {
+          "id": "b",
+          "text": "Allen, die Stoff kaufen, auch Familien mit kleinem Einkommen. Kleidung wird zur erschwinglichen Massenware.",
+          "richtig": true,
+          "rueck": "Richtig. Marx und Engels bestreiten das nicht. Sie fragen, zu welchem Preis für die, die das Garn herstellen."
+        },
+        {
+          "id": "c",
+          "text": "Niemandem.",
+          "richtig": false,
+          "rueck": "Sinkende Preise nützen allen, die die Ware kaufen."
+        },
+        {
+          "id": "d",
+          "text": "Nur den Fabrikanten.",
+          "richtig": false,
+          "rueck": "Der Fabrikant muss den niedrigeren Preis an die Käufer weitergeben, sonst verliert er sie an die Konkurrenz."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Wer trägt heute Baumwolle, und wer trug sie vor sechzig Jahren?“",
+        "Überlegt, wer sich Stoff leisten kann, wenn er nur noch einen Bruchteil kostet."
+      ]
+    },
+    "denkpause": {
+      "titel": "Denkpause",
+      "frage": "Marx erwartet, dass kleine Betriebe untergehen und die Löhne niedrig bleiben. An welcher Annahme hängt diese Erwartung?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Dass keine neuen Maschinen mehr erfunden werden.",
+          "richtig": false,
+          "rueck": "Marx rechnet im Gegenteil mit immer neuen Maschinen."
+        },
+        {
+          "id": "b",
+          "text": "Dass die Löhne trotz steigender Produktivität niedrig bleiben und weder der Staat noch organisierte Arbeiter daran etwas ändern.",
+          "richtig": true,
+          "rueck": "Richtig. Steigen die Löhne mit der Produktivität oder setzt der Staat Regeln, reißt die Kette."
+        },
+        {
+          "id": "c",
+          "text": "Dass die Baumwolle ausgeht.",
+          "richtig": false,
+          "rueck": "Rohstoffknappheit spielt in diesem Argument keine Rolle."
+        },
+        {
+          "id": "d",
+          "text": "Dass alle Fabrikanten Landhäuser kaufen.",
+          "richtig": false,
+          "rueck": "Dann gäbe es keine Akkumulation. Marx erwartet das Gegenteil."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Was müsste geschehen, damit Mary von den neuen Maschinen mehr hat als billigeres Garn?“",
+        "Denkt an die Fabrikgesetze am Tor und an die Arbeiter, die sich zusammenschließen könnten."
+      ],
+      "notiz": {
+        "titel": "Eure Notiz für das Tribunal",
+        "frage": "Was könnte dafür sorgen, dass die Löhne trotz Konkurrenz steigen? Notiert ein bis zwei Stichpunkte.",
+        "hinweis": "Die Notiz bleibt auf diesem Gerät gespeichert. Bitte keine Namen eintragen.",
+        "min": 8,
+        "zuKurz": "Schreibt mindestens einen Stichpunkt."
+      }
+    }
+  },
+  "station4": {
+    "ziele": {
+      "weg": "Folgt der Gasse hinunter zum Irk.",
+      "hof": "Seht euch im Hof um: Pumpe, Abort und Fluss ({n} von 3).",
+      "keller": "Steigt in die Kellerwohnung hinab.",
+      "wohnung": "Seht euch um und sprecht mit der Frau ({n} von 4).",
+      "raus": "Geht zurück in den Hof.",
+      "lesen": "Lest an der Mauer am Fluss Chadwicks Bericht.",
+      "ursachen": "Ordnet an der Mauer die möglichen Ursachen.",
+      "vergleich": "Vergleicht an der Mauer Engels und Chadwick.",
+      "fertig": "Am Abend versammeln sich die Chartisten vor der Stadt. Brecht am Ausgang des Hofs auf."
+    },
+    "tabelle": {
+      "kopf": [
+        "Durchschnittliches Sterbealter",
+        "Oberschicht",
+        "Handwerker, Händler",
+        "Arbeiter"
+      ],
+      "zeilen": [
+        [
+          "Manchester (Industriestadt)",
+          "38",
+          "20",
+          "17"
+        ],
+        [
+          "Rutland (ländlich)",
+          "52",
+          "41",
+          "38"
+        ]
+      ]
+    },
+    "rechnen": {
+      "titel": "Chadwicks Tabelle",
+      "angaben": [
+        "Manchester: Oberschicht 38, Arbeiter 17 Jahre",
+        "Rutland: Oberschicht 52, Arbeiter 38 Jahre"
+      ],
+      "fragen": [
+        {
+          "id": "abstand",
+          "frage": "Wie viele Jahre liegen in Manchester zwischen dem durchschnittlichen Sterbealter der Oberschicht und dem der Arbeiter?",
+          "einheit": "Jahre",
+          "loesung": 21,
+          "fehler": {
+            "14": "14 Jahre ist der Abstand in Rutland (52 − 38). Gefragt ist Manchester.",
+            "35": "Hier wurde eine Zahl aus Rutland mit einer aus Manchester verrechnet. Bleibt in der Zeile Manchester.",
+            "55": "Gesucht ist der Unterschied, nicht die Summe.",
+            "17": "17 Jahre ist das Sterbealter der Arbeiter selbst. Gesucht ist der Abstand zur Oberschicht."
+          },
+          "sonst": "Das stimmt noch nicht. Zieht in der Zeile Manchester die kleinere von der größeren Zahl ab.",
+          "hilfen": [
+            "Engels: „Bleib in der Zeile Manchester.“",
+            "38 − 17 = ?"
+          ],
+          "weg": "38 − 17 = 21 Jahre."
+        }
+      ]
+    },
+    "rutland": {
+      "titel": "Stadt und Land",
+      "frage": "Vergleicht die Landarbeiter in Rutland mit der Oberschicht in Manchester. Was fällt auf?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Die Oberschicht lebt überall gleich lang.",
+          "richtig": false,
+          "rueck": "Nein: 38 Jahre in Manchester, 52 in Rutland."
+        },
+        {
+          "id": "b",
+          "text": "Beide erreichen im Durchschnitt 38 Jahre. Der Wohnort wirkt also mindestens so stark wie die Klasse.",
+          "richtig": true,
+          "rueck": "Richtig. Ein armer Landarbeiter wird so alt wie ein reicher Städter. Das spricht dafür, dass die Stadt selbst krank macht."
+        },
+        {
+          "id": "c",
+          "text": "Arbeiter sterben überall gleich früh.",
+          "richtig": false,
+          "rueck": "Nein: 17 Jahre in Manchester, 38 in Rutland."
+        },
+        {
+          "id": "d",
+          "text": "Auf dem Land ist der Abstand zwischen den Klassen größer als in der Stadt.",
+          "richtig": false,
+          "rueck": "Nein: In Rutland beträgt er 14 Jahre, in Manchester 21."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Such die Zahl 38. Sie steht zweimal in der Tabelle.“",
+        "Vergleicht: Arbeiter in Rutland und Oberschicht in Manchester."
+      ]
+    },
+    "durchschnitt": {
+      "titel": "Was heißt „17 Jahre“?",
+      "frage": "Was bedeutet ein durchschnittliches Sterbealter von 17 Jahren genau?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Fast alle Arbeiter starben mit etwa 17 Jahren.",
+          "richtig": false,
+          "rueck": "Nein. Ein Durchschnitt sagt nichts darüber, wie die einzelnen Werte verteilt sind. Mary und Ellen sind beide älter."
+        },
+        {
+          "id": "b",
+          "text": "Sehr viele Kinder starben in den ersten Lebensjahren und zogen den Durchschnitt stark nach unten. Wer die Kindheit überlebte, wurde deutlich älter.",
+          "richtig": true,
+          "rueck": "Richtig. Die Zahl zeigt vor allem eine erschütternd hohe Kindersterblichkeit. Sie ist echt, muss aber richtig gelesen werden."
+        },
+        {
+          "id": "c",
+          "text": "Die Zahl ist erfunden.",
+          "richtig": false,
+          "rueck": "Nein. Sie stammt aus amtlichen Sterberegistern."
+        },
+        {
+          "id": "d",
+          "text": "Arbeiter durften erst mit 17 Jahren in die Fabrik.",
+          "richtig": false,
+          "rueck": "Nein. Kinder arbeiteten ab acht Jahren. Mit dem Sterbealter hat das nichts zu tun."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Ellen hat zwei Kinder begraben. Wie alt waren sie, und was macht das mit einem Durchschnitt?“",
+        "Rechnet im Kopf: Ein Kind stirbt mit 1 Jahr, ein Erwachsener mit 49. Wie hoch ist der Durchschnitt?"
+      ]
+    },
+    "ursachen": {
+      "titel": "Woran liegt es?",
+      "mehrfach": true,
+      "einleitung": "Fünf mögliche Ursachen für die hohe Sterblichkeit. Ordnet jede einem Bereich zu. Bei zwei Karten sind zwei Bereiche vertretbar.",
+      "karten": [
+        {
+          "id": "u1",
+          "text": "Niedrige Löhne, lange Arbeitstage, Kinderarbeit",
+          "ziele": [
+            "wo"
+          ],
+          "hinweis": "Hier geht es um das Verhältnis von Fabrikant und Arbeitern.",
+          "passt": "Vertretbar: Das betrifft, wie Arbeit und Lohn geregelt sind."
+        },
+        {
+          "id": "u2",
+          "text": "Kein sauberes Trinkwasser, keine Kanalisation",
+          "ziele": [
+            "st"
+          ],
+          "hinweis": "Denkt an Pumpe und Abort im Hof.",
+          "passt": "Vertretbar: Das ist eine Frage von Leitungen und Kanälen."
+        },
+        {
+          "id": "u3",
+          "text": "Die Stadt wächst schneller, als Wohnungen gebaut werden",
+          "ziele": [
+            "st",
+            "wo"
+          ],
+          "hinweis": "Überlegt, warum so viele Menschen kommen und wer für sie baut.",
+          "passt": "Vertretbar. Man kann es der Stadt zuordnen (es fehlen Wohnungen) oder der Wirtschaftsordnung (die Fabriken ziehen die Menschen an, gebaut wird nur, was Gewinn bringt)."
+        },
+        {
+          "id": "u4",
+          "text": "Kaum Gesetze, keine handlungsfähige Stadtverwaltung",
+          "ziele": [
+            "st",
+            "wo"
+          ],
+          "hinweis": "Wer hätte Kanäle bauen und Regeln setzen können?",
+          "passt": "Vertretbar. Man kann es der Stadt zuordnen (es fehlt Verwaltung) oder der Wirtschaftsordnung (der Staat soll sich nach herrschender Meinung heraushalten)."
+        },
+        {
+          "id": "u5",
+          "text": "Die Medizin kennt Krankheitserreger noch nicht",
+          "ziele": [
+            "wi"
+          ],
+          "hinweis": "Das hat weder mit Löhnen noch mit Kanälen zu tun, sondern mit dem, was man 1845 weiß.",
+          "passt": "Vertretbar: Das ist der Stand des Wissens."
+        }
+      ],
+      "felder": [
+        {
+          "id": "wo",
+          "titel": "Wirtschaftsordnung",
+          "text": "Lohnarbeit, Konkurrenz, Eigentum"
+        },
+        {
+          "id": "st",
+          "titel": "Stadt und Infrastruktur",
+          "text": "Wasser, Kanäle, Wohnungen, Verwaltung"
+        },
+        {
+          "id": "wi",
+          "titel": "Wissen der Zeit",
+          "text": "Medizin und Naturwissenschaft"
+        }
+      ],
+      "hilfen": [
+        "Engels: „Ich sage: das System. Aber sieh selbst nach, was alles zusammenkommt.“",
+        "Jede der fünf Ursachen ist plausibel. Fragt bei jeder: Liegt sie an der Art zu wirtschaften, an der Stadt oder am Wissen?"
+      ],
+      "erfolg": "Alle fünf Ursachen sind plausibel. Aus der Tabelle allein lässt sich nicht ablesen, welche entscheidend ist: Ein Zusammenhang ist noch kein Beweis für eine Ursache."
+    },
+    "vergleich": {
+      "titel": "Zwei Leser, dieselben Zahlen",
+      "mehrfach": true,
+      "einleitung": "Engels und Chadwick stützen sich auf dieselben Berichte. Ordnet die vier Aussagen zu. Es sind sinngemäße Zusammenfassungen, keine Zitate.",
+      "karten": [
+        {
+          "id": "v1",
+          "text": "Die Gesellschaft weiß, dass diese Lage die Arbeiter früh ins Grab bringt, und ändert sie nicht. Das ist sozialer Mord.",
+          "ziel": "en",
+          "hinweis": "Wer hier spricht, klagt die ganze Gesellschaftsordnung an."
+        },
+        {
+          "id": "v2",
+          "text": "Schmutz, fehlende Entwässerung und verdorbenes Wasser machen krank. Kanäle und Wasserleitungen würden die Sterblichkeit senken.",
+          "ziel": "ch",
+          "hinweis": "Wer hier spricht, schlägt eine technische Lösung vor."
+        },
+        {
+          "id": "v3",
+          "text": "Solange wenige die Fabriken besitzen und alle anderen ihre Arbeitskraft verkaufen müssen, bleibt das Elend.",
+          "ziel": "en",
+          "hinweis": "Wer hier spricht, sieht die Ursache im Eigentum."
+        },
+        {
+          "id": "v4",
+          "text": "Kranke Arbeiter, Witwen und Waisen kosten die Gemeinden viel Geld. Vorbeugen ist billiger.",
+          "ziel": "ch",
+          "hinweis": "Wer hier spricht, rechnet als Verwaltungsbeamter."
+        }
+      ],
+      "felder": [
+        {
+          "id": "en",
+          "titel": "Friedrich Engels",
+          "text": "Die Ursache liegt im System. Es muss überwunden werden."
+        },
+        {
+          "id": "ch",
+          "titel": "Edwin Chadwick",
+          "text": "Die Ursache liegt in fehlenden Kanälen und Regeln. Reformen genügen."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Chadwick ist Beamter. Er will die Stadt reparieren, nicht die Ordnung ändern.“",
+        "Zwei Aussagen fordern einen Umsturz der Verhältnisse, zwei schlagen Verbesserungen vor."
+      ],
+      "passt": "Passt: ",
+      "erfolg": "Zwei Antworten auf dasselbe Elend: überwinden oder reformieren."
+    },
+    "denkpause": {
+      "titel": "Denkpause",
+      "frage": "Welche Information bräuchte man, um zu entscheiden, wer recht hat: Engels oder Chadwick?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Wie viele Fabriken es 1845 in Manchester gab.",
+          "richtig": false,
+          "rueck": "Das ändert nichts an der Frage nach der Ursache."
+        },
+        {
+          "id": "b",
+          "text": "Wie sich die Sterblichkeit entwickelt, wenn Kanalisation und Schutzgesetze eingeführt werden, der Kapitalismus aber bestehen bleibt.",
+          "richtig": true,
+          "rueck": "Richtig. Sinkt die Sterblichkeit dann, spricht das für Chadwick. Bleibt sie hoch, spricht das für Engels. Die Antwort liegt 1845 in der Zukunft."
+        },
+        {
+          "id": "c",
+          "text": "Was Engels’ Vater über das Buch dachte.",
+          "richtig": false,
+          "rueck": "Das ist für die Frage nach der Ursache unerheblich."
+        },
+        {
+          "id": "d",
+          "text": "Ob Chadwick selbst in Manchester wohnte.",
+          "richtig": false,
+          "rueck": "Auch das entscheidet nicht, welche Ursache die richtige ist."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Wir müssten abwarten, was geschieht, wenn sie die Kanäle wirklich bauen.“",
+        "Überlegt, welche der beiden Ursachen man beseitigen könnte, ohne die andere anzutasten."
+      ],
+      "notiz": {
+        "titel": "Eure offene Frage für Kapitel II",
+        "frage": "Was erwartet ihr: Sinkt die Sterblichkeit, wenn Kanäle und Schutzgesetze kommen und der Kapitalismus bleibt? Begründet kurz.",
+        "hinweis": "Die Notiz bleibt auf diesem Gerät gespeichert und wird in Kapitel II gebraucht. Bitte keine Namen eintragen.",
+        "min": 8,
+        "zuKurz": "Schreibt mindestens einen Satz."
+      }
+    },
+    "abschluss": {
+      "titel": "Am Abend",
+      "text": "Engels hat von einer Versammlung der Chartisten gehört, draußen auf einem Feld vor der Stadt. Marx will dort seine Anklage vortragen. Am Ausgang des Hofs könnt ihr aufbrechen."
+    }
+  },
+  "station1": {
+    "ziele": {
+      "suchen": "Seht euch auf dem Weg zur Spinnerei um: {n} von 7 Orten entdeckt, mindestens 5.",
+      "bilanz": "Zieht am Fabriktor mit Engels Bilanz."
+    },
+    "mindestens": 5,
+    "ordnen": {
+      "titel": "Was habt ihr gesehen?",
+      "mehrfach": true,
+      "einleitung": "Ordnet eure Beobachtungen den drei großen Entwicklungen zu: erst eine Beobachtung antippen, dann das Feld.",
+      "karten": [
+        {
+          "id": "z1",
+          "text": "Dampfmaschinen statt Wasserräder, Rauch über der Stadt",
+          "ziel": "ind",
+          "hinweis": "Es geht um eine neue Kraftquelle für die Maschinen."
+        },
+        {
+          "id": "z2",
+          "text": "Eisenbahn zwischen Hafen und Spinnereien",
+          "ziele": [
+            "ind",
+            "urb"
+          ],
+          "hinweis": "Überlegt, was die Bahn transportiert.",
+          "passt": "Passt. Die Bahn bringt Rohstoffe und Waren; sie bringt auch Menschen in die Stadt."
+        },
+        {
+          "id": "z3",
+          "text": "Baumwollballen aus den Südstaaten der USA",
+          "ziel": "ind",
+          "hinweis": "Es geht um den Rohstoff für die Maschinen und den Welthandel."
+        },
+        {
+          "id": "z4",
+          "text": "Kohle auf dem Kanal",
+          "ziel": "ind",
+          "hinweis": "Kohle ist der Brennstoff für die Dampfmaschinen."
+        },
+        {
+          "id": "z5",
+          "text": "Einwohnerzahl in 40 Jahren mehr als verdreifacht",
+          "ziel": "urb",
+          "hinweis": "Es geht um das Wachstum der Stadt."
+        },
+        {
+          "id": "z6",
+          "text": "Fabrikanten wohnen in Villen am Stadtrand, Arbeiter dicht gedrängt in der Stadt",
+          "ziel": "soz",
+          "hinweis": "Es geht darum, wer wo wohnt."
+        },
+        {
+          "id": "z7",
+          "text": "Gesetze gegen Kinderarbeit in den Fabriken",
+          "ziel": "soz",
+          "hinweis": "Gegen welche Not richten sich diese Gesetze?"
+        }
+      ],
+      "felder": [
+        {
+          "id": "ind",
+          "titel": "Industrialisierung",
+          "text": "Maschinen, Energie, Verkehr, Welthandel"
+        },
+        {
+          "id": "urb",
+          "titel": "Urbanisierung",
+          "text": "Zuzug und Wachstum der Städte"
+        },
+        {
+          "id": "soz",
+          "titel": "Soziale Frage",
+          "text": "Not der Arbeiter, Trennung der Klassen"
+        }
+      ],
+      "hilfen": [
+        "Engels: „Frag bei jeder Beobachtung: Geht es um Technik, um die Stadt oder um die Menschen, die in ihr arbeiten?“",
+        "Vier Karten gehören zur Industrialisierung, eine zur Urbanisierung, zwei zur sozialen Frage. Bei der Eisenbahn sind zwei Felder vertretbar."
+      ],
+      "passt": "Passt: ",
+      "erfolg": "Alle drei Entwicklungen hängen zusammen: Die Fabriken ziehen die Menschen in die Stadt, und die Stadt teilt sich nach Klassen."
+    },
+    "denkpause": {
+      "titel": "Denkpause",
+      "frage": "Engels ist der Sohn eines Fabrikanten und arbeitete im Kontor der Firma seines Vaters. Was folgt daraus für sein Buch über Manchester?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Sein Buch ist wertlos, weil er Partei ergreift.",
+          "richtig": false,
+          "rueck": "Zu weit. Parteilichkeit macht Beobachtungen nicht falsch. Sie heißt nur, dass man sie prüfen muss."
+        },
+        {
+          "id": "b",
+          "text": "Er kennt die Welt der Fabrikanten von innen, schreibt aber als Kritiker mit einem klaren Ziel. Seine Angaben muss man an anderen Quellen prüfen.",
+          "richtig": true,
+          "rueck": "Richtig. Engels ist Augenzeuge und Ankläger zugleich. Historiker vergleichen seine Angaben mit amtlichen Berichten: Vieles bestätigen sie, manches halten sie für zugespitzt."
+        },
+        {
+          "id": "c",
+          "text": "Als Fabrikantensohn schreibt er sicher besonders neutral.",
+          "richtig": false,
+          "rueck": "Nein. Engels schreibt ausdrücklich als Kritiker. Seine Herkunft macht ihn nicht neutral."
+        },
+        {
+          "id": "d",
+          "text": "Er übertreibt nur, weil er sich mit seinem Vater gestritten hat.",
+          "richtig": false,
+          "rueck": "Das ist eine Vermutung über seine Gefühle, kein Argument. Ob er übertreibt, zeigt nur der Vergleich mit anderen Quellen."
+        }
+      ],
+      "hilfen": [
+        "Marx: „Ein Zeuge, der beide Seiten kennt, ist wertvoll. Ein Zeuge, der ein Ziel hat, muss geprüft werden.“",
+        "Unterscheidet: Was weiß Engels aus eigener Anschauung, und was will er mit seinem Buch erreichen?"
+      ],
+      "notiz": {
+        "titel": "Eure Notiz",
+        "frage": "Woran würdet ihr prüfen, ob Engels die Lage richtig beschreibt? Nennt eine Quelle oder einen Weg.",
+        "hinweis": "Die Notiz bleibt auf diesem Gerät gespeichert. Bitte keine Namen eintragen.",
+        "min": 8,
+        "zuKurz": "Schreibt mindestens einen Stichpunkt."
+      }
+    }
+  },
+  "station5": {
+    "ziele": {
+      "hof": "Brecht am Ausgang des Hofs zur Versammlung auf.",
+      "holt": "Sprecht mit dem Redner der Chartisten.",
+      "anklage": "Stellt an der Tribüne eure Anklageschrift zusammen.",
+      "grimshaw": "Mr. Grimshaw verlangt das Wort. Stellt euch ihm.",
+      "kapsel": "Versiegelt mit Engels die Zeitkapsel am Wagen.",
+      "fertig": "Kapitel I ist abgeschlossen."
+    },
+    "anklage": {
+      "titel": "Die Anklageschrift",
+      "mehrfach": true,
+      "einleitung": "Ordnet jedem Vorwurf den Beleg zu, der ihn stützt. Zwei Belege taugen nicht als Beweis: Legt sie beiseite.",
+      "karten": [
+        {
+          "id": "a1",
+          "text": "Rechnung vom Pult: 6 Schilling Neuwert, 3 Schilling Lohn, 3 Schilling Mehrwert",
+          "ziel": "v1",
+          "hinweis": "Welcher Vorwurf handelt davon, woher der Gewinn kommt?"
+        },
+        {
+          "id": "a2",
+          "text": "Marys Bericht: Garn gehört ihr nicht, die Maschine gibt den Takt vor",
+          "ziel": "v2",
+          "hinweis": "Welcher Vorwurf handelt davon, wie sich die Arbeit anfühlt?"
+        },
+        {
+          "id": "a3",
+          "text": "Drei Geschäftsjahre: Nur wer investiert, überlebt",
+          "ziel": "v3",
+          "hinweis": "Welcher Vorwurf handelt vom Zwang des Wettbewerbs?"
+        },
+        {
+          "id": "a4",
+          "text": "Chadwicks Tabelle: Arbeiter in Manchester sterben im Durchschnitt 21 Jahre früher als die Oberschicht",
+          "ziel": "v4",
+          "hinweis": "Welcher Vorwurf handelt vom Leben und Sterben der Arbeiter?"
+        },
+        {
+          "id": "a5",
+          "text": "„Arbeiter in Manchester werden höchstens 17 Jahre alt.“",
+          "ziel": "weg",
+          "hinweis": "Lest genau: Steht das so in Chadwicks Tabelle?",
+          "falsch": {
+            "v4": "Vorsicht: So steht es nicht in der Tabelle. 17 Jahre ist ein Durchschnitt, den die hohe Kindersterblichkeit drückt. Die Gegenseite würde den Fehler sofort aufdecken."
+          },
+          "passt": "Richtig beiseitegelegt: Der Satz liest den Durchschnitt falsch."
+        },
+        {
+          "id": "a6",
+          "text": "Gerücht: Ein Aufseher bei Hadley soll Kinder mit dem Riemen schlagen",
+          "ziel": "weg",
+          "hinweis": "Ist das ein Beweis über das System oder ein Einzelfall vom Hörensagen?",
+          "falsch": {
+            "v1": "Ein grausamer Aufseher sagt nichts darüber, woher der Gewinn kommt. Marx argumentiert mit dem System, nicht mit der Moral Einzelner.",
+            "v2": "Ein Gerücht über einen Einzelfall ist kein Beleg. Marx argumentiert mit dem System, nicht mit der Moral Einzelner.",
+            "v3": "Ein Gerücht über einen Einzelfall ist kein Beleg für den Zwang des Wettbewerbs.",
+            "v4": "Ein Gerücht über einen Einzelfall ist kein Beleg für das Elend einer ganzen Klasse."
+          },
+          "passt": "Richtig beiseitegelegt: ein Einzelfall vom Hörensagen. Marx klagt das System an, nicht einzelne grausame Menschen."
+        }
+      ],
+      "felder": [
+        {
+          "id": "v1",
+          "titel": "Ausbeutung",
+          "text": "Der Gewinn stammt aus unbezahlter Mehrarbeit."
+        },
+        {
+          "id": "v2",
+          "titel": "Entfremdung",
+          "text": "Die Arbeit steht den Arbeitern als etwas Fremdes gegenüber."
+        },
+        {
+          "id": "v3",
+          "titel": "Akkumulation",
+          "text": "Die Konkurrenz zwingt zum Wachstum des Kapitals."
+        },
+        {
+          "id": "v4",
+          "titel": "Elend",
+          "text": "Die Arbeiter zahlen mit ihrer Gesundheit."
+        },
+        {
+          "id": "weg",
+          "titel": "Kein Beweis",
+          "text": "Beiseitelegen"
+        }
+      ],
+      "hilfen": [
+        "Engels: „Grimshaw wird jeden schwachen Beleg zerpflücken. Nimm nur, was hält.“",
+        "Prüft zwei Belege besonders: den Satz über die 17 Jahre und das Gerücht aus dem Hof."
+      ],
+      "passt": "Passt: ",
+      "erfolg": "Die Anklageschrift steht. Vier Vorwürfe, vier Belege."
+    },
+    "duell": {
+      "titel": "Streitgespräch mit Mr. Grimshaw",
+      "einleitung": "Grimshaw bringt fünf Einwände. Widerlegt, was sich widerlegen lässt, und räumt ein, was stimmt. Pauschales Abwehren kostet die Zustimmung der Versammlung.",
+      "zustimmung": "Zustimmung der Versammlung",
+      "niederlage": "Die Versammlung wendet sich ab. Holt ruft: „Belege, Doktor, keine Predigt!“ Versucht es noch einmal.",
+      "sieg": "Die Versammlung ist auf eurer Seite, und doch habt ihr zweimal nachgeben müssen. Genau das macht die Anklage glaubwürdig.",
+      "einwaende": [
+        {
+          "text": "Ein Professor aus Oxford hat es bewiesen: Der ganze Reingewinn einer Spinnerei entsteht in der letzten Arbeitsstunde. Wer den Arbeitstag verkürzt, ruiniert die Fabriken.",
+          "art": "widerlegen",
+          "optionen": [
+            {
+              "text": "Widerlegen mit der Rechnung vom Pult und dem Zehnstundentag: Der Mehrwert entsteht in der ganzen Mehrarbeit, nicht in einer Stunde. Und mit schnelleren Maschinen bleibt er auch bei zehn Stunden gleich.",
+              "richtig": true,
+              "rueck": "Treffer. In Marys Tag bringen sechs Stunden Mehrarbeit den Mehrwert, und an der neuen Maschine blieb er bei kürzerem Tag gleich."
+            },
+            {
+              "text": "Einräumen: Fällt die letzte Stunde weg, ist der Gewinn verloren.",
+              "richtig": false,
+              "rueck": "Damit gebt ihr einen Punkt auf, den eure eigene Rechnung widerlegt."
+            },
+            {
+              "text": "Professoren reden, wie die Fabrikanten sie bezahlen!",
+              "richtig": false,
+              "rueck": "Ein Angriff auf die Person ist kein Argument. Die Versammlung will Zahlen hören."
+            }
+          ]
+        },
+        {
+          "text": "Der Lohn wird frei vereinbart und pünktlich gezahlt. Niemand wird gezwungen, niemand betrogen. Wo ist da Ausbeutung?",
+          "art": "widerlegen",
+          "optionen": [
+            {
+              "text": "Widerlegen mit dem Gerücht über den Aufseher bei Hadley.",
+              "richtig": false,
+              "rueck": "Ein Gerücht über einen Einzelfall beweist nichts über den Lohnvertrag."
+            },
+            {
+              "text": "Widerlegen mit der Rechnung vom Pult: Gerade wenn der Lohn voll gezahlt wird, bleibt nach Marx ein Mehrwert. Mary schafft 6 Schilling Neuwert und erhält 3.",
+              "richtig": true,
+              "rueck": "Treffer. Nach Marx’ Rechnung entsteht der Mehrwert trotz erfülltem Vertrag. Grimshaw kann die Zahlen nicht bestreiten, nur die Werttheorie dahinter."
+            },
+            {
+              "text": "Einräumen: Wenn der Lohn bezahlt ist, gibt es keine Ausbeutung.",
+              "richtig": false,
+              "rueck": "Damit gebt ihr den Kern der Anklage auf."
+            }
+          ]
+        },
+        {
+          "text": "Das Elend liegt an den Arbeitern selbst: Trunk, Unordnung, zu viele Kinder. Mit Fabriken hat das nichts zu tun.",
+          "art": "widerlegen",
+          "optionen": [
+            {
+              "text": "Arbeiter werden in Manchester nur 17 Jahre alt, das sagt doch alles!",
+              "richtig": false,
+              "rueck": "So gelesen ist die Zahl falsch: Es ist ein Durchschnitt, den die Kindersterblichkeit drückt. Grimshaw lacht."
+            },
+            {
+              "text": "Wer so redet, war nie in einem Keller am Irk!",
+              "richtig": false,
+              "rueck": "Das mag stimmen, ist aber kein Beleg. Die Versammlung will Zahlen hören."
+            },
+            {
+              "text": "Widerlegen mit Chadwicks Tabelle: Landarbeiter in Rutland werden im Durchschnitt 38 Jahre alt, Arbeiter in Manchester 17. Dieselbe Klasse, ein anderer Ort: Es sind die Verhältnisse.",
+              "richtig": true,
+              "rueck": "Treffer. Der Vergleich zeigt, dass die Lebensweise der Einzelnen den Unterschied nicht erklärt."
+            }
+          ]
+        },
+        {
+          "text": "Ich trage das Risiko, Herr Doktor. Ich plane, leihe Geld und verliere alles, wenn es schiefgeht. Davon steht nichts in Ihrer Rechnung.",
+          "art": "einraeumen",
+          "optionen": [
+            {
+              "text": "Widerlegen: Fabrikanten tragen kein Risiko.",
+              "richtig": false,
+              "rueck": "Das stimmt nicht. Im Kontor habt ihr gesehen, wie schnell eine Firma ohne Gewinn untergeht."
+            },
+            {
+              "text": "Teilweise einräumen: Risiko und Leitung kommen in der Rechnung nicht vor, weil sie auf der Arbeitswertlehre beruht. Ob der Gewinn deshalb gerechtfertigt ist, bleibt eine offene Frage.",
+              "richtig": true,
+              "rueck": "Richtig eingeräumt. Wer offen sagt, wo die eigene Rechnung an Grenzen stößt, gewinnt Vertrauen."
+            },
+            {
+              "text": "Das ist Fabrikantengerede!",
+              "richtig": false,
+              "rueck": "Pauschales Abwehren überzeugt niemanden. Der Einwand hat einen wahren Kern."
+            }
+          ]
+        },
+        {
+          "text": "Ihre verhassten Maschinen machen Garn und Stoff so billig wie nie. Davon haben auch Ihre Arbeiter etwas.",
+          "art": "einraeumen",
+          "optionen": [
+            {
+              "text": "Maschinen sind das Übel. Man muss sie zerschlagen.",
+              "richtig": false,
+              "rueck": "Das forderten die Maschinenstürmer. Marx will die Maschinen nicht zerschlagen; er fragt, wem sie gehören."
+            },
+            {
+              "text": "Widerlegen: Billiges Garn nützt den Arbeitern nicht.",
+              "richtig": false,
+              "rueck": "Doch: Kleidung wurde erschwinglich. Wer das bestreitet, verliert an Glaubwürdigkeit."
+            },
+            {
+              "text": "Einräumen: Das stimmt, die Produktivkraft ist gewaltig. Die Frage ist, warum die, die das Garn herstellen, so wenig davon haben.",
+              "richtig": true,
+              "rueck": "Richtig eingeräumt. Marx und Engels erkennen die Leistung der Bourgeoisie selbst an."
+            }
+          ]
+        }
+      ]
+    },
+    "diagnose": {
+      "titel": "Stimmt die Diagnose?",
+      "frage": "Zwischen 1780 und 1840 stieg die Produktion je Arbeiter um 46 %, der Reallohn um 12 %. Was bedeutet das für Marx’ und Engels’ Beobachtungen von 1845?",
+      "optionen": [
+        {
+          "id": "a",
+          "text": "Sie haben das Elend erfunden.",
+          "richtig": false,
+          "rueck": "Nein. Die Löhne hinkten der Produktion sechzig Jahre lang weit hinterher."
+        },
+        {
+          "id": "b",
+          "text": "Ihre Diagnose trifft für ihre Zeit zu: Die Wirtschaft wuchs kräftig, bei den Arbeitern kam wenig davon an.",
+          "richtig": true,
+          "rueck": "Richtig. Marx und Engels haben genau hingesehen. Offen ist, ob aus einer richtigen Diagnose auch eine richtige Prognose folgt."
+        },
+        {
+          "id": "c",
+          "text": "Die Arbeiter wurden absolut ärmer.",
+          "richtig": false,
+          "rueck": "Nicht ganz: Die Reallöhne stiegen leicht, aber viel langsamer als die Produktion."
+        }
+      ],
+      "hilfen": [
+        "Engels: „Vergleiche die beiden Zahlen. Was ist gewachsen, und was kaum?“"
+      ]
+    },
+    "tabelle": {
+      "kopf": [
+        "Großbritannien, 1780–1840",
+        "Veränderung"
+      ],
+      "zeilen": [
+        [
+          "Produktion je Arbeiter",
+          "+46 %"
+        ],
+        [
+          "Reallohn",
+          "+12 %"
+        ]
+      ]
+    },
+    "kapsel": {
+      "titel": "Die Zeitkapsel",
+      "einleitung": "Stellt euch vor, ihr lebt 1845 und kennt nur, was ihr heute gesehen habt. Tritt die Prognose in den nächsten 150 Jahren ein?",
+      "prognosen": [
+        {
+          "id": "p1",
+          "titel": "Die Arbeiter verelenden weiter.",
+          "text": "Je mehr Reichtum entsteht, desto ärmer werden die, die ihn herstellen."
+        },
+        {
+          "id": "p2",
+          "titel": "Das Kapital sammelt sich bei immer weniger Eigentümern.",
+          "text": "Am Ende stehen wenige Kapitalbesitzer einer riesigen Masse Besitzloser gegenüber."
+        },
+        {
+          "id": "p3",
+          "titel": "Das System bricht zusammen.",
+          "text": "Krisen und Klassenkampf führen zur Überwindung des Kapitalismus."
+        }
+      ],
+      "tipps": [
+        [
+          "ja",
+          "Tritt ein"
+        ],
+        [
+          "teils",
+          "Tritt teilweise ein"
+        ],
+        [
+          "nein",
+          "Tritt nicht ein"
+        ]
+      ],
+      "knopf": "Kapsel versiegeln",
+      "fehlt": "Gebt zu allen drei Prognosen einen Tipp ab."
+    },
+    "ende": {
+      "titel": "Ende von Kapitel I",
+      "text": "Ihr habt Marx und Engels durch Manchester begleitet und ihre Anklage gegen den Kapitalismus zusammengetragen: Mehrwert, Entfremdung, Akkumulation und Elend. Zwei Einwände der Gegenseite haben standgehalten.\nDie Zeitkapsel ist versiegelt. Geöffnet wird sie in Kapitel II.\nDie Verteidigung hat das Wort."
+    }
+  }
+}

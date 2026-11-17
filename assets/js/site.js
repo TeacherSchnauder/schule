@@ -45,6 +45,7 @@
     "bwl": "blau",
     "awl": "blau",
     "vwl": "gruen",
+    "fws": "gruen",
     "ggk": "rot",
     "ggk/politik": "rot",
     "ggk/geschichte": "bernstein",

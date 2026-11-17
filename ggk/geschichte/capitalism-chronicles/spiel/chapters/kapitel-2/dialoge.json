@@ -1,0 +1,172 @@
+{
+  "a0_start": [
+    { "wer": "imhof", "text": "Willkommen im Seminar. Letzte Woche wart ihr mit Marx und Engels in Manchester, im Sommer 1845." },
+    { "wer": "imhof", "text": "Auf der Leinwand stehen eure Funde: zwei Städte in einer, Mehrwert, Akkumulation, Verelendung. Eine starke Anklage." },
+    { "wer": "lena", "text": "Und am Ende haben wir drei Prognosen in eine Kassette gelegt." },
+    { "wer": "imhof", "text": "Genau die steht hier auf dem Pult. Heute bekommt die Verteidigung das Wort. Öffnet sie." }
+  ],
+  "a0_these": [
+    { "wer": "imhof", "text": "Die Verteidigung übernimmt ein Historiker von dieser Universität: Werner Plumpe. Sein Buch heißt „Das kalte Herz“." },
+    { "wer": "imhof", "text": "Er bestreitet nicht das Elend von 1845. Er bestreitet, dass es so weitergehen musste." }
+  ],
+  "a0_reise": [
+    { "wer": "imhof", "text": "Eine These prüft man an Quellen. Die Leinwand bringt euch in die Straße aus Kapitel I zurück, dreimal, jedes Mal später." },
+    { "wer": "imhof", "text": "Nehmt das Haushaltsbuch von Marys Familie mit. Fragt überall dasselbe: Wie lange muss die Familie für ihren Warenkorb arbeiten?" },
+    { "wer": "lena", "text": "Und woran erkenne ich, ob Plumpe recht hat?" },
+    { "wer": "imhof", "text": "Gar nicht so schnell. Sammelt Befunde und Gegenbefunde. Entschieden wird später, im Tribunal." }
+  ],
+  "a1_ankunft": [
+    { "wer": "lena1863", "text": "Winter 1862/63. Kein Rauch über der Stadt. So klar war die Luft 1845 nie." },
+    { "wer": "lena1863", "text": "Das Tor von Whitlow & Co. ist zu. Ich sehe mich um." }
+  ],
+  "zuWenig": { "wer": "lena", "text": "Ich sollte mich erst umsehen. Zwei der drei Orte mit Messingring fehlen mir noch." },
+  "a1_mary": [
+    { "wer": "maryAlt", "text": "Achtzehn Jahre habe ich bei Whitlow gesponnen. Jetzt stehe ich für Suppe an." },
+    { "wer": "lena1863", "text": "Warum steht die Spinnerei still?" },
+    { "wer": "maryAlt", "text": "In Amerika ist Krieg, es kommt keine Baumwolle mehr. Wir haben nichts falsch gemacht, und doch haben wir nichts." },
+    { "wer": "maryAlt", "text": "Die Uhr ist im Pfandhaus, das gute Tuch auch. Mein Ältester will nach Amerika. Ausgerechnet." },
+    { "wer": "lena1863", "text": "Darf ich in Ihr Haushaltsbuch sehen?" }
+  ],
+  "a1_whitlow": [
+    { "wer": "edward", "text": "Sie fragen, warum das Tor zu ist? Fragen Sie Präsident Lincoln und die Herren in Richmond." },
+    { "wer": "edward", "text": "Im Lager liegt Baumwolle für sechs Wochen. Roh ist sie heute mehr wert als jedes Garn, das ich daraus spinne." },
+    { "wer": "edward", "text": "Mein Vater hätte gewusst, was zu tun ist. Was würden Sie an meiner Stelle tun?" }
+  ],
+  "a1_gegen": [
+    { "wer": "lena1863", "text": "Plumpe würde sagen: Die Krise trifft einzelne Firmen, das System bleibt." },
+    { "wer": "lena1863", "text": "Mary würde sagen: Die Krise trifft uns. Und die Baumwolle, die fehlt, haben Sklaven gepflückt." }
+  ],
+  "a2_ankunft": [
+    { "wer": "lena1910", "text": "Um 1910. Eine Straßenbahn! Und Schaufenster voller Stoff, Fahrräder, sogar Nähmaschinen." },
+    { "wer": "lena1910", "text": "Die Fabrik ist gewachsen. Aber die Schornsteine rauchen wie eh und je." }
+  ],
+  "a2_arthur": [
+    { "wer": "arthur", "text": "Mein Großvater hat feines Garn für feine Leute gesponnen. Ich kleide die halbe Welt ein." },
+    { "wer": "arthur", "text": "Die Kundschaft von heute hat wenig Geld, aber es sind Millionen. Daran verdient man." },
+    { "wer": "arthur", "text": "Sehen Sie sich die Bücher an und sagen Sie mir, was Sie herstellen würden." }
+  ],
+  "a2_annie": [
+    { "wer": "annie", "text": "Sie kennen meine Großmutter Mary? Die hat noch im Keller am Irk gewohnt." },
+    { "wer": "annie", "text": "Wir haben zwei Zimmer, eine Nähmaschine auf Raten und kürzere Schichten als Großmutter." },
+    { "wer": "lena1910", "text": "Hat Ihnen das die Fabrik geschenkt?" },
+    { "wer": "annie", "text": "Geschenkt? Die kürzere Woche haben Gesetze und die Gewerkschaft erstritten. Aber der Stoff ist billig geworden, das stimmt auch." },
+    { "wer": "annie", "text": "Das Haushaltsbuch liegt auf dem Tisch. Rechnen Sie selbst." }
+  ],
+  "a3_ankunft": [
+    { "wer": "lena1930", "text": "Um 1930. Es regnet. Die Fenster der Spinnerei sind vernagelt." },
+    { "wer": "lena1930", "text": "Vor dem Arbeitsamt steht eine lange Schlange. Fast nur Männer." }
+  ],
+  "a3_jack": [
+    { "wer": "jack", "text": "Vierzehn Jahre an der Maschine, wie meine Mutter Annie. Dann kam das Schild ans Tor." },
+    { "wer": "jack", "text": "Die in Indien und Japan spinnen jetzt selbst. Unseren Stoff braucht keiner mehr." },
+    { "wer": "lena1930", "text": "Wovon leben Sie?" },
+    { "wer": "jack", "text": "Vom Stempelgeld. Meine Urgroßmutter hätte dafür um Suppe anstehen müssen. Viel ist es trotzdem nicht." }
+  ],
+  "a3_arthur": [
+    { "wer": "arthurAlt", "text": "Sie schon wieder? Sie sehen keinen Tag älter aus. Ich schon." },
+    { "wer": "arthurAlt", "text": "Die Bank von England hat einen Konzern gegründet. Er kauft Spinnereien auf, um die Hälfte zu schließen." },
+    { "wer": "arthurAlt", "text": "Ich kann meine Aktien nehmen und zusehen. Oder kämpfen und alles verlieren. Was raten Sie mir?" }
+  ],
+  "h_start": [
+    { "wer": "imhof", "text": "Zurück im Hörsaal. Ihr habt 85 Jahre gesehen: mehr Wohlstand, aber auch Krisen, Verlierer und einen Großkonzern." },
+    { "wer": "imhof", "text": "Bleibt eine Frage: Wenn Konzentration Macht schafft, wer setzt ihr Grenzen? Plumpe sagt: der Wandel selbst." },
+    { "wer": "imhof", "text": "Eine Gruppe deutscher Ökonomen gab eine andere Antwort: Regeln. Um die zu verstehen, wechselt ihr die Rolle." },
+    { "wer": "imhof", "text": "Ihr spielt jetzt Leonhard Miksch, einen Mitarbeiter Ludwig Erhards. Frankfurt am Main, Frühjahr 1948." }
+  ],
+  "h_warum": [
+    { "wer": "lena", "text": "Warum nicht gleich Erhard?" },
+    { "wer": "imhof", "text": "Erhard hat entschieden. Miksch steht für die Ideen, die in die Entwürfe eingingen, und für die vielen, die Reformen ausarbeiten, ohne berühmt zu werden." }
+  ],
+  "b1_ankunft": [
+    { "wer": "miksch", "text": "Frankfurt, März 1948. Drei Jahre nach dem Krieg, und die Stadt ist noch immer ein Steinbruch." },
+    { "wer": "miksch", "text": "Die Läden sind vernagelt. Dabei wird wieder produziert. Wo bleibt die Ware?" }
+  ],
+  "b1_weber": [
+    { "wer": "weber", "text": "Seit sechs Uhr stehe ich hier. Auf der Karte steht Brot, im Laden steht nichts." },
+    { "wer": "miksch", "text": "Und der Preis?" },
+    { "wer": "weber", "text": "Der Preis ist billig, Herr Doktor. Billig ist alles, was es nicht gibt." },
+    { "wer": "weber", "text": "Wer etwas braucht, geht in den Hof da drüben. Aber nicht mit Geld." }
+  ],
+  "b1_haendler": [
+    { "wer": "haendler", "text": "Butter, Kohle, Sohlen? Kann ich besorgen. Kommt drauf an, was der Herr mitbringt." }
+  ],
+  "b1_ende": [
+    { "wer": "miksch", "text": "Die Leute sind nicht schlechter geworden. Die Regeln sind es. Bei festen Preisen und schlechtem Geld lohnt es sich, Ware zurückzuhalten." },
+    { "wer": "miksch", "text": "Im Amt wartet Arbeit. Der neue Direktor will ein Gesetz." }
+  ],
+  "b2_brenner": [
+    { "wer": "brenner", "text": "Guten Morgen, Herr Doktor Miksch. Der Ofen zieht nicht, und Papier ist wieder knapp." },
+    { "wer": "brenner", "text": "Direktor Erhard will den Entwurf der Leitsätze noch diese Woche. Die neue Währung soll bald kommen." },
+    { "wer": "brenner", "text": "Und Sie haben Besuch aus Freiburg. Der Herr Professor wartet am Schreibtisch." }
+  ],
+  "b2_eucken": [
+    { "wer": "eucken", "text": "Miksch! Sie schreiben also das Gesetz, über das wir in Freiburg jahrelang nur reden durften." },
+    { "wer": "miksch", "text": "Erhard will die Preise freigeben. Viele halten das für Wahnsinn." },
+    { "wer": "eucken", "text": "Freigeben allein genügt nicht. Ein Markt ohne Ordnung endet bei Kartellen und Monopolen. Das hat Marx ganz richtig gesehen." },
+    { "wer": "eucken", "text": "Der Staat soll nicht den Markt lenken. Er soll die Regeln setzen, unter denen Wettbewerb möglich ist. Legen wir sie auf den Tisch." }
+  ],
+  "b2_tisch": [
+    { "wer": "miksch", "text": "Jetzt wird es konkret. Welche Preise geben wir frei, und welche bleiben vorerst kontrolliert?" }
+  ],
+  "b3_radio": [
+    { "wer": "brenner", "text": "Herr Doktor, das Radio! Die Militärregierungen geben die neue Währung bekannt." },
+    { "wer": "miksch", "text": "Sonntag, 20. Juni. Vierzig Deutsche Mark Kopfgeld für jeden. Und unsere Leitsätze sind durch den Wirtschaftsrat." },
+    { "wer": "brenner", "text": "Der Direktor hat die Preisfreigabe im Rundfunk angekündigt. Ob das gut geht?" },
+    { "wer": "miksch", "text": "Morgen früh sehen wir es. In den Schaufenstern." }
+  ],
+  "b3_schuster": [
+    { "wer": "schuster", "text": "Guten Morgen, Herr Doktor! Sehen Sie sich das an: Ich habe wieder etwas im Fenster." },
+    { "wer": "miksch", "text": "Wo waren die Schuhe gestern?" },
+    { "wer": "schuster", "text": "Im Keller. Für Reichsmark hätte ich sie verschenkt. Jetzt ist die Frage: Was schreibe ich aufs Preisschild? Helfen Sie mir." }
+  ],
+  "b3_weber": [
+    { "wer": "weber", "text": "Schön sieht das aus, Herr Doktor. Wie im Frieden." },
+    { "wer": "weber", "text": "Vierzig Mark habe ich bekommen. Mein Sparbuch ist fast nichts mehr wert. Und der Lohn meines Mannes ist eingefroren." },
+    { "wer": "weber", "text": "Volle Schaufenster sind etwas für Leute mit vollem Portemonnaie." }
+  ],
+  "b4_ankunft": [
+    { "wer": "miksch", "text": "November 1948. Die Läden sind voll geblieben. Die Straße auch, aber aus anderem Grund." }
+  ],
+  "b4_kramer": [
+    { "wer": "kramer", "text": "Sie sind doch vom Amt? Dann lesen Sie das: Am 12. November steht alles still." },
+    { "wer": "kramer", "text": "Die Preise sind frei, die Löhne nicht. Butter kostet das Doppelte. Wer bezahlt Ihre Marktwirtschaft? Wir." },
+    { "wer": "miksch", "text": "Vor einem halben Jahr gab es gar keine Butter." },
+    { "wer": "kramer", "text": "Vor einem halben Jahr waren wenigstens alle gleich arm. Sogar die CDU wollte vor einem Jahr noch den Kapitalismus überwinden. Lesen Sie Ahlen nach." }
+  ],
+  "b4_weber": [
+    { "wer": "weber", "text": "Ich streike nicht, ich habe ja keine Stelle. Aber ich verstehe die Leute." },
+    { "wer": "weber", "text": "Es gibt alles, Herr Doktor. Nur eben nicht für mich. Machen Sie etwas, das auch bei uns ankommt." }
+  ],
+  "b4_erhard": [
+    { "wer": "erhard", "text": "Miksch, draußen fordern sie meinen Kopf. Die Besatzungsmächte sind nervös, die eigene Partei auch." },
+    { "wer": "erhard", "text": "Ich gehe nicht zurück zur Bewirtschaftung. Aber so bleiben kann es nicht. Was schlagen Sie vor?" }
+  ],
+  "b4_armack": [
+    { "wer": "armack", "text": "Der Markt schafft den Wohlstand, meine Herren. Aber er verteilt ihn nicht von selbst so, dass die Menschen ihn annehmen." },
+    { "wer": "armack", "text": "Darum nenne ich es Soziale Marktwirtschaft: Freiheit auf dem Markt, verbunden mit sozialem Ausgleich." },
+    { "wer": "miksch", "text": "Und wie viel Ausgleich, bevor der Markt nicht mehr frei ist?" },
+    { "wer": "armack", "text": "Darüber wird man noch in fünfzig Jahren streiten." }
+  ],
+  "b5_start": [
+    { "wer": "brenner", "text": "Herr Doktor, ein Antrag. Drei Zementwerke möchten ihre Preise gemeinsam festlegen. Zum Schutz der Arbeitsplätze, schreiben sie." },
+    { "wer": "miksch", "text": "Kaum sind die Preise frei, wollen die Ersten den Wettbewerb wieder abschaffen. Diesmal nicht der Staat, sondern die Unternehmen." }
+  ],
+  "b5_ende": [
+    { "wer": "miksch", "text": "Freie Preise waren der erste Schritt. Der zweite ist schwerer: der Macht Grenzen setzen. Das wird Jahre dauern." }
+  ],
+  "e_start": [
+    { "wer": "imhof", "text": "Da seid ihr wieder. Von 1845 bis 1957: Zeit für die Bilanz. An der Tafel stehen die drei Prognosen." }
+  ],
+  "e_plumpe": [
+    { "wer": "imhof", "text": "Zum Schluss noch einmal die Verteidigung. Hört genau hin, und hört dann den Kritikern zu." }
+  ],
+  "e_kritik": [
+    { "wer": "imhof", "text": "Auch Plumpe hat Kritiker. Der Soziologe Dirk Baecker fragt, ob Plumpe eigentlich die Geschichte einer Wirtschaft oder einer Gesellschaft erzählt." },
+    { "wer": "imhof", "text": "Der Ökonom Alexander Ebner meint, Plumpe halte Kritiker für voreingenommen, sei aber selbst ein Befürworter. Und die Historikerin Ines Prodöhl: Das ist die Geschichte Europas, nicht der Welt." },
+    { "wer": "lena", "text": "Also hat keiner recht?" },
+    { "wer": "imhof", "text": "Jeder sieht etwas, das der andere übersieht. Genau deshalb braucht es ein Tribunal. Legt vorher eure neuen Tipps in die Kassette." }
+  ],
+  "e_ende": [
+    { "wer": "imhof", "text": "Nehmt eure Notizen mit. Im Tribunal entscheidet ihr: Wohlstandsmotor oder gesellschaftliches Problem?" }
+  ]
+}

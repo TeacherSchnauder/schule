@@ -3,7 +3,8 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 12.11.2026 – Rechtslehre ist jetzt ein Fach mit eigenem Inhalt
+**Stand:** 16.11.2026 – neu: 3D-Lernspiel „The Capitalism Chronicles“ unter GGK › Geschichte
+und Fachseite FWS (Verweis). Vorher: Rechtslehre als Fach mit eigenem Inhalt
 (Themenbereich Vertragsrecht, erstes Lernspiel „Wissenslauf“).
 
 ---
@@ -64,7 +65,15 @@ schule/
 │   │       ├── spiel.html      Escape Game „Die Sitzungswoche“, eigene Adresse für QR-Code
 │   │       └── README.md
 │   └── geschichte/
-│       └── index.html          Themenbereich angelegt, noch „geplant“
+│       ├── index.html
+│       ├── akte-weimar/        Escape Game „Akte Weimar“ (index.html, spiel.html, README.md)
+│       └── capitalism-chronicles/
+│           ├── index.html      Lehrseite: drei Kapitel, Hinweise für die Lehrkraft
+│           ├── README.md
+│           └── spiel/          3D-Lernspiel (eigener Ordnerbaum, Three.js lokal, ohne Build)
+│               ├── index.html  Kapitel I · kapitel-2.html · kapitel-3.html (?beamer = Beamer-Ansicht)
+│               ├── engine/  ui/  chapters/  lib/  assets/
+│               └── ANLEITUNG.md, LIZENZEN.md
 │
 ├── rechtslehre/                Fach mit eigenem Inhalt
 │   ├── index.html              Themenbereiche + alle Materialien zur Rechtslehre
@@ -98,7 +107,7 @@ schule/
 │           ├── coach.html      Schülerseite: Themenkarte, Prompt, Arbeitsweise, KI-Protokoll
 │           └── README.md
 │
-├── awl/  bwl/  vwl/            Fachseiten, die verlinken
+├── awl/  bwl/  vwl/  fws/      Fachseiten, die verlinken
 └── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
 
@@ -112,7 +121,7 @@ die Themenbereiche als Kacheln.
 
 **Fächer als Verweis** (`rolle: "sammlung"`) haben keine eigenen Inhaltsseiten.
 Sie zeigen Themen aus anderen Fachbäumen, damit ein Thema nur einmal existiert
-und trotzdem unter mehreren Fächern auftaucht: `awl/`, `bwl/`, `vwl/`,
+und trotzdem unter mehreren Fächern auftaucht: `awl/`, `bwl/`, `vwl/`, `fws/`,
 `lernfelder/`, `pruefungsvorbereitung/`, `methodenkoffer/`.
 
 Die Fachseite von Rechtslehre zeigt beides: die eigenen Themenbereiche
@@ -407,3 +416,14 @@ und Eintrag unter `bereiche` mit id `ki-<fach>`. Themeneintrag mit
   für GGK angedacht, ist aber nicht umgesetzt; `site.js` unterstützt sie nicht.
   Eine spätere Einführung ändert die Adressen bestehender GGK-Themen und damit
   ausgegebene QR-Codes.
+
+---
+
+## Größere Lernspiele mit eigenem Ordnerbaum
+
+Ein Spiel, das aus vielen Dateien besteht (z. B. ein 3D-Spiel mit eigener Engine),
+liegt als Unterordner `spiel/` im Themenordner. Die Lehrseite `index.html` des Themas
+folgt dem üblichen Muster (`Schule.seite`, `tiefe: 3`), das Spiel selbst bleibt
+unverändert und nutzt nur relative Pfade innerhalb von `spiel/`. Beispiel:
+`ggk/geschichte/capitalism-chronicles/`. Solche Spiele laufen nur über GitHub Pages
+(Webserver), nicht per Doppelklick.

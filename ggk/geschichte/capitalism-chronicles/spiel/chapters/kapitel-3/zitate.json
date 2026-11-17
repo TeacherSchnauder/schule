@@ -1,0 +1,38 @@
+{
+ "lessenich": {
+  "name": "Stephan Lessenich",
+  "werk": "Neben uns die Sintflut (2016)",
+  "fuer": "anklage",
+  "status": "paraphrase",
+  "zitat": "",
+  "seite": "",
+  "paraphrase": "Reiche Gesellschaften leben nicht über ihre eigenen Verhältnisse, sondern über die Verhältnisse anderer: Sie lagern die Kosten ihres Wohlstands an den Rest der Welt aus. Der Soziologe nennt das „Externalisierungsgesellschaft“.",
+  "quelleParaphrase": "Stephan Lessenich: Neben uns die Sintflut, 2016 (nach Verlagsangaben und Leseprobe der bpb; in der Inhaltsrunde am Original zu prüfen)",
+  "einwand": "Einwand: Lessenich wird vorgehalten, nur zwischen „wir“ und „sie“ zu unterscheiden und die Ungleichheit innerhalb der reichen Länder auszublenden.",
+  "quelleEinwand": "Rezension auf kritisch-lesen.de"
+ },
+ "krugman": {
+  "name": "Paul Krugman",
+  "werk": "„In Praise of Cheap Labor“ (Slate, 1997)",
+  "fuer": "verteidigung",
+  "status": "paraphrase",
+  "zitat": "",
+  "seite": "",
+  "paraphrase": "Schlecht bezahlte Exportarbeit ist für arme Länder oft die beste Chance auf Entwicklung. Die Alternative ist meist nicht gute Arbeit, sondern noch ärmere Arbeit auf dem Land.",
+  "quelleParaphrase": "Paul Krugman 1997, wiedergegeben bei Powell (Cambridge 2025); in der Inhaltsrunde am Original zu prüfen",
+  "einwand": "Einwand: Krugman wird vorgehalten, die moralische Frage zu eng zu stellen: nur als Frage nach der Alternative, nicht nach dem, was Menschen zusteht.",
+  "quelleEinwand": "Cawthorne und Kitching 2001"
+ },
+ "milanovic": {
+  "name": "Branko Milanovic und Christoph Lakner",
+  "werk": "Studie zur weltweiten Einkommensverteilung (2013)",
+  "fuer": "sachverstaendige",
+  "status": "paraphrase",
+  "zitat": "",
+  "seite": "",
+  "paraphrase": "Die Globalisierung hat Gewinner und Verlierer: Die globale Mitte gewann stark, die untere Mittelschicht der reichen Länder kaum.",
+  "quelleParaphrase": "Lakner und Milanovic 2013; Milanovic, Social Europe",
+  "einwand": "Grenze: Die Kurve zeigt Einkommensgruppen, nicht dieselben Menschen über die Zeit. Spätere Berechnungen mit neuen Daten fallen etwas anders aus.",
+  "quelleEinwand": "Milanovic, „time to revise the elephant“ (Social Europe)"
+ }
+}

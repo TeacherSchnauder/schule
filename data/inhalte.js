@@ -58,6 +58,10 @@ window.INHALTE = {
       kurz: "Arbeitstechniken, Präsentation, wissenschaftliches Arbeiten.",
       status: "aktiv", rolle: "sammlung" },
 
+    { id: "fws", name: "FWS", ordner: "fws", icon: "diagramm",
+      kurz: "Finanzwirtschaftliche Studien – Wirtschaftsgymnasium.",
+      status: "aktiv", rolle: "sammlung" },
+
     { id: "ki-coaches", name: "KI-Coaches", ordner: "ki-coaches", icon: "seite",
       kurz: "Prompts, die ein KI-Programm in einen Lerncoach verwandeln – freiwillig und anbieterneutral.",
       status: "aktiv", rolle: "fach" }
@@ -209,6 +213,17 @@ window.INHALTE = {
     },
 
     {
+      id: "capitalism-chronicles",
+      name: "The Capitalism Chronicles",
+      bereich: "ggk-geschichte",
+      pfad: "ggk/geschichte/capitalism-chronicles",
+      status: "aktiv",
+      kurz: "Begehbares 3D-Lernspiel: Ist der Kapitalismus ein Wohlstandsmotor oder ein gesellschaftliches Problem? Industrielle Revolution in Manchester 1845, Lancashire bis 1930, Frankfurt 1948 und ein Tribunal mit Gegenwartsfall.",
+      faecher: ["ggk", "fws", "vwl"],
+      material: ["3D-Lernspiel in drei Kapiteln", "Tribunal mit Beamer-Ansicht", "Lehrkraft-Bereich"]
+    },
+
+    {
       id: "wissenslauf-kaufvertragsstoerungen",
       name: "Wissenslauf: Kaufvertragsstörungen",
       bereich: "recht-vertragsrecht",
@@ -248,7 +263,7 @@ window.INHALTE = {
       pfad: "ki-coaches/fws/vip-lernbegleiter",
       status: "aktiv",
       kurz: "KI-Prompt für das VIP-Projekt Bevölkerungsentwicklung und -struktur (FWS, J1): keine Zahlen von der KI, Daten selbst bei Destatis beschaffen, Begriffe abgrenzen, Poster vorbereiten.",
-      faecher: ["ki-coaches", "vwl"],
+      faecher: ["ki-coaches", "fws", "vwl"],
       material: ["KI-Prompt", "Themenkarte", "KI-Protokoll"]
     },
 

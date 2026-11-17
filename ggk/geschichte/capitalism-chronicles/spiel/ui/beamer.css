@@ -1,0 +1,75 @@
+/* The Capitalism Chronicles – Beamer-Ansicht des Tribunals: große Schrift, hoher Kontrast, Farbwelt des Gerichtssaals. */
+@font-face { font-family: "Abril Fatface"; src: url("../assets/fonts/abril-fatface-latin-400-normal.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("../assets/fonts/source-serif-4-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("../assets/fonts/source-serif-4-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+html, body { overflow: hidden; background: #efe9dc; -webkit-user-select: text; user-select: text; }
+#beamer { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; background: #f4efe2; color: #23201c; font-family: "Source Serif 4", Georgia, serif; font-size: clamp(20px, 2.1vw, 32px); line-height: 1.35; }
+#beamer h1, #beamer h2, #beamer h3 { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; margin: 0 0 0.35em; }
+#beamer h1 { font-size: 1.9em; line-height: 1.12; } #beamer h2 { font-size: 1.45em; } #beamer h3 { font-size: 1em; }
+#beamer button { font: inherit; font-size: 0.72em; cursor: pointer; border: 2px solid #2f3a40; background: #fbf8ef; color: #23201c; padding: 0.35em 0.8em; border-radius: 3px; min-height: 44px; }
+#beamer button:disabled { opacity: 0.35; cursor: default; }
+#beamer button.haupt, #beamer button.an { background: #2f3a40; color: #fbf8ef; }
+#beamer > header { display: flex; align-items: center; gap: 1em; padding: 0.45em 0.9em; background: #2f3a40; color: #fbf8ef; }
+#beamer > header button { border-color: #fbf8ef; }
+#beamer .phase { flex: 1; min-width: 0; }
+#beamer .phase small { display: block; font-size: 0.6em; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+#beamer .phase b { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; font-size: 1.15em; }
+#beamer .uhr { display: flex; align-items: center; gap: 0.4em; }
+#beamer .uhr b { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; font-size: 1.9em; min-width: 3.2em; text-align: right; font-variant-numeric: tabular-nums; }
+#beamer .uhr.um b { opacity: 0.75; }
+#beamer nav { display: flex; gap: 0.4em; }
+#beamer main { overflow: auto; padding: 0.9em 1.4em; }
+#beamer .hinweis { color: #5a544a; font-size: 0.82em; }
+#beamer .klein { font-size: 0.72em; color: #5a544a; }
+#beamer .zahlen { display: flex; gap: 0.6em; flex-wrap: wrap; margin: 0.6em 0; }
+#beamer .zahlen label { flex: 1; min-width: 7em; background: #fbf8ef; border: 2px solid #b9b4a8; padding: 0.4em 0.5em; display: flex; flex-direction: column; gap: 0.3em; font-size: 0.78em; }
+#beamer input[type=number], #beamer input[type=text], #beamer textarea { font: inherit; padding: 0.25em 0.4em; border: 2px solid #2f3a40; background: #fff; color: #23201c; border-radius: 3px; width: 100%; box-sizing: border-box; }
+#beamer input[type=number] { font-family: "Abril Fatface", Georgia, serif; font-size: 1.5em; text-align: center; }
+#beamer textarea { min-height: 4.2em; resize: vertical; }
+#beamer .rede { border-left: 0.5em solid var(--rf); padding: 0.4em 0 0.4em 0.8em; margin: 6vh 0 1em; }
+#beamer .rede small { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.65em; }
+#beamer .rede h1 { font-size: 3.2em; color: var(--rf); }
+#beamer .kapsel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7em; font-size: 0.74em; }
+#beamer .kapsel > div { background: #fbf8ef; border: 2px solid #b9b4a8; padding: 0.5em 0.7em; }
+#beamer .kapsel p { margin: 0.3em 0; }
+#beamer .kapsel .zahlen label { font-size: 0.85em; min-width: 4.5em; }
+#beamer .ablauf { font-size: 1.15em; }
+#beamer .ablauf li { margin: 0.35em 0; }
+#beamer .zweispalten { display: grid; grid-template-columns: 1fr 1.3fr; gap: 1.2em; font-size: 0.82em; }
+#beamer .zweispalten ul { margin: 0; padding-left: 1.1em; }
+#beamer .uf { margin: 0.25em 0; }
+#beamer .formen { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.4em; }
+#beamer .formen button { font-size: 0.62em; text-align: left; display: flex; flex-direction: column; gap: 0.2em; min-height: 5.2em; }
+#beamer .formen button b { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; font-size: 1.25em; }
+#beamer .muss { font-size: 0.7em; background: #e6dfcd; padding: 0.4em 0.7em; margin: 0.5em 0; }
+#beamer .pruefliste { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2em 1em; font-size: 0.7em; margin-top: 0.4em; }
+#beamer .pruefliste input { width: 1.2em; height: 1.2em; vertical-align: middle; }
+#beamer .vergleich { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; margin-top: 0.6em; font-size: 0.72em; }
+#beamer .linie .b { display: grid; grid-template-columns: 11em 1fr 2em; align-items: center; gap: 0.5em; margin: 0.2em 0; }
+#beamer .linie i { display: block; height: 1em; background: #2f3a40; min-width: 2px; }
+#beamer .linie b { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; }
+#beamer .tafelbild { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em; font-size: 0.8em; }
+#beamer .tafelbild label span { font-family: "Abril Fatface", Georgia, serif; display: block; }
+#beamer .darauf { grid-column: span 2; background: #fbf8ef; border: 2px solid #2f3a40; padding: 0.5em 0.8em; display: grid; grid-template-columns: 1fr 1fr; gap: 0.4em 1em; }
+#beamer .darauf h3 { grid-column: span 2; }
+#beamer .darauf label span { font-family: inherit; font-size: 0.85em; }
+#beamer > footer { display: flex; gap: 0.8em; align-items: center; justify-content: space-between; padding: 0.4em 0.9em; background: #e0d9c6; border-top: 2px solid #2f3a40; }
+#beamer .beweise { display: flex; gap: 0.3em; overflow-x: auto; min-width: 0; padding-bottom: 2px; }
+#beamer .beweise button { white-space: nowrap; flex: none; }
+#beamer .beweise button { font-size: 0.55em; min-height: 40px; padding: 0.2em 0.6em; }
+#beamer .beweise button i { font-style: normal; font-family: "Abril Fatface", Georgia, serif; margin-right: 0.4em; }
+#beamer .beweise button.stat { border-style: dashed; }
+#beamer .rechts { display: flex; gap: 0.3em; flex: none; }
+#beamer .rechts button { font-size: 0.55em; min-height: 40px; }
+#beamer .gross { position: fixed; inset: 0; background: rgba(35,32,28,0.82); display: flex; align-items: center; justify-content: center; padding: 3vh 4vw; z-index: 5; }
+#beamer .gross[hidden] { display: none; }
+#beamer .blatt { background: #fbf8ef; padding: 1em 1.4em; max-width: 60em; max-height: 92vh; overflow: auto; border-top: 0.4em solid #b08a3e; font-size: 1.05em; }
+#beamer .blatt small { text-transform: uppercase; letter-spacing: 0.07em; font-size: 0.55em; color: #5a544a; }
+#beamer .blatt svg.zeitreihe { width: 100%; max-width: 46em; height: auto; background: #fff; border: 1px solid #b9b4a8; }
+#beamer .blatt svg text { font-size: 13px; fill: #23201c; font-family: "Source Serif 4", Georgia, serif; }
+#beamer .blatt .rahmen { fill: none; stroke: #5a544a; } #beamer .blatt .gitter { stroke: #d9d4c6; }
+#beamer .blatt .reihe { fill: none; stroke-width: 3; } #beamer .blatt .r0 { stroke: #23201c; } #beamer .blatt .punkt.r0 { fill: #23201c; }
+#beamer .blatt .r1 { stroke: #56646b; } #beamer .blatt .punkt.r1 { fill: #56646b; }
+#beamer .blatt .bruch { stroke: #8f4f39; stroke-dasharray: 4 4; }
+#beamer .blatt textarea.ergebnis { min-height: 50vh; font-size: 0.6em; }
+@media (max-width: 900px) { #beamer .kapsel, #beamer .formen, #beamer .zweispalten, #beamer .vergleich { grid-template-columns: 1fr; } }

@@ -1,0 +1,299 @@
+{
+ "t0_start": [
+  {
+   "wer": "imhof",
+   "text": "Willkommen im Übungsgerichtssaal. Heute steht kein Mensch vor Gericht, sondern eine Wirtschaftsordnung."
+  },
+  {
+   "wer": "imhof",
+   "text": "Die Frage lautet: Ist der Kapitalismus ein Wohlstandsmotor oder ein gesellschaftliches Problem? Kapitel I war die Anklage, Kapitel II die Verteidigung. Jetzt kommt die Gegenwart dazu."
+  },
+  {
+   "wer": "imhof",
+   "text": "Ihr bereitet euch in vier Gruppen vor: Anklage, Verteidigung, Sachverständige und Jury. Welche Rolle übernimmt eure Gruppe?"
+  }
+ ],
+ "t0_rolle": [
+  {
+   "wer": "imhof",
+   "text": "Gut. Drei Türen: links hinter mir die Asservatenkammer mit den Beweisstücken, rechts das Zeugenzimmer, an der Seitenwand der Gang „Die Kette“."
+  },
+  {
+   "wer": "imhof",
+   "text": "Legt zuerst am Aktentisch eure Akte an. Was ihr in Kapitel I und II gesammelt habt, gehört hinein."
+  }
+ ],
+ "t0_akte": [
+  {
+   "wer": "imhof",
+   "text": "Eine Regel noch: Ich urteile nicht, und das Spiel urteilt auch nicht. Bewertet wird, wie gut ihr begründet."
+  }
+ ],
+ "t2_rokeya": [
+  {
+   "wer": "rokeya",
+   "text": "Ich nähe seit neun Jahren. Seitennähte, sechzig Stück in der Stunde, wenn die Maschine mitmacht."
+  },
+  {
+   "wer": "rokeya",
+   "text": "Wenn ihr mehr wissen wollt: Ich bin später im Zeugenzimmer. Fragt mich auch das, was nicht in eure Geschichte passt."
+  }
+ ],
+ "t5_start": [
+  {
+   "wer": "imhof",
+   "text": "Bevor die Verhandlung beginnt, kommt die schwerste Aufgabe. Wer nur die eigene Seite kennt, kennt auch die schlecht."
+  }
+ ],
+ "t5_ende": [
+  {
+   "wer": "imhof",
+   "text": "Damit ist eure Vorbereitung abgeschlossen. Eure Karte zum Vorlesen liegt in eurer Akte."
+  },
+  {
+   "wer": "imhof",
+   "text": "Die Verhandlung beginnt im Saal eurer Klasse. Ich bin gespannt auf eure Begründungen."
+  }
+ ],
+ "zeugen": [
+  {
+   "id": "mary",
+   "seite": "anklage",
+   "marke": "erfunden",
+   "intro": "Mary hat 1845 bei Whitlow & Co. gesponnen. 1863 stand sie als alte Frau vor der Suppenküche.",
+   "fragen": [
+    {
+     "id": "m1",
+     "frage": "Wie sah Ihr Arbeitstag 1845 aus?",
+     "antwort": "Zwölf Stunden an der Maschine, sechs Tage die Woche. Der Lohn reichte für Miete, Brot und Kartoffeln. Für mehr nicht.",
+     "akte": "Mary 1845: zwölf Stunden Arbeit, der Lohn reicht nur für das Nötigste."
+    },
+    {
+     "id": "m2",
+     "frage": "Was geschah 1863?",
+     "antwort": "Die Baumwolle blieb aus, die Fabrik stand still. Wir hatten nichts falsch gemacht und standen trotzdem um Suppe an.",
+     "akte": "Mary 1863: Die Krise trifft die Beschäftigten, ohne dass sie etwas dafürkönnen."
+    },
+    {
+     "id": "m3",
+     "frage": "Wer hat von Ihrer Arbeit am meisten gehabt?",
+     "antwort": "Mr. Whitlow hat eine zweite Fabrik gebaut. Wir haben das Garn gesponnen, von dem sie bezahlt wurde.",
+     "akte": "Mary: Der Gewinn aus ihrer Arbeit wurde zur zweiten Fabrik des Eigentümers."
+    },
+    {
+     "id": "m4",
+     "frage": "Ging es Ihrer Enkelin Annie besser als Ihnen?",
+     "antwort": "Ja. Sie arbeitet kürzer, sie hat ein Kleid für den Sonntag und eine Gewerkschaft. Ich hätte das nicht für möglich gehalten.",
+     "unbequem": true,
+     "akte": "Mary räumt ein: Ihrer Enkelin geht es deutlich besser als ihr."
+    }
+   ]
+  },
+  {
+   "id": "jack",
+   "seite": "anklage",
+   "marke": "erfunden",
+   "intro": "Jack ist Marys Urenkel. Um 1930 hat er seine Arbeit in der Spinnerei verloren.",
+   "fragen": [
+    {
+     "id": "j1",
+     "frage": "Warum haben Sie Ihre Arbeit verloren?",
+     "antwort": "Unsere Spinnerei wurde mit vielen anderen zusammengelegt und dann geschlossen. Zu viele Fabriken für zu wenig Aufträge, hieß es.",
+     "akte": "Jack um 1930: Strukturwandel und Konzentration kosten ihn die Arbeit."
+    },
+    {
+     "id": "j2",
+     "frage": "Was heißt „Strukturwandel“ für Sie?",
+     "antwort": "Für die Zeitung ist es ein Wort. Für mich heißt es: Was ich kann, braucht hier keiner mehr.",
+     "akte": "Jack: Hinter dem Wort Strukturwandel stehen Menschen, deren Können entwertet wird."
+    },
+    {
+     "id": "j3",
+     "frage": "Hat sich für Arbeiter seit 1845 nichts verbessert?",
+     "antwort": "Doch. Meine Urgroßmutter stand um Suppe an. Ich bekomme Arbeitslosenunterstützung. Wenig, aber ein Recht und kein Almosen.",
+     "unbequem": true,
+     "akte": "Jack räumt ein: Die Arbeitslosenunterstützung ist ein Fortschritt gegenüber 1863."
+    },
+    {
+     "id": "j4",
+     "frage": "Wem geben Sie die Schuld?",
+     "antwort": "Ich weiß es nicht. Dem Besitzer ging es am Ende auch an den Kragen. Vielleicht ist das das Schlimme: dass keiner schuld ist und es trotzdem passiert.",
+     "akte": "Jack: Die Krise trifft ihn, ohne dass er einen Schuldigen benennen kann."
+    }
+   ]
+  },
+  {
+   "id": "rokeya",
+   "seite": "anklage",
+   "marke": "erfunden",
+   "intro": "Rokeya näht in einer Fabrik bei Dhaka T-Shirts für Europa. Ihre Aussagen sind erfunden; die Zahlen darin sind belegt.",
+   "fragen": [
+    {
+     "id": "r1",
+     "frage": "Reicht Ihr Lohn zum Leben?",
+     "antwort": "Der Mindestlohn liegt bei 12.500 Taka im Monat. Die Gewerkschaften haben 23.000 gefordert. Mit Überstunden komme ich durch, sparen kann ich nicht.",
+     "zahl": "mindestlohn_bd",
+     "akte": "Rokeya: Der Mindestlohn (12.500 Taka) liegt weit unter der Forderung der Gewerkschaften (23.000)."
+    },
+    {
+     "id": "r2",
+     "frage": "Haben Sie Angst bei der Arbeit?",
+     "antwort": "Seit Rana Plaza denkt jede von uns daran. Über tausend Menschen sind damals gestorben, weil niemand auf die Risse in der Wand gehört hat.",
+     "zahl": "rana_plaza",
+     "akte": "Rokeya: Rana Plaza (2013) mit über 1.100 Toten ist bei den Näherinnen nicht vergessen."
+    },
+    {
+     "id": "r3",
+     "frage": "Wäre es besser, wenn es die Fabriken nicht gäbe?",
+     "antwort": "Nein. Im Dorf meiner Mutter gibt es für Frauen keine bezahlte Arbeit. Hier verdiene ich eigenes Geld und entscheide selbst darüber.",
+     "unbequem": true,
+     "akte": "Rokeya räumt ein: Die Fabrikarbeit ist für sie besser als die Alternative auf dem Land."
+    },
+    {
+     "id": "r4",
+     "frage": "Hat sich seit Rana Plaza etwas geändert?",
+     "antwort": "Unsere Fabrik wird geprüft, die Notausgänge sind frei. Das Abkommen haben Gewerkschaften und Marken unterschrieben. Der Lohn ist dadurch nicht gestiegen.",
+     "zahl": "accord",
+     "akte": "Rokeya: Das Sicherheitsabkommen hat die Gebäude sicherer gemacht, die Löhne nicht höher."
+    }
+   ]
+  },
+  {
+   "id": "annie",
+   "seite": "verteidigung",
+   "marke": "erfunden",
+   "intro": "Annie ist Marys Enkelin. Um 1910 arbeitet sie als Ringspinnerin in Lancashire.",
+   "fragen": [
+    {
+     "id": "a1",
+     "frage": "Was ist bei Ihnen anders als bei Ihrer Großmutter?",
+     "antwort": "Ich arbeite kürzer und verdiene mehr. Am Samstagnachmittag habe ich frei. Großmutter kannte das Wort Feierabend kaum.",
+     "akte": "Annie um 1910: kürzere Arbeitszeit und höherer Lohn als ihre Großmutter 1845."
+    },
+    {
+     "id": "a2",
+     "frage": "Was können Sie sich leisten?",
+     "antwort": "Stoff, Seife, Tee, Zucker, einmal im Jahr die Bahn ans Meer. Die Waren sind billiger geworden, weil die Fabriken so viel davon machen.",
+     "akte": "Annie: Massenproduktion hat Waren für Arbeiterfamilien bezahlbar gemacht."
+    },
+    {
+     "id": "a3",
+     "frage": "Kam das alles von selbst?",
+     "antwort": "Nein. Die kürzere Arbeitszeit steht im Gesetz, und für den Lohn hat die Gewerkschaft gestreikt. Geschenkt hat uns das keiner.",
+     "unbequem": true,
+     "akte": "Annie räumt ein: Arbeitszeit und Lohn wurden durch Gesetze und Gewerkschaften erkämpft."
+    },
+    {
+     "id": "a4",
+     "frage": "Hatte Marx also unrecht?",
+     "antwort": "Mit dem Elend von damals hatte er recht, sagt Großmutter. Aber dass es immer schlimmer wird, das stimmt für uns nicht.",
+     "akte": "Annie: Die Prognose der Verelendung ist für ihre Generation nicht eingetreten."
+    }
+   ]
+  },
+  {
+   "id": "haendler",
+   "seite": "verteidigung",
+   "marke": "erfunden",
+   "intro": "Herr Roth führt 1948 einen Schuhladen in Frankfurt. Frau Weber ist seine Kundin. Sie sind zusammen gekommen.",
+   "fragen": [
+    {
+     "id": "h1",
+     "frage": "Herr Roth, was geschah im Juni 1948?",
+     "antwort": "Am Freitag war mein Schaufenster leer, am Montag voll. Mit dem neuen Geld und freien Preisen lohnte es sich wieder, Schuhe zu verkaufen statt zu horten.",
+     "akte": "Herr Roth 1948: Mit Währungsreform und freien Preisen kamen die Waren zurück in die Läden."
+    },
+    {
+     "id": "h2",
+     "frage": "Warum war das Fenster vorher leer?",
+     "antwort": "Zum festen Preis hätte ich draufgezahlt. Die Schuhe gab es, aber auf dem Schwarzmarkt, gegen Zigaretten.",
+     "akte": "Herr Roth: Feste Preise ließen die Waren auf den Schwarzmarkt verschwinden."
+    },
+    {
+     "id": "h3",
+     "frage": "Frau Weber, konnten Sie die Schuhe kaufen?",
+     "antwort": "Ich stand vor dem Fenster und habe gerechnet. Die Schuhe waren da, aber mein Lohn nicht. Im Herbst sind wir deshalb auf die Straße gegangen.",
+     "unbequem": true,
+     "akte": "Frau Weber räumt ein: Volle Schaufenster halfen ihr zunächst nicht, die Preise waren zu hoch."
+    },
+    {
+     "id": "h4",
+     "frage": "Und einige Jahre später?",
+     "antwort": "Später konnte ich sie kaufen. Aber ohne Regeln für die Preise der Großen und ohne Hilfen für die Kleinen wäre ich nicht so lange geduldig geblieben.",
+     "akte": "Frau Weber: Der Aufschwung kam bei ihr an, aber sie verlangt Regeln und sozialen Ausgleich."
+    }
+   ]
+  },
+  {
+   "id": "einkaeuferin",
+   "seite": "verteidigung",
+   "marke": "erfunden",
+   "intro": "Sie kauft für ein Modeunternehmen T-Shirts in Bangladesch ein. Die Figur ist erfunden; die Zahlen in ihren Antworten sind belegt.",
+   "fragen": [
+    {
+     "id": "e1",
+     "frage": "Warum zahlen Sie nicht einfach mehr?",
+     "antwort": "Weil die Kundschaft das billigere T-Shirt nimmt. Wer als Einziger teurer einkauft, verliert Marktanteile an den, der es nicht tut.",
+     "akte": "Einkäuferin: Der Wettbewerb um Kundschaft begrenzt, was ein einzelnes Unternehmen zahlen kann."
+    },
+    {
+     "id": "e2",
+     "frage": "Was hat Bangladesch von Ihren Aufträgen?",
+     "antwort": "Bekleidung bringt dem Land über 80 % seiner Exporterlöse. Die Armutsquote ist seit den Neunzigern von 56,7 auf 18,7 % gefallen.",
+     "zahl": "armut_national",
+     "akte": "Einkäuferin: Die Exportindustrie fällt zeitlich mit einem starken Rückgang der Armut zusammen."
+    },
+    {
+     "id": "e3",
+     "frage": "Wie viel Spielraum bleibt beim Lohn?",
+     "antwort": "Wenig. Ein Baumwoll-T-Shirt wird im Schnitt für 2,67 Dollar in die EU eingeführt. Wenn wir den Einkaufspreis drücken, kann die Fabrik beim Lohn kaum etwas drauflegen.",
+     "zahl": "importpreis",
+     "unbequem": true,
+     "akte": "Einkäuferin räumt ein: Der Preisdruck der Marken lässt den Fabriken kaum Spielraum für höhere Löhne."
+    },
+    {
+     "id": "e4",
+     "frage": "Was halten Sie vom Lieferkettengesetz?",
+     "antwort": "Es kostet uns Prüfungen und Papier. Aber es gilt für alle Großen gleich. Dann ist der Ehrliche nicht mehr der Dumme.",
+     "zahl": "lieferkette",
+     "akte": "Einkäuferin: Ein Gesetz, das für alle gilt, nimmt dem Einzelnen den Wettbewerbsnachteil."
+    }
+   ]
+  },
+  {
+   "id": "kaya",
+   "seite": "neutral",
+   "marke": "erfunden",
+   "intro": "Dr. Nora Kaya forscht zu Armut und Welthandel. Sie steht nur den Sachverständigen und der Jury zur Verfügung. Die Figur ist erfunden; was sie über Daten sagt, ist belegt.",
+   "fragen": [
+    {
+     "id": "k1",
+     "frage": "Ist die Armut in Bangladesch gesunken oder gestiegen?",
+     "antwort": "Beides, je nach Zeitraum. Langfristig stark gesunken, seit 2022 wieder gestiegen. Achten Sie darauf, welche Armutsgrenze gemeint ist: Die Zahlen stammen aus verschiedenen Messmethoden.",
+     "zahl": "armut_2025",
+     "akte": "Dr. Kaya: Armut langfristig stark gesunken, seit 2022 wieder steigend; Messmethoden unterscheiden sich."
+    },
+    {
+     "id": "k2",
+     "frage": "Hat die Bekleidungsindustrie die Armut gesenkt?",
+     "antwort": "Das ist umstritten. Sie hat Millionen Frauen ein Einkommen gebracht. Aber auch Überweisungen von Arbeitsmigranten und die Landwirtschaft haben beigetragen. Ein gleichzeitiger Verlauf ist noch keine Ursache.",
+     "akte": "Dr. Kaya: Der Anteil der Bekleidungsindustrie am Armutsrückgang ist umstritten (Korrelation ist keine Kausalität)."
+    },
+    {
+     "id": "k3",
+     "frage": "Wer hat weltweit gewonnen, wer verloren?",
+     "antwort": "Zwischen 1988 und 2008 gewann die Mitte der Weltbevölkerung stark, vor allem in Asien, und das reichste Prozent. Die untere Mittelschicht der reichen Länder gewann kaum. Das ist die sogenannte Elefantenkurve.",
+     "zahl": "elefant",
+     "akte": "Dr. Kaya: Elefantenkurve 1988–2008 – globale Mitte und oberstes Prozent gewinnen, untere Mittelschicht reicher Länder kaum."
+    },
+    {
+     "id": "k4",
+     "frage": "Wer hat recht: die Kritiker oder die Verteidiger?",
+     "antwort": "Lessenich sagt, reiche Gesellschaften lagern die Kosten ihres Wohlstands aus. Krugman sagt, schlecht bezahlte Exportarbeit sei für arme Länder oft die beste Chance. Beide stützen sich auf echte Befunde. Welcher Maßstab zählt, entscheiden nicht die Daten.",
+     "unbequem": true,
+     "akte": "Dr. Kaya: Die Daten allein entscheiden den Streit nicht; es kommt auf den Maßstab an."
+    }
+   ]
+  }
+ ]
+}

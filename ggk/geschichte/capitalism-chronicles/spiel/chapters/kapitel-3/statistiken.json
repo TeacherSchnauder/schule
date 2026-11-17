@@ -1,0 +1,388 @@
+{
+ "hinweis": "Jede Statistik ist ein Eintrag. punkte: [Jahr, Wert]; null = „Werte folgen“. Neue Statistiken einfach anhängen; kein Code nötig. achse: [min, max] legt die senkrechte Achse fest (Gini: 0 bis 1), damit kleine Änderungen nicht übertrieben wirken; ohne achse wird sie aus den Werten bestimmt.",
+ "lorenz": {
+  "titel": "Was misst der Gini-Koeffizient?",
+  "text": "Fünf Haushalte teilen sich das Einkommen eines Dorfes. Verschiebt die Regler. Die Kurve zeigt, welcher Anteil auf die ärmsten Haushalte zusammen entfällt. Je größer die Fläche zwischen der Diagonale und der Kurve, desto höher der Gini-Koeffizient: 0 heißt, alle haben gleich viel; je näher an 1, desto ungleicher.",
+  "aufgabe": "Aufgabe: Merkt euch eine Verteilung. Stellt dann eine deutlich andere Verteilung ein, die fast denselben Gini-Wert hat.",
+  "erkenntnis": "Geschafft: zwei verschiedene Dörfer, fast derselbe Gini. Der Gini fasst eine Verteilung in einer einzigen Zahl zusammen. Er verrät nicht, wer wie viel hat und ob die Ungleichheit unten oder oben sitzt.",
+  "vorgaben": [
+   {
+    "name": "Alle gleich",
+    "werte": [
+     20,
+     20,
+     20,
+     20,
+     20
+    ]
+   },
+   {
+    "name": "Einer hat alles",
+    "werte": [
+     0,
+     0,
+     0,
+     0,
+     100
+    ]
+   },
+   {
+    "name": "So ähnlich wie die Einkommen in Deutschland",
+    "werte": null
+   }
+  ],
+  "marke": "modell"
+ },
+ "statistiken": [
+  {
+   "id": "gini_de_einkommen",
+   "titel": "Gini Deutschland: Einkommen",
+   "einheit": "Gini-Koeffizient (0 bis 1)",
+   "marke": "tatsache",
+   "reihen": [
+    {
+     "name": "Markteinkommen (vor Steuern und Sozialleistungen)",
+     "strich": "voll",
+     "punkte": [
+      [
+       1991,
+       null
+      ],
+      [
+       2000,
+       null
+      ],
+      [
+       2010,
+       null
+      ],
+      [
+       2020,
+       null
+      ]
+     ]
+    },
+    {
+     "name": "verfügbares Einkommen (nach Steuern und Sozialleistungen)",
+     "strich": "gestrichelt",
+     "punkte": [
+      [
+       1991,
+       null
+      ],
+      [
+       2000,
+       null
+      ],
+      [
+       2010,
+       null
+      ],
+      [
+       2020,
+       null
+      ]
+     ]
+    }
+   ],
+   "brueche": [],
+   "lesehilfe": "Zwei Linien: Die obere zeigt, wie ungleich der Markt die Einkommen verteilt. Die untere zeigt, was nach Steuern und Sozialleistungen übrig bleibt. Der Abstand ist die Umverteilung durch den Staat.",
+   "zeigtNicht": [
+    {
+     "text": "Wie hoch die Einkommen insgesamt sind",
+     "richtig": true,
+     "rueck": "Richtig. Ein Land kann gleich und arm sein oder ungleich und reich."
+    },
+    {
+     "text": "Wie das Vermögen verteilt ist",
+     "richtig": true,
+     "rueck": "Richtig. Einkommen ist, was in einem Jahr hereinkommt. Vermögen ist, was man besitzt."
+    },
+    {
+     "text": "Ob dieselben Menschen dauerhaft oben oder unten bleiben",
+     "richtig": true,
+     "rueck": "Richtig. Über Auf- und Abstieg sagt der Gini nichts."
+    },
+    {
+     "text": "Ob die Einkommen in einem Jahr ungleicher verteilt waren als in einem anderen",
+     "richtig": false,
+     "rueck": "Genau das zeigt die Statistik. Die Falle: Nicht alles, was fehlt, fehlt wirklich."
+    }
+   ],
+   "aufgaben": {
+    "ablesen": null,
+    "entwicklung": null
+   },
+   "quelle": "",
+   "url": "",
+   "stand": "",
+   "achse": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "gini_de_vermoegen",
+   "titel": "Gini Deutschland: Vermögen",
+   "einheit": "Gini-Koeffizient (0 bis 1)",
+   "marke": "tatsache",
+   "reihen": [
+    {
+     "name": "Nettovermögen der privaten Haushalte",
+     "strich": "voll",
+     "punkte": [
+      [
+       2010,
+       0.76
+      ],
+      [
+       2014,
+       0.76
+      ],
+      [
+       2017,
+       0.74
+      ],
+      [
+       2021,
+       0.73
+      ],
+      [
+       2023,
+       0.724
+      ]
+     ]
+    }
+   ],
+   "brueche": [],
+   "lesehilfe": "Der Gini der Vermögen liegt in Deutschland viel höher als der Gini der Einkommen. Seit 2010 ist er leicht gesunken. Die Werte stammen aus einer Befragung; sehr große Vermögen werden dabei schlecht erfasst.",
+   "zeigtNicht": [
+    {
+     "text": "Die Vermögen der allerreichsten Haushalte (sie fehlen in Befragungen oft)",
+     "richtig": true,
+     "rueck": "Richtig. Mit Zuschätzung der sehr Reichen fällt die Ungleichheit höher aus."
+    },
+    {
+     "text": "Ansprüche auf Rente und Pension",
+     "richtig": true,
+     "rueck": "Richtig. Rentenansprüche zählen hier nicht zum Vermögen. Mit ihnen wäre die Verteilung gleicher."
+    },
+    {
+     "text": "Woraus die Vermögen bestehen (Haus, Betrieb, Aktien, Sparbuch)",
+     "richtig": true,
+     "rueck": "Richtig. Dafür braucht man die Zusammensetzung der Vermögen."
+    },
+    {
+     "text": "Ob die Ungleichheit seit 2010 gestiegen oder gesunken ist",
+     "richtig": false,
+     "rueck": "Das zeigt die Kurve: leicht gesunken. Lest noch einmal genau ab."
+    }
+   ],
+   "aufgaben": {
+    "ablesen": {
+     "frage": "Wie hoch war der Gini-Koeffizient der Nettovermögen 2021?",
+     "loesung": 0.73,
+     "weg": "Abgelesen: 0,73.",
+     "sonst": "Sucht das Jahr 2021 auf der Zeitachse und lest den Wert ab."
+    },
+    "entwicklung": {
+     "frage": "Wie hat sich der Gini der Vermögen von 2010 bis 2023 entwickelt?",
+     "optionen": [
+      {
+       "text": "deutlich gestiegen",
+       "richtig": false,
+       "rueck": "Nein. Vergleicht den ersten und den letzten Wert."
+      },
+      {
+       "text": "leicht gesunken, aber weiter hoch",
+       "richtig": true,
+       "rueck": "Richtig: von 0,76 auf etwa 0,72. Die Bundesbank spricht von weiterhin hoher Ungleichheit."
+      },
+      {
+       "text": "stark gesunken",
+       "richtig": false,
+       "rueck": "Nein. Der Rückgang beträgt nur wenige Hundertstel."
+      }
+     ]
+    }
+   },
+   "quelle": "Deutsche Bundesbank, Studie „Private Haushalte und ihre Finanzen“ (PHF) 2010/11 bis 2023; Werte nach bpb-Datenreport und IW Köln. Vorläufig übernommen, in der Inhaltsrunde am Original zu prüfen.",
+   "url": "https://www.bundesbank.de/de/aufgaben/themen/bundesbank-studie-vermoegen-in-deutschland-steigen-nominal-gehen-aber-real-zurueck-ungleichheit-bleibt-unveraendert-954622",
+   "stand": "2026-11-15",
+   "achse": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "anteile_de",
+   "titel": "Vermögensanteile Deutschland",
+   "einheit": "Anteil am gesamten Nettovermögen in %",
+   "marke": "tatsache",
+   "reihen": [
+    {
+     "name": "vermögendste 10 % der Haushalte",
+     "strich": "voll",
+     "punkte": [
+      [
+       2010,
+       59
+      ],
+      [
+       2014,
+       60
+      ],
+      [
+       2017,
+       55
+      ],
+      [
+       2021,
+       56
+      ]
+     ]
+    },
+    {
+     "name": "untere Hälfte der Haushalte",
+     "strich": "gestrichelt",
+     "punkte": [
+      [
+       2010,
+       null
+      ],
+      [
+       2014,
+       null
+      ],
+      [
+       2017,
+       null
+      ],
+      [
+       2021,
+       null
+      ]
+     ]
+    }
+   ],
+   "brueche": [],
+   "lesehilfe": "Die vermögendsten 10 % der Haushalte besitzen mehr als die Hälfte des gesamten Nettovermögens. Rechnet man die sehr Reichen hinzu, die in Befragungen fehlen, kommt das Bundeswirtschaftsministerium für 2023 auf rund 61 % für die oberen 10 % und rund 2,3 % für die untere Hälfte.",
+   "zeigtNicht": [
+    {
+     "text": "Wie viel Vermögen in Betrieben steckt und wie viel in Häusern oder auf Konten",
+     "richtig": true,
+     "rueck": "Richtig. Betriebsvermögen besitzen in größerem Umfang erst die obersten 10 %."
+    },
+    {
+     "text": "Wie die Vermögen entstanden sind (aufgebaut oder geerbt)",
+     "richtig": true,
+     "rueck": "Richtig. Darüber sagt ein Anteil nichts."
+    },
+    {
+     "text": "Welcher Anteil am Vermögen auf die obersten 10 % entfällt",
+     "richtig": false,
+     "rueck": "Genau das zeigt die Statistik."
+    }
+   ],
+   "aufgaben": {
+    "ablesen": null,
+    "entwicklung": null
+   },
+   "quelle": "Deutsche Bundesbank (PHF), nach bpb-Datenreport; Bundesministerium für Wirtschaft, Schlaglichter 03/2024. Vorläufig übernommen, in der Inhaltsrunde am Original zu prüfen.",
+   "url": "https://www.bundeswirtschaftsministerium.de/Redaktion/DE/Schlaglichter-der-Wirtschaftspolitik/2024/03/05-vermoegensungleichheit-in-deutschland-und-europa.html",
+   "stand": "2026-11-15",
+   "achse": [
+    0,
+    100
+   ]
+  },
+  {
+   "id": "gini_bd",
+   "titel": "Gini Bangladesch",
+   "einheit": "Gini-Koeffizient (0 bis 1)",
+   "marke": "tatsache",
+   "reihen": [
+    {
+     "name": "Einkommen bzw. Konsum",
+     "strich": "voll",
+     "punkte": [
+      [
+       1991,
+       null
+      ],
+      [
+       2000,
+       null
+      ],
+      [
+       2010,
+       null
+      ],
+      [
+       2022,
+       null
+      ]
+     ]
+    }
+   ],
+   "brueche": [],
+   "lesehilfe": "Sinkt die Armut, kann die Ungleichheit trotzdem steigen: Dann gewinnen alle, aber die oberen Gruppen stärker.",
+   "zeigtNicht": [],
+   "aufgaben": {
+    "ablesen": null,
+    "entwicklung": null
+   },
+   "quelle": "",
+   "url": "",
+   "stand": "",
+   "achse": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "gini_welt",
+   "titel": "Ungleichheit weltweit",
+   "einheit": "Gini-Koeffizient (0 bis 1)",
+   "marke": "tatsache",
+   "reihen": [
+    {
+     "name": "Einkommen aller Menschen der Welt",
+     "strich": "voll",
+     "punkte": [
+      [
+       1988,
+       null
+      ],
+      [
+       1998,
+       null
+      ],
+      [
+       2008,
+       null
+      ],
+      [
+       2018,
+       null
+      ]
+     ]
+    }
+   ],
+   "brueche": [],
+   "lesehilfe": "Weltweit betrachtet hängt Ungleichheit von zwei Dingen ab: vom Abstand zwischen den Ländern und vom Abstand innerhalb der Länder. Beides kann sich in verschiedene Richtungen bewegen.",
+   "zeigtNicht": [],
+   "aufgaben": {
+    "ablesen": null,
+    "entwicklung": null
+   },
+   "quelle": "",
+   "url": "",
+   "stand": "",
+   "achse": [
+    0,
+    1
+   ]
+  }
+ ]
+}

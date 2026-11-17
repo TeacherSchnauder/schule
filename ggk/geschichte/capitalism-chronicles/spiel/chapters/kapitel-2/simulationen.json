@@ -1,0 +1,151 @@
+{
+  "_hinweis": "Alle Zahlen in dieser Datei sind MODELLZAHLEN (frei gewählt, vorläufig). Historische Angaben stehen nur unter 'historisch'. 'gut' sagt der Prüfregel, ob ein hoher oder niedriger Wert für die Betroffenen günstig ist.",
+  "A1": {
+    "id": "A1", "titel": "Winter 1862/63: Was tut Whitlow & Co.?", "marke": "modell",
+    "lage": "Die Rohbaumwolle aus Amerika bleibt aus. Im Lager liegt noch ein Vorrat. Die Firma hat 200 Beschäftigte.",
+    "annahmen": "Der Krieg dauert noch mindestens zwei Jahre. Rohbaumwolle bleibt knapp und teuer. Indische Baumwolle ist kurzfaserig und reißt öfter. Alle Werte sind Modellzahlen (Kasse und Lohn als Index, Ausgang 100).",
+    "belegschaft": "beschaeftigte",
+    "kennzahlen": [
+      { "id": "kasse", "name": "Kasse der Firma", "start": 100, "gut": "hoch" },
+      { "id": "beschaeftigte", "name": "Beschäftigte", "start": 200, "gut": "hoch" },
+      { "id": "lohn", "name": "Wochenlohn", "start": 100, "einheit": "%", "gut": "hoch" }
+    ],
+    "optionen": [
+      { "id": "vorrat", "text": "Vorrat teuer weiterverkaufen", "detail": "Rohbaumwolle ist jetzt mehr wert als Garn.", "werte": { "kasse": 140, "beschaeftigte": 20, "lohn": 100 }, "risiko": "hoch: Fällt der Preis bei Kriegsende, ist der Gewinn weg.", "folge": "Die Firma verdient am knappen Rohstoff, ohne zu spinnen. Fast alle Maschinen stehen.", "trifft": { "belegschaft": "180 von 200 verlieren die Arbeit.", "eigentuemer": "gewinnen, solange der Preis hoch bleibt.", "kundschaft": "bekommt kein Garn." } },
+      { "id": "indisch", "text": "Auf indische Baumwolle umstellen", "detail": "schlechtere Faser, mehr Fadenbrüche", "werte": { "kasse": 85, "beschaeftigte": 140, "lohn": 70 }, "risiko": "mittel", "folge": "Die Spinnerei läuft weiter, aber langsamer. Im Akkord verdienen die Spinnerinnen weniger, weil der Faden öfter reißt.", "trifft": { "belegschaft": "Die meisten behalten Arbeit, bei 30 % weniger Lohn.", "eigentuemer": "machen Verlust, halten aber den Betrieb.", "kundschaft": "bekommt gröberes Garn." } },
+      { "id": "kurzarbeit", "text": "Kurzarbeit: drei Tage in der Woche", "detail": "alle bleiben, alle verdienen die Hälfte", "werte": { "kasse": 75, "beschaeftigte": 200, "lohn": 50 }, "risiko": "mittel", "folge": "Niemand wird entlassen. Der halbe Lohn reicht aber nicht für Miete und Brot.", "trifft": { "belegschaft": "Alle behalten Arbeit, niemand kann davon leben.", "eigentuemer": "zahlen drauf, behalten aber die eingearbeiteten Leute.", "kundschaft": "bekommt wenig Garn." } },
+      { "id": "schliessen", "text": "Schließen bis Kriegsende", "detail": "Kosten sparen und abwarten", "werte": { "kasse": 90, "beschaeftigte": 0, "lohn": 0 }, "risiko": "niedrig für die Firma: Fachkräfte wandern ab.", "folge": "Das Tor bleibt zu. Die Firma überlebt, die Familien sind auf Armenhilfe angewiesen.", "trifft": { "belegschaft": "Alle verlieren die Arbeit.", "eigentuemer": "verlieren wenig Geld, aber die Belegschaft.", "kundschaft": "bekommt nichts." } }
+    ],
+    "historisch": { "text": "In der Baumwollnot standen viele Spinnereien still oder arbeiteten kurz. Manche Fabrikanten verkauften ihre Rohbaumwolle mit Gewinn weiter, andere stellten auf indische Baumwolle um. Arbeitslose wurden von Hilfskomitees und der Armenhilfe versorgt. Nach dem Krieg lief die Industrie wieder an.", "marke": "tatsache", "quelle": "Sekundärquellen zur Lancashire Cotton Famine", "sekundaer": true },
+    "denkpause": "a1_denkpause"
+  },
+  "A2": {
+    "id": "A2", "titel": "Um 1910: Was soll Whitlow & Co. herstellen?", "marke": "modell",
+    "lage": "Die Firma kann feinen Stoff für wenige Käufer weben oder billigen Stoff für viele. Dazu steht eine Investition in neue Maschinen an.",
+    "annahmen": "Billiger Stoff findet viermal so viele Käufer, im Inland und im Export. Neue Maschinen kosten einmalig 1.500 und senken die Stückkosten um 20 %, brauchen aber ein Fünftel weniger Arbeitskräfte. Ob aus Gewinn höhere Löhne werden, entscheidet das Modell nicht.",
+    "belegschaft": null,
+    "kennzahlen": [
+      { "id": "gewinn", "name": "Gewinn ab dem 2. Jahr", "start": 3000, "gut": "hoch" },
+      { "id": "marge", "name": "Gewinn je Ballen", "start": 3, "gut": "hoch" },
+      { "id": "beschaeftigte", "name": "Beschäftigte", "start": 50, "gut": "hoch" },
+      { "id": "spielraum", "name": "Gewinn je Beschäftigtem („Lohnspielraum“)", "start": 60 }
+    ],
+    "entscheidungen": [
+      { "id": "stoff", "titel": "1. Welcher Stoff?", "optionen": [ { "id": "fein", "text": "Feiner Stoff für wenige", "detail": "Preis 10 je Ballen, Absatz 1.000 Ballen" }, { "id": "billig", "text": "Billiger Stoff für viele", "detail": "Preis 4 je Ballen, Absatz 4.000 Ballen" } ] },
+      { "id": "technik", "titel": "2. Welche Maschinen?", "optionen": [ { "id": "alt", "text": "Die alten Maschinen behalten", "detail": "keine Investition" }, { "id": "neu", "text": "Neue Maschinen kaufen", "detail": "einmalig 1.500, Stückkosten −20 %" } ] }
+    ],
+    "kombis": {
+      "fein+alt": { "werte": { "gewinn": 3000, "marge": 3, "beschaeftigte": 50, "spielraum": 60 }, "folge": "Alles bleibt, wie es ist: kleiner Markt, gute Marge, wenige Arbeitsplätze.\nGewinn = (10 − 7) × 1.000 = 3.000.", "trifft": { "belegschaft": "50 Arbeitsplätze.", "eigentuemer": "sicherer, aber kleiner Gewinn.", "kundschaft": "Guter Stoff, den sich wenige leisten können." } },
+      "fein+neu": { "werte": { "gewinn": 4400, "marge": 4.4, "beschaeftigte": 40, "spielraum": 110 }, "kosten": "1.500 im ersten Jahr (Gewinn Jahr 1: 2.900)", "folge": "Die neuen Maschinen machen jeden Ballen billiger, aber es werden nicht mehr Ballen verkauft. Zehn Stellen fallen weg.\nGewinn = (10 − 5,6) × 1.000 = 4.400.", "trifft": { "belegschaft": "10 von 50 verlieren die Arbeit. Für die übrigen wäre viel Lohnspielraum da.", "eigentuemer": "höchster Gewinn je Ballen.", "kundschaft": "unverändert teuer." } },
+      "billig+alt": { "werte": { "gewinn": 4000, "marge": 1, "beschaeftigte": 200, "spielraum": 20 }, "risiko": "Dünne Marge: Schon ein kleiner Preisverfall auf den Exportmärkten frisst den Gewinn.", "folge": "Viermal so viele Ballen, viermal so viele Arbeitsplätze. An jedem Ballen bleibt aber nur wenig hängen.\nGewinn = (4 − 3) × 4.000 = 4.000.", "trifft": { "belegschaft": "200 Arbeitsplätze, aber kaum Lohnspielraum.", "eigentuemer": "mehr Gewinn bei höherem Risiko.", "kundschaft": "Auch Familien mit wenig Geld können Stoff kaufen." } },
+      "billig+neu": { "werte": { "gewinn": 6400, "marge": 1.6, "beschaeftigte": 160, "spielraum": 40 }, "kosten": "1.500 im ersten Jahr (Gewinn Jahr 1: 4.900)", "risiko": "Die Firma hängt am Massenabsatz im Export. Bricht er weg, stehen teure Maschinen still.", "folge": "Massenproduktion mit neuen Maschinen bringt den höchsten Gewinn. Das ist der Weg, den Plumpe für typisch hält.\nGewinn = (4 − 2,4) × 4.000 = 6.400.", "trifft": { "belegschaft": "160 Arbeitsplätze. Der Lohnspielraum ist mäßig.", "eigentuemer": "höchster Gewinn, größte Abhängigkeit vom Export.", "kundschaft": "billiger Stoff für viele." } }
+    },
+    "historisch": { "text": "Die Baumwollindustrie Lancashires erreichte kurz vor dem Ersten Weltkrieg ihren Höhepunkt. Sie lebte vor allem vom Export billiger Massenware. Genau diese Abhängigkeit wurde ihr nach 1918 zum Verhängnis.", "marke": "tatsache", "quelle": "Sekundärquellen zur britischen Baumwollindustrie", "sekundaer": true },
+    "denkpause": "a2_denkpause"
+  },
+  "A3": {
+    "id": "A3", "titel": "Um 1930: Eintreten oder allein weitermachen?", "marke": "modell",
+    "lage": "Die Aufträge liegen 40 % unter denen von 1925. Die Lancashire Cotton Corporation bietet an, die Spinnerei zu übernehmen.",
+    "annahmen": "Die Exportmärkte kommen nicht zurück. Der Großkonzern legt übernommene Werke still, um die Preise zu stützen. Kunstseide ist eine neue Branche mit unsicherem Markt. Kasse als Index, Ausgang 100.",
+    "belegschaft": "beschaeftigte",
+    "kennzahlen": [
+      { "id": "beschaeftigte", "name": "Beschäftigte hier (nach 3 Jahren)", "start": 300, "gut": "hoch" },
+      { "id": "kasse", "name": "Vermögen der Familie Whitlow", "start": 100, "gut": "hoch" }
+    ],
+    "optionen": [
+      { "id": "eintreten", "text": "In den Großkonzern eintreten", "detail": "Aktien gegen die Spinnerei", "werte": { "beschaeftigte": 0, "kasse": 60 }, "folge": "Die Familie bekommt Aktien. Der Konzern legt das Werk still.", "trifft": { "belegschaft": "Alle 300 verlieren sofort die Arbeit.", "eigentuemer": "verlieren die Firma, behalten Anteile.", "kundschaft": "Weniger Anbieter, stabilere Preise." } },
+      { "id": "allein", "text": "Allein weitermachen", "detail": "Kurzarbeit, auf bessere Zeiten hoffen", "werte": { "beschaeftigte": 150, "kasse": 10 }, "risiko": "hoch: Nach drei Jahren droht der Konkurs.", "folge": "Die Hälfte der Belegschaft arbeitet kurz weiter. Die Reserven sind bald aufgebraucht.", "trifft": { "belegschaft": "150 behalten Arbeit auf Zeit.", "eigentuemer": "behalten die Firma vorerst und riskieren alles.", "kundschaft": "unverändert." } },
+      { "id": "kunstseide", "text": "Auf Kunstseide umstellen", "detail": "neue Maschinen, neue Branche", "werte": { "beschaeftigte": 120, "kasse": 40 }, "risiko": "hoch: Niemand weiß, ob der Markt trägt.", "folge": "Zwei Jahre Umbau, dann entstehen 120 neue Arbeitsplätze. Die Straße lebt weiter, aber mit anderer Arbeit.", "trifft": { "belegschaft": "180 verlieren die Arbeit, 120 lernen um.", "eigentuemer": "setzen das halbe Vermögen aufs Spiel.", "kundschaft": "bekommt ein neues, billiges Material." } }
+    ],
+    "historisch": { "text": "1929 wurde auf Betreiben der Bank of England die Lancashire Cotton Corporation gegründet. Sie übernahm rund 104 Spinnereien und legte etwa die Hälfte still. Den Niedergang der Baumwollindustrie hielt auch der Großkonzern nicht auf.", "marke": "tatsache", "quelle": "Sekundärquellen (Grace's Guide: „Lancashire Cotton Corporation“)", "sekundaer": true },
+    "denkpause": "a3_zwischen"
+  },
+  "B1": {
+    "id": "B1", "titel": "Frühjahr 1948: Einkaufen ohne Preise", "marke": "modell",
+    "annahmen": "Die offiziellen Preise sind festgesetzt und niedrig. Die Reichsmark ist fast wertlos, alle erwarten eine neue Währung. Mengen und Tauschwerte sind Modellzahlen.",
+    "runden": [
+      { "titel": "Runde 1: Im Laden", "lage": "Miksch braucht Butter, Kohle und Schuhsohlen. Er hat 300 Reichsmark, Lebensmittelkarten und 20 Zigaretten.",
+        "optionen": [ { "id": "laden", "text": "Zum Festpreis im Laden kaufen", "detail": "Butter kostet offiziell wenige Mark.", "folge": "Zwei Stunden Schlange, dann ist das Regal leer. Der Festpreis steht an der Tafel, aber niemand verkauft dafür." } ] },
+      { "titel": "Runde 2: Auf dem Schwarzmarkt", "lage": "Im Ruinenhof gibt es alles. Die Frage ist nur: wofür?",
+        "optionen": [ { "id": "geld", "text": "Mit Reichsmark bezahlen", "detail": "300 RM", "folge": "Die 300 Reichsmark reichen für ein halbes Pfund Butter. Kohle und Sohlen bekommt ihr dafür nicht." }, { "id": "tausch", "text": "Mit Zigaretten tauschen", "detail": "20 Stück", "folge": "Für 20 Zigaretten gibt es Butter und einen Sack Kohle. Die Zigarette ist das bessere Geld: knapp, haltbar, überall gefragt." } ] },
+      { "titel": "Runde 3: Rollentausch", "lage": "Jetzt steht ihr hinter der Ladentheke. Im Keller liegen 40 Paar Schuhe. Der Festpreis ist niedrig, und bald soll es neues Geld geben.",
+        "optionen": [ { "id": "verkaufen", "text": "Zum Festpreis verkaufen", "detail": "wie es das Gesetz verlangt", "folge": "Die Schuhe sind in einer Stunde weg. In der Kasse liegen Reichsmark, für die ihr selbst nichts Neues einkaufen könnt." }, { "id": "halten", "text": "Zurückhalten bis zur neuen Währung", "detail": "verboten, aber üblich", "folge": "Die Ware behält ihren Wert. Das Schaufenster bleibt leer, und die Kundschaft geht ohne Schuhe nach Hause." } ] }
+    ],
+    "erkenntnis": "d_leeremaerkte", "denkpause": "b1_denkpause"
+  },
+  "B2": {
+    "id": "B2", "titel": "Leitsätze: Welche Preise werden frei?", "marke": "modell",
+    "lage": "Tippt eine Warengruppe an, um ihren Preis freizugeben. Was ihr nicht antippt, bleibt kontrolliert und rationiert.",
+    "annahmen": "Frei heißt: mehr Angebot, aber der Preis steigt, je knapper die Ware ist (+40 %, +20 %, +5 %). Kontrolliert heißt: stabiler Preis, aber Mangel. „Härte“ zählt freigegebene Waren des Grundbedarfs, gewichtet nach Knappheit.",
+    "stufen": { "hoch": { "preis": 40, "mangel": 7, "haerte": 3 }, "mittel": { "preis": 20, "mangel": 4, "haerte": 2 }, "niedrig": { "preis": 5, "mangel": 2, "haerte": 1 } },
+    "haerteMax": 17,
+    "gruppen": [
+      { "id": "brot", "name": "Brot und Getreide", "knappheit": "hoch", "grundbedarf": true, "historisch": "kontrolliert" },
+      { "id": "kartoffeln", "name": "Kartoffeln", "knappheit": "mittel", "grundbedarf": true, "historisch": "kontrolliert" },
+      { "id": "fett", "name": "Milch und Fett", "knappheit": "hoch", "grundbedarf": true, "historisch": "kontrolliert" },
+      { "id": "kohle", "name": "Kohle", "knappheit": "hoch", "grundbedarf": true, "historisch": "kontrolliert" },
+      { "id": "stahl", "name": "Stahl", "knappheit": "hoch", "grundbedarf": false, "historisch": "kontrolliert" },
+      { "id": "mieten", "name": "Mieten", "knappheit": "hoch", "grundbedarf": true, "historisch": "kontrolliert" },
+      { "id": "kleidung", "name": "Kleidung und Stoffe", "knappheit": "mittel", "grundbedarf": false, "historisch": "frei" },
+      { "id": "schuhe", "name": "Schuhe", "knappheit": "mittel", "grundbedarf": false, "historisch": "frei" },
+      { "id": "haushalt", "name": "Haushaltswaren", "knappheit": "niedrig", "grundbedarf": false, "historisch": "frei" },
+      { "id": "obst", "name": "Obst und Gemüse", "knappheit": "niedrig", "grundbedarf": false, "historisch": "frei", "offen": true }
+    ],
+    "folge": "Je mehr ihr freigebt, desto voller werden die Läden und desto höher steigen die Preise. Bei knappen Waren des Grundbedarfs trifft das zuerst Haushalte mit wenig Geld.",
+    "historischHinweis": "* Diese Zuordnung wird noch geprüft.",
+    "quelle": "Leitsätzegesetz vom Juni 1948; Statistisches Landesamt, Bericht 1949: Grundnahrungsmittel, wichtige Grundstoffe und Mieten blieben preiskontrolliert"
+  },
+  "B3": {
+    "id": "B3", "titel": "Die Ladenstraße nach dem Tag X", "marke": "modell", "regel": "markt", "weberMax": 10,
+    "weberJa": "Frau Weber kann sich bei diesem Preis ein Paar Kinderschuhe leisten.",
+    "weberNein": "Frau Weber rechnet nach und geht ohne Schuhe weiter. Ihr Kopfgeld ist für Brot verplant.",
+    "annahmen": "Je höher der Preis, desto weniger Kaufwillige (120, 60 oder 25). Die Schuhfabrik liefert nur dann mehr nach, wenn sich der Preis für sie lohnt (ab 20 DM). Im September sind die Preise schneller gestiegen als die Löhne, deshalb sinkt die Nachfrage um ein Fünftel. Alle Zahlen sind Modellzahlen.",
+    "runden": [
+      { "titel": "21. Juni 1948", "lage": "Herr Roth holt die zurückgehaltenen Schuhe aus dem Keller. Zu welchem Preis sollen sie ins Schaufenster?", "bestand": 40, "nachfrage": { "10": 120, "20": 60, "30": 25 },
+        "optionen": [ { "id": "p10", "preis": 10, "text": "10 DM je Paar", "folge": "Der Laden ist in einer Stunde leer geräumt. Die meisten gehen leer aus." }, { "id": "p20", "preis": 20, "text": "20 DM je Paar", "folge": "Die Schuhe gehen weg, eine kleine Schlange bleibt übrig." }, { "id": "p30", "preis": 30, "text": "30 DM je Paar", "folge": "Nur wenige können das bezahlen. Ein Teil der Schuhe bleibt im Regal." } ] },
+      { "titel": "Juli 1948", "lage": "Die Schuhfabrik hat auf euren Preis reagiert.", "bestand": { "regel": "nachPreis", "schwelle": 20, "hoch": 60, "niedrig": 30, "textHoch": "Bei eurem Preis lohnte sich die Produktion: Die Fabrik hat mehr geliefert.", "textNiedrig": "Bei 10 DM lohnte sich die Produktion kaum: Die Fabrik hat wenig geliefert." }, "nachfrage": { "10": 120, "20": 60, "30": 25 },
+        "optionen": [ { "id": "p10", "preis": 10, "text": "10 DM je Paar", "folge": "" }, { "id": "p20", "preis": 20, "text": "20 DM je Paar", "folge": "" }, { "id": "p30", "preis": 30, "text": "30 DM je Paar", "folge": "" } ] },
+      { "titel": "September 1948", "lage": "Brot, Miete und Kohle sind teurer geworden, die Löhne sind noch eingefroren. Die Leute haben weniger Geld für Schuhe übrig.", "bestand": { "regel": "nachPreis", "schwelle": 20, "hoch": 80, "niedrig": 40, "textHoch": "Die Fabrik liefert weiter mehr.", "textNiedrig": "Die Fabrik liefert weiter wenig." }, "nachfrage": { "10": 96, "20": 48, "30": 20 },
+        "optionen": [ { "id": "p10", "preis": 10, "text": "10 DM je Paar", "folge": "" }, { "id": "p20", "preis": 20, "text": "20 DM je Paar", "folge": "" }, { "id": "p30", "preis": 30, "text": "30 DM je Paar", "folge": "" } ] }
+    ],
+    "denkpause": "b3_denkpause"
+  },
+  "B4": {
+    "id": "B4", "titel": "Herbst 1948: Was tut die Verwaltung?", "marke": "modell",
+    "lage": "Die Preise steigen schneller als die Löhne. Die Gewerkschaften rufen zum Generalstreik auf. Direktor Erhard fragt nach eurem Rat.",
+    "annahmen": "Die Verwaltung kann höchstens zwei Maßnahmen gleichzeitig umsetzen. Wirkungen in Indexpunkten (Ausgang je 100), Unruhe auf einer Skala von 0 bis 5. Alle Werte sind Modellzahlen.",
+    "maxWahl": 2, "belegschaft": null,
+    "kennzahlen": [
+      { "id": "preis", "name": "Preisniveau", "start": 100, "gut": "niedrig" },
+      { "id": "reallohn", "name": "Reallohn", "start": 100, "gut": "hoch" },
+      { "id": "angebot", "name": "Warenangebot", "start": 100, "gut": "hoch" },
+      { "id": "unruhe", "name": "Unruhe (0 bis 5)", "start": 3, "max": 5, "min": 0, "gut": "niedrig" }
+    ],
+    "optionen": [
+      { "id": "kontrolle", "text": "Preiskontrollen zurück", "detail": "Preise wieder amtlich festsetzen", "wirkung": { "preis": -10, "reallohn": 5, "angebot": -25, "unruhe": -1 }, "kosten": "Staat: mittel (Kontrollbehörden)", "folge": "Die Preise sinken, aber Ware verschwindet wieder aus den Läden. Der Schwarzmarkt kehrt zurück.", "trifft": { "haushalte": "Niedrigere Preise, wenn es die Ware gibt.", "eigentuemer": "Händler halten wieder Ware zurück." } },
+      { "id": "loehne", "text": "Lohnstopp aufheben", "detail": "Gewerkschaften dürfen höhere Löhne aushandeln", "wirkung": { "preis": 5, "reallohn": 10, "angebot": 0, "unruhe": -2 }, "kosten": "Betriebe: hoch", "folge": "Die Löhne holen auf. Ein Teil der Erhöhung wandert in die Preise.", "trifft": { "haushalte": "Wer Arbeit hat, gewinnt. Rentner und Arbeitslose nicht.", "eigentuemer": "Höhere Lohnkosten." } },
+      { "id": "jedermann", "text": "Billige Standardwaren für alle", "detail": "einfache Schuhe und Kleidung zu festen Preisen", "wirkung": { "preis": -5, "reallohn": 5, "angebot": 10, "unruhe": -1 }, "kosten": "Staat: hoch (Rohstoffe zuteilen)", "folge": "Es gibt einfache, billige Grundwaren. Dafür lenkt der Staat Rohstoffe: Das ist ein Stück Planung in der Marktwirtschaft.", "trifft": { "haushalte": "Günstige Grundausstattung in einfacher Qualität.", "eigentuemer": "Hersteller bekommen Aufträge mit festen Preisen." } },
+      { "id": "abwarten", "text": "Abwarten", "detail": "Der Markt wird es richten.", "wirkung": { "preis": 5, "reallohn": -5, "angebot": 5, "unruhe": 2 }, "kosten": "keine", "folge": "Das Angebot wächst weiter, die Preise auch. Die Geduld der Leute nicht.", "trifft": { "haushalte": "Die Reallöhne sinken vorerst weiter.", "eigentuemer": "Gute Geschäfte, solange es ruhig bleibt." } }
+    ],
+    "historisch": { "text": "Am 3. November 1948 wurde der Lohnstopp aufgehoben. Mit dem „Jedermann-Programm“ ließ die Verwaltung billige Standardwaren herstellen. Trotzdem streikten am 12. November 1948 nach Gewerkschaftsangaben mehr als neun von etwa elf Millionen Beschäftigten der Bizone für 24 Stunden. Andere Angaben nennen sechs bis acht Millionen. Die Preisfreigabe blieb.", "marke": "tatsache", "quelle": "bpb: Geschichte des Streiks; Landesbildungsserver Baden-Württemberg („Stuttgarter Tumult“); Zeitungen vom Dezember 1948 zum Jedermann-Programm", "sekundaer": true },
+    "denkpause": "b4_denkpause"
+  },
+  "B5": {
+    "id": "B5", "titel": "Der Kartellfall", "marke": "modell",
+    "lage": "Drei Zementwerke beantragen, ihre Preise absprechen zu dürfen. Begründung: Sonst müsse das schwächste Werk schließen.",
+    "annahmen": "Ohne Wettbewerb steigen die Preise, und der Druck zu Neuerungen sinkt. Mit Wettbewerb scheidet das schwächste Werk aus. Preis als Index (Ausgang 100), Neuerungsdruck auf einer Skala von 1 bis 3. Alle Werte sind Modellzahlen.",
+    "belegschaft": "beschaeftigte",
+    "kennzahlen": [
+      { "id": "preis", "name": "Zementpreis für Bauherren", "start": 100, "gut": "niedrig" },
+      { "id": "beschaeftigte", "name": "Beschäftigte (nach 2 Jahren)", "start": 450, "gut": "hoch" },
+      { "id": "neuerung", "name": "Druck zu Neuerungen (1 bis 3)", "start": 2, "max": 3, "gut": "hoch" }
+    ],
+    "optionen": [
+      { "id": "erlauben", "text": "Absprache erlauben", "werte": { "preis": 130, "beschaeftigte": 450, "neuerung": 1 }, "folge": "Alle drei Werke bleiben. Wer baut, zahlt 30 % mehr, und das beim Wiederaufbau.", "trifft": { "belegschaft": "Alle 450 behalten ihre Arbeit.", "eigentuemer": "Hohe, sichere Gewinne.", "kundschaft": "Bauherren und Mieter zahlen die Absprache." } },
+      { "id": "verbieten", "text": "Absprache verbieten", "werte": { "preis": 100, "beschaeftigte": 300, "neuerung": 3 }, "folge": "Der Preis bleibt, die Werke müssen besser werden. Das schwächste Werk schließt.", "trifft": { "belegschaft": "150 verlieren die Arbeit.", "eigentuemer": "Ein Werk scheidet aus.", "kundschaft": "Zement bleibt bezahlbar." } },
+      { "id": "befristet", "text": "Für zwei Jahre erlauben", "detail": "Krisenausnahme mit Auflagen", "werte": { "preis": 115, "beschaeftigte": 400, "neuerung": 2 }, "risiko": "Ausnahmen werden gern verlängert.", "folge": "Ein Kompromiss: etwas höhere Preise, Zeit zur Umstellung. Nach zwei Jahren stellt sich die Frage erneut.", "trifft": { "belegschaft": "50 gehen, 400 bleiben vorerst.", "eigentuemer": "Zeit gewonnen.", "kundschaft": "zahlt 15 % mehr." } }
+    ],
+    "historisch": { "text": "Die Freiburger Schule forderte ein Kartellverbot. Das Gesetz gegen Wettbewerbsbeschränkungen kam erst 1957 und trat 1958 in Kraft. Es verbietet Kartelle grundsätzlich, lässt aber Ausnahmen zu. Kritiker nannten es deshalb verwässert.", "marke": "tatsache", "quelle": "Deutscher Bundestag, Textarchiv", "sekundaer": true },
+    "denkpause": "b5_denkpause"
+  }
+}

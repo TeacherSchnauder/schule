@@ -1,0 +1,998 @@
+{
+ "kapitel": {
+  "nummer": "II",
+  "titel": "Die Verteidigung: Gewachsen oder gebaut?",
+  "ort": "Lancashire 1863–1930 · Frankfurt am Main 1948",
+  "hinweisFiktion": "Belegt sind die historischen Ereignisse auf den Karten mit der Marke „Tatsache“. Gespräche, Familien, die Firma Whitlow & Co. und alle Zahlen der Simulationen sind erfunden und gekennzeichnet.",
+  "titelbild": "assets/bilder/titel-kapitel-2.jpg",
+  "ladetext": "Die Zeitreise wird vorbereitet …",
+  "codewort": "KALTESHERZ",
+  "b5Aktiv": true,
+  "reiterStadt": "Orte und Zeiten",
+  "legende": [
+   "tatsache",
+   "position",
+   "modell",
+   "kontroverse",
+   "vereinfachung"
+  ],
+  "inventarText": "Funde sichert ihr am Ende jeder Station. Belege und Funde braucht ihr im Tribunal in Kapitel III.",
+  "planTitel": "Zeitleiste",
+  "planHinweis": "Teil a) spielt in einer nachempfundenen Straße in Lancashire, Teil b) in einem nachempfundenen Viertel in Frankfurt am Main."
+ },
+ "marken": {
+  "tatsache": {
+   "name": "Tatsache",
+   "text": "historisch belegt"
+  },
+  "theorie": {
+   "name": "Theorie",
+   "text": "Deutung oder Lehre"
+  },
+  "position": {
+   "name": "Position",
+   "text": "These eines Autors"
+  },
+  "modell": {
+   "name": "Modell",
+   "text": "Modellzahlen des Spiels"
+  },
+  "vereinfachung": {
+   "name": "Vereinfachung",
+   "text": "für das Spiel verkürzt"
+  },
+  "kontroverse": {
+   "name": "Kontroverse",
+   "text": "in der Wissenschaft umstritten"
+  },
+  "erfunden": {
+   "name": "Erfunden",
+   "text": "Figur des Spiels"
+  }
+ },
+ "steuerung": {
+  "tastatur": "W, A, S, D oder die Pfeiltasten: gehen. Maus ziehen: umsehen. E oder Leertaste: ansprechen und untersuchen. Ein Messingring am Boden zeigt, was ihr untersuchen könnt.",
+  "touch": "Links auf den Bildschirm drücken und ziehen: gehen. Rechts wischen: umsehen. Den Messingknopf antippen: ansprechen und untersuchen. Ein Messingring am Boden zeigt, was ihr untersuchen könnt."
+ },
+ "personen": {
+  "lena": {
+   "name": "Lena, Studentin",
+   "fiktiv": true
+  },
+  "lena1863": {
+   "name": "Lena, Studentin",
+   "fiktiv": true
+  },
+  "lena1910": {
+   "name": "Lena, Studentin",
+   "fiktiv": true
+  },
+  "lena1930": {
+   "name": "Lena, Studentin",
+   "fiktiv": true
+  },
+  "miksch": {
+   "name": "Leonhard Miksch",
+   "fiktiv": false
+  },
+  "imhof": {
+   "name": "Dr. Sarah Imhof, Dozentin",
+   "fiktiv": true
+  },
+  "edward": {
+   "name": "Edward Whitlow, Fabrikant",
+   "fiktiv": true
+  },
+  "arthur": {
+   "name": "Arthur Whitlow, Fabrikant",
+   "fiktiv": true
+  },
+  "arthurAlt": {
+   "name": "Arthur Whitlow, Fabrikant",
+   "fiktiv": true
+  },
+  "maryAlt": {
+   "name": "Mary, früher Spinnerin",
+   "fiktiv": true
+  },
+  "annie": {
+   "name": "Annie, Ringspinnerin",
+   "fiktiv": true
+  },
+  "jack": {
+   "name": "Jack, arbeitslos",
+   "fiktiv": true
+  },
+  "eucken": {
+   "name": "Walter Eucken",
+   "fiktiv": false
+  },
+  "erhard": {
+   "name": "Ludwig Erhard",
+   "fiktiv": false
+  },
+  "armack": {
+   "name": "Alfred Müller-Armack",
+   "fiktiv": false
+  },
+  "brenner": {
+   "name": "Frau Brenner, Sekretärin",
+   "fiktiv": true
+  },
+  "kramer": {
+   "name": "Hilde Kramer, Gewerkschafterin",
+   "fiktiv": true
+  },
+  "weber": {
+   "name": "Frau Weber, Hausfrau",
+   "fiktiv": true
+  },
+  "haendler": {
+   "name": "Schwarzhändler",
+   "fiktiv": true
+  },
+  "schuster": {
+   "name": "Herr Roth, Schuhhändler",
+   "fiktiv": true
+  }
+ },
+ "stationen": [
+  {
+   "nr": 1,
+   "id": "a0",
+   "roemisch": "A0",
+   "name": "Der Hörsaal",
+   "zeit": "heute",
+   "fund": "Die Zeitkapsel ist geöffnet",
+   "gebaut": true
+  },
+  {
+   "nr": 2,
+   "id": "a1",
+   "roemisch": "A1",
+   "name": "Die Baumwollnot",
+   "zeit": "1863",
+   "fund": "Krisen treffen Menschen und Firmen, das System blieb",
+   "gebaut": true
+  },
+  {
+   "nr": 3,
+   "id": "a2",
+   "roemisch": "A2",
+   "name": "Massenkonsum",
+   "zeit": "um 1910",
+   "fund": "Mehr Wohlstand durch Markt und Reformen",
+   "gebaut": true
+  },
+  {
+   "nr": 4,
+   "id": "a3",
+   "roemisch": "A3",
+   "name": "Krise und Konzentration",
+   "zeit": "um 1930",
+   "fund": "Wohlstand für viele, aber mit Krisen und Verlierern",
+   "gebaut": true
+  },
+  {
+   "nr": 5,
+   "id": "b1",
+   "roemisch": "B1",
+   "name": "Die Trümmerstadt",
+   "zeit": "März 1948",
+   "fund": "Ohne Preise und gutes Geld keine Waren",
+   "gebaut": true
+  },
+  {
+   "nr": 6,
+   "id": "b2",
+   "roemisch": "B2",
+   "name": "Das Gesetz entwerfen",
+   "zeit": "Juni 1948",
+   "fund": "Eine Wettbewerbsordnung braucht Regeln",
+   "gebaut": true
+  },
+  {
+   "nr": 7,
+   "id": "b3",
+   "roemisch": "B3",
+   "name": "Der Tag X",
+   "zeit": "20./21. Juni 1948",
+   "fund": "Freie Preise füllen die Schaufenster, aber nicht jedes Portemonnaie",
+   "gebaut": true
+  },
+  {
+   "nr": 8,
+   "id": "b4",
+   "roemisch": "B4",
+   "name": "Der heiße Herbst",
+   "zeit": "November 1948",
+   "fund": "Freiheit hat soziale Kosten",
+   "gebaut": true
+  },
+  {
+   "nr": 9,
+   "id": "b5",
+   "roemisch": "B5",
+   "name": "Macht begrenzen",
+   "zeit": "Ausblick bis 1957",
+   "fund": "Eine Marktwirtschaft braucht Regeln, und Regeln haben Gewinner und Verlierer",
+   "gebaut": true
+  },
+  {
+   "nr": 10,
+   "id": "e",
+   "roemisch": "E",
+   "name": "Epilog im Hörsaal",
+   "zeit": "heute",
+   "fund": "Bilanz der drei Prognosen",
+   "gebaut": true
+  }
+ ],
+ "ziele": {
+  "a0": [
+   "Sprecht mit Dr. Imhof am Pult.",
+   "Öffnet die Zeitkapsel auf dem Pult.",
+   "Hört Dr. Imhof zu: Was behauptet Werner Plumpe?"
+  ],
+  "a1": [
+   "Seht euch um (mindestens 2 von 3 Orten). Sprecht dann mit Mary an der Suppenküche.",
+   "Sprecht mit Edward Whitlow am Fabriktor."
+  ],
+  "a2": [
+   "Seht euch um (mindestens 2 von 3 Orten). Sprecht dann mit Arthur Whitlow vor der Fabrik.",
+   "Besucht Annie in der Wohnung gegenüber dem Gewerkschaftsbüro (Tür mit Messingring).",
+   "Lest am Tisch im Haushaltsbuch nach, woher der Wohlstand kam."
+  ],
+  "a3": [
+   "Seht euch um (mindestens 2 von 3 Orten). Sprecht dann mit Jack vor dem Arbeitsamt.",
+   "Sprecht mit Arthur Whitlow am Fabriktor."
+  ],
+  "h": [
+   "Sprecht mit Dr. Imhof."
+  ],
+  "b1": [
+   "Sprecht mit Frau Weber in der Schlange vor der Bäckerei.",
+   "Geht zur Schwarzmarktecke im Ruinenhof links.",
+   "Geht zur Baracke der Verwaltung für Wirtschaft."
+  ],
+  "b2": [
+   "Sprecht mit Frau Brenner an der Schreibmaschine.",
+   "Professor Eucken ist zu Besuch. Sprecht mit ihm.",
+   "Arbeitet am Schreibtisch den Entwurf aus: Welche Preise werden frei?"
+  ],
+  "b3": [
+   "Hört die Durchsage am Radio.",
+   "Geht hinaus zur Ladenzeile und sprecht mit dem Schuhhändler.",
+   "Sprecht mit Frau Weber vor dem Schuhladen."
+  ],
+  "b4": [
+   "Sprecht mit der Gewerkschafterin vor der Kundgebung.",
+   "Sprecht mit Frau Weber vor dem Lebensmittelladen.",
+   "Geht in die Verwaltung: Direktor Erhard wartet."
+  ],
+  "b5": [
+   "Am Schreibtisch liegt ein Antrag von drei Zementwerken."
+  ],
+  "e": [
+   "Seht euch an der Tafel die Bilanz der drei Prognosen an.",
+   "Sprecht mit Dr. Imhof über Plumpes Fazit und seine Kritiker.",
+   "Legt am Pult eure neuen Tipps in die Zeitkapsel."
+  ]
+ },
+ "infopunkte": [
+  {
+   "id": "i63_tor",
+   "station": "a1",
+   "schicht": 1863,
+   "ort": "aushangTor",
+   "eintrag": "o_stillstand",
+   "text": "Den Aushang am Tor lesen"
+  },
+  {
+   "id": "i63_suppe",
+   "station": "a1",
+   "schicht": 1863,
+   "ort": "amt",
+   "eintrag": "o_hilfe",
+   "text": "Die Suppenküche ansehen"
+  },
+  {
+   "id": "i63_plakat",
+   "station": "a1",
+   "schicht": 1863,
+   "ort": "wand",
+   "eintrag": "o_auswandern",
+   "text": "Das Plakat lesen"
+  },
+  {
+   "id": "i10_tor",
+   "station": "a2",
+   "schicht": 1910,
+   "ort": "aushangTor1910",
+   "eintrag": "o_fabrikgesetz",
+   "text": "Den Aushang am Tor lesen"
+  },
+  {
+   "id": "i10_union",
+   "station": "a2",
+   "schicht": 1910,
+   "ort": "union",
+   "eintrag": "o_gewerkschaft",
+   "text": "Das Gewerkschaftsbüro ansehen"
+  },
+  {
+   "id": "i10_plakat",
+   "station": "a2",
+   "schicht": 1910,
+   "ort": "wand",
+   "eintrag": "o_versicherung",
+   "text": "Das Plakat lesen"
+  },
+  {
+   "id": "i30_tor",
+   "station": "a3",
+   "schicht": 1930,
+   "ort": "schildTor",
+   "eintrag": "o_lcc",
+   "text": "Das Schild am Tor lesen"
+  },
+  {
+   "id": "i30_amt",
+   "station": "a3",
+   "schicht": 1930,
+   "ort": "amt1930",
+   "eintrag": "o_arbeitsamt",
+   "text": "Den Aushang am Arbeitsamt lesen"
+  },
+  {
+   "id": "i30_plakat",
+   "station": "a3",
+   "schicht": 1930,
+   "ort": "wand",
+   "eintrag": "o_export",
+   "text": "Die Tafel im Schaufenster lesen"
+  }
+ ],
+ "tagebuch": [
+  {
+   "id": "o_stillstand",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "1863: Die Baumwollnot",
+   "text": "Der amerikanische Bürgerkrieg (1861–1865) schnitt Lancashire von der Rohbaumwolle der Südstaaten ab. Viele Spinnereien standen still oder arbeiteten nur noch tageweise. Im November 1862 waren in den Baumwollstädten etwa drei Fünftel der Arbeitskräfte ohne Arbeit. Die Zeit heißt in England „Cotton Famine“.",
+   "quelle": "Sekundärquellen (Überblicksdarstellungen zur Lancashire Cotton Famine); wird noch an D. A. Farnie, The English Cotton Industry and the World Market (1979), geprüft"
+  },
+  {
+   "id": "o_hilfe",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "1863: Hilfskomitees und Armenhilfe",
+   "text": "Arbeitslose Familien waren auf die Armenhilfe der Gemeinden und auf private Hilfskomitees angewiesen, die Suppe, Kleidung und kleine Geldbeträge verteilten. Eine Arbeitslosenversicherung gab es nicht. Die Suppenküche im Spiel ist nachempfunden.",
+   "quelle": "Sekundärquellen zur Lancashire Cotton Famine; Einzelheiten werden in der Inhaltsrunde geprüft"
+  },
+  {
+   "id": "o_auswandern",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "1863: Auswandern",
+   "text": "Ein Teil der arbeitslosen Textilarbeiter verließ Lancashire und wanderte aus, unter anderem nach Nordamerika und Australien. Das Plakat im Spiel ist nachempfunden. Zur Erinnerung aus Kapitel I: Die Rohbaumwolle der Südstaaten wurde überwiegend von versklavten Menschen gepflückt.",
+   "quelle": "Sekundärquellen zur Lancashire Cotton Famine; zur Sklavenarbeit siehe Kapitel I, Infopunkt „Baumwolle“"
+  },
+  {
+   "id": "o_fabrikgesetz",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "Um 1910: Fabrikgesetze",
+   "text": "Seit dem 19. Jahrhundert begrenzte der britische Staat in mehreren Fabrikgesetzen die Arbeitszeit, zuerst für Kinder und Frauen, und ließ Fabriken von Inspektoren kontrollieren. Das Zehnstundengesetz von 1847 kennt ihr aus Kapitel I. Solche Regeln kamen nicht vom Markt, sondern aus der Politik.",
+   "quelle": "Kapitel I, Station II (Zehnstundengesetz 1847); spätere Fabrikgesetze werden in der Inhaltsrunde einzeln belegt"
+  },
+  {
+   "id": "o_gewerkschaft",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "Um 1910: Gewerkschaften",
+   "text": "Die Textilarbeiterinnen und Textilarbeiter Lancashires waren um 1910 stark gewerkschaftlich organisiert. Gewerkschaften handelten Löhne und Arbeitszeiten aus und konnten streiken. Die Jahre 1910 bis 1914 gelten in Großbritannien als Zeit großer Arbeitskämpfe.",
+   "quelle": "North West Labour History Society: „1911: The Great Unrest Comes to Horwich“; Mitgliederzahlen werden in der Inhaltsrunde belegt"
+  },
+  {
+   "id": "o_versicherung",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "1911: Sozialversicherung",
+   "text": "Mit dem National Insurance Act von 1911 führte Großbritannien eine Krankenversicherung und für einige Branchen eine Arbeitslosenversicherung ein. Beschäftigte, Unternehmen und Staat zahlten ein. In Deutschland gab es eine Krankenversicherung schon seit 1883.",
+   "quelle": "Hansard (Debatten des britischen Parlaments), 4. Mai 1911: National Insurance Bill"
+  },
+  {
+   "id": "o_lcc",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "1929: Die Lancashire Cotton Corporation",
+   "text": "1929 wurde auf Betreiben der Bank of England die Lancashire Cotton Corporation gegründet. Der Großkonzern übernahm rund 104 Spinnereien und legte etwa die Hälfte davon still, um Überkapazitäten abzubauen. Whitlow & Co. ist erfunden.",
+   "quelle": "Sekundärquellen (Grace's Guide to British Industrial History: „Lancashire Cotton Corporation“); wird noch an Fachliteratur geprüft"
+  },
+  {
+   "id": "o_arbeitsamt",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "Um 1930: Arbeitslos mit Unterstützung",
+   "text": "In der Weltwirtschaftskrise verloren in den Textilstädten sehr viele Menschen ihre Arbeit. Anders als 1863 gab es nun eine staatliche Arbeitslosenunterstützung. Sie war niedrig und an Bedingungen geknüpft, aber sie war ein Rechtsanspruch und keine Almosen.",
+   "quelle": "Zur Arbeitslosenversicherung: National Insurance Act 1911 und spätere Erweiterungen; Arbeitslosenzahlen für Lancashire werden in der Inhaltsrunde belegt"
+  },
+  {
+   "id": "o_export",
+   "reiter": "stadt",
+   "marke": "tatsache",
+   "titel": "Um 1930: Die Märkte brechen weg",
+   "text": "Lancashire lebte vom Export. Nach dem Ersten Weltkrieg bauten Länder wie Indien und Japan eigene Textilindustrien auf und kauften weniger britischen Stoff. Die Weltwirtschaftskrise ab 1929 verschärfte den Einbruch.",
+   "quelle": "Sekundärquellen zur britischen Baumwollindustrie nach 1918; Exportzahlen werden in der Inhaltsrunde belegt"
+  },
+  {
+   "id": "d_leitfrage",
+   "reiter": "dokumente",
+   "marke": "vereinfachung",
+   "titel": "Leitfrage: Gewachsen oder gebaut?",
+   "text": "Teil a) folgt dem Historiker Werner Plumpe: Der Kapitalismus hat sich ohne Plan entwickelt und immer wieder verändert. Teil b) folgt der Freiburger Schule: Eine Marktwirtschaft braucht Regeln, die jemand gestalten muss. Ob Plumpe selbst diesen Gegensatz so sieht, ist nicht belegt. Das Gegenüber ist eine Zuspitzung des Spiels."
+  },
+  {
+   "id": "d_allen",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Reallöhne in Großbritannien",
+   "text": "Der Wirtschaftshistoriker Robert C. Allen hat berechnet: Zwischen 1840 und 1900 stieg die Produktion je Arbeiter in Großbritannien um 90 %, der Reallohn um 123 %. Die Löhne holten also auf, was sie vorher verloren hatten.",
+   "quelle": "Robert C. Allen: Engels' pause. Technical change, capital accumulation, and inequality in the British industrial revolution. In: Explorations in Economic History 46 (2009)"
+  },
+  {
+   "id": "d_pause",
+   "reiter": "dokumente",
+   "marke": "kontroverse",
+   "titel": "Engels' Pause",
+   "text": "Zwischen 1780 und 1840 stieg die Produktion je Arbeiter nach Allen um 46 %, der Reallohn nur um 12 %. Engels hat 1845 also richtig beobachtet. Über die genauen Zahlen wird gestritten: Nicholas Crafts kommt 2020 für die Produktion auf 39 % statt 46 %. Dass die Löhne bis etwa 1840 deutlich hinter der Produktion zurückblieben, ist aber breit anerkannt.",
+   "quelle": "Allen 2009 (siehe „Reallöhne in Großbritannien“); Nicholas Crafts (2020) mit korrigierten Schätzungen"
+  },
+  {
+   "id": "d_hoehepunkt",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Lancashire auf dem Höhepunkt",
+   "text": "Kurz vor dem Ersten Weltkrieg erreichte die Baumwollindustrie Lancashires ihren Höhepunkt. Der größte Teil der Stoffe ging in den Export, vor allem billige Ware für Käufer mit wenig Geld in aller Welt.",
+   "quelle": "Sekundärquellen zur britischen Baumwollindustrie; Zahlen werden in der Inhaltsrunde belegt"
+  },
+  {
+   "id": "d_herrmann",
+   "reiter": "dokumente",
+   "marke": "kontroverse",
+   "titel": "Hat sich das Kapital konzentriert?",
+   "text": "Die Wirtschaftsjournalistin Ulrike Herrmann hält Marx' Prognose der Konzentration für eingetreten: Wenige Großkonzerne beherrschen viele Märkte. Plumpe bestreitet nicht, dass es Konzentration gibt. Er bestreitet die Folgerung, dass sie den Kapitalismus zerstört. Beide Befunde können zugleich stimmen.",
+   "quelle": "Ulrike Herrmann, Beitrag in: Aus Politik und Zeitgeschichte 19–20/2017; Streitgespräch Plumpe/Herrmann, Friedrich-Ebert-Stiftung 2017"
+  },
+  {
+   "id": "p_miksch",
+   "reiter": "personen",
+   "marke": "tatsache",
+   "titel": "Leonhard Miksch (1901–1950)",
+   "text": "Volkswirt und Schüler Walter Euckens aus der Freiburger Schule. Er arbeitete als Wirtschaftsjournalist bei der Frankfurter Zeitung und ab 1948 in der Verwaltung für Wirtschaft unter Ludwig Erhard. Am Leitsätzegesetz war er maßgeblich beteiligt. Wie groß sein Anteil genau war, ist umstritten. Miksch starb 1950.",
+   "quelle": "Walter Eucken Institut, Diskussionspapier 03/2; Ludwig-Erhard-Stiftung (2015)"
+  },
+  {
+   "id": "d_spielregel",
+   "reiter": "dokumente",
+   "marke": "erfunden",
+   "titel": "Spielregel für Teil b)",
+   "text": "Ihr spielt eine historische Person. Was Miksch im Spiel sagt und entscheidet, ist erfunden. Auch die Gespräche mit Eucken, Erhard und Müller-Armack sind erfunden. Was auf Karten mit der Marke „Tatsache“ steht, ist belegt."
+  },
+  {
+   "id": "p_erhard",
+   "reiter": "personen",
+   "marke": "tatsache",
+   "titel": "Ludwig Erhard (1897–1977)",
+   "text": "Seit dem 2. März 1948 Direktor der Verwaltung für Wirtschaft des Vereinigten Wirtschaftsgebiets (der amerikanischen und britischen Zone). Er setzte im Juni 1948 die Freigabe vieler Preise durch. Später war er Bundeswirtschaftsminister und Bundeskanzler.",
+   "quelle": "Konrad-Adenauer-Stiftung, Biogramm Ludwig Erhard"
+  },
+  {
+   "id": "d_leeremaerkte",
+   "reiter": "dokumente",
+   "marke": "theorie",
+   "titel": "Warum die Läden leer sind",
+   "text": "Preise sind Informationen: Sie zeigen, was knapp ist und was sich herzustellen lohnt. 1948 waren viele Preise festgesetzt, und die Reichsmark war fast wertlos. Wer Ware hatte, hielt sie zurück oder tauschte sie auf dem Schwarzmarkt gegen Sachwerte. Das ist die Erklärung der Freiburger Schule und der meisten Ökonomen. Sie sagt noch nichts darüber, wer sich Waren zu freien Preisen leisten kann."
+  },
+  {
+   "id": "p_eucken",
+   "reiter": "personen",
+   "marke": "tatsache",
+   "titel": "Walter Eucken (1891–1950)",
+   "text": "Ökonom in Freiburg und wichtigster Kopf der Freiburger Schule (Ordoliberalismus). Seine Kernidee: Der Staat soll die Regeln des Wettbewerbs setzen und durchsetzen, aber nicht selbst die einzelnen Märkte lenken.",
+   "quelle": "Walter Eucken: Grundsätze der Wirtschaftspolitik (1952, aus dem Nachlass)"
+  },
+  {
+   "id": "b_prinzipien",
+   "reiter": "begriffe",
+   "marke": "theorie",
+   "titel": "Euckens Prinzipien der Wettbewerbsordnung",
+   "text": "Funktionierendes Preissystem bei vollständiger Konkurrenz, stabiles Geld, offene Märkte, Privateigentum, Vertragsfreiheit, Haftung, Beständigkeit der Wirtschaftspolitik. Fehlt eines, funktionieren nach Eucken auch die anderen schlechter.",
+   "quelle": "Walter Eucken: Grundsätze der Wirtschaftspolitik (1952); zuvor in Aufsätzen ab 1949"
+  },
+  {
+   "id": "d_liste1948",
+   "reiter": "dokumente",
+   "marke": "vereinfachung",
+   "titel": "Die Liste gab es 1948 noch nicht",
+   "text": "Im Spiel liegen Euckens Prinzipien 1948 als fertige Liste auf dem Tisch. Tatsächlich hat Eucken sie erst 1949 und im Buch von 1952 in dieser Form veröffentlicht. Auch der Besuch im Büro ist erfunden. Die Ideen waren 1948 aber unter seinen Schülern bekannt."
+  },
+  {
+   "id": "b_smw",
+   "reiter": "begriffe",
+   "marke": "theorie",
+   "titel": "Soziale Marktwirtschaft",
+   "text": "Den Namen prägte Alfred Müller-Armack. Die Soziale Marktwirtschaft baut auf den Ideen der Freiburger Schule auf und ergänzt sie um soziale Ziele: Der Markt soll Wohlstand schaffen, der Staat soll für sozialen Ausgleich sorgen. Erhard verstand sich als Ordoliberaler und war zugleich von Müller-Armack geprägt.",
+   "quelle": "Alfred Müller-Armack: Wirtschaftslenkung und Marktwirtschaft (1947)"
+  },
+  {
+   "id": "d_tagx",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "20. Juni 1948: Währungsreform und Preisfreigabe",
+   "text": "Am 20. Juni 1948 führten die Westalliierten in ihren Zonen die D-Mark ein. Fast zeitgleich wurden viele Preise freigegeben. Grundlage war das Leitsätzegesetz, das der Wirtschaftsrat im Juni 1948 mit 52 zu 37 Stimmen beschloss. SPD und KPD stimmten dagegen. Grundnahrungsmittel, wichtige Grundstoffe und Mieten blieben zunächst preiskontrolliert.",
+   "quelle": "Konrad-Adenauer-Stiftung: 75 Jahre Währungsreform; Statistisches Landesamt, Bericht 1949"
+  },
+  {
+   "id": "d_schaufenster",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Der Schaufenstereffekt",
+   "text": "Am Tag nach der Währungsreform lagen in vielen Schaufenstern plötzlich Waren, die es vorher nicht zu kaufen gab. Händler und Hersteller hatten sie zurückgehalten, bis es gutes Geld dafür gab.",
+   "quelle": "Deutsche Bundesbank: Die Währungsreform von 1948"
+  },
+  {
+   "id": "d_richtig",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Richtigstellung: Wer machte die Währungsreform?",
+   "text": "Die Währungsreform haben die Alliierten geplant und durchgeführt. Erhards Anteil daran war gering. Sein Beitrag war die Preisfreigabe, die er gegen Widerstände durchsetzte.",
+   "quelle": "Sudrow, in: Aus Politik und Zeitgeschichte 27/2018"
+  },
+  {
+   "id": "d_ahlen",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Das Ahlener Programm der CDU (1947)",
+   "text": "Im Februar 1947 beschloss die CDU der britischen Zone in Ahlen ein Programm, das mit deutlicher Kritik am kapitalistischen Wirtschaftssystem begann und unter anderem die Vergesellschaftung von Bergbau und Schwerindustrie forderte. Auch in Erhards eigenem Lager war die Marktwirtschaft 1948 also umstritten.",
+   "quelle": "German History in Documents and Images: Ahlener Programm (3. Februar 1947)"
+  },
+  {
+   "id": "b_ordnung",
+   "reiter": "begriffe",
+   "marke": "theorie",
+   "titel": "Wettbewerbsordnung",
+   "text": "Regeln, die Wettbewerb möglich machen und Macht begrenzen: zum Beispiel ein Verbot von Preisabsprachen (Kartellen). Für die Freiburger Schule ist das die Antwort auf die Konzentration, die Marx vorhergesagt hat: nicht Revolution, sondern eine Regel."
+  },
+  {
+   "id": "d_kartell",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Das Kartellgesetz von 1957",
+   "text": "Das Gesetz gegen Wettbewerbsbeschränkungen wurde im Juli 1957 vom Bundestag beschlossen und trat am 1. Januar 1958 in Kraft. Es verbietet Kartelle grundsätzlich, lässt aber Ausnahmen zu. Vorausgegangen waren jahrelange Auseinandersetzungen mit der Industrie.",
+   "quelle": "Deutscher Bundestag, Textarchiv; die Ausnahmen werden in der Inhaltsrunde im Einzelnen belegt"
+  },
+  {
+   "id": "d_miksch1950",
+   "reiter": "dokumente",
+   "marke": "tatsache",
+   "titel": "Miksch erlebt das Gesetz nicht",
+   "text": "Leonhard Miksch starb 1950, im selben Jahr wie Walter Eucken. Das Kartellgesetz, für das die Freiburger Schule gestritten hatte, kam erst sieben Jahre später. Reformen brauchen oft länger als ein Leben.",
+   "quelle": "siehe „Leonhard Miksch“ und „Das Kartellgesetz von 1957“"
+  },
+  {
+   "id": "d_hayek",
+   "reiter": "dokumente",
+   "marke": "kontroverse",
+   "titel": "Hayek: Was heißt hier „sozial“?",
+   "text": "Der Ökonom Friedrich August von Hayek kritisierte später das Wort „sozial“ als „Wieselwort“: Es höhle jeden Begriff aus, vor den man es setzt. Für ihn war offen, wie viel Ausgleich eine Marktwirtschaft verträgt. Das ist ein Blick voraus und eine Gegenstimme von liberaler Seite.",
+   "quelle": "Hayeks Aufsatz „Was ist und was heißt ‚sozial‘?“; hier nach Fuchs-Goldschmidt/Goldschmidt (2013). Originaltext und Jahr werden noch geprüft"
+  },
+  {
+   "id": "d_abelshauser",
+   "reiter": "dokumente",
+   "marke": "kontroverse",
+   "titel": "Abelshauser: Mythos Wirtschaftswunder?",
+   "text": "Der Wirtschaftshistoriker Werner Abelshauser bezweifelt, dass Währungsreform und Preisfreigabe den Aufschwung ausgelöst haben. Nach seiner Deutung hatte der Wiederaufbau schon vorher begonnen. Andere Forscher messen der Reform größeres Gewicht bei.",
+   "quelle": "Werner Abelshauser, in: Aus Politik und Zeitgeschichte 27/2018"
+  },
+  {
+   "id": "d_kritiker",
+   "reiter": "dokumente",
+   "marke": "kontroverse",
+   "titel": "Kritik an Plumpe",
+   "text": "Dirk Baecker (Soziologe): Plumpe lasse offen, ob er die Geschichte einer kapitalistischen Wirtschaft oder einer Gesellschaft erzählt. Alexander Ebner (Ökonom): Plumpe halte marktkritische Positionen für voreingenommen, bejahe den Kapitalismus aber selbst. Ines Prodöhl (Historikerin): Das Buch erzähle vor allem die Geschichte Europas und Nordamerikas. Alle drei würdigen zugleich die Leistung des Buches. Die Kritik ist hier in eigenen Worten zusammengefasst.",
+   "quelle": "Baecker, Soziopolis, 12.07.2019; Ebner, Ethik und Gesellschaft 2/2019; Prodöhl, H-Soz-Kult, 06.03.2020"
+  },
+  {
+   "id": "f_teila",
+   "reiter": "funde",
+   "marke": "position",
+   "titel": "Fund aus Teil a)",
+   "text": "Über 85 Jahre kam der Wohlstand bei vielen an: Die Reallöhne stiegen, die Arbeitszeit sank, der Staat sicherte ab. Zugleich trafen Krisen und Strukturwandel immer wieder dieselben: die Beschäftigten. Das System brach nicht zusammen, aber es blieb auch nicht dasselbe."
+  },
+  {
+   "id": "f_teilb",
+   "reiter": "funde",
+   "marke": "position",
+   "titel": "Fund aus Teil b)",
+   "text": "1948 wurde eine Marktwirtschaft nicht einfach freigelassen, sondern mit Regeln entworfen. Freie Preise füllten die Läden, aber der Übergang hatte soziale Kosten und Gegner. Eine Marktwirtschaft braucht Regeln, und Regeln haben Gewinner und Verlierer."
+  }
+ ],
+ "belege": [
+  {
+   "id": "beleg_tipps",
+   "titel": "Eure Tipps von 1845",
+   "text": "Die drei Tipps aus der Zeitkapsel. Im Epilog vergleicht ihr sie mit euren neuen Tipps."
+  },
+  {
+   "id": "beleg_buch",
+   "titel": "Haushaltsbuch von Marys Familie",
+   "text": "Löhne, Arbeitszeit und Preise einer Arbeiterfamilie über 85 Jahre. Maßstab: Wie lange muss die Familie für denselben Warenkorb arbeiten?"
+  },
+  {
+   "id": "beleg_allen",
+   "titel": "Reallöhne 1840–1900",
+   "text": "Reallohn +123 %, Produktion je Arbeiter +90 % (Allen 2009). Bis etwa 1840 stagnierten die Löhne („Engels' Pause“)."
+  },
+  {
+   "id": "beleg_lcc",
+   "titel": "Lancashire Cotton Corporation 1929",
+   "text": "Großkonzern übernimmt rund 104 Spinnereien und legt etwa die Hälfte still. Konzentration ja, Zusammenbruch nein."
+  },
+  {
+   "id": "beleg_entwurf",
+   "titel": "Euer Entwurf der Preisfreigabe",
+   "text": "Welche Preise ihr freigegeben habt und welche kontrolliert blieben, im Vergleich zu 1948."
+  },
+  {
+   "id": "beleg_ahlen",
+   "titel": "Ahlener Programm 1947",
+   "text": "Auch die CDU kritisierte 1947 das kapitalistische Wirtschaftssystem. Die Marktwirtschaft war 1948 umstritten."
+  },
+  {
+   "id": "beleg_streik",
+   "titel": "Generalstreik 12. November 1948",
+   "text": "Mehr als 9 von etwa elf Millionen Beschäftigten der Bizone legen 24 Stunden die Arbeit nieder (andere Angaben nennen weniger)."
+  },
+  {
+   "id": "beleg_kartell",
+   "titel": "Kartellgesetz 1957",
+   "text": "Verbot von Kartellen mit Ausnahmen, in Kraft ab 1958. Die Regel kam neun Jahre nach der Preisfreigabe."
+  }
+ ],
+ "notizTitel": {
+  "tipps_alt": "Eure Tipps von 1845",
+  "a1_denkpause": "A1: Werden die Verlierer einer Krise ersetzt?",
+  "a2_zwischen": "A2: Zwischenstand zu Prognose 1",
+  "a2_denkpause": "A2: Wachsen Löhne von selbst mit?",
+  "a3_zwischen": "A3: Zwischenstand zu Prognose 2 und 3",
+  "b1_denkpause": "B1: Warum verschwinden Waren bei festen Preisen?",
+  "b2_entwurf": "B2: Euer Entwurf der Preisfreigabe",
+  "b3_denkpause": "B3: Wer kann sich die freien Preise leisten?",
+  "b4_denkpause": "B4: Wie viel soziale Härte darf eine Reform kosten?",
+  "b5_denkpause": "B5: Wann schadet eine Absprache, wann schützt sie Arbeitsplätze?",
+  "entscheidungen": "Eure Entscheidungen in den Simulationen",
+  "tipps_neu": "Eure neuen Tipps und der Vergleich"
+ },
+ "denkpausen": {
+  "a1_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Plumpe sagt sinngemäß: Krisen treffen einzelne Akteure, die ersetzt werden. Was heißt „ersetzt werden“ für Marys Familie? Und was heißt es für die Straße?",
+   "hinweis": "Stichpunkte genügen. Eure Notiz landet im Tagebuch.",
+   "min": 15
+  },
+  "a2_zwischen": {
+   "titel": "Zwischenstand zur Zeitkapsel",
+   "frage": "Prognose 1: „Die Arbeiter verelenden weiter.“ Was spricht 1910 dagegen, was hat 1845 dafür gesprochen?",
+   "hinweis": "Nutzt das Haushaltsbuch und die Zahlen von Allen.",
+   "min": 15
+  },
+  "a2_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Das Modell hat nur gezeigt, wie viel Lohnspielraum eine Firma hat. Wachsen Löhne von selbst mit, oder braucht es Gewerkschaften und Gesetze? Was würde sich ändern, wenn es beides nicht gäbe?",
+   "hinweis": "Stichpunkte genügen.",
+   "min": 15
+  },
+  "a3_zwischen": {
+   "titel": "Zwischenstand zur Zeitkapsel",
+   "frage": "Prognose 2 (Konzentration) und Prognose 3 (Zusammenbruch): Was seht ihr 1930? Was davon gibt Marx recht, was Plumpe?",
+   "hinweis": "Je ein Stichpunkt zu beiden Prognosen.",
+   "min": 15
+  },
+  "b1_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Warum verschwinden Waren aus den Läden, wenn die Preise festgesetzt sind und das Geld wenig wert ist? Und wem nützen feste Preise trotzdem?",
+   "hinweis": "Denkt an eure Rolle hinter der Ladentheke in Runde 3.",
+   "min": 15
+  },
+  "b3_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Die Schaufenster sind voll. Wer kann sich die freien Preise leisten und wer nicht? Was hat das Modell der Ladenstraße nicht gezeigt?",
+   "hinweis": "Stichpunkte genügen.",
+   "min": 15
+  },
+  "b4_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Wie viel soziale Härte darf eine Reform kosten, wenn sie langfristig vielen nützt? Wer sollte das entscheiden?",
+   "hinweis": "Hier gibt es keine richtige Antwort. Begründet eure Sicht.",
+   "min": 15
+  },
+  "b5_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Wann schadet eine Preisabsprache, wann schützt sie Arbeitsplätze? Und was hat das mit Marx' Prognose der Konzentration zu tun?",
+   "hinweis": "Stichpunkte genügen.",
+   "min": 15
+  }
+ },
+ "zuordnung_a2": {
+  "titel": "Woher kam der Wohlstand?",
+  "einleitung": "Ordnet zu: Kam die Verbesserung vom Markt, von einer Reform oder von beidem? Manches lässt sich begründet zwei Feldern zuordnen.",
+  "mehrfach": true,
+  "erfolg": "Alles zugeordnet. Der Wohlstand von 1910 hat mehr als eine Ursache.",
+  "passt": "Gut begründbar: ",
+  "felder": [
+   {
+    "id": "markt",
+    "titel": "Markt",
+    "text": "Wettbewerb, neue Maschinen, billigere Waren"
+   },
+   {
+    "id": "reform",
+    "titel": "Reform",
+    "text": "Gesetze, Gewerkschaften, Versicherung"
+   },
+   {
+    "id": "beides",
+    "titel": "Beides",
+    "text": "Markt und Reform wirken zusammen"
+   }
+  ],
+  "karten": [
+   {
+    "id": "k1",
+    "text": "Stoff, Tee und Brot kosten weniger Arbeitszeit als 1845.",
+    "ziele": [
+     "markt",
+     "beides"
+    ],
+    "hinweis": "Was macht Waren billiger: ein Gesetz oder Massenproduktion?"
+   },
+   {
+    "id": "k2",
+    "text": "Die Arbeitswoche ist kürzer als 1845.",
+    "ziele": [
+     "reform",
+     "beides"
+    ],
+    "hinweis": "Denkt an das Zehnstundengesetz und an die Gewerkschaften."
+   },
+   {
+    "id": "k3",
+    "text": "Bei Krankheit zahlt eine Versicherung.",
+    "ziele": [
+     "reform"
+    ],
+    "hinweis": "Das steht auf dem Plakat von 1911."
+   },
+   {
+    "id": "k4",
+    "text": "Die Firma verdient an billigem Stoff für viele Käufer.",
+    "ziele": [
+     "markt"
+    ],
+    "hinweis": "Das war Arthur Whitlows Rechnung."
+   },
+   {
+    "id": "k5",
+    "text": "Die Löhne sind höher als 1845.",
+    "ziele": [
+     "beides",
+     "markt",
+     "reform"
+    ],
+    "hinweis": "Die Firma hat Lohnspielraum. Wer sorgt dafür, dass er bei den Beschäftigten ankommt?"
+   }
+  ],
+  "hilfen": [
+   "Fragt bei jeder Karte: Wer hat das bewirkt, ein Unternehmen im Wettbewerb oder ein Gesetz beziehungsweise eine Gewerkschaft?"
+  ]
+ },
+ "baukasten": {
+  "titel": "Ordnungsbaukasten",
+  "einleitung": "Legt die Prinzipien auf den Entwurf, die nach Eucken zu einer Wettbewerbsordnung gehören. Drei Karten gehören nicht dazu.",
+  "karten": [
+   {
+    "id": "preise",
+    "text": "Funktionierendes Preissystem",
+    "detail": "Preise bilden sich im Wettbewerb.",
+    "gehoert": true,
+    "fehlt": "Ohne freie Preise weiß niemand, was knapp ist. Die Läden bleiben leer, wie im Frühjahr."
+   },
+   {
+    "id": "geld",
+    "text": "Stabiles Geld",
+    "detail": "Vorrang der Währungspolitik",
+    "gehoert": true,
+    "fehlt": "Ohne stabiles Geld hält jeder seine Ware zurück und tauscht lieber gegen Zigaretten."
+   },
+   {
+    "id": "offen",
+    "text": "Offene Märkte",
+    "detail": "Jeder darf anbieten, auch neue Firmen.",
+    "gehoert": true,
+    "fehlt": "Ohne offene Märkte schützen sich die alten Firmen vor neuer Konkurrenz. Die Kundschaft zahlt."
+   },
+   {
+    "id": "eigentum",
+    "text": "Privateigentum",
+    "detail": "an den Produktionsmitteln",
+    "gehoert": true,
+    "fehlt": "Ohne Privateigentum entscheidet eine Behörde über Fabriken und Läden: Das wäre eine andere Ordnung."
+   },
+   {
+    "id": "vertrag",
+    "text": "Vertragsfreiheit",
+    "detail": "aber nicht, um Wettbewerb auszuschalten",
+    "gehoert": true,
+    "fehlt": "Ohne Vertragsfreiheit kann niemand frei kaufen, verkaufen oder Arbeit annehmen."
+   },
+   {
+    "id": "haftung",
+    "text": "Haftung",
+    "detail": "Wer den Nutzen hat, trägt auch den Schaden.",
+    "gehoert": true,
+    "fehlt": "Ohne Haftung spekuliert ein Unternehmen mit hohem Risiko. Geht es gut, behält es den Gewinn. Geht es schief, zahlen andere."
+   },
+   {
+    "id": "konstanz",
+    "text": "Beständige Wirtschaftspolitik",
+    "detail": "Regeln ändern sich nicht ständig.",
+    "gehoert": true,
+    "fehlt": "Ändern sich die Regeln jedes Jahr, investiert niemand in neue Maschinen."
+   },
+   {
+    "id": "f_preis",
+    "text": "Der Staat legt alle Preise fest",
+    "detail": "",
+    "gehoert": false,
+    "falsch": "Das ist die Lenkung, die Eucken ablehnt: Der Staat soll Regeln setzen, nicht einzelne Preise."
+   },
+   {
+    "id": "f_invest",
+    "text": "Der Staat lenkt die Investitionen",
+    "detail": "",
+    "gehoert": false,
+    "falsch": "Das wäre Planung statt Wettbewerb. Für Eucken entscheidet der Markt, wo investiert wird."
+   },
+   {
+    "id": "f_kartell",
+    "text": "Branchen dürfen Preise absprechen",
+    "detail": "",
+    "gehoert": false,
+    "falsch": "Absprachen schalten den Wettbewerb aus. Genau das soll die Ordnung verhindern."
+   }
+  ],
+  "erfolg": "Der Entwurf steht: sieben Prinzipien. Der Staat setzt den Rahmen, lenkt aber nicht den einzelnen Markt.",
+  "hinweisFehlt": "Es fehlen noch Prinzipien. Ein Beispiel, was ohne sie geschieht: "
+ },
+ "kapsel": {
+  "prognosen": [
+   {
+    "id": "p1",
+    "titel": "Die Arbeiter verelenden weiter.",
+    "text": "Je mehr Reichtum entsteht, desto ärmer werden die, die ihn herstellen."
+   },
+   {
+    "id": "p2",
+    "titel": "Das Kapital sammelt sich bei immer weniger Eigentümern.",
+    "text": "Am Ende stehen wenige Kapitalbesitzer einer riesigen Masse Besitzloser gegenüber."
+   },
+   {
+    "id": "p3",
+    "titel": "Das System bricht zusammen.",
+    "text": "Krisen und Klassenkampf führen zur Überwindung des Kapitalismus."
+   }
+  ],
+  "tipps": [
+   [
+    "ja",
+    "Tritt ein"
+   ],
+   [
+    "teils",
+    "Tritt teilweise ein"
+   ],
+   [
+    "nein",
+    "Tritt nicht ein"
+   ]
+  ],
+  "codeFrage": "Die Kassette ist versiegelt. Eure Lehrkraft nennt euch das Codewort.",
+  "codeFalsch": "Das Codewort stimmt nicht. Fragt eure Lehrkraft.",
+  "gefunden": "In der Kassette liegen eure drei Tipps aus Kapitel I.",
+  "fehlt": "Auf diesem Gerät liegt kein Spielstand aus Kapitel I. Fügt den kopierten Notizentext aus Kapitel I ein oder gebt eure Tipps von damals neu ein.",
+  "einfuegen": "Notizentext aus Kapitel I hier einfügen",
+  "unlesbar": "In dem Text stehen keine drei Tipps. Gebt sie bitte unten neu ein.",
+  "neuFrage": "Was ihr gesehen habt, reicht von 1845 bis 1957. Tritt die Prognose ein? Gebt neue Tipps ab."
+ },
+ "bilanz": [
+  {
+   "id": "p1",
+   "titel": "Prognose 1: Die Arbeiter verelenden weiter.",
+   "befund": "Die Reallöhne in Großbritannien stiegen 1840–1900 um 123 % (Allen). Arbeitszeit sank, Versicherungen kamen hinzu.",
+   "gegenbefund": "Bis etwa 1840 stagnierten die Löhne trotz wachsender Produktion: Engels hat richtig beobachtet. Krisen wie 1863 und 1930 trafen vor allem Beschäftigte.",
+   "kontroverse": "Kam der Wohlstand vom Markt oder wurde er durch Gewerkschaften und Gesetze erkämpft? Und reicht „weniger arm“, wenn die Ungleichheit bleibt?"
+  },
+  {
+   "id": "p2",
+   "titel": "Prognose 2: Das Kapital konzentriert sich.",
+   "befund": "Konzentration fand statt: 1929 schluckte die Lancashire Cotton Corporation rund 104 Spinnereien. Kartelle waren verbreitet.",
+   "gegenbefund": "Große Konzerne gingen selbst im Strukturwandel unter. Staaten setzten Regeln dagegen, etwa das deutsche Kartellgesetz von 1957.",
+   "kontroverse": "Herrmann: Die Prognose ist eingetreten. Plumpe: Konzentration ja, aber sie hat das System nicht zerstört. Beides kann stimmen."
+  },
+  {
+   "id": "p3",
+   "titel": "Prognose 3: Das System bricht zusammen.",
+   "befund": "In den Beispielen des Spiels brach das System nicht zusammen, trotz schwerer Krisen 1863 und ab 1929.",
+   "gegenbefund": "Es blieb aber nicht dasselbe: Sozialversicherung, Arbeitsrecht und Wettbewerbsordnung haben es verändert. Der Kapitalismus von 1957 ist nicht der von 1845.",
+   "kontroverse": "Ist „bisher nicht zusammengebrochen“ eine Widerlegung? Und wurde das System durch Reformen gerettet, die seine Kritiker erzwungen haben?"
+  }
+ ],
+ "haushaltsbuch": {
+  "titel": "Haushaltsbuch von Marys Familie",
+  "marke": "modell",
+  "einheitGeld": "Schilling",
+  "hinweisOffen": "Die Zahlen für dieses Jahr werden noch aus historischen Quellen zusammengestellt. Es werden bewusst keine Zahlen erfunden.",
+  "hinweisWerte": "Werte aus historischen Quellen, gerundet.",
+  "zeilen": [
+   {
+    "id": "lohn",
+    "name": "Wochenlohn der Familie",
+    "einheit": "Schilling"
+   },
+   {
+    "id": "stunden",
+    "name": "Arbeitszeit in der Woche",
+    "einheit": "Stunden"
+   },
+   {
+    "id": "miete",
+    "name": "Wochenmiete",
+    "einheit": "Schilling"
+   },
+   {
+    "id": "korb",
+    "name": "Warenkorb (Brot, Kartoffeln, Fleisch, Kohle, Stoff)",
+    "einheit": "Schilling"
+   }
+  ],
+  "seiten": [
+   {
+    "jahr": 1845,
+    "titel": "Mary in der Spinnerei",
+    "text": "Kapitel I: zwölf Stunden am Tag in der Spinnerei, Kellerwohnungen im Viertel am Irk.",
+    "werte": null
+   },
+   {
+    "jahr": 1863,
+    "titel": "Baumwollnot",
+    "text": "Die Spinnerei steht still. Die Familie lebt von Armenhilfe und vom Pfandhaus. Ein Sohn will auswandern.",
+    "werte": null
+   },
+   {
+    "jahr": 1910,
+    "titel": "Annie, Marys Enkelin",
+    "text": "Annie arbeitet an der Ringspinnmaschine. Die Wohnung hat eine Nähmaschine, ein Tischtuch und ein Bild an der Wand.",
+    "werte": null
+   },
+   {
+    "jahr": 1930,
+    "titel": "Jack, Annies Sohn",
+    "text": "Die Spinnerei ist stillgelegt. Jack bekommt Arbeitslosenunterstützung. Das Radio ist auf Raten gekauft.",
+    "werte": null
+   }
+  ]
+ }
+}

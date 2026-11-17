@@ -1,0 +1,495 @@
+{
+  "_hinweis": "Alle Dialoge sind erfunden. Belegte Zitate stehen nur als Dokument im Tagebuch (inhalte.json). Höchstens zwei Sätze je Zeile.",
+  "ankunft": [
+    {
+      "wer": "engels",
+      "text": "Willkommen in Manchester, Marx. In dieser Stadt wird Baumwolle für die halbe Welt versponnen."
+    },
+    {
+      "wer": "marx",
+      "text": "Du hast mir von Reichtum und Elend geschrieben. Ich will sehen, woher beides kommt."
+    },
+    {
+      "wer": "engels",
+      "text": "Dann beginnen wir in einer Spinnerei. Komm, die Straße am Kanal führt direkt zum Tor."
+    }
+  ],
+  "weg1": {
+    "wer": "engels",
+    "text": "Zähl die Schornsteine. Unter jedem steht eine Dampfmaschine, und jede treibt Hunderte von Spindeln."
+  },
+  "weg2": {
+    "wer": "engels",
+    "text": "Dort vorn ist das Tor von Whitlow & Co. Der Besitzer lässt uns ein, er hält mich für einen Kollegen."
+  },
+  "hof": {
+    "wer": "engels",
+    "text": "Der Spinnsaal liegt links im großen Bau. Dort drinnen richtet sich alles nach der Uhr."
+  },
+  "mary1": [
+    {
+      "wer": "engels",
+      "text": "Das ist Mary. Sie steht an dieser Maschine, seit sie ein Kind war."
+    },
+    {
+      "wer": "marx",
+      "text": "Guten Tag. Wie lange arbeiten Sie am Tag, und was zahlt man Ihnen dafür?"
+    },
+    {
+      "wer": "mary",
+      "text": "Zwölf Stunden, sechs Tage die Woche. Drei Schilling am Tag, pünktlich gezahlt."
+    },
+    {
+      "wer": "marx",
+      "text": "Und wie viel Garn spinnen Sie in diesen zwölf Stunden?"
+    },
+    {
+      "wer": "mary",
+      "text": "Das zählt der Aufseher. Ich zähle nur die Stunden."
+    },
+    {
+      "wer": "marx",
+      "text": "Sie verkaufen also nicht das Garn, sondern Ihre Arbeitskraft, Tag für Tag."
+    },
+    {
+      "wer": "mary",
+      "text": "Was hätte ich sonst zu verkaufen?"
+    },
+    {
+      "wer": "engels",
+      "text": "Genau da fangen wir an. Sieh dir die Fabrikuhr an der Stirnwand an."
+    }
+  ],
+  "maryKurz": {
+    "wer": "mary",
+    "text": "Verzeihung, die Maschine wartet nicht."
+  },
+  "nachUhr": [
+    {
+      "wer": "marx",
+      "text": "Sechs Stunden für den Lohn, sechs Stunden darüber hinaus. Ich will das in Zahlen sehen."
+    },
+    {
+      "wer": "engels",
+      "text": "Am Pult des Aufsehers liegt das Lohnbuch. Rechne dort."
+    }
+  ],
+  "zeitung": [
+    {
+      "wer": "engels",
+      "text": "Im Parlament streiten sie seit Jahren um einen Zehnstundentag. Die Fabrikanten sagen, er würde sie ruinieren."
+    },
+    {
+      "wer": "marx",
+      "text": "Rechnen wir. Zehn Stunden bringen fünf Schilling Neuwert, drei gehen als Lohn ab: Es bleiben zwei statt drei."
+    },
+    {
+      "wer": "engels",
+      "text": "Warte ab, was Whitlow tut. Er hat eine schnellere Maschine bestellt, sie steht schon im Saal."
+    }
+  ],
+  "mary2": [
+    {
+      "wer": "marx",
+      "text": "Sie haben mir Ihren Lohn genannt. Wie ist die Arbeit selbst für Sie?"
+    },
+    {
+      "wer": "mary",
+      "text": "Das Garn sehe ich nie wieder. Es gehört Mr. Whitlow, sobald es von der Spindel läuft."
+    },
+    {
+      "wer": "mary",
+      "text": "Die Maschine gibt den Takt vor. Ich knüpfe gerissene Fäden, immer derselbe Handgriff."
+    },
+    {
+      "wer": "mary",
+      "text": "Früher habe ich mir beim Nähen Muster ausgedacht. Hier denke ich nichts, ich arbeite nur, um zu essen."
+    },
+    {
+      "wer": "mary",
+      "text": "Und wer zu langsam ist, wird ersetzt. Draußen warten andere auf meinen Platz."
+    },
+    {
+      "wer": "marx",
+      "text": "Vier Sätze, und jeder beschreibt eine andere Trennung. Das will ich ordnen."
+    }
+  ],
+  "whitlow": [
+    {
+      "wer": "whitlow",
+      "text": "Mr. Engels, Ihr Freund rechnet in meinem Saal, als stünde die Fabrik einfach da."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Ich habe sie gebaut, mit geliehenem Geld. Geht es schief, bin ich ruiniert."
+    },
+    {
+      "wer": "marx",
+      "text": "Dann zeigen Sie mir, wo Ihr Risiko in der Rechnung steht."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Eben. In Ihrer Rechnung steht es nirgends."
+    }
+  ],
+  "nachDenkpause": [
+    {
+      "wer": "engels",
+      "text": "Er hat einen Punkt, Marx. Ohne Whitlows Kapital stünde hier keine einzige Maschine."
+    },
+    {
+      "wer": "marx",
+      "text": "Und ohne Marys Arbeit stünden sie still. Wir halten beides fest und prüfen es später."
+    }
+  ],
+  "ende": [
+    {
+      "wer": "engels",
+      "text": "Das Tor an der Nordseite steht jetzt offen. Im Kontor sehen wir, was Whitlow mit dem Mehrwert macht."
+    }
+  ],
+  "strasse3": {
+    "wer": "engels",
+    "text": "Hier sitzen die Makler und Kontore. Im Saal wird der Mehrwert geschaffen, hier wird über ihn entschieden."
+  },
+  "gesperrt3": {
+    "wer": "engels",
+    "text": "Der Torbogen ist noch verschlossen. Erst sehen wir uns im Kontor um."
+  },
+  "pym1": [
+    {
+      "wer": "engels",
+      "text": "Guten Tag, Mr. Pym. Mr. Whitlow erlaubt uns einen Blick in die Bücher."
+    },
+    {
+      "wer": "pym",
+      "text": "Wenn Mr. Whitlow es sagt. Das Hauptbuch liegt auf dem Pult, bitte keine Tinte verschütten."
+    },
+    {
+      "wer": "marx",
+      "text": "Was beschäftigt Ihren Herrn in diesen Wochen am meisten?"
+    },
+    {
+      "wer": "pym",
+      "text": "Die Preisliste von Ashworth dort an der Wand. Und das Angebot der Maschinenfabrik auf dem Tisch am Fenster."
+    }
+  ],
+  "pymKurz": {
+    "wer": "pym",
+    "text": "Soll und Haben, meine Herren. Mehr kann ich Ihnen nicht sagen."
+  },
+  "nachDokumente": [
+    {
+      "wer": "marx",
+      "text": "Ein Gewinn im Buch, ein billigerer Konkurrent an der Wand, ein Angebot auf dem Tisch. Ich will die Zahlen sehen."
+    },
+    {
+      "wer": "engels",
+      "text": "Dann rechne am Stehpult nach. Mr. Pym sieht dir auf die Finger."
+    }
+  ],
+  "vorOrdnen": [
+    {
+      "wer": "pym",
+      "text": "Wenn Sie schon rechnen, helfen Sie mir beim Inventar. Jeder Posten gehört in eine Spalte."
+    }
+  ],
+  "whitlowKontor": [
+    {
+      "wer": "whitlow",
+      "text": "Sie schon wieder. Sie haben mein Hauptbuch gelesen: tausend Pfund Gewinn."
+    },
+    {
+      "wer": "marx",
+      "text": "Und Sie überlegen, was Sie damit tun."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Meine Frau wünscht sich ein Landhaus in Cheshire. Die Spinnerinnen wünschen sich mehr Lohn."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Setzen Sie sich auf meinen Stuhl, Herr Doktor. Entscheiden Sie drei Jahre lang an meiner Stelle."
+    }
+  ],
+  "nachJahre": [
+    {
+      "wer": "whitlow",
+      "text": "Nun wissen Sie, warum ich kein Landhaus habe. Ich bin nicht geizig. Ich will nur nächstes Jahr noch hier sitzen."
+    },
+    {
+      "wer": "marx",
+      "text": "Sie handeln, wie Sie müssen. Genau das will ich festhalten."
+    }
+  ],
+  "fenster": [
+    {
+      "wer": "engels",
+      "text": "Sieh hinunter auf die Straße. Jeder dort unten trägt Baumwolle, vom Makler bis zum Laufburschen."
+    },
+    {
+      "wer": "marx",
+      "text": "Vor sechzig Jahren war das ein Stoff für Wohlhabende. Diese Fabriken haben mehr hervorgebracht als alle Jahrhunderte vor ihnen."
+    },
+    {
+      "wer": "engels",
+      "text": "Das schreibst ausgerechnet du?"
+    },
+    {
+      "wer": "marx",
+      "text": "Wer das System kritisieren will, muss zuerst sehen, was es leistet."
+    }
+  ],
+  "ende3": [
+    {
+      "wer": "engels",
+      "text": "Du hast gesehen, wo der Reichtum entsteht und warum er wachsen muss. Jetzt zeige ich dir, wer den Preis zahlt."
+    },
+    {
+      "wer": "engels",
+      "text": "Der Torbogen am Ende der Straße ist offen. Die Gasse dahinter führt hinunter zum Irk."
+    }
+  ],
+  "gasse": {
+    "wer": "engels",
+    "text": "Fünf Minuten von der Börse entfernt. Die meisten Kaufleute waren noch nie in dieser Gasse."
+  },
+  "irkhof": {
+    "wer": "engels",
+    "text": "Das ist einer der Höfe am Irk. Sieh dich um, bevor wir jemanden ansprechen."
+  },
+  "nachHof": [
+    {
+      "wer": "marx",
+      "text": "Eine Pumpe, ein Abort, ein schwarzer Fluss. Und wie viele Menschen?"
+    },
+    {
+      "wer": "engels",
+      "text": "In diesem Hof an die zweihundert. Komm, im Keller dort drüben wohnt eine Familie, die mich kennt."
+    }
+  ],
+  "ellen1": [
+    {
+      "wer": "engels",
+      "text": "Guten Tag, Ellen. Das ist ein Freund aus Deutschland. Er will wissen, wie ihr lebt."
+    },
+    {
+      "wer": "ellen",
+      "text": "Sieben Menschen in diesem Raum, Sir. Mein Mann, vier Kinder, ein Schlafgänger und ich."
+    },
+    {
+      "wer": "marx",
+      "text": "Sind die Kinder gesund?"
+    },
+    {
+      "wer": "ellen",
+      "text": "Die vier, ja. Zwei habe ich begraben, das eine mit einem Jahr, das andere mit drei. Das Fieber kommt jeden Sommer."
+    },
+    {
+      "wer": "tom",
+      "text": "Ich arbeite schon, Sir. Halbe Tage in der Spinnerei, Spulen aufstecken."
+    },
+    {
+      "wer": "ellen",
+      "text": "Drüben bei Hadley soll ein Aufseher die Kinder mit dem Riemen schlagen. Gesehen habe ich es nicht, aber alle reden davon."
+    },
+    {
+      "wer": "marx",
+      "text": "Ich danke Ihnen. Ich werde aufschreiben, was ich hier gesehen habe."
+    }
+  ],
+  "ellenKurz": {
+    "wer": "ellen",
+    "text": "Sehen Sie sich ruhig um, Sir. Viel ist es nicht."
+  },
+  "tomKurz": {
+    "wer": "tom",
+    "text": "Um fünf muss ich wieder am Tor sein."
+  },
+  "betten": {
+    "wer": "engels",
+    "text": "Zwei Bettgestelle und ein Strohsack für sieben Menschen. Wer Nachtschicht hat, schläft am Tag im selben Bett."
+  },
+  "wand": {
+    "wer": "engels",
+    "text": "Fass die Wand an. Der Fluss steht bei Regen höher als dieser Fußboden."
+  },
+  "eimer": {
+    "wer": "engels",
+    "text": "Das Wasser holen sie von der Pumpe im Hof. Getrunken wird es so, wie es kommt."
+  },
+  "nachWohnung": [
+    {
+      "wer": "marx",
+      "text": "Zwei von sechs Kindern tot. Ist das hier die Regel oder die Ausnahme?"
+    },
+    {
+      "wer": "engels",
+      "text": "Dafür gibt es Zahlen. Ich habe den Bericht von Chadwick in der Tasche, einem Beamten der Regierung. Lies ihn draußen an der Mauer."
+    }
+  ],
+  "nachTabelle": [
+    {
+      "wer": "engels",
+      "text": "Einundzwanzig Jahre. Für mich ist die Sache damit entschieden: Diese Ordnung tötet."
+    },
+    {
+      "wer": "marx",
+      "text": "Langsam. Die Zahl sagt, dass sie früher sterben. Sie sagt noch nicht, woran."
+    }
+  ],
+  "nachUrsachen": [
+    {
+      "wer": "engels",
+      "text": "Du klingst wie Chadwick. Der will Kanäle bauen und alles andere lassen, wie es ist."
+    },
+    {
+      "wer": "marx",
+      "text": "Dann lass uns festhalten, worin ihr euch unterscheidet."
+    }
+  ],
+  "ende4": [
+    {
+      "wer": "marx",
+      "text": "Das Elend ist wirklich. Über die Ursache werden wir streiten müssen, auch mit uns selbst."
+    },
+    {
+      "wer": "engels",
+      "text": "Heute Abend sprechen die Chartisten draußen vor der Stadt. Dort wirst du deine Anklage vortragen."
+    }
+  ],
+  "genug1": {
+    "wer": "engels",
+    "text": "Genug gesehen, Marx. Am Fabriktor ziehen wir Bilanz, bevor wir hineingehen."
+  },
+  "gesperrt1": {
+    "wer": "engels",
+    "text": "Nicht so eilig. Sieh dich erst in der Stadt um: Bahn, Kanal, Schornsteine, Wegweiser."
+  },
+  "bilanz1": [
+    {
+      "wer": "marx",
+      "text": "Eine Stadt aus Dampf, Baumwolle und Kohle. Und doch habe ich auf dem ganzen Weg kaum einen Arbeiter wohnen sehen."
+    },
+    {
+      "wer": "engels",
+      "text": "Das sollst du auch nicht. Die Hauptstraßen sind von Läden gesäumt, die Arbeiter wohnen dahinter."
+    },
+    {
+      "wer": "engels",
+      "text": "Ordne erst, was du gesehen hast."
+    }
+  ],
+  "nachOrdnen1": [
+    {
+      "wer": "marx",
+      "text": "Du kennst beide Städte, Engels. Warum schreibt ausgerechnet der Sohn eines Fabrikanten über das Elend der Arbeiter?"
+    },
+    {
+      "wer": "engels",
+      "text": "Vielleicht gerade deshalb. Aber frag dich, was das für mein Buch bedeutet."
+    }
+  ],
+  "ende1": [
+    {
+      "wer": "engels",
+      "text": "Dann komm. Hinter diesem Tor beginnt die andere Stadt."
+    }
+  ],
+  "aufbruch": [
+    {
+      "wer": "engels",
+      "text": "Die Chartisten treffen sich heute Abend draußen vor der Stadt. Dort wirst du nicht vor Gelehrten sprechen, sondern vor Webern und Spinnerinnen."
+    },
+    {
+      "wer": "marx",
+      "text": "Gut. Sie sollen hören, was wir gefunden haben, und mir sagen, was nicht trägt."
+    }
+  ],
+  "feld": {
+    "wer": "engels",
+    "text": "Dort an der Tribüne steht Holt, ein Weber aus Salford. Sprich zuerst mit ihm."
+  },
+  "holt1": [
+    {
+      "wer": "holt",
+      "text": "Doktor Marx? Engels hat von Ihnen erzählt. Willkommen bei den Chartisten."
+    },
+    {
+      "wer": "marx",
+      "text": "Was wollen Sie erreichen, Mr. Holt?"
+    },
+    {
+      "wer": "holt",
+      "text": "Die Charta: das Wahlrecht für jeden Mann. Zweimal haben Millionen unterschrieben, zweimal hat das Parlament uns abgewiesen."
+    },
+    {
+      "wer": "marx",
+      "text": "Und wenn Sie das Wahlrecht haben?"
+    },
+    {
+      "wer": "holt",
+      "text": "Dann machen wir Gesetze für uns: den Zehnstundentag, Schulen, Wasser in die Höfe."
+    },
+    {
+      "wer": "marx",
+      "text": "Sie kämpfen als Klasse, nicht jeder für sich. Das ist mehr, als Sie selbst ahnen."
+    },
+    {
+      "wer": "holt",
+      "text": "Wenn Sie sprechen wollen, Doktor: Die Leute hier wollen Belege hören, keine Predigt."
+    }
+  ],
+  "holtKurz": {
+    "wer": "holt",
+    "text": "Die Tribüne gehört Ihnen, Doktor. Aber nur mit Belegen."
+  },
+  "nachAnklage": [
+    {
+      "wer": "holt",
+      "text": "Ruhe! Doktor Marx hat das Wort."
+    },
+    {
+      "wer": "grimshaw",
+      "text": "Und ich verlange es danach. Grimshaw, ich spreche für die Fabrikanten dieser Stadt."
+    },
+    {
+      "wer": "grimshaw",
+      "text": "Lassen Sie uns hören, ob die Anklage des Herrn aus Brüssel hält."
+    }
+  ],
+  "grimshawKurz": {
+    "wer": "grimshaw",
+    "text": "Ich habe gesagt, was zu sagen ist."
+  },
+  "nachDuell": [
+    {
+      "wer": "grimshaw",
+      "text": "Sie rechnen gut, Herr Doktor. Aber wir werden sehen, wer in fünfzig Jahren recht behält."
+    },
+    {
+      "wer": "marx",
+      "text": "Das werden wir. Engels, hast du die Kapsel?"
+    }
+  ],
+  "kapsel": [
+    {
+      "wer": "engels",
+      "text": "Eine Blechdose aus dem Kontor. Wir legen deine Prognosen hinein und öffnen sie, wenn man wissen kann, ob sie stimmen."
+    },
+    {
+      "wer": "marx",
+      "text": "Vorher prüfen wir die Diagnose. Prognosen ohne Befund sind Kaffeesatz."
+    }
+  ],
+  "ende5": [
+    {
+      "wer": "engels",
+      "text": "Versiegelt. Wer immer sie öffnet, wird wissen, was wir 1845 erwartet haben."
+    },
+    {
+      "wer": "marx",
+      "text": "Und er wird hören wollen, was die Gegenseite zu sagen hat. Soll sie sprechen."
+    }
+  ]
+}

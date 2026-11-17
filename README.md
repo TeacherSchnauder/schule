@@ -37,6 +37,7 @@ schule/
 │           └── README.md
 │
 ├── ggk/                        Fach mit eigenen Inhaltsseiten (Politik, Geschichte)
+│   └── geschichte/capitalism-chronicles/   Lehrseite + spiel/ (3D-Lernspiel, eigener Ordnerbaum)
 │
 ├── rechtslehre/                Fach mit eigenen Inhaltsseiten
 │   └── vertragsrecht/
@@ -60,7 +61,7 @@ schule/
 │       ├── index.html
 │       └── vip-lernbegleiter/  Themenseite + coach.html (Prompt nur einmal, Themenkarten-Felder)
 │
-├── awl/  bwl/  vwl/
+├── awl/  bwl/  vwl/  fws/
 ├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
 

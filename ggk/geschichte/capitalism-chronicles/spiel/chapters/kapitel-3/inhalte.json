@@ -1,0 +1,753 @@
+{
+ "kapitel": {
+  "nummer": "III",
+  "titel": "Das Tribunal: Wohlstandsmotor oder gesellschaftliches Problem?",
+  "ort": "Frankfurt am Main, heute",
+  "hinweisFiktion": "Belegt sind die Zahlen und Ereignisse mit der Marke „Tatsache“; sie tragen Quelle und Stand. Alle Zeugen, ihre Aussagen und die Modemarke in der „Zentrale“ sind erfunden und gekennzeichnet. Das Spiel gibt kein Urteil vor.",
+  "titelbild": "assets/bilder/titel-kapitel-3.jpg",
+  "ladetext": "Der Gerichtssaal wird vorbereitet …",
+  "kurzfassung": false,
+  "reiterStadt": "Die Kette",
+  "legende": [
+   "tatsache",
+   "position",
+   "modell",
+   "kontroverse",
+   "erfunden"
+  ],
+  "inventarText": "",
+  "planTitel": "Ablauf der Vorbereitung",
+  "planHinweis": "Der Übungsgerichtssaal, die Kette und alle Räume sind frei erfunden. Die Verhandlung selbst findet danach in eurer Klasse statt."
+ },
+ "marken": {
+  "tatsache": {
+   "name": "Tatsache",
+   "text": "belegt, mit Quelle"
+  },
+  "theorie": {
+   "name": "Theorie",
+   "text": "Deutung oder Lehre"
+  },
+  "position": {
+   "name": "Position",
+   "text": "These eines Autors"
+  },
+  "modell": {
+   "name": "Modell",
+   "text": "Modellzahlen des Spiels"
+  },
+  "vereinfachung": {
+   "name": "Vereinfachung",
+   "text": "für das Spiel verkürzt"
+  },
+  "kontroverse": {
+   "name": "Kontroverse",
+   "text": "in der Wissenschaft umstritten"
+  },
+  "erfunden": {
+   "name": "Erfunden",
+   "text": "Figur des Spiels"
+  }
+ },
+ "steuerung": {
+  "tastatur": "W, A, S, D oder die Pfeiltasten: gehen. Maus ziehen: umsehen. E oder Leertaste: ansprechen und untersuchen. Ein Messingring am Boden zeigt, was ihr untersuchen könnt.",
+  "touch": "Links auf den Bildschirm drücken und ziehen: gehen. Rechts wischen: umsehen. Den Messingknopf antippen: ansprechen und untersuchen. Ein Messingring am Boden zeigt, was ihr untersuchen könnt."
+ },
+ "personen": {
+  "imhof": {
+   "name": "Dr. Sarah Imhof, Vorsitzende",
+   "fiktiv": true
+  },
+  "studentin": {
+   "name": "Eure Gruppe",
+   "fiktiv": true
+  },
+  "student": {
+   "name": "Eure Gruppe",
+   "fiktiv": true
+  },
+  "mary": {
+   "name": "Mary, Spinnerin (1845 und 1863)",
+   "fiktiv": true
+  },
+  "jack": {
+   "name": "Jack, arbeitslos (um 1930)",
+   "fiktiv": true
+  },
+  "annie": {
+   "name": "Annie, Ringspinnerin (um 1910)",
+   "fiktiv": true
+  },
+  "haendler": {
+   "name": "Herr Roth, Schuhhändler, mit Frau Weber (1948)",
+   "fiktiv": true
+  },
+  "weber": {
+   "name": "Frau Weber (1948)",
+   "fiktiv": true
+  },
+  "rokeya": {
+   "name": "Rokeya, Näherin bei Dhaka",
+   "fiktiv": true
+  },
+  "einkaeuferin": {
+   "name": "Einkäuferin eines Modeunternehmens",
+   "fiktiv": true
+  },
+  "kaya": {
+   "name": "Dr. Nora Kaya, Entwicklungsökonomin",
+   "fiktiv": true
+  }
+ },
+ "stationen": [
+  {
+   "nr": 1,
+   "id": "t0",
+   "roemisch": "T0",
+   "name": "Der Saal",
+   "zeit": "Einstieg",
+   "fund": "Rolle gewählt, Akte angelegt",
+   "gebaut": true
+  },
+  {
+   "nr": 2,
+   "id": "t1",
+   "roemisch": "T1",
+   "name": "Asservatenkammer",
+   "zeit": "4 Min.",
+   "fund": "Beweisstücke aus Kapitel I und II gesichert",
+   "gebaut": true
+  },
+  {
+   "nr": 3,
+   "id": "t2",
+   "roemisch": "T2",
+   "name": "Die Kette und die Statistikwand",
+   "zeit": "13 Min.",
+   "fund": "Der Weg eines T-Shirts und die Verteilung in Zahlen",
+   "gebaut": true
+  },
+  {
+   "nr": 4,
+   "id": "t3",
+   "roemisch": "T3",
+   "name": "Zeugenzimmer",
+   "zeit": "5 Min.",
+   "fund": "Zeugen befragt, auch die unbequemen",
+   "gebaut": true
+  },
+  {
+   "nr": 5,
+   "id": "t4",
+   "roemisch": "T4",
+   "name": "Die Werkbank",
+   "zeit": "4 Min.",
+   "fund": "Plädoyer, Gutachten oder Kriterien stehen",
+   "gebaut": true
+  },
+  {
+   "nr": 6,
+   "id": "t5",
+   "roemisch": "T5",
+   "name": "Die Gegenseite",
+   "zeit": "2 Min.",
+   "fund": "Das stärkste Argument der anderen ernst genommen",
+   "gebaut": true
+  }
+ ],
+ "ziele": {
+  "t0": [
+   "Sprecht mit Dr. Imhof am Richtertisch und wählt eure Rolle.",
+   "Legt am Aktentisch vor dem Richtertisch eure Akte an."
+  ],
+  "t1": [
+   "Geht in die Asservatenkammer und sichtet die Beweisstücke im Regal.",
+   "Denkpause am Tisch in der Asservatenkammer."
+  ],
+  "t2": [
+   "Geht in „Die Kette“. Am Eingang liegt ein T-Shirt.",
+   "Raum 1: das Baumwollfeld.",
+   "Raum 2: die Spinnerei.",
+   "Raum 3: die Näherei bei Dhaka. Sprecht mit Rokeya.",
+   "Raum 4: die Zentrale. Was ist ein Milliardenvermögen?",
+   "Raum 5: der Laden in Deutschland.",
+   "Die Statistikwand: der Gini-Koeffizient.",
+   "Denkpause am Ende der Kette."
+  ],
+  "t3": [
+   "Geht ins Zeugenzimmer und befragt eure Zeugen.",
+   "Lest die Gegenstimme, die auf dem Tisch liegt."
+  ],
+  "t4": [
+   "Zurück in den Saal: Geht an euren Platz und öffnet die Werkbank."
+  ],
+  "t5": [
+   "Sprecht mit Dr. Imhof: Jetzt geht es um die Gegenseite."
+  ]
+ },
+ "ende": "Die Vorbereitung ist abgeschlossen. Eure Karte zum Vorlesen findet ihr oben rechts bei der Akte. Das Tribunal beginnt in eurer Klasse.",
+ "tagebuch": [],
+ "belege": [],
+ "notizTitel": {
+  "rolle": "Eure Rolle",
+  "t1_auswahl": "T1: Eure Beweisstücke",
+  "t1_grenzen": "T1: Grenzen der Beweisstücke",
+  "t1_denkpause": "T1: Das unbequemste Beweisstück",
+  "t2_tipp": "T2: Euer Tipp zum T-Shirt und der Vergleich",
+  "t2_vergleich": "T2: Was der Vergleich Dividende und Lohn nicht zeigt",
+  "t2_statistik": "T2: Welche Statistik stützt, welche schadet eurer Seite?",
+  "t2_denkpause": "T2: Was würde Marx als Beleg nehmen, was Plumpe?",
+  "t3_zeugen": "T3: Befragte Zeugen",
+  "werkbank": "T4: Euer Ergebnis der Werkbank",
+  "t5_gegenseite": "T5: Die Gegenseite"
+ },
+ "denkpausen": {
+  "t1_grenzen": {
+   "titel": "Grenzen der Beweisstücke",
+   "frage": "Wählt zwei Beweisstücke aus. Schreibt zu jedem auf: Was zeigt es, und was zeigt es nicht?",
+   "hinweis": "Als Sachverständige nehmt ihr diese Grenzen in euer Gutachten auf.",
+   "min": 30
+  },
+  "t1_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Welches Beweisstück ist für eure Rolle am unbequemsten? Warum? (Jury und Sachverständige: Welches Stück könnte am leichtesten missverstanden werden?)",
+   "hinweis": "Stichpunkte genügen. Eure Notiz landet im Tagebuch.",
+   "min": 15
+  },
+  "t2_vergleich": {
+   "titel": "Zusatzaufgabe der Sachverständigen",
+   "frage": "Die Dividende des Gründers ist riesig, der Jahreslohn der Näherin winzig. Schreibt in eigenen Worten auf, was dieser Vergleich NICHT zeigt.",
+   "hinweis": "Denkt an: Einkommen aus Kapital und aus Arbeit, Steuern, Reinvestition, wer wessen Arbeitgeber ist.",
+   "min": 40
+  },
+  "t2_statistik": {
+   "titel": "Denkpause an der Statistikwand",
+   "frage": "Welche Statistik stützt eure Seite, welche schadet ihr? (Jury und Sachverständige: Welche Statistik ist am leichtesten zu missbrauchen?)",
+   "hinweis": "Nennt die Statistik beim Namen.",
+   "min": 15
+  },
+  "t2_denkpause": {
+   "titel": "Denkpause",
+   "frage": "Was an der Kette würde Marx als Beleg für seine Anklage nehmen? Was würde Plumpe als Beleg für seine Verteidigung nehmen?",
+   "hinweis": "Je ein Stichpunkt genügt.",
+   "min": 20
+  },
+  "t5_gegenseite_partei": {
+   "titel": "Die Gegenseite",
+   "frage": "Formuliert das stärkste Argument der Gegenseite so, dass die Gegenseite zustimmen würde. Schreibt dann eure Antwort darauf.",
+   "hinweis": "Erst danach ist euer Plädoyer fertig. Die Notiz wird die letzte Seite eurer Vorlesekarte.",
+   "min": 40
+  },
+  "t5_gegenseite_sach": {
+   "titel": "Der unbequemste Befund",
+   "frage": "Welcher eurer Befunde gefällt euch persönlich am wenigsten? Warum gehört er trotzdem ins Gutachten?",
+   "hinweis": "Die Notiz wird die letzte Seite eurer Vorlesekarte.",
+   "min": 30
+  },
+  "t5_gegenseite_jury": {
+   "titel": "Schlagseite prüfen",
+   "frage": "Prüft eure drei Kriterien: Bevorzugt eines davon eine Seite? Falls ja: Formuliert es um oder begründet, warum es trotzdem fair ist.",
+   "hinweis": "Die Notiz wird die letzte Seite eurer Vorlesekarte.",
+   "min": 30
+  }
+ },
+ "rollen": [
+  {
+   "id": "anklage",
+   "name": "Anklage",
+   "farbe": "#7a2e34",
+   "auftrag": "Ihr vertretet die Kritik von Marx und Engels und ihrer heutigen Erben. Räumt ein, was die Daten zeigen, und begründet, warum die Anklage trotzdem Gewicht hat.",
+   "abgabe": "Plädoyer: drei Argumentkarten und eine Antwort auf das stärkste Gegenargument",
+   "werkbank": "plaedoyer",
+   "pflichtZeugen": [
+    "mary",
+    "jack",
+    "rokeya"
+   ],
+   "gegenZeugen": [
+    "annie",
+    "haendler",
+    "einkaeuferin"
+   ],
+   "gegenstimme": "lessenich",
+   "gegenseite": "t5_gegenseite_partei"
+  },
+  {
+   "id": "verteidigung",
+   "name": "Verteidigung",
+   "farbe": "#2e5f6a",
+   "auftrag": "Ihr vertretet Plumpes Sicht und die Freiburger Schule. Zeigt, dass die Probleme real waren und sind, aber nicht zwingend aus dem Kapitalismus selbst folgen.",
+   "abgabe": "Plädoyer: drei Argumentkarten und eine Antwort auf das stärkste Gegenargument",
+   "werkbank": "plaedoyer",
+   "pflichtZeugen": [
+    "annie",
+    "haendler",
+    "einkaeuferin"
+   ],
+   "gegenZeugen": [
+    "mary",
+    "jack",
+    "rokeya"
+   ],
+   "gegenstimme": "krugman",
+   "gegenseite": "t5_gegenseite_partei"
+  },
+  {
+   "id": "sachverstaendige",
+   "name": "Sachverständige",
+   "farbe": "#5a6470",
+   "auftrag": "Ihr bleibt neutral. Ihr öffnet die Zeitkapsel, erklärt die Daten und sagt, was sie zeigen und was nicht.",
+   "abgabe": "Gutachten: drei Befunde, jeder mit einer Grenze der Daten",
+   "werkbank": "gutachten",
+   "pflichtZeugen": [
+    "kaya"
+   ],
+   "freiZeugen": 2,
+   "gegenZeugen": [],
+   "gegenstimme": "milanovic",
+   "gegenseite": "t5_gegenseite_sach"
+  },
+  {
+   "id": "jury",
+   "name": "Jury",
+   "farbe": "#b08a3e",
+   "auftrag": "Ihr legt vorab drei Kriterien fest und urteilt danach. In der Kreuzbefragung dürft ihr Fragen stellen.",
+   "abgabe": "Drei Kriterien und drei vorbereitete Fragen",
+   "werkbank": "kriterien",
+   "pflichtZeugen": [
+    "kaya"
+   ],
+   "freiZeugen": 2,
+   "gegenZeugen": [],
+   "gegenstimme": "milanovic",
+   "gegenseite": "t5_gegenseite_jury"
+  }
+ ],
+ "spielregeln": {
+  "titel": "Spielregeln des Tribunals",
+  "text": "Verhandelt wird die Leitfrage: Ist der Kapitalismus ein Wohlstandsmotor oder ein gesellschaftliches Problem?\nDas Spiel gibt kein Urteil vor. Jede Seite bekommt gleich starke Belege.\nBewertet wird eure Begründung, nicht eure Seite.\nAchtet auf die Marken: „Tatsache“ ist belegt, „Position“ ist die These eines Autors, „Modell“ sind Zahlen des Spiels, „Erfunden“ sind die Zeugen.\nBlasse, bräunliche Gegenstände und Zeugen stammen aus Kapitel I und II. Alles Farbige gehört zur Gegenwart."
+ },
+ "kriterien": [
+  "Belege statt Behauptungen",
+  "Diagnose und Prognose getrennt",
+  "Umgang mit dem stärksten Gegenargument",
+  "Grenzen der Daten benannt",
+  "Zeitraum beachtet (kurz- oder langfristig)",
+  "Verteilung beachtet (wer gewinnt, wer verliert)",
+  "Rolle von Staat und Regeln geklärt",
+  "Gegenwart einbezogen"
+ ],
+ "urteilsformen": [
+  {
+   "id": "freispruch",
+   "name": "Freispruch",
+   "satz": "Der Kapitalismus ist überwiegend ein Wohlstandsmotor.",
+   "mussBegruenden": "Warum die Wohlstandsgewinne schwerer wiegen als die Kosten, und warum die Probleme nicht aus dem System selbst folgen.",
+   "einwand": "Rana Plaza, der Lohnanteil der Näherin, der Wiederanstieg der Armut, die Konzentration der Vermögen.",
+   "schwaeche": "Probleme als „Kinderkrankheiten“ abtun, ohne zu zeigen, dass sie tatsächlich verschwinden."
+  },
+  {
+   "id": "schuldspruch",
+   "name": "Schuldspruch",
+   "satz": "Der Kapitalismus ist überwiegend ein gesellschaftliches Problem.",
+   "mussBegruenden": "Warum die Kosten systematisch aus der Logik von Konkurrenz und Profit folgen und nicht nur aus schlechten Regeln oder Einzelfällen.",
+   "einwand": "Warum sank die Armut trotzdem? Was wäre die bessere Alternative, und gibt es dafür Belege?",
+   "schwaeche": "Vergleich mit einem Ideal statt mit einer realen Alternative."
+  },
+  {
+   "id": "auflagen",
+   "name": "Urteil mit Auflagen",
+   "satz": "Wohlstandsmotor, aber nur mit Regeln.",
+   "mussBegruenden": "Welche konkreten Auflagen nötig sind, warum sie wirken würden und wer sie durchsetzt. Mindestens zwei Auflagen mit Adressat.",
+   "einwand": "Kosten der Auflagen (Verlagerung, höhere Preise, Bürokratie); Kritik, dass Auflagen das Grundproblem nicht lösen.",
+   "schwaeche": "„Man müsste halt fairer sein“ ohne Mechanismus."
+  },
+  {
+   "id": "teilurteil",
+   "name": "Teilurteil",
+   "satz": "In manchen Bereichen Motor, in anderen Problem.",
+   "mussBegruenden": "Die Grenze ziehen: wo und für wen der Befund gilt (Zeit, Region, Gruppe), und warum es dort anders ausfällt.",
+   "einwand": "Ist das Teilurteil nur ein Ausweichen? Welche Gewichtung ergibt sich am Ende?",
+   "schwaeche": "Zwei Listen nebeneinander, ohne Abwägung."
+  },
+  {
+   "id": "keinurteil",
+   "name": "Kein Urteil",
+   "satz": "Die Belege reichen nicht aus.",
+   "mussBegruenden": "Welche Information fehlt, warum sie entscheidend wäre und wie man sie beschaffen könnte. Pflicht: eine vorläufige Tendenz und eine Frage, deren Antwort das Urteil ändern würde.",
+   "einwand": "In der Politik muss man trotzdem entscheiden. Welche vorläufige Tendenz gibt es?",
+   "schwaeche": "„Jeder hat irgendwie recht“ ohne benannte Lücke."
+  }
+ ],
+ "bausteine": [
+  "Maßstab: Woran messt ihr?",
+  "Belege: mindestens drei, aus jedem Kapitel einer",
+  "Stärkster Einwand: ausdrücklich genannt",
+  "Antwort auf den Einwand: widerlegen, einschränken oder einräumen"
+ ],
+ "fruehereFunde": {
+  "1": {
+   "1": "Zwei Städte in einer",
+   "2": "Mehrwert",
+   "3": "Akkumulation",
+   "4": "Verelendung, Ursache strittig",
+   "5": "Anklageschrift"
+  },
+  "2": {
+   "1": "Die Zeitkapsel ist geöffnet",
+   "2": "Krisen treffen Menschen und Firmen, das System blieb",
+   "3": "Mehr Wohlstand durch Markt und Reformen",
+   "4": "Wohlstand für viele, aber mit Krisen und Verlierern",
+   "5": "Ohne Preise und gutes Geld keine Waren",
+   "6": "Eine Wettbewerbsordnung braucht Regeln",
+   "7": "Freie Preise füllen die Schaufenster, aber nicht jedes Portemonnaie",
+   "8": "Freiheit hat soziale Kosten",
+   "9": "Eine Marktwirtschaft braucht Regeln, und Regeln haben Gewinner und Verlierer",
+   "10": "Bilanz der drei Prognosen"
+  }
+ },
+ "prognosen": [
+  {
+   "id": "p1",
+   "titel": "Die Arbeiter verelenden weiter.",
+   "befund": "Die Reallöhne in Großbritannien stiegen 1840–1900 um 123 % (Allen).",
+   "gegenbefund": "Bis etwa 1840 stagnierten die Löhne trotz wachsender Produktion; Krisen trafen vor allem Beschäftigte."
+  },
+  {
+   "id": "p2",
+   "titel": "Das Kapital sammelt sich bei immer weniger Eigentümern.",
+   "befund": "Konzentration fand statt: 1929 schluckte die Lancashire Cotton Corporation rund 104 Spinnereien.",
+   "gegenbefund": "Große Konzerne gingen selbst unter; Staaten setzten Regeln dagegen, etwa das Kartellgesetz von 1957."
+  },
+  {
+   "id": "p3",
+   "titel": "Das System bricht zusammen.",
+   "befund": "In den Beispielen des Spiels brach das System trotz schwerer Krisen nicht zusammen.",
+   "gegenbefund": "Es blieb aber nicht dasselbe: Sozialversicherung, Arbeitsrecht und Wettbewerbsordnung haben es verändert."
+  }
+ ],
+ "tippNamen": {
+  "ja": "Tritt ein",
+  "teils": "Tritt teilweise ein",
+  "nein": "Tritt nicht ein"
+ },
+ "beweise": [
+  {
+   "id": "garnspule",
+   "fach": 1,
+   "kapitel": 1,
+   "titel": "Garnspule",
+   "herkunft": "Kapitel I, Station II: Die Spinnerei",
+   "text": "An der Spinnmaschine habt ihr nachgerechnet: Die Spinnerin schafft an einem Tag mehr Wert, als sie als Lohn bekommt. Den Unterschied nennt Marx Mehrwert.",
+   "zeigtNicht": "Die Rechnung gilt nur, wenn man mit Marx annimmt, dass allein Arbeit Wert schafft. Risiko, Ideen und Maschinen des Unternehmers kommen darin nicht vor.",
+   "marke": "modell",
+   "notiz": [
+    1,
+    "s2_denkpause"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "hauptbuch",
+   "fach": 2,
+   "kapitel": 1,
+   "titel": "Hauptbuch",
+   "herkunft": "Kapitel I, Station III: Das Kontor",
+   "text": "Im Kontor habt ihr gesehen: Der Gewinn wird nicht verbraucht, sondern wieder angelegt. Aus Geld wird Ware, aus Ware mehr Geld. Marx nennt das Akkumulation; die Konkurrenz zwingt dazu.",
+   "zeigtNicht": "Das Hauptbuch zeigt den Zwang zu wachsen. Es zeigt nicht, ob davon am Ende nur wenige oder viele etwas haben.",
+   "marke": "theorie",
+   "notiz": [
+    1,
+    "s3_denkpause"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "sterberegister",
+   "fach": 3,
+   "kapitel": 1,
+   "titel": "Sterberegister",
+   "herkunft": "Kapitel I, Station IV: Das Arbeiterviertel",
+   "text": "Im Arbeiterviertel starben die Menschen viel früher als im Villenviertel. Engels hat das Elend beschrieben und gemessen.",
+   "zeigtNicht": "Das Register zeigt das Elend, aber nicht seine Ursache. Ob der Kapitalismus selbst schuld war oder die schnell gewachsene Stadt ohne Kanalisation, ist umstritten.",
+   "marke": "kontroverse",
+   "notiz": [
+    1,
+    "s4_denkpause"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "zeitkapsel",
+   "fach": 4,
+   "kapitel": 2,
+   "titel": "Zeitkapsel",
+   "herkunft": "Kapitel I und II",
+   "text": "Drei Prognosen von Marx und eure Tipps dazu: 1845 versiegelt, in Kapitel II geöffnet und mit 85 Jahren Geschichte verglichen.",
+   "zeigtNicht": "Die Bilanz reicht nur bis 1957 und nur für England und Westdeutschland. Für die Gegenwart und für andere Länder müsst ihr neu prüfen.",
+   "marke": "tatsache",
+   "notiz": [
+    2,
+    "tipps_neu"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "haushaltsbuch",
+   "fach": 5,
+   "kapitel": 2,
+   "titel": "Haushaltsbuch",
+   "herkunft": "Kapitel II, Teil a): Lancashire",
+   "text": "Das Haushaltsbuch von Marys Familie über 85 Jahre. Der Maßstab: Wie lange muss die Familie für denselben Warenkorb arbeiten?",
+   "zeigtNicht": "Ein Haushaltsbuch zeigt den Durchschnitt guter Jahre. Arbeitslose wie Jack 1930 kommen darin nicht vor.",
+   "marke": "modell",
+   "notiz": [
+    2,
+    "a2_zwischen"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "schuh",
+   "fach": 6,
+   "kapitel": 2,
+   "titel": "Schuh aus dem Schaufenster",
+   "herkunft": "Kapitel II, B3: Der Tag X",
+   "text": "Nach der Währungsreform und der Preisfreigabe im Juni 1948 waren die Schaufenster über Nacht voll.",
+   "zeigtNicht": "Volle Schaufenster heißen nicht, dass alle kaufen konnten. Im Herbst 1948 gab es Proteste gegen die hohen Preise.",
+   "marke": "tatsache",
+   "notiz": [
+    2,
+    "b3_denkpause"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "leitsaetze",
+   "fach": 7,
+   "kapitel": 2,
+   "titel": "Entwurf der Leitsätze",
+   "herkunft": "Kapitel II, B2: Das Gesetz entwerfen",
+   "text": "Die Freiburger Schule um Walter Eucken wollte keinen Markt ohne Regeln: Der Staat setzt den Rahmen und begrenzt wirtschaftliche Macht.",
+   "zeigtNicht": "Ein Entwurf ist noch keine Wirklichkeit. Das Kartellgesetz kam erst 1957, und über seine Wirkung wird gestritten.",
+   "marke": "tatsache",
+   "notiz": [
+    2,
+    "b2_entwurf"
+   ],
+   "sepia": true
+  },
+  {
+   "id": "tshirt",
+   "fach": 8,
+   "kapitel": 3,
+   "titel": "T-Shirt mit Preisschild",
+   "herkunft": "Kapitel III: Der Gegenwartsfall",
+   "text": "Ein T-Shirt aus Bangladesch, verkauft in Deutschland für 29 €. An ihm stellen sich dieselben Fragen wie 1845. Den Weg des T-Shirts seht ihr in „Die Kette“.",
+   "zeigtNicht": "Ein einzelnes Produkt ist ein Beispiel, kein Beweis für die ganze Weltwirtschaft.",
+   "marke": "tatsache",
+   "notiz": null,
+   "sepia": false
+  }
+ ],
+ "kette": {
+  "eingang": {
+   "titel": "Das T-Shirt",
+   "frage": "Dieses T-Shirt kostet im Laden 29 €. Was schätzt ihr: Wie viel davon bekommt die Näherin als Lohn?",
+   "optionen": [
+    [
+     "a",
+     "weniger als 1 %"
+    ],
+    [
+     "b",
+     "etwa 5 %"
+    ],
+    [
+     "c",
+     "etwa 10 %"
+    ],
+    [
+     "d",
+     "etwa 25 %"
+    ],
+    [
+     "e",
+     "etwa die Hälfte"
+    ]
+   ],
+   "richtig": "a"
+  },
+  "raeume": [
+   {
+    "id": "feld",
+    "titel": "1 · Baumwollfeld",
+    "marke": "vereinfachung",
+    "text": "Am Anfang steht die Baumwolle, wie 1845.\nWoher die Baumwolle für die Nähereien in Bangladesch kommt und was sie kostet, wird in der Inhaltsrunde mit Quelle ergänzt.",
+    "quelle": ""
+   },
+   {
+    "id": "spinnerei",
+    "titel": "2 · Spinnerei",
+    "marke": "vereinfachung",
+    "text": "Aus Baumwolle wird Garn, aus Garn Stoff. Die Maschinen sind die Enkel der Maschinen bei Whitlow & Co.: schneller, sicherer, mit viel weniger Menschen.\n1845 stand eine Spinnerin zwölf Stunden an der Maschine. Die Frage von damals bleibt: Wer bekommt, was die Maschine mehr leistet?",
+    "quelle": ""
+   },
+   {
+    "id": "naeherei",
+    "titel": "3 · Näherei bei Dhaka",
+    "marke": "tatsache",
+    "text": "Hier wird genäht. Bekleidung bringt Bangladesch über 80 % seiner Exporterlöse.",
+    "zahlen": [
+     "mindestlohn_bd",
+     "rana_plaza",
+     "accord",
+     "anteil_naeherin",
+     "importpreis",
+     "armut_national",
+     "armut_2025"
+    ],
+    "quelle": ""
+   },
+   {
+    "id": "zentrale",
+    "titel": "4 · Die Zentrale",
+    "marke": "erfunden",
+    "text": "Die Zentrale einer erfundenen Modemarke. Hier wird entworfen, eingekauft und gerechnet. Und hier stellt sich die Frage: Wem gehört das Geschäft, und was ist ein Milliardenvermögen eigentlich?",
+    "quelle": ""
+   },
+   {
+    "id": "laden",
+    "titel": "5 · Laden in Deutschland",
+    "marke": "vereinfachung",
+    "text": "Am Ende hängt das T-Shirt im Laden. Für die Kundin ist es billig. Ordnet jetzt zu, welcher Raum welchen Teil des Ladenpreises bekommt, soweit die Zahlen schon gesichert sind.",
+    "quelle": ""
+   }
+  ],
+  "vergleich": {
+   "titel": "1845 und heute",
+   "marke": "vereinfachung",
+   "text": "Dieselben Fragen, andere Orte.",
+   "tabelle": {
+    "kopf": [
+     "Manchester 1845 (Kapitel I)",
+     "Bangladesch heute"
+    ],
+    "zeilen": [
+     [
+      "Spinnerei Whitlow & Co.",
+      "Näherei bei Dhaka"
+     ],
+     [
+      "Löhne bleiben hinter der Produktion zurück",
+      "Mindestlohn steigt, bleibt aber unter der Forderung der Gewerkschaften"
+     ],
+     [
+      "Fabrikgesetz und Zehnstundengesetz",
+      "Abkommen über Brand- und Gebäudesicherheit"
+     ],
+     [
+      "Ordnungsrahmen der Freiburger Schule (Kapitel II)",
+      "Lieferkettengesetze in Deutschland und der EU"
+     ]
+    ]
+   }
+  },
+  "vorsicht": {
+   "titel": "Vorsicht bei den Zahlen",
+   "marke": "kontroverse",
+   "text": "Der Lohnanteil und der Importpreis stammen von Organisationen, die für höhere Löhne eintreten.\nDie Armutsquoten stammen aus verschiedenen Messmethoden.\nWie viel vom Rückgang der Armut auf die Bekleidungsindustrie zurückgeht, ist umstritten: Überweisungen von Arbeitsmigranten und die Landwirtschaft spielen auch eine Rolle."
+  }
+ },
+ "vermoegen": {
+  "begriff": {
+   "titel": "Was ist Vermögen?",
+   "marke": "vereinfachung",
+   "text": "Nettovermögen ist alles, was jemand besitzt, minus Schulden.\nBei den meisten Haushalten sind das ein Sparguthaben, ein Auto, vielleicht eine Wohnung.\nBei Unternehmensgründern besteht das Vermögen fast nur aus Anteilen am eigenen Unternehmen. Es ist dann kein Geld auf dem Konto, sondern der geschätzte Wert dieser Anteile."
+  },
+  "regler": {
+   "titel": "Vermögen auf dem Papier",
+   "text": "Der Gründer der Modemarke besitzt 59 % der Aktien. Bewegt den Aktienkurs.",
+   "anteil": 59,
+   "fazit": "Der Kurs hat sich bewegt, das Vermögen auch. Auf dem Konto des Gründers hat sich dadurch nichts geändert, und im Unternehmen arbeitet niemand mehr oder weniger."
+  },
+  "karten": [
+   "ortega_anteil",
+   "ortega_vermoegen",
+   "ortega_tagesverlust",
+   "musk_vermoegen",
+   "inditex_beschaeftigte",
+   "inditex_investition",
+   "ortega_dividende",
+   "erbe"
+  ],
+  "kartenTitel": "Zwei echte Beispiele: Amancio Ortega (Inditex, Zara) und Elon Musk",
+  "nichtZeigt": {
+   "titel": "Dividende und Jahreslohn",
+   "frage": "Ortega erhält für 2026 eine Dividende von 3,23 Mrd. €. Eine Näherin verdient zum Mindestlohn 12.500 Taka im Monat. Der Vergleich ist drastisch. Was zeigt er NICHT? Findet alle richtigen Antworten.",
+   "optionen": [
+    {
+     "text": "Dass hier Einkommen aus Kapital mit Einkommen aus Arbeit verglichen wird",
+     "richtig": true,
+     "rueck": "Richtig. Die Dividende ist der Ertrag aus Eigentum, der Lohn der Preis für Arbeit. Ob dieser Unterschied gerecht ist, ist die eigentliche Streitfrage."
+    },
+    {
+     "text": "Wie viel Steuern auf die Dividende und auf den Lohn anfallen",
+     "richtig": true,
+     "rueck": "Richtig. Der Vergleich nennt Beträge vor Steuern."
+    },
+    {
+     "text": "Wie viel vom Gewinn im Unternehmen bleibt und wieder investiert wird",
+     "richtig": true,
+     "rueck": "Richtig. Die Dividende ist nur der ausgeschüttete Teil des Gewinns."
+    },
+    {
+     "text": "Bei wem die Näherin angestellt ist",
+     "richtig": true,
+     "rueck": "Richtig. Sie arbeitet bei einem Zulieferer in Bangladesch, nicht bei der Modemarke."
+    },
+    {
+     "text": "Dass der Gründer der Näherin ihren Lohn zahlt und ihn einfach erhöhen könnte",
+     "richtig": false,
+     "rueck": "Das ist die Falle: Der Vergleich legt es nahe, aber es stimmt so nicht. Den Lohn zahlt der Zulieferer. Die Marke beeinflusst ihn nur über den Einkaufspreis. Ob sie deshalb Verantwortung trägt, ist eine Streitfrage für das Tribunal."
+    }
+   ],
+   "erfolg": "Alle vier gefunden. Aus einer Schockzahl ist eine Analyse geworden."
+  },
+  "waegen": {
+   "titel": "Argumente wägen",
+   "kopf": [
+    "„Vermögen in Unternehmen ist kein Problem“",
+    "„Konzentriertes Vermögen ist ein Problem“"
+   ],
+   "zeilen": [
+    [
+     "Es steckt im Unternehmen, sichert Arbeitsplätze und wird reinvestiert.",
+     "Es bringt Dividenden, die weit über jedem Arbeitseinkommen liegen."
+    ],
+    [
+     "Gründer haben Risiko getragen und etwas aufgebaut.",
+     "Ein großer Teil wird geerbt, nicht erarbeitet."
+    ],
+    [
+     "Ein Verkauf der Anteile würde den Kurs drücken und das Unternehmen schwächen.",
+     "Vermögen bedeutet Kontrolle über Unternehmen und Einfluss auf Politik und Medien."
+    ],
+    [
+     "Der Wert schwankt und besteht zum großen Teil nur auf dem Papier.",
+     "In der Kette arbeiten viele für einen Bruchteil, während der Ertrag oben ankommt."
+    ]
+   ],
+   "positionen": "Marx würde in der Dividende Mehrwert sehen. Plumpe würde auf ein Geschäftsmodell verweisen, das Kleidung für viele bezahlbar macht. Beides sind Positionen. Nicht das Vermögen selbst schafft Arbeitsplätze, sondern das Unternehmen; das Vermögen ist dessen Börsenwert."
+  }
+ },
+ "import": {
+  "titel": "Akte anlegen",
+  "einleitung": "In die Akte gehört, was ihr in Kapitel I und II gesammelt habt: Funde, Tipps, Entscheidungen und Notizen.",
+  "hinweis": "Habt ihr Kapitel I oder II auf einem anderen Gerät gespielt? Dann fügt hier den Text ein, den ihr dort mit „Notizen kopieren“ kopiert habt. Ihr könnt nacheinander beide Texte einfügen.",
+  "einfuegen": "Kopierten Notizentext hier einfügen (optional)",
+  "leer": "Das Feld ist leer.",
+  "unlesbar": "In diesem Text finde ich keine Notizen aus The Capitalism Chronicles. Prüft, ob ihr den ganzen Text kopiert habt.",
+  "ohne": "Kein Spielstand gefunden und kein Text eingefügt. Das ist kein Problem: Ihr arbeitet mit den Beweisstücken der Asservatenkammer und mit dem, was ihr heute sammelt."
+ }
+}
