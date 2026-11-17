@@ -1,6 +1,6 @@
 # Lizenzen und Quellen
 
-Stand: 14.11.2026 · Phase 2 (spielbarer Ausschnitt)
+Stand: 17.11.2026 (Titelbilder aller drei Kapitel ersetzt)
 
 ## Fremde Bestandteile
 
@@ -14,8 +14,10 @@ Zur Laufzeit werden keine Dateien von fremden Servern geladen. Es gibt keine Ana
 
 ## Titelbild
 
-`assets/bilder/titel-fabrikstadt.jpg` wurde vom Projektinhaber bereitgestellt (Konzeptbild).
-Es ist eine Stimmungsvorlage und keine historische Fotografie. Das Nutzungsrecht hat der Projektinhaber am 17.11.2026 bestätigt.
+`assets/bilder/titel-fabrikstadt.jpg`: KI-Bild, vom Projektinhaber am 17.11.2026 mit einem KI-Bildgenerator erzeugt (ersetzt das frühere Konzeptbild).
+Es ist eine Nachempfindung eines Kanals in Manchester um 1845 und keine historische Fotografie.
+
+Alle drei Titelbilder sind KI-Bilder (Angaben jeweils im Abschnitt des Kapitels). Sie dienen als Stimmungsbild und sind keine historischen Quellen.
 
 ## Eigene Inhalte
 
@@ -43,7 +45,7 @@ Der Prüfstand der Zitate steht im Projektdokument „Masterprompt v2“, Abschn
 # Kapitel II
 
 ## Titelbild
-`assets/bilder/titel-kapitel-2.jpg`: eigenes Werk, aus den 3D-Bausteinen des Spiels gerendert. Keine fremden Rechte.
+`assets/bilder/titel-kapitel-2.jpg`: KI-Bild, vom Projektinhaber am 17.11.2026 mit einem KI-Bildgenerator erzeugt (ersetzt den früheren Render aus den 3D-Bausteinen). Links eine Spinnereistadt in Lancashire um 1910, rechts eine zerstörte Innenstadt 1948 mit Schaufenster (Schaufenstereffekt nach der Währungsreform). Nachempfindung, keine historische Fotografie; Gebäude und Kirchtürme sollen kein bestimmtes reales Bauwerk wiedergeben.
 
 ## Werner Plumpe
 Aus „Das kalte Herz“ (Rowohlt Berlin 2019) wird im Grundspiel **nicht wörtlich zitiert**. Die Zitatplätze zeigen eigene, gekennzeichnete Zusammenfassungen mit der Quelle, aus der sie stammen (Interview in Forschung Frankfurt 2/2019, Rezensionen von Reichwein, Frölich und Prodöhl, Plumpes Aufsatz in APuZ 19–20/2017). Wörtliche Zitate nur kurz, mit Seite, als Beleg (§ 51 UrhG).
@@ -67,7 +69,7 @@ Die Firma Whitlow & Co., alle Familienmitglieder, Dr. Imhof, Lena, Frau Brenner,
 # Kapitel III
 
 ## Titelbild
-Gerendert aus den Szenen des Spiels (eigene Arbeit, keine fremden Bildrechte).
+`assets/bilder/titel-kapitel-3.jpg`: KI-Bild, vom Projektinhaber am 17.11.2026 mit Google Gemini erzeugt (ersetzt den früheren Render aus den Szenen des Spiels). Übungsgerichtssaal einer Universität heute mit Beweistisch (Baumwolle, T-Shirt, altes Geschäftsbuch, Statistik). Schriftzüge im Bild (Emblem, Buchrücken, Ausdruck) hat der Bildgenerator erzeugt; sie sind erfunden und keine Quellenangaben.
 
 ## Gegenwartszahlen
 Alle Zahlen stehen mit Quelle und Stand in `chapters/kapitel-3/gegenwart.json` und `statistiken.json`. Sie werden nur als Angabe mit Quelle verwendet, ohne Textübernahme. Zahlen von Interessenorganisationen (Clean Clothes Campaign, Public Eye) sind im Spiel als solche gekennzeichnet.
