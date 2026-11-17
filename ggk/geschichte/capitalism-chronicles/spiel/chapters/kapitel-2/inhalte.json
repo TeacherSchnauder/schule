@@ -994,5 +994,6 @@
     "werte": null
    }
   ]
- }
+ },
+  "musik": {"einstieg": "k2-einstieg", "raeume": {"hoersaal": ["k2-hoersaal-1", "k2-hoersaal-2"], "wohnung": ["k2-wohnung-1", "k2-wohnung-2"], "buero": ["k2-buero-1", "k2-buero-2"], "strasse-1863": ["k2-strasse-1863-1", "k2-strasse-1863-2"], "strasse-1910": ["k2-strasse-1910-1", "k2-strasse-1910-2"], "strasse-1930": ["k2-strasse-1930-1", "k2-strasse-1930-2"], "frankfurt-maerz": ["k2-frankfurt-maerz-1", "k2-frankfurt-maerz-2"], "frankfurt-juni": ["k2-frankfurt-juni-1", "k2-frankfurt-juni-2"], "frankfurt-november": ["k2-frankfurt-november-1", "k2-frankfurt-november-2"]}}
 }

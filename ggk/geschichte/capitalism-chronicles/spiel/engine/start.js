@@ -2,6 +2,7 @@
 import { Spiel } from './spiel.js';
 import { loescheStand, neuerStand, setzeKapitel } from './speicher.js';
 import { Oberflaeche, warte } from '../ui/oberflaeche.js';
+import { musik } from './musik.js';
 
 // Welches Kapitel? Das bestimmt allein die Seite (index.html, kapitel-2.html, kapitel-3.html).
 // So öffnet jeder Link verlässlich das Kapitel, auf das er zeigt.
@@ -41,6 +42,8 @@ async function los() {
   const { ladeDaten, baueKapitel } = modul;
   setzeKapitel(KAPITEL, modul.standZusatz || null);
   const daten = await ladeDaten();
+  musik.konfiguriere(daten.musik);
+  musik.imTitel = true;
   const spiel = new Spiel(canvas, ui);
   ui.verbinde(spiel, daten);
   await warte(30);   // einen Moment für die Anzeige des Ladehinweises
@@ -56,6 +59,7 @@ async function los() {
   await warte(200);
 
   const wahl = await ui.zeigeTitel(spiel.hatStand, KAPITEL);
+  musik.imTitel = false;
   if (wahl === 'neu' && spiel.hatStand) {
     loescheStand();
     const q = spiel.stand.qualitaet;

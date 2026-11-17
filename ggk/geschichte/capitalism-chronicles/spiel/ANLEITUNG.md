@@ -20,7 +20,8 @@ Das Spiel liegt im Repository `TeacherSchnauder/schule` unter `ggk/geschichte/ca
   - `inhalte.json` – Tagebuch, Belege, Aufgaben, Rückmeldungen, Hinweise
   - `dialoge.json` – alle Gespräche
 - `lib/three/` – three.js r170 (fest versioniert)
-- `assets/` – Schriften und Titelbild
+- `assets/` – Schriften, Titelbilder und Musik (`assets/musik/`)
+- `engine/musik.js` – Musiksteuerung (Einstieg, Raummusik mit Wechsel und Pausen, An/Aus, Lautstärke)
 
 Texte lassen sich in den beiden JSON-Dateien ändern, ohne den Programmcode anzufassen.
 Achtung: JSON ist streng – ein fehlendes Komma oder Anführungszeichen verhindert den Start.
@@ -32,11 +33,13 @@ Achtung: JSON ist streng – ein fehlendes Komma oder Anführungszeichen verhind
 - Tagebuch → „Notizen kopieren“ gibt Funde, Belege, Begriffe, die eigenen Notizen und die Tipps der Zeitkapsel als Text aus.
 - Die Lösungen stehen im separaten Lehrerheft. Es gehört nicht in das öffentliche Repository.
 - Der Spielstand liegt nur im Browser des Geräts (localStorage). Im privaten Modus oder nach dem Löschen der Browserdaten ist er weg.
+- **Musik:** beim ersten Start **aus**. Einschalten über „Musik aus/an“ unter den Knöpfen des Titelbildschirms, über das Notensymbol oben rechts im Spiel oder in den Einstellungen (dort auch die Lautstärke). Die Wahl gilt auf dem Gerät für alle Kapitel. Jedes Kapitel hat eine Einstiegsmusik; danach wechselt die Musik je Raum (zwei Stücke je Raum, dazwischen 20–40 Sekunden Stille) und wird leiser, solange ein Dialog oder Fenster offen ist. Welche Stücke in welchem Raum laufen, steht in `inhalte.json` unter `musik`.
+- **Beamer-Ansicht (Kapitel III):** kurzer Gong beim Wechsel zur nächsten Phase und am Ende der Redezeit; abschaltbar über den Knopf „Gong“ oben rechts.
 
 ## Stand
 
 Enthalten: Titelbildschirm und alle fünf Stationen mit Streitgespräch und Zeitkapsel.
-Noch nicht enthalten: Klänge. Das Öffnen der Zeitkapsel folgt in Kapitel II.
+Seit 17.11.2026 mit Musik (abschaltbar, zu Beginn aus). Das Öffnen der Zeitkapsel folgt in Kapitel II.
 
 ---
 

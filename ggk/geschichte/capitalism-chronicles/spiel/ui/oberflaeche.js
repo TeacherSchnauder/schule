@@ -1,4 +1,5 @@
 // Benutzeroberfläche: Titelbildschirm, Spielanzeige, Dialog, Tagebuch, Inventar, Stadtplan, Einstellungen.
+import { musik } from '../engine/musik.js';
 export const el = (tag, klasse, html) => {
   const e = document.createElement(tag);
   if (klasse) e.className = klasse;
@@ -15,6 +16,8 @@ const ICON = {
   buch: '<svg viewBox="0 0 24 24"><path d="M4 5.5c3-1 6-.8 8 1 2-1.8 5-2 8-1v12.5c-3-1-6-.8-8 1-2-1.8-5-2-8-1z"/><path d="M12 6.5v12.5"/></svg>',
   tasche: '<svg viewBox="0 0 24 24"><path d="M4.5 9h15l-1.2 10.5H5.7z"/><path d="M9 9V7.2a3 3 0 0 1 6 0V9"/><path d="M9.5 13h5"/></svg>',
   karte: '<svg viewBox="0 0 24 24"><path d="M3.5 6.5l5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2z"/><path d="M9 4.5v13M15 6.5v13"/></svg>',
+  note: '<svg viewBox="0 0 24 24"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.6" cy="17.6" r="2.5"/><circle cx="16.6" cy="15.6" r="2.5"/></svg>',
+  noteAus: '<svg viewBox="0 0 24 24"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.6" cy="17.6" r="2.5"/><circle cx="16.6" cy="15.6" r="2.5"/><path d="M3.5 3.5l17 17" stroke-width="2.2"/></svg>',
   rad: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v2.6M12 18.4V21M3 12h2.6M18.4 12H21M5.6 5.6l1.9 1.9M16.5 16.5l1.9 1.9M5.6 18.4l1.9-1.9M16.5 7.5l1.9-1.9"/></svg>',
 };
 
@@ -32,6 +35,7 @@ export class Oberflaeche {
         <div class="siegel"></div>
         <div class="ziel" hidden></div>
         <div class="menue">
+          <button class="rund musik" data-a="musik" aria-label="Musik an oder aus" title="Musik an/aus"></button>
           <button class="rund" data-a="tagebuch" aria-label="Tagebuch" title="Tagebuch (T)">${ICON.buch}<span class="punkt" hidden></span></button>
           <button class="rund" data-a="inventar" aria-label="Funde und Belege" title="Funde und Belege">${ICON.tasche}<span class="punkt" hidden></span></button>
           <button class="rund" data-a="plan" aria-label="Stadtplan" title="Stadtplan (M)">${ICON.karte}</button>
@@ -45,6 +49,7 @@ export class Oberflaeche {
       <div id="blende"></div>
       <div id="titel">
         <div class="foto"></div><div class="korn"></div><div class="vignette"></div><div class="rahmen"></div>
+        <button class="musikschalter" aria-label="Musik an oder aus"></button>
         <div class="inhalt">
           <div>
             <h1 class="reihe"><small>Eine Lernspielreihe zur Wirtschaftsgeschichte</small>The Capitalism<br>Chronicles</h1>
@@ -66,13 +71,35 @@ export class Oberflaeche {
     q('.menue').addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       b.blur();
+      if (b.dataset.a === 'musik') { this.melde(musik.umschalten() ? 'Musik <b>an</b>' : 'Musik <b>aus</b>', 2200); return; }
       if (this.spiel.blockiert) return;
       ({ tagebuch: () => this.oeffneTagebuch(), inventar: () => this.oeffneInventar(), plan: () => this.oeffneStadtplan(), einstellungen: () => this.oeffneEinstellungen() })[b.dataset.a]();
     });
+    // Musikschalter: Spielanzeige und Titelbildschirm zeigen immer den aktuellen Zustand.
+    this.musikKnopf = q('.rund.musik'); this.musikTitel = q('.musikschalter');
+    this.musikTitel.addEventListener('click', (e) => { e.currentTarget.blur(); musik.umschalten(); });
+    musik.beiAenderung.add(() => this.zeigeMusik());
+    this.zeigeMusik();
     const tu = (e) => { e.currentTarget.blur(); this.spiel.interagiere(); };
     this.hinweisEl.addEventListener('click', tu);
     this.tat.addEventListener('click', tu);
   }
+
+  zeigeMusik() {
+    const an = musik.an;
+    this.musikKnopf.innerHTML = an ? ICON.note : ICON.noteAus;
+    this.musikKnopf.classList.toggle('aus', !an);
+    this.musikKnopf.setAttribute('aria-pressed', an ? 'true' : 'false');
+    this.musikKnopf.title = an ? 'Musik ist an – ausschalten' : 'Musik ist aus – einschalten';
+    if (this.musikTitel?.isConnected) {
+      this.musikTitel.innerHTML = `${an ? ICON.note : ICON.noteAus}<span>Musik ${an ? 'an' : 'aus'}</span>`;
+      this.musikTitel.classList.toggle('aus', !an);
+      this.musikTitel.setAttribute('aria-pressed', an ? 'true' : 'false');
+    }
+  }
+
+  // Leiser, solange ein Fenster oder ein Dialog offen ist
+  _ducke() { musik.ducken(this.offen.length > 0 || !!this._dialogWeiter); }
 
   verbinde(spiel, daten) {
     this.spiel = spiel; this.daten = daten;
@@ -93,12 +120,13 @@ export class Oberflaeche {
       const neu = el('button', hatStand ? 'knopf hell' : 'knopf', hatStand ? 'Neu beginnen' : 'Spiel beginnen');
       if (hatStand) {
         const weiter = el('button', 'knopf', 'Weiterspielen');
-        weiter.addEventListener('click', () => fertig('weiter'));
+        weiter.addEventListener('click', () => { musik.einstieg(); fertig('weiter'); });
         k.append(weiter);
       }
       let sicher = !hatStand;
       neu.addEventListener('click', () => {
         if (!sicher) { sicher = true; neu.textContent = 'Spielstand wirklich löschen?'; return; }
+        musik.einstieg();
         fertig('neu');
       });
       k.append(neu);
@@ -115,6 +143,8 @@ export class Oberflaeche {
         reihe.append(b);
       }
       k.append(reihe);
+      // Musikschalter unter den Knöpfen: Musik ist zu Beginn aus und lässt sich hier vor dem Start einschalten.
+      const zeile = el('div', 'musikzeile'); zeile.append(this.musikTitel); k.append(zeile);
     });
   }
 
@@ -226,12 +256,14 @@ export class Oberflaeche {
         if (obj.zu) return; obj.zu = true;
         schleier.remove();
         this.offen = this.offen.filter((x) => x !== obj);
+        this._ducke();
         this.spiel.entsperre();
         beiSchliessen?.(wert);
       },
     };
     zu.addEventListener('click', () => obj.schliessen(null));
     this.offen.push(obj);
+    this._ducke();
     return obj;
   }
 
@@ -268,7 +300,7 @@ export class Oberflaeche {
       const zeige = () => {
         i++;
         if (i >= zeilen.length) {
-          d.remove(); this._dialogWeiter = null; this.spiel.entsperre(); fertig(); return;
+          d.remove(); this._dialogWeiter = null; this._ducke(); this.spiel.entsperre(); fertig(); return;
         }
         const z = zeilen[i], p = this.daten.personen[z.wer];
         d.querySelector('img').src = this.portraits[z.wer] || '';
@@ -280,6 +312,7 @@ export class Oberflaeche {
       const weiter = () => { if (performance.now() > bereit) zeige(); };
       d.addEventListener('click', weiter);
       this._dialogWeiter = weiter;
+      this._ducke();
       zeige();
     });
   }
@@ -419,6 +452,10 @@ export class Oberflaeche {
     const sp = this.spiel, d = this.daten;
     const f = this.fenster({ titel: 'Einstellungen' });
     f.inhalt.innerHTML = `
+      <div class="gruppe"><h3>Musik</h3><div class="wahl" data-g="m">
+        <button data-m="an">An</button><button data-m="aus">Aus</button></div>
+        <label class="regler">Lautstärke <input type="range" min="0" max="100" step="5" data-m="lautst" value="${Math.round(musik.lautst * 100)}"></label>
+        <p class="klein" style="margin-top:.4em">Die Musik ist zu Beginn ausgeschaltet. Im Klassenraum am besten mit Kopfhörern. Die Wahl gilt auf diesem Gerät für alle Kapitel.</p></div>
       <div class="gruppe"><h3>Grafik</h3><div class="wahl" data-g="q">
         <button data-q="hoch">Hoch</button><button data-q="mittel">Mittel</button><button data-q="niedrig">Niedrig</button></div>
         <p class="klein" style="margin-top:.4em">Bei ruckelndem Bild eine niedrigere Stufe wählen.</p></div>
@@ -428,11 +465,16 @@ export class Oberflaeche {
         ${(this.lehrkraft?.schalter || []).length ? `<div class="wahl" style="margin-top:.5em">${this.lehrkraft.schalter.map((x, i) => `<button data-l="schalter" data-i="${i}" class="${x.an() ? 'an' : ''}">${esc(x.name)}</button>`).join('')}</div>` : ''}
         <p class="klein" style="margin-top:.5em">Ein Sprung zu einer Station schaltet die Funde und Belege der Stationen davor frei.</p>
         <p class="klein" style="margin-top:.5em">Der Spielstand liegt nur auf diesem Gerät. Es werden keine Daten übertragen und keine Dienste Dritter geladen. Quellen und Lizenzen stehen in der Datei LIZENZEN.md.</p></div>`;
-    const setze = () => f.inhalt.querySelectorAll('[data-q]').forEach((b) => b.classList.toggle('an', b.dataset.q === sp.qualitaet));
+    const setze = () => {
+      f.inhalt.querySelectorAll('[data-q]').forEach((b) => b.classList.toggle('an', b.dataset.q === sp.qualitaet));
+      f.inhalt.querySelectorAll('button[data-m]').forEach((b) => b.classList.toggle('an', (b.dataset.m === 'an') === musik.an));
+    };
     setze();
+    f.inhalt.querySelector('[data-m=lautst]').addEventListener('input', (e) => musik.setzeLautstaerke(e.target.value / 100));
     f.inhalt.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.q) { sp.setzeQualitaet(b.dataset.q); setze(); }
+      else if (b.dataset.m) { musik.setzeAn(b.dataset.m === 'an'); setze(); }
       else if (b.dataset.l === 'sprung') { f.schliessen(); this.lehrkraft.spruenge[+b.dataset.i].tu(); }
       else if (b.dataset.l === 'schalter') { const x = this.lehrkraft.schalter[+b.dataset.i]; x.tu(); b.classList.toggle('an', x.an()); }
       else if (b.dataset.l === 'reset') {

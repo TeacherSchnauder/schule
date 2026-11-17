@@ -73,3 +73,10 @@ html, body { overflow: hidden; background: #efe9dc; -webkit-user-select: text; u
 #beamer .blatt .bruch { stroke: #8f4f39; stroke-dasharray: 4 4; }
 #beamer .blatt textarea.ergebnis { min-height: 50vh; font-size: 0.6em; }
 @media (max-width: 900px) { #beamer .kapsel, #beamer .formen, #beamer .zweispalten, #beamer .vergleich { grid-template-columns: 1fr; } }
+#beamer > header button.aus { opacity: 0.65; text-decoration: line-through; }
+/* Breite auf den Bildschirm begrenzen: Sonst schoben lange Zeilen (Fußleiste, Überschrift) die Knöpfe „Zurück/Weiter“ aus dem Bild. */
+#beamer { grid-template-columns: minmax(0, 1fr); }
+#beamer > * { min-width: 0; }
+#beamer > footer .beweise { flex: 1 1 auto; }
+#beamer h1, #beamer h2 { overflow-wrap: anywhere; }
+#beamer > header nav { display: flex; gap: 0.4em; flex: none; }

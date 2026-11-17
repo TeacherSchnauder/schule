@@ -1989,5 +1989,6 @@
       "titel": "Ende von Kapitel I",
       "text": "Ihr habt Marx und Engels durch Manchester begleitet und ihre Anklage gegen den Kapitalismus zusammengetragen: Mehrwert, Entfremdung, Akkumulation und Elend. Zwei Einwände der Gegenseite haben standgehalten.\nDie Zeitkapsel ist versiegelt. Geöffnet wird sie in Kapitel II.\nDie Verteidigung hat das Wort."
     }
-  }
+  },
+  "musik": {"einstieg": "k1-einstieg", "raeume": {"aussen": ["k1-aussen-1", "k1-aussen-2"], "saal": ["k1-saal-1", "k1-saal-2"], "kontor": ["k1-kontor-1", "k1-kontor-2"], "keller": ["k1-keller-1", "k1-keller-2"], "feld": ["k1-feld-1", "k1-feld-2"]}}
 }

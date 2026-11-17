@@ -1,6 +1,7 @@
 // Kapitel III – Beamer-Ansicht für das Tribunal im Plenum (kapitel-3.html?beamer). Läuft ohne 3D-Welt am Gerät der Lehrkraft.
 // Es werden keine Daten zwischen Geräten übertragen; gespeichert werden nur die eigenen Eingaben auf diesem Gerät.
 import { zeitreiheSvg, hatWerte } from '../../ui/statistik.js';
+import { musik } from '../../engine/musik.js';
 
 const SCHLUESSEL = 'capitalism-chronicles-kapitel-3-beamer-v1';
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -47,7 +48,7 @@ export async function starteBeamer(ziel) {
   const z = ladeBeamer();
   const B = document.createElement('div'); B.id = 'beamer'; ziel.append(B);
   B.innerHTML = `<header><div class="phase"></div><div class="uhr" hidden><b></b><button data-a="uhr">Start</button><button data-a="neu">↺</button></div>
-      <nav><button data-a="zurueck">← Zurück</button><button data-a="weiter" class="haupt">Weiter →</button></nav></header>
+      <nav><button data-a="signale" title="Kurzer Gong beim Phasenwechsel und am Ende der Redezeit"></button><button data-a="zurueck">← Zurück</button><button data-a="weiter" class="haupt">Weiter →</button></nav></header>
     <main></main>
     <footer><div class="beweise"></div><div class="rechts"><button data-a="kurz"></button><button data-a="kopieren">Ergebnis kopieren</button><button data-a="neueklasse">Neue Klasse</button></div></footer>
     <div class="gross" hidden></div>`;
@@ -55,13 +56,17 @@ export async function starteBeamer(ziel) {
   const main = q('main'), uhrEl = q('.uhr'), gross = q('.gross');
   const rolle = (id) => daten.rollen.find((r) => r.id === id);
 
+  // ---------------------------------------------------------------- Signaltöne (abschaltbar, unabhängig von der Musik im Spiel)
+  const zeigeSignale = () => { const b = q('[data-a=signale]'); b.textContent = musik.wahl.signale ? 'Gong: an' : 'Gong: aus'; b.classList.toggle('aus', !musik.wahl.signale); };
+  zeigeSignale();
+
   // ---------------------------------------------------------------- Uhr
   let rest = 0, laeuft = false, takt = null;
   const minuten = (p) => (z.kurz && p.kurz ? p.kurz : p.min);
   const zeigeUhr = () => { const m = Math.floor(rest / 60), s = rest % 60; uhrEl.querySelector('b').textContent = rest > 0 ? `${m}:${String(s).padStart(2, '0')}` : 'Zeit'; uhrEl.classList.toggle('um', rest <= 0); uhrEl.querySelector('[data-a=uhr]').textContent = laeuft ? 'Pause' : 'Start'; };
   const stoppe = () => { laeuft = false; clearInterval(takt); takt = null; };
   const setzeUhr = (p) => { stoppe(); const m = minuten(p); uhrEl.hidden = !m; rest = (m || 0) * 60; zeigeUhr(); };
-  const schalteUhr = () => { if (laeuft) stoppe(); else if (rest > 0) { laeuft = true; takt = setInterval(() => { rest = Math.max(0, rest - 1); if (rest === 0) stoppe(); zeigeUhr(); }, 1000); } zeigeUhr(); };
+  const schalteUhr = () => { if (laeuft) stoppe(); else if (rest > 0) { laeuft = true; takt = setInterval(() => { rest = Math.max(0, rest - 1); if (rest === 0) { stoppe(); musik.signal('zeit'); } zeigeUhr(); }, 1000); } zeigeUhr(); };
 
   // ---------------------------------------------------------------- Bühne je Phase
   const zahlen = (name, werte, beschr) => `<div class="zahlen" data-feld="${name}">${beschr.map((b, i) => `<label><span>${esc(b)}</span><input type="number" min="0" max="40" inputmode="numeric" value="${werte[i]}" data-i="${i}"></label>`).join('')}</div>`;
@@ -120,8 +125,9 @@ export async function starteBeamer(ziel) {
   // ---------------------------------------------------------------- Knöpfe
   B.addEventListener('click', async (e) => {
     const a = e.target.closest('header button, footer .rechts button')?.dataset.a; if (!a) return;
-    if (a === 'weiter' && z.phase < PHASEN.length - 1) { z.phase++; zeige(); }
+    if (a === 'weiter' && z.phase < PHASEN.length - 1) { z.phase++; zeige(); musik.signal('phase'); }
     else if (a === 'zurueck' && z.phase > 0) { z.phase--; zeige(); }
+    else if (a === 'signale') { musik.setzeSignale(!musik.wahl.signale); zeigeSignale(); }
     else if (a === 'uhr') schalteUhr();
     else if (a === 'neu') setzeUhr(PHASEN[z.phase]);
     else if (a === 'kurz') { z.kurz = !z.kurz; zeige(); }

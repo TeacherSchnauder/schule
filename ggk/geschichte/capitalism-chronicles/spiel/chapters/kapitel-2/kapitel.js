@@ -43,6 +43,8 @@ export function baueKapitel(spiel, ui, daten) {
   spiel.ohneBegleiter = true;
   const hoersaal = baueHoersaal(), strasse = baueStrasseA(), wohnung = baueWohnung(), frankfurt = baueFrankfurt(), buero = baueBuero();
   const szenen = { hoersaal, strasse, wohnung, frankfurt, buero };
+  // Musik je Raum und Zeit: Straße nach Jahr, Frankfurt nach Zeitschicht
+  spiel.musikSchluessel = (name) => name === 'strasse' ? `strasse-${strasse.jahr}` : name === 'frankfurt' ? `frankfurt-${frankfurt.schicht}` : name;
   const st = () => spiel.stand;
   const b5Aktiv = () => (st().b5Aus === null ? daten.kapitel.b5Aktiv !== false : !st().b5Aus);
 

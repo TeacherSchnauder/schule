@@ -749,5 +749,6 @@
   "leer": "Das Feld ist leer.",
   "unlesbar": "In diesem Text finde ich keine Notizen aus The Capitalism Chronicles. Prüft, ob ihr den ganzen Text kopiert habt.",
   "ohne": "Kein Spielstand gefunden und kein Text eingefügt. Das ist kein Problem: Ihr arbeitet mit den Beweisstücken der Asservatenkammer und mit dem, was ihr heute sammelt."
- }
+ },
+  "musik": {"einstieg": "k3-einstieg", "raeume": {"saal": ["k3-saal-1", "k3-saal-2"], "asservaten": ["k3-asservaten-1", "k3-asservaten-2"], "zeugen": ["k3-zeugen-1", "k3-zeugen-2"], "kette": ["k3-kette-1", "k3-kette-2"]}}
 }

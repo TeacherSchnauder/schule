@@ -448,3 +448,23 @@ label.kurs span { font-family: var(--titel); }
 @media (max-width: 760px) {
   .rollenwahl, .asservaten, .befragung, .lorenzraster { grid-template-columns: 1fr; }
 }
+
+/* ---------- Musik ---------- */
+.rund.musik.aus { filter: saturate(0.35) brightness(0.92); }
+#titel .musikschalter { display: inline-flex; align-items: center; gap: 0.45em; align-self: center; margin-top: 0.2em;
+  padding: 0.38em 1em 0.38em 0.7em; border-radius: 999px; border: 1px solid rgba(239,228,204,0.6); background: rgba(28,23,20,0.55);
+  color: var(--papier); font: inherit; font-size: 0.95rem; letter-spacing: 0.02em; cursor: pointer; transition: opacity 0.6s ease; }
+#titel .musikschalter svg { width: 21px; height: 21px; stroke: var(--papier); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#titel .musikschalter.aus { opacity: 0.88; }
+#titel .musikschalter:hover { background: rgba(28,23,20,0.75); }
+#titel.geht .musikschalter { opacity: 0; pointer-events: none; }
+.regler { display: flex; align-items: center; gap: 0.7em; margin-top: 0.7em; }
+.regler input { flex: 1; max-width: 260px; accent-color: #6b4f2a; }
+@media (max-width: 560px) {
+  .menue { gap: 5px; }
+  .rund { width: 42px; height: 42px; }
+  .rund svg { width: 22px; height: 22px; }
+  #titel .musikschalter { font-size: 0.85rem; }
+}
+#titel > .musikschalter { display: none; }
+#titel .musikzeile { flex-basis: 100%; display: flex; justify-content: center; }

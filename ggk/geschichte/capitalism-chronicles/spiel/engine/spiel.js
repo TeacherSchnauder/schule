@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { baueFigur, animiereFigur, dreheZu, FIGUREN } from './figur.js';
 import { Steuerung } from './steuerung.js';
 import { ladeStand, speichereStand, loescheStand, neuerStand } from './speicher.js';
+import { musik } from './musik.js';
 
 const TEMPO = 4.3;          // Gehgeschwindigkeit in m/s
 const RADIUS = 0.36;        // Körperradius für Hindernisse
@@ -113,6 +114,8 @@ export class Spiel {
 
   aktiviereSzene(name) {
     this.szeneName = name;
+    // Raummusik: Kapitel können den Schlüssel verfeinern (z. B. Jahr der Straße in Kapitel II).
+    musik.raum(this.musikSchluessel ? this.musikSchluessel(name) : name);
     const s = this.szene;
     s.add(this.marx.gruppe, this.engels.gruppe, this.marker, this.ring);
     this.engels.gruppe.visible = !this.ohneBegleiter;

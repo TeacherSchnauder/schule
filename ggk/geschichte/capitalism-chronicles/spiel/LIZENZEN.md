@@ -1,6 +1,6 @@
 # Lizenzen und Quellen
 
-Stand: 17.11.2026 (Titelbilder aller drei Kapitel ersetzt)
+Stand: 17.11.2026 (Titelbilder ersetzt, Musik ergänzt)
 
 ## Fremde Bestandteile
 
@@ -9,8 +9,15 @@ Stand: 17.11.2026 (Titelbilder aller drei Kapitel ersetzt)
 | three.js (Autoren: three.js authors) | r170 (0.170.0) | MIT, Text in `lib/three/LICENSE` | `lib/three/` |
 | Schrift „Abril Fatface“ (TypeTogether) | über Fontsource | SIL Open Font License 1.1 | `assets/fonts/` (Lizenztext: `OFL-*.txt`) |
 | Schrift „Source Serif 4“ (Adobe) | über Fontsource | SIL Open Font License 1.1 | `assets/fonts/` (Lizenztext: `OFL-*.txt`) |
+| Klangbibliothek „FluidR3_GM“ (Frank Wen), nur zum Erzeugen der Musikdateien verwendet | – | MIT, Text in `assets/musik/LIZENZ-FluidR3_GM.txt` | in `assets/musik/` als gerenderte MP3-Dateien |
 
 Zur Laufzeit werden keine Dateien von fremden Servern geladen. Es gibt keine Analyse- oder Tracking-Dienste.
+
+## Musik
+
+Alle Stücke in `assets/musik/` (Einstiege, Raummusik, zwei Gong-Signale der Beamer-Ansicht) sind eigene Kompositionen für dieses Projekt, erstellt am 17.11.2026 mit Claude (Anthropic). Es werden keine fremden Melodien, Aufnahmen oder Liedtexte verwendet. Die Instrumentenklänge stammen aus der Klangbibliothek FluidR3_GM von Frank Wen, die unter der MIT-Lizenz steht (Copyright © 2000–2002, 2008 Frank Wen). Lizenztext: `assets/musik/LIZENZ-FluidR3_GM.txt`.
+
+Die Musik ist beim ersten Start ausgeschaltet. Sie wird nur geladen, wenn sie eingeschaltet ist. Konzept und Quelltext der Kompositionen liegen im Projektdokument „musik-konzept.md“ (nicht im Repository).
 
 ## Titelbild
 
