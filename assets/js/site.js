@@ -304,7 +304,7 @@
     el.innerHTML =
       '<footer class="fuss"><div class="fuss-inner">' +
         "<div>" + esc(D.seitentitel || "Lernplattform") + " &middot; Unterrichtsmaterial &middot; " + jahr + "</div>" +
-        '<div><a href="' + wurzel + '">Startseite</a></div>' +
+        '<div><a href="' + wurzel + '">Startseite</a> &middot; <a href="' + wurzel + 'impressum.html">Impressum und Datenschutz</a></div>' +
       "</div></footer>";
   }
 

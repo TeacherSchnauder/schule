@@ -72,6 +72,8 @@ p { margin: 0 0 0.6em; }
 #titel .knoepfe .knopf { font-size: 1.1rem; padding: 0.65em 1.7em; }
 #titel .lade { font-style: italic; opacity: 0.85; }
 #titel .hinweis { font-size: 0.82rem; opacity: 0.82; text-shadow: 0 1px 6px rgba(0,0,0,0.9); margin: 0; }
+#titel .rechtliches { font-size: 0.75rem; margin: 0; opacity: 0.7; }
+#titel .rechtliches a { color: var(--papier); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
 #titel.geht .inhalt, #titel.geht .rahmen { opacity: 0; pointer-events: none; }
 #titel.blendet { background: transparent; pointer-events: none; }
 #titel.blendet .foto { opacity: 0; transform: scale(1.07); }

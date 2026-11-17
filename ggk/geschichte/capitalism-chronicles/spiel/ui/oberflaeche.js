@@ -60,6 +60,7 @@ export class Oberflaeche {
             <div class="lade">Die Stadt wird aufgebaut …</div>
             <div class="knoepfe" hidden></div>
             <p class="hinweis"></p>
+            <p class="rechtliches"><a href="../../../../impressum.html" target="_blank" rel="noopener">Impressum und Datenschutz</a></p>
           </div>
         </div>
       </div>`;
