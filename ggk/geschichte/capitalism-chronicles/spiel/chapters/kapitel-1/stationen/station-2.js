@@ -166,6 +166,7 @@ export class Station2 {
     const z = this.eintrag('d_zehn');
     await ui.karte({ titel: z.titel, marke: z.marke, text: z.text, quelle: z.quelle });
     ui.schalteFrei('d_zehn');
+    await this.schnipsel?.('C');
     saal.zeigeNeueMaschine(0);
     this.setzeSchritt(3);
   }
@@ -188,6 +189,7 @@ export class Station2 {
             ui.gibBeleg('beleg_zehn');
             ui.schalteFrei('b_relativ');
             this.setzeSchritt(4);
+            await this.schnipsel?.('X');
           } else {
             saal.zeigeNeueMaschine(0);
             tafel.setze({ stunden: 12, neuwert: 6, lohn: LOHN, teilung: LOHN, notwendig: 6 });
@@ -268,6 +270,7 @@ export class Station2 {
     ui.schalteFrei('b_einwand');
     ui.gibBeleg('beleg_whitlow');
     await ui.dialog(this.daten.dialoge.nachDenkpause);
+    await this.schnipsel?.('R');
     if (!spiel.stand.funde.includes(2)) spiel.stand.funde.push(2);
     ui.setzeSiegel();
     ui.schalteFrei('f_mehrwert');

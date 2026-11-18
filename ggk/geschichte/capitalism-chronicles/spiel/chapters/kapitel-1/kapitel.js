@@ -12,6 +12,10 @@ import { Station5, FERTIG5 } from './stationen/station-5.js';
 import { Station3, FERTIG3 } from './stationen/station-3.js';
 import { Station4, FERTIG4 } from './stationen/station-4.js';
 import { baueFigur, FIGUREN } from '../../engine/figur.js';
+import { Brief, VERGABE, BIS_STATION, neuerBrief } from './stationen/brief.js';
+
+// Zusätzliche Felder im Spielstand von Kapitel I
+export const standZusatz = () => ({ brief: neuerBrief() });
 
 export async function ladeDaten() {
   const lade = async (name) => {
@@ -88,6 +92,12 @@ export function baueKapitel(spiel, ui, daten) {
   const station5 = new Station5(spiel, ui, daten, aussen, feld);
   const station3 = new Station3(spiel, ui, daten, aussen, kontor);
   const station4 = new Station4(spiel, ui, daten, aussen, keller);
+  // Engels' zerrissener Brief: Schnipsel als Belohnung in Station I–IV, Zusammensetzen nach Station IV
+  const brief = new Brief(spiel, ui, daten);
+  for (const s of [station1, station, station3, station4]) s.schnipsel = (id) => brief.gib(id);
+  station5.briefFertig = () => brief.fertig;
+  brief.nachher = () => station5.aufbruch();
+  ui.inventarZusatz = () => brief.inventarHtml();
   // Ziel und Marker: die Station, die gerade an der Reihe ist
   const ziel = () => {
     const z = st();
@@ -98,7 +108,11 @@ export function baueKapitel(spiel, ui, daten) {
     else station4.aktualisiere();
   };
   station.weiter = ziel; station1.nachher = ziel; station3.nachher = ziel; station4.nachher = ziel; station5.nachher = ziel;
-  const starteStationen = () => { station1.start(); station.start(); station3.start(); station4.start(); station5.start(FERTIG4); ziel(); };
+  const starteStationen = () => {
+    station1.start(); station.start(); station3.start(); station4.start(); station5.start(FERTIG4);
+    brief.start(() => station5.aufbruchOrt, () => spiel.ort.bereich === 'irkhof' && st().s4 >= FERTIG4);
+    ziel();
+  };
 
   // Porträts für Dialoge: Büsten der Figuren einmalig in kleine Bilder rendern.
   const portraits = () => {
@@ -159,18 +173,27 @@ export function baueKapitel(spiel, ui, daten) {
     spiel.entsperre();
   };
   const B2 = ['beleg_rechnung', 'beleg_zehn', 'beleg_mary', 'beleg_whitlow'];
+  const B4 = [...B2, 'beleg_kontor', 'beleg_manifest', 'beleg_chadwick', 'beleg_geruecht'];
+  const schnipsel = (ids) => { brief.gibStill(ids); };
+  // Stand direkt vor dem Zusammensetzen des Briefs: Station I–IV fertig, alle Schnipsel gesammelt
+  const vorBrief = () => {
+    gib('s_charter', [1, 2, 3, 4], B4); st().s1 = FERTIG1; st().schritt = 6; st().s3 = FERTIG3; st().s4 = FERTIG4;
+    st().brief = { ...neuerBrief(), schnipsel: [...VERGABE] };
+  };
+  const briefOrt = () => spiel.inBereich('irkhof', nord.hof.eintritt.x - 1, nord.hof.eintritt.z, Math.PI);
   ui.lehrkraft = {
     spruenge: [
       { name: 'Station I: Die Stadt', tu: sprung(() => {}, () => spiel.aufStrasse(0, false, true, 'a')) },
-      { name: 'Station II: Spinnerei', tu: sprung(() => {}, () => spiel.inBereich('hof', -4, -96, Math.PI)) },
-      { name: 'Station III: Kontor', tu: sprung(() => { gib('p_pym', [2], B2); st().schritt = 6; }, () => spiel.aufStrasse(6, false, true, 'b')) },
-      { name: 'Station IV: Arbeiterviertel', tu: sprung(() => { gib('s_irk', [2, 3], [...B2, 'beleg_kontor', 'beleg_manifest']); st().schritt = 6; st().s3 = FERTIG3; }, () => spiel.aufStrasse(nord.pfad.laenge - 8, false, true, 'b')) },
-      { name: 'Station V: Versammlung', tu: sprung(() => { gib('s_charter', [1, 2, 3, 4], [...B2, 'beleg_kontor', 'beleg_manifest', 'beleg_chadwick', 'beleg_geruecht']); st().s1 = FERTIG1; st().schritt = 6; st().s3 = FERTIG3; st().s4 = FERTIG4; }, () => { spiel.aktiviereSzene('feld'); spiel.inBereich('feld', feld.punkte.eintritt.x, feld.punkte.eintritt.z, Math.PI); }) },
+      { name: 'Station II: Spinnerei', tu: sprung(() => { schnipsel(BIS_STATION[2]); }, () => spiel.inBereich('hof', -4, -96, Math.PI)) },
+      { name: 'Station III: Kontor', tu: sprung(() => { gib('p_pym', [2], B2); st().schritt = 6; schnipsel(BIS_STATION[3]); }, () => spiel.aufStrasse(6, false, true, 'b')) },
+      { name: 'Station IV: Arbeiterviertel', tu: sprung(() => { gib('s_irk', [2, 3], [...B2, 'beleg_kontor', 'beleg_manifest']); st().schritt = 6; st().s3 = FERTIG3; schnipsel(BIS_STATION[4]); }, () => spiel.aufStrasse(nord.pfad.laenge - 8, false, true, 'b')) },
+      { name: 'Engels’ Brief (nach Station IV)', tu: sprung(vorBrief, briefOrt) },
+      { name: 'Station V: Versammlung', tu: sprung(() => { vorBrief(); st().brief.fertig = true; st().brief.phase = 4; if (!st().tagebuch.includes('d_vater')) st().tagebuch.push('d_vater'); }, () => { spiel.aktiviereSzene('feld'); spiel.inBereich('feld', feld.punkte.eintritt.x, feld.punkte.eintritt.z, Math.PI); }) },
     ],
   };
 
   return {
-    welt, station, station1, station3, station4, station5,
+    welt, station, station1, station3, station4, station5, brief,
 
     bereite() {
       ui.portraits = portraits();

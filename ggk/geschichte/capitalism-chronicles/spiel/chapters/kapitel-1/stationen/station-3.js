@@ -62,6 +62,7 @@ export class Station3 {
     await ui.dialog(this.daten.dialoge.pym1);
     kontor.blickZu('pym', null);
     ui.schalteFrei('p_pym');
+    await this.schnipsel?.('A');
     this.setze(1);
   }
 
@@ -107,6 +108,7 @@ export class Station3 {
     await ui.karte({ titel: d.titel, marke: d.marke, zitat: d.zitat, text: d.text, quelle: d.quelle });
     await ui.dialog(this.daten.dialoge.nachJahre);
     kontor.blickZu('whitlow', null);
+    await this.schnipsel?.('D');
     this.setze(5);
   }
 

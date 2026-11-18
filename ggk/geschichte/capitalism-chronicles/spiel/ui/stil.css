@@ -72,8 +72,6 @@ p { margin: 0 0 0.6em; }
 #titel .knoepfe .knopf { font-size: 1.1rem; padding: 0.65em 1.7em; }
 #titel .lade { font-style: italic; opacity: 0.85; }
 #titel .hinweis { font-size: 0.82rem; opacity: 0.82; text-shadow: 0 1px 6px rgba(0,0,0,0.9); margin: 0; }
-#titel .rechtliches { font-size: 0.75rem; margin: 0; opacity: 0.7; }
-#titel .rechtliches a { color: var(--papier); text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
 #titel.geht .inhalt, #titel.geht .rahmen { opacity: 0; pointer-events: none; }
 #titel.blendet { background: transparent; pointer-events: none; }
 #titel.blendet .foto { opacity: 0; transform: scale(1.07); }
@@ -470,3 +468,52 @@ label.kurs span { font-family: var(--titel); }
 }
 #titel > .musikschalter { display: none; }
 #titel .musikzeile { flex-basis: 100%; display: flex; justify-content: center; }
+
+/* ---------- Engels' zerrissener Brief (Kapitel I) ---------- */
+.marke.nachbildung { color: #6a5a3a; border-style: dashed; }
+.schnipselhuelle { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.28)); transform: rotate(var(--dreh, 0deg)); margin: 0.35em 0.2em; }
+.schnipselhuelle.gewaehlt { filter: drop-shadow(0 0 0 var(--messing-hell)) drop-shadow(0 0 3px var(--messing-dunkel)) drop-shadow(0 0 2px var(--messing-dunkel)); }
+.schnipsel { display: block; width: 100%; text-align: left; font: inherit; font-style: italic; font-size: 0.97rem; line-height: 1.42; color: var(--tinte);
+  background: #f3e8cf linear-gradient(180deg, rgba(255,255,255,0.25), rgba(160,130,80,0.08)); border: 0; padding: 1em 1.1em 1.05em; min-height: 44px;
+  clip-path: polygon(0% 5%, 7% 0%, 15% 4%, 24% 1%, 33% 5%, 44% 0%, 55% 4%, 66% 1%, 77% 5%, 88% 0%, 100% 4%, 99% 30%, 100% 62%, 99% 96%, 91% 100%, 80% 95%, 69% 99%, 58% 95%, 46% 100%, 35% 96%, 23% 100%, 12% 95%, 0% 99%, 1% 66%, 0% 34%); }
+.schnipsel.klein { font-size: 0.85rem; padding: 0.8em 0.9em; }
+.schnipsel .linie { letter-spacing: 0.05em; color: var(--tinte-weich); font-style: normal; }
+.schnipsel .wort { font-style: normal; color: #44613f; }
+button.schnipsel { cursor: pointer; }
+.schnipselliste { margin: 0.2em 0 0.8em; }
+.lueckenblock { margin: 0.6em 0 1em; }
+.schnipsel input.luecke { font: inherit; font-style: normal; font-size: 1rem; width: 11em; max-width: 60%; margin: 0 0.25em; padding: 0.15em 0.4em; border: 1px solid var(--tinte-weich); background: var(--papier-hell); color: var(--tinte); border-radius: 2px; -webkit-user-select: text; user-select: text; }
+.schnipsel input.luecke.richtig { border-color: var(--gruen); background: rgba(85,105,75,0.13); font-weight: 600; }
+.lueckenwahl { display: flex; gap: 0.5em; flex-wrap: wrap; align-items: center; margin-top: 0.5em; }
+.briefraster { display: grid; grid-template-columns: 1fr 1.25fr; gap: 1.1em; align-items: start; }
+.briefraster .spaltenkopf { font-family: var(--titel); font-size: 1.05rem; margin-bottom: 0.3em; }
+.briefraster .stapel { border: 1px dashed transparent; border-radius: 3px; padding: 0.3em; min-height: 6em; }
+.briefraster .stapel.bereit { border-color: var(--messing-dunkel); background: rgba(210,176,106,0.12); }
+.briefraster .bogen { background: rgba(43,37,32,0.04); border: 1px solid rgba(43,37,32,0.25); border-radius: 3px; padding: 0.5em 0.6em; }
+.platz { display: grid; grid-template-columns: 2em 1fr; align-items: center; gap: 0.3em; min-height: 3.2em; border-bottom: 1px dashed rgba(43,37,32,0.3); padding: 0.15em 0; cursor: pointer; }
+.platz .nr { font-family: var(--titel); color: var(--tinte-weich); text-align: center; }
+.platz .frei { color: var(--tinte-weich); font-size: 0.85rem; font-style: italic; }
+.platz .schnipselhuelle { --dreh: 0deg !important; margin: 0.15em 0; }
+.platz.bereit { background: rgba(210,176,106,0.16); }
+.platz.ablage { grid-template-columns: 1fr; margin-top: 0.8em; border: 1px dashed rgba(143,79,57,0.7); border-radius: 3px; padding: 0.35em 0.5em; }
+.platz.ablage .nr { text-align: left; font-family: var(--text); font-weight: 600; color: var(--ziegel); font-size: 0.9rem; }
+.briefganz { background: #f3e8cf; padding: 1.1em 1.3em; border: 1px solid rgba(43,37,32,0.25); font-style: italic; box-shadow: 0 1px 4px rgba(0,0,0,0.18); }
+.briefganz p { margin: 0 0 0.7em; }
+.briefganz .wort { font-style: normal; color: #44613f; }
+@media (max-width: 700px) { .briefraster { grid-template-columns: 1fr; } }
+
+.fenster.briefordnen .inhalt { display: flex; flex-direction: column; overflow: hidden; }
+.fenster.briefordnen .auftrag { margin: 0 0 0.5em; }
+.fenster.briefordnen .briefraster { flex: 1; min-height: 0; }
+.fenster.briefordnen .stapel, .fenster.briefordnen .bogen { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.briefmeldung { max-height: 11em; overflow-y: auto; margin-top: 0.4em; }
+.briefmeldung .rueck { margin-top: 0.3em; }
+.briefmeldung:has(.rueck:empty):not(:has(.hilfe)) { margin: 0; }
+@media (max-width: 700px) {
+  .fenster.briefordnen .inhalt { display: block; overflow-y: auto; }
+  .fenster.briefordnen .stapel, .fenster.briefordnen .bogen { height: auto; overflow: visible; }
+}
+.infokopf { font-family: var(--titel); font-weight: 400; font-size: 1.08rem; margin: 0.9em 0 0.3em; display: flex; align-items: center; gap: 0.6em; flex-wrap: wrap; }
+.infokopf:first-child { margin-top: 0; }
+.infoliste { margin: 0 0 0.4em 1.1em; padding: 0; }
+.infoliste li { margin: 0.25em 0; }

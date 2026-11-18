@@ -25,6 +25,10 @@
     "erfunden": {
       "name": "Erfunden",
       "text": "Figur des Spiels"
+    },
+    "nachbildung": {
+      "name": "Nachbildung",
+      "text": "erfundener Text nach historischen Motiven"
     }
   },
   "personen": {
@@ -596,6 +600,14 @@
       "marke": "theorie",
       "titel": "Fund V: Die Anklageschrift",
       "text": "Marx’ Anklage gegen den Kapitalismus stützt sich auf vier Belege: Mehrwert, Entfremdung, Zwang zur Akkumulation und messbares Elend. Drei Einwände der Gegenseite ließen sich widerlegen. Zwei haben standgehalten: das Risiko des Unternehmers und die billigeren Waren. Drei Prognosen liegen versiegelt in der Zeitkapsel."
+    },
+    {
+      "id": "d_vater",
+      "reiter": "dokumente",
+      "marke": "tatsache",
+      "titel": "Erfunden, aber möglich: Engels und sein Vater",
+      "text": "Was belegt ist: Engels' Vater, Friedrich Engels (1796–1860), war Textilfabrikant in Barmen und Mitinhaber der Firma Ermen & Engels in Manchester. Die Familie war streng fromm (Pietisten). 1842 schickte der Vater seinen Sohn nach Manchester, damit er dort in der Firma arbeitet. Anfang 1845 schrieb Engels an Marx: Der Handel sei ihm zuwider, und er wolle nicht Fabrikant werden. Sein frommer Vater sei schon sehr aufgebracht und unterstütze ihn nur noch beim Studium, nicht bei seinen kommunistischen Zielen. Um Ostern 1845 ging Engels nach Konflikten mit den Behörden und mit seinem Vater nach Brüssel.\nWas die Forschung daraus schließt: Biografen wie Tristram Hunt sehen in der Reise nach Manchester einen Versuch des Vaters, den Sohn von seinen radikalen Freunden fernzuhalten. Der Versuch scheiterte: Gerade in Manchester wurde Engels zum Kritiker der Fabrikarbeit. Hunt beschreibt Engels' späteres Leben als Doppelleben: angesehener Kaufmann und Kommunist zugleich.\nWas danach geschah: 1850 kehrte Engels doch in die Firma zurück und arbeitete dort 20 Jahre. Ab 1864 war er Teilhaber mit guten Einkünften, 1869 schied er aus. Mit seinem Geld unterstützte er die Familie Marx in London.\nWas erfunden ist: Diesen Brief gibt es nicht. Datum, Wortlaut und das Zerreißen sind erfunden. Die Begriffe „Mehrwert“ und „Akkumulation“ hat Marx erst Jahre später ausgearbeitet. Engels hätte sie 1845 so nicht schreiben können. Möglich wäre der Brief trotzdem gewesen: Seine Gründe stammen aus Engels' eigenen Briefen von 1845 und aus seinem Buch „Die Lage der arbeitenden Klasse in England“ (1845).\nZum Nachdenken: Engels wurde später selbst Teilhaber. Spricht das gegen die Argumente in seinem Brief? Denkt an seinen Satz: „Ich werfe Dir also nichts vor, was nicht jeder Fabrikant tun muss.“",
+      "quelle": "Neue Deutsche Biographie, Bd. 4 (1959): W. Köllmann, „Engels, Friedrich (1796–1860)“, und H. Bollnow, „Engels, Friedrich (1820–1895)“; Engels an Marx, 20.01.1845 und 22.02.–07.03.1845 (MEW 27); Tristram Hunt: Friedrich Engels. Der Mann, der den Marxismus erfand (2012, engl. 2009); Gustav Mayer: Friedrich Engels. Eine Biographie (1920/1934, Standardwerk)."
     }
   ],
   "belege": [
@@ -920,7 +932,8 @@
     "s2_denkpause": "Eure Notiz zu Whitlows Einwand",
     "s3_denkpause": "Eure Notiz: Woran hängt Marx’ Erwartung?",
     "s4_denkpause": "Eure offene Frage für Kapitel II",
-    "s5_zeitkapsel": "Eure Tipps in der Zeitkapsel"
+    "s5_zeitkapsel": "Eure Tipps in der Zeitkapsel",
+    "brief": "Engels' Brief an den Vater (Nachbildung)"
   },
   "station3": {
     "ziele": {
@@ -1702,7 +1715,8 @@
       "anklage": "Stellt an der Tribüne eure Anklageschrift zusammen.",
       "grimshaw": "Mr. Grimshaw verlangt das Wort. Stellt euch ihm.",
       "kapsel": "Versiegelt mit Engels die Zeitkapsel am Wagen.",
-      "fertig": "Kapitel I ist abgeschlossen."
+      "fertig": "Kapitel I ist abgeschlossen.",
+      "brief": "Setzt mit Engels seinen zerrissenen Brief zusammen."
     },
     "anklage": {
       "titel": "Die Anklageschrift",
@@ -1990,5 +2004,237 @@
       "text": "Ihr habt Marx und Engels durch Manchester begleitet und ihre Anklage gegen den Kapitalismus zusammengetragen: Mehrwert, Entfremdung, Akkumulation und Elend. Zwei Einwände der Gegenseite haben standgehalten.\nDie Zeitkapsel ist versiegelt. Geöffnet wird sie in Kapitel II.\nDie Verteidigung hat das Wort."
     }
   },
-  "musik": {"einstieg": "k1-einstieg", "raeume": {"aussen": ["k1-aussen-1", "k1-aussen-2"], "saal": ["k1-saal-1", "k1-saal-2"], "kontor": ["k1-kontor-1", "k1-kontor-2"], "keller": ["k1-keller-1", "k1-keller-2"], "feld": ["k1-feld-1", "k1-feld-2"]}}
+  "musik": {
+    "einstieg": "k1-einstieg",
+    "raeume": {
+      "aussen": [
+        "k1-aussen-1",
+        "k1-aussen-2"
+      ],
+      "saal": [
+        "k1-saal-1",
+        "k1-saal-2"
+      ],
+      "kontor": [
+        "k1-kontor-1",
+        "k1-kontor-2"
+      ],
+      "keller": [
+        "k1-keller-1",
+        "k1-keller-2"
+      ],
+      "feld": [
+        "k1-feld-1",
+        "k1-feld-2"
+      ]
+    }
+  },
+  "brief": {
+    "titel": "Engels' Brief an den Vater",
+    "nachbildung": "Nachbildung: Dieser Brief ist erfunden. Belegt ist, dass Engels' Vater Fabrikant war, dass Engels 1845 nicht mehr im Geschäft arbeiten wollte und dass der Vater seine kommunistischen Ziele ablehnte.",
+    "anzahl": 8,
+    "schnipsel": {
+      "A": "Manchester, im Juli 1845. Lieber Vater, Du wünschst, dass ich ins Geschäft zurückkehre. Ich will Dir diesmal nicht mit Gefühlen antworten, sondern mit dem, was ich hier gesehen und nachgerechnet habe.",
+      "B": "Wer über die Hauptstraßen fährt, sieht Läden, Lagerhäuser und Wohlstand. Die Arbeiter wohnen dahinter, in Höfen, die kaum ein Kaufmann je betreten hat. Zwei Städte in einer, und beide leben von derselben Baumwolle.",
+      "C": "Die Spinnerin verkauft nicht das Garn, sondern sich selbst, Stunde um Stunde. Ich habe nachgerechnet: Ihren Lohn hat sie nach einem halben Tag erarbeitet. Was sie danach schafft, behält die Fabrik. Mir fehlt noch das rechte Wort dafür: {1}.",
+      "R": "Du wirst einwenden, dass Du das Risiko trägst und ohne Dein Geld keine Spindel liefe. Das ist wahr, und ich will es nicht kleinreden.",
+      "D": "Und doch bist auch Du nicht frei. Was übrig bleibt, kannst Du nicht einfach verzehren: Wer nicht in neue Maschinen steckt, den verdrängt der billigere Nachbar. Für dieses ewige Anhäufen habe ich noch keinen Namen: {2}. Ich werfe Dir also nichts vor, was nicht jeder Fabrikant tun muss.",
+      "E": "Weil jeder billiger sein muss als der andere, drückt man die Löhne und treibt das Tempo. Den Preis zahlen die Arbeiter: Nach Chadwicks Bericht sterben sie in Manchester im Durchschnitt 21 Jahre früher als die Oberschicht.",
+      "F": "Darum kann ich nicht Teilhaber werden. Ich müsste als Fabrikant tun, was ich als Mensch anklage. Ich werde mit Marx zu den Chartisten gehen und sagen, was ich gesehen habe. Ich hoffe, Du verstehst mich eines Tages. Dein Sohn Friedrich",
+      "X": "Das Unglück der Weber sind die Maschinen. Seit die Dampfstühle laufen, hungern sie. Würde man die Maschinen zerschlagen, hätten die Arbeiter ihr Brot wieder."
+    },
+    "stapel": [
+      "E",
+      "A",
+      "X",
+      "D",
+      "B",
+      "F",
+      "C",
+      "R"
+    ],
+    "fremd": "X",
+    "luecken": {
+      "1": {
+        "schnipsel": "C",
+        "loesung": "Mehrwert",
+        "akzeptiert": [
+          "Mehrwert"
+        ],
+        "fast": {
+          "mehrarbeit": "Fast. Mehrarbeit ist die unbezahlte Zeit. Gesucht ist der Wert, der in dieser Zeit entsteht.",
+          "profit": "Profit ist das, was am Ende in der Kasse steht. Gesucht ist Marx' Begriff für den Wert, den die Spinnerin über ihren Lohn hinaus schafft.",
+          "gewinn": "Gewinn ist das Alltagswort. Gesucht ist Marx' Fachbegriff für den Wert, den die Spinnerin über ihren Lohn hinaus schafft.",
+          "ausbeutung": "Ausbeutung nennt Marx das Verhältnis. Gesucht ist der Name für den Wert, der in der unbezahlten Zeit entsteht.",
+          "neuwert": "Neuwert ist alles, was die Spinnerin an einem Tag schafft, auch der Teil für ihren Lohn. Gesucht ist nur der Teil danach."
+        },
+        "sonst": "Das ist nicht das Wort. Denkt an die Rechnung am Pult in der Spinnerei.",
+        "auswahl": [
+          "Mehrarbeit",
+          "Mehrwert",
+          "Lohn",
+          "Neuwert"
+        ]
+      },
+      "2": {
+        "schnipsel": "D",
+        "loesung": "Akkumulation",
+        "akzeptiert": [
+          "Akkumulation",
+          "Kapitalakkumulation",
+          "Akkumulation des Kapitals"
+        ],
+        "fast": {
+          "konkurrenz": "Die Konkurrenz ist der Grund. Gesucht ist der Name für das ständige Anhäufen von Kapital.",
+          "wettbewerb": "Der Wettbewerb ist der Grund. Gesucht ist der Name für das ständige Anhäufen von Kapital.",
+          "investition": "Investieren ist der einzelne Schritt. Gesucht ist der Name für den ganzen Vorgang.",
+          "investieren": "Investieren ist der einzelne Schritt. Gesucht ist der Name für den ganzen Vorgang.",
+          "wachstum": "In die Richtung geht es. Marx hat für das Anhäufen von Kapital einen eigenen Fachbegriff.",
+          "kapital": "Kapital ist das, was angehäuft wird. Gesucht ist der Name für den Vorgang."
+        },
+        "sonst": "Das ist nicht das Wort. Denkt an die drei Geschäftsjahre im Kontor.",
+        "auswahl": [
+          "Konkurrenz",
+          "Investition",
+          "Akkumulation",
+          "Mehrwert"
+        ]
+      }
+    },
+    "regeln": [
+      {
+        "art": "erst",
+        "id": "A",
+        "text": "Am Anfang muss „Manchester, im Juli 1845. Lieber Vater …“ stehen. Ein Brief beginnt mit dem Anlass: Worauf antwortet Engels seinem Vater?"
+      },
+      {
+        "art": "letzt",
+        "id": "F",
+        "text": "Am Ende muss „Darum kann ich nicht Teilhaber werden …“ stehen. Erst nach allen Gründen kann Engels seine Entscheidung ziehen."
+      },
+      {
+        "art": "vor",
+        "a": "C",
+        "b": "R",
+        "text": "„Du wirst einwenden …“ liegt vor „Die Spinnerin verkauft …“. Der Vater kann aber erst widersprechen, wenn Engels gesagt hat, woher der Gewinn kommt."
+      },
+      {
+        "art": "vor",
+        "a": "R",
+        "b": "D",
+        "text": "„Und doch bist auch Du nicht frei …“ liegt vor „Du wirst einwenden …“. Die Antwort kann nicht vor dem Einwand stehen, auf den sie antwortet."
+      },
+      {
+        "art": "vor",
+        "a": "D",
+        "b": "E",
+        "text": "„Weil jeder billiger sein muss …“ liegt vor „Und doch bist auch Du nicht frei …“. Erst muss der Zwang der Konkurrenz erklärt sein, dann seine Folge für die Arbeiter."
+      },
+      {
+        "art": "nachbar",
+        "id": "B",
+        "a": "A",
+        "b": "F",
+        "text": "„Wer über die Hauptstraßen fährt …“ unterbricht hier den Gedankengang. Die zwei Städte gehören direkt hinter den Anfang oder direkt vor den Schluss."
+      }
+    ],
+    "luecken_phase": {
+      "titel": "Engels fehlten zwei Wörter",
+      "einleitung": "Beim Schreiben fehlten Engels zwei Fachbegriffe. Marx hat sie inzwischen. Tragt sie ein.",
+      "leer": "Tragt ein Wort ein.",
+      "richtig": "Richtig.",
+      "schreibweise": "Richtig. Geschrieben wird es so: {w}.",
+      "auswahlHinweis": "Wählt das passende Wort:"
+    },
+    "ordnen": {
+      "titel": "Engels' Brief an den Vater",
+      "einleitung": "Legt die Schnipsel in die Reihenfolge, die Engels' Argumentation ergibt. Achtung: Ein Schnipsel gehört nicht zum Brief. Legt ihn in die Ablage.",
+      "bedienung": "Tippt einen Schnipsel an und danach den Platz, an den er soll.",
+      "unvollstaendig": "Der Brief ist noch nicht vollständig. Alle sieben Plätze müssen belegt sein, ein Schnipsel liegt in der Ablage.",
+      "fremdImBrief": "Ein Schnipsel passt nicht zu Engels' Argumentation. Prüft bei jedem Stück, ob Engels und Marx diesen Gedanken vertreten.",
+      "erfolg": "Der Brief ergibt eine geschlossene Argumentation.",
+      "erfolgB2": "Ihr habt die zwei Städte an den Anfang gestellt: als Befund, den Engels danach erklärt.",
+      "erfolgB5": "Ihr habt die zwei Städte vor den Schluss gestellt: als Bilanz der ganzen Kette.",
+      "hilfen": [
+        "Sucht zuerst Anfang und Ende. Der Brief beginnt mit „Manchester, im Juli 1845. Lieber Vater …“ und endet mit „… Dein Sohn Friedrich“.",
+        "Der Schnipsel, der nicht dazugehört, beginnt mit „Das Unglück der Weber sind die Maschinen …“. Er fordert, die Maschinen zu zerschlagen. Das wollten Engels und Marx nie. Legt ihn in die Ablage.",
+        "Die Mitte beantwortet vier Fragen, eine nach der anderen. Das Wort in Klammern hilft euch, den Schnipsel zu finden:\n1. Woher kommt der Gewinn? (Spinnerin)\n2. Was wendet der Vater ein? (Risiko)\n3. Warum ist auch der Vater nicht frei? („Und doch …“)\n4. Was folgt daraus für die Arbeiter? (Chadwick)",
+        "Übrig ist der Schnipsel mit den zwei Städten. Er gehört direkt hinter den Anfang (Platz 2) oder direkt vor den Schluss (Platz 6). Beides ist richtig."
+      ],
+      "hinweisGesperrt": "Hinweise nach dem ersten Prüfen"
+    },
+    "begruendung": {
+      "titel": "Warum gehört der Schnipsel nicht dazu?",
+      "frage": "Ihr habt den Schnipsel über die Maschinen aussortiert. Begründet die Entscheidung.",
+      "optionen": [
+        {
+          "text": "Die Handschrift ist anders.",
+          "rueck": "Nein, es ist Engels' Handschrift: Er hat ein Flugblatt abgeschrieben. Prüft den Inhalt, nicht das Aussehen."
+        },
+        {
+          "text": "Engels und Marx klagen nicht die Maschinen an, sondern wie sie eingesetzt werden. Im Kontor erkennt Marx sogar an, wie viel die Fabriken hervorbringen.",
+          "richtig": true,
+          "rueck": "Richtig. Es ist Engels' Abschrift eines Flugblatts von Maschinenstürmern. Solche Texte hat er für sein Buch gesammelt."
+        },
+        {
+          "text": "Der Schnipsel ist zu wütend formuliert.",
+          "rueck": "Der Ton beweist nichts. Auch Engels schreibt scharf. Entscheidend ist, ob der Gedanke zu seiner Argumentation passt."
+        },
+        {
+          "text": "In Manchester gab es 1845 keine Weber mehr.",
+          "rueck": "Doch, Handweber gab es noch; ihre Not beschreibt Engels selbst. Prüft, was der Schnipsel fordert."
+        }
+      ],
+      "hilfen": [
+        "Fragt nicht, wie der Schnipsel aussieht, sondern was er fordert. Würden Engels und Marx das fordern?"
+      ]
+    },
+    "ergebnis": {
+      "titel": "Engels' Brief an den Vater",
+      "knopf": "Brief falten"
+    },
+    "inventar": "Engels' zerrissener Brief: {n} von {m} Schnipseln. Nach Station IV setzt ihr ihn zusammen.",
+    "inventarFertig": "Engels' Brief an den Vater: zusammengesetzt. Ihr findet ihn im Tagebuch unter Funde.",
+    "info": {
+      "titel": "Erfunden, aber möglich: Engels und sein Vater",
+      "abschnitte": [
+        {
+          "kopf": "Was belegt ist",
+          "marke": "tatsache",
+          "punkte": [
+            "Engels' Vater, Friedrich Engels (1796–1860), war Textilfabrikant in Barmen und Mitinhaber der Firma Ermen & Engels in Manchester.",
+            "Die Familie war streng fromm (Pietisten). 1842 schickte der Vater seinen Sohn nach Manchester, damit er dort in der Firma arbeitet.",
+            "Anfang 1845 schrieb Engels an Marx: Der Handel sei ihm zuwider, und er wolle nicht Fabrikant werden. Sein frommer Vater sei schon sehr aufgebracht und unterstütze ihn nur noch beim Studium, nicht bei seinen kommunistischen Zielen.",
+            "Um Ostern 1845 ging Engels nach Konflikten mit den Behörden und mit seinem Vater nach Brüssel."
+          ]
+        },
+        {
+          "kopf": "Was die Forschung daraus schließt",
+          "marke": "kontroverse",
+          "punkte": [
+            "Biografen wie Tristram Hunt sehen in der Reise nach Manchester einen Versuch des Vaters, den Sohn von seinen radikalen Freunden fernzuhalten. Der Versuch scheiterte: Gerade in Manchester wurde Engels zum Kritiker der Fabrikarbeit.",
+            "Hunt beschreibt Engels' späteres Leben als Doppelleben: angesehener Kaufmann und Kommunist zugleich."
+          ]
+        },
+        {
+          "kopf": "Was danach geschah",
+          "marke": "tatsache",
+          "punkte": [
+            "1850 kehrte Engels doch in die Firma zurück und arbeitete dort 20 Jahre. Ab 1864 war er Teilhaber mit guten Einkünften, 1869 schied er aus. Mit seinem Geld unterstützte er die Familie Marx in London."
+          ]
+        },
+        {
+          "kopf": "Was erfunden ist",
+          "marke": "nachbildung",
+          "punkte": [
+            "Diesen Brief gibt es nicht. Datum, Wortlaut und das Zerreißen sind erfunden. Die Begriffe „Mehrwert“ und „Akkumulation“ hat Marx erst Jahre später ausgearbeitet. Engels hätte sie 1845 so nicht schreiben können.",
+            "Möglich wäre der Brief trotzdem gewesen: Seine Gründe stammen aus Engels' eigenen Briefen von 1845 und aus seinem Buch „Die Lage der arbeitenden Klasse in England“ (1845)."
+          ]
+        }
+      ],
+      "frage": "Engels wurde später selbst Teilhaber. Spricht das gegen die Argumente in seinem Brief? Denkt an seinen Satz: „Ich werfe Dir also nichts vor, was nicht jeder Fabrikant tun muss.“",
+      "quelle": "Neue Deutsche Biographie, Bd. 4 (1959): W. Köllmann, „Engels, Friedrich (1796–1860)“, und H. Bollnow, „Engels, Friedrich (1820–1895)“; Engels an Marx, 20.01.1845 und 22.02.–07.03.1845 (MEW 27); Tristram Hunt: Friedrich Engels. Der Mann, der den Marxismus erfand (2012, engl. 2009); Gustav Mayer: Friedrich Engels. Eine Biographie (1920/1934, Standardwerk).",
+      "knopf": "Weiter"
+    }
+  }
 }

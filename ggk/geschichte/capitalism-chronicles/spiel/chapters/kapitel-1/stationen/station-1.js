@@ -50,6 +50,7 @@ export class Station1 {
     const d = this.eintrag('d_zweistaedte');
     await ui.karte({ titel: d.titel, marke: d.marke, zitat: d.zitat, text: d.text, quelle: d.quelle });
     await ui.dialog(dlg.nachOrdnen1);
+    await this.schnipsel?.('F');
     if (!(await auswahl(ui, t.denkpause))) return;
     ui.schalteFrei('b_quellenkritik');
     const text = await notiz(ui, t.denkpause.notiz, spiel.stand.notizen.s1_denkpause || '');

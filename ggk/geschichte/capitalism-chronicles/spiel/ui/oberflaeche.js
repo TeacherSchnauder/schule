@@ -60,7 +60,6 @@ export class Oberflaeche {
             <div class="lade">Die Stadt wird aufgebaut …</div>
             <div class="knoepfe" hidden></div>
             <p class="hinweis"></p>
-            <p class="rechtliches"><a href="../../../../impressum.html" target="_blank" rel="noopener">Impressum und Datenschutz</a></p>
           </div>
         </div>
       </div>`;
@@ -361,7 +360,7 @@ export class Oberflaeche {
         <div class="eintrag ${this.neu.has(e.id) ? 'neu' : ''}">
           <h3><span>${esc(e.titel)}</span>${this.markeHtml(e.marke)}</h3>
           ${e.zitat ? `<blockquote>„${esc(e.zitat)}“</blockquote>` : ''}
-          <p>${esc(e.text)}</p>
+          ${String(e.text).split('\n').map((t) => `<p>${esc(t)}</p>`).join('')}
           ${e.quelle ? `<p class="quelle">Quelle: ${esc(e.quelle)}</p>` : ''}
         </div>`).join('') : `<div class="leer">Hier steht noch nichts. Einträge kommen hinzu, während ihr die Stadt erkundet.</div>`;
       if (r === 'funde') {
@@ -434,7 +433,8 @@ export class Oberflaeche {
       `<p class="klein">${esc(this.daten.kapitel.inventarText || 'Funde sichert ihr am Ende jeder Station. Belege sind eure Beweisstücke: In Station V baut ihr daraus die Anklageschrift.')}</p>` +
       (funde.length ? funde.map((s) => `<div class="beleg"><b>Fund ${s.roemisch}: ${esc(s.fund)}</b>Station „${esc(s.name)}“</div>`).join('') : '') +
       (belege.length ? belege.map((b) => `<div class="beleg"><b>${esc(b.titel)}</b>${esc(b.text)}</div>`).join('') : '') +
-      (!funde.length && !belege.length ? '<div class="leer">Noch keine Funde oder Belege.</div>' : '');
+      (this.inventarZusatz ? this.inventarZusatz() : '') +
+      (!funde.length && !belege.length && !(this.inventarZusatz && this.inventarZusatz()) ? '<div class="leer">Noch keine Funde oder Belege.</div>' : '');
   }
 
   oeffneStadtplan() {

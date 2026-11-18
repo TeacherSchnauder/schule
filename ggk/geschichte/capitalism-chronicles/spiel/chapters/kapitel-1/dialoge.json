@@ -491,5 +491,59 @@
       "wer": "marx",
       "text": "Und er wird hören wollen, was die Gegenseite zu sagen hat. Soll sie sprechen."
     }
+  ],
+  "briefErst": [
+    {
+      "wer": "engels",
+      "text": "Nimm das hier. Ich habe gestern Nacht an meinen Vater geschrieben und den Brief dann zerrissen."
+    },
+    {
+      "wer": "marx",
+      "text": "Warum zerrissen?"
+    },
+    {
+      "wer": "engels",
+      "text": "Weil ich nicht wusste, ob ich ihn abschicken soll. Die Stücke bekommst du nach und nach, wenn wir weiterkommen."
+    }
+  ],
+  "briefNoch": {
+    "wer": "engels",
+    "text": "Noch ein Stück von meinem Brief. Heb es gut auf."
+  },
+  "briefStart": [
+    {
+      "wer": "engels",
+      "text": "Bevor wir aufbrechen: Ich will den Brief an meinen Vater heute Abend doch abschicken. Hilf mir, ihn zusammenzusetzen."
+    },
+    {
+      "wer": "engels",
+      "text": "Zwei Wörter fehlten mir beim Schreiben. Du hast sie heute gefunden."
+    },
+    {
+      "wer": "marx",
+      "text": "Und die Reihenfolge? Du hast die Stücke nicht nummeriert."
+    },
+    {
+      "wer": "engels",
+      "text": "Die ergibt sich aus dem Argument. Und sieh genau hin: In meiner Tasche ist ein Stück gelandet, das nicht dazugehört."
+    }
+  ],
+  "briefNachgereicht": {
+    "wer": "engels",
+    "text": "Ein paar Stücke hatte ich noch in der Manteltasche. Hier sind alle."
+  },
+  "briefFertig": [
+    {
+      "wer": "engels",
+      "text": "Jetzt hat jedes Ding seinen Namen. Ich schicke ihn heute Abend ab."
+    },
+    {
+      "wer": "marx",
+      "text": "Dein Vater wird widersprechen."
+    },
+    {
+      "wer": "engels",
+      "text": "Das soll er. Dann streiten wir wenigstens über Gründe."
+    }
   ]
 }

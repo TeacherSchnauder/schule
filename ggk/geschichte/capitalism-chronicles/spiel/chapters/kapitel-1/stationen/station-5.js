@@ -8,6 +8,9 @@ export class Station5 {
   constructor(spiel, ui, daten, aussen, feld) {
     this.spiel = spiel; this.ui = ui; this.daten = daten; this.nord = aussen.nord; this.feld = feld;
     this.t = daten.station5; this.laeuft = false;
+    this.briefFertig = () => true;   // wird von kapitel.js gesetzt
+    // schon hier festlegen: aktualisiere() kann vor start() aufgerufen werden (Weiterspielen im Hof am Irk)
+    this.aufbruchOrt = { x: this.nord.hof.eintritt.x - 0.6, y: 0, z: this.nord.hof.eintritt.z };
   }
   get s() { return this.spiel.stand.s5; }
   setze(n) { this.spiel.stand.s5 = n; this.spiel.sichere(); this.nachher?.(); }
@@ -20,8 +23,7 @@ export class Station5 {
     feld.setzeGrimshaw(this.s >= 2);
     const einmal = (fn) => async () => { if (this.laeuft) return; this.laeuft = true; try { await fn(); } finally { this.laeuft = false; } };
     const reg = (id, szene, pos, text, wenn, tu, radius = 2.2, hoehe = 1.9) => spiel.registriere({ id, szene, pos, text, wenn, tu: einmal(tu), radius, hoehe });
-    this.aufbruchOrt = { x: nord.hof.eintritt.x - 0.6, y: 0, z: nord.hof.eintritt.z };
-    reg('aufbruch', 'aussen', this.aufbruchOrt, 'Zur Versammlung aufbrechen', () => spiel.ort.bereich === 'irkhof' && this.hofFertig, () => this.aufbruch(), 2.6);
+    reg('aufbruch', 'aussen', this.aufbruchOrt, 'Zur Versammlung aufbrechen', () => spiel.ort.bereich === 'irkhof' && this.hofFertig && this.briefFertig(), () => this.aufbruch(), 2.6);
     reg('holt', 'feld', p.holt, 'Mr. Holt ansprechen', () => true,
       () => (this.s === 0 ? this.holt() : this.ui.kommentar(this.daten.dialoge.holtKurz, 3500)), 2.4, 3.1);
     reg('tribuene', 'feld', p.tribuene, 'Anklageschrift zusammenstellen', () => this.s === 1, () => this.anklage(), 2.0);
@@ -33,7 +35,7 @@ export class Station5 {
   aktualisiere() {
     const { spiel, feld } = this, z = this.t.ziele, p = feld.punkte, s = this.s;
     const hoch = (v, y) => ({ x: v.x, y, z: v.z });
-    if (spiel.szeneName !== 'feld') return spiel.setzeZiel(z.hof, hoch(this.aufbruchOrt, 2.6), 'aussen');
+    if (spiel.szeneName !== 'feld') return spiel.setzeZiel(this.briefFertig() ? z.hof : z.brief, hoch(this.aufbruchOrt, 2.6), 'aussen');
     const ziele = [[z.holt, hoch(p.holt, 3.6)], [z.anklage, hoch(p.tribuene, 2.6)], [z.grimshaw, hoch(p.grimshaw, 2.7)], [z.kapsel, hoch(p.kapsel, 2.6)], [z.fertig, null]];
     const [text, pos] = ziele[Math.min(s, FERTIG5)];
     spiel.setzeZiel(text, pos, 'feld');

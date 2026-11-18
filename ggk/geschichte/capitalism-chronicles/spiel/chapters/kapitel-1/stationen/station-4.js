@@ -61,7 +61,7 @@ export class Station4 {
     await ui.karte({ titel: e.titel, marke: e.marke, zitat: e.zitat, text: e.text, quelle: e.quelle, knopf: spiel.stand.tagebuch.includes(e.id) ? 'Weiter' : 'Ins Tagebuch' });
     ui.schalteFrei(e.id);
     spiel.stand.gesehen[id] = true;
-    if (this.s === 0 && this.zahl(HOF) === 3) { await ui.dialog(this.daten.dialoge.nachHof); this.setze(1); }
+    if (this.s === 0 && this.zahl(HOF) === 3) { await ui.dialog(this.daten.dialoge.nachHof); await this.schnipsel?.('B'); this.setze(1); }
     else this.nachher();
   }
 
@@ -100,6 +100,7 @@ export class Station4 {
     if (!ok) return;
     ui.schalteFrei('d_chadwick');
     await ui.dialog(this.daten.dialoge.nachTabelle);
+    await this.schnipsel?.('E');
     this.setze(3); this.start();
   }
 
