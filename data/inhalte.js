@@ -28,7 +28,7 @@ window.INHALTE = {
 
     { id: "awl", name: "AWL", ordner: "awl", icon: "buch",
       kurz: "Allgemeine Wirtschaftslehre – Berufsschule, Verwaltungsfachangestellte.",
-      status: "aktiv", rolle: "sammlung" },
+      status: "aktiv", rolle: "fach" },
 
     { id: "bwl", name: "BWL", ordner: "bwl", icon: "diagramm",
       kurz: "Betriebswirtschaftslehre – Unternehmen als Handlungseinheit.",
@@ -99,6 +99,10 @@ window.INHALTE = {
     { id: "recht-vertragsrecht", fach: "rechtslehre", name: "Vertragsrecht",
       ordner: "rechtslehre/vertragsrecht", status: "aktiv",
       kurz: "Zustandekommen von Verträgen, Pflichten aus dem Kaufvertrag und Störungen bei der Erfüllung." },
+
+    { id: "awl-entgelt-handelsrecht", fach: "awl", name: "Entgelt, soziale Sicherung und Handelsrecht",
+      ordner: "awl/entgelt-und-handelsrecht", status: "aktiv",
+      kurz: "Sozialversicherung und Altersvorsorge, Gehaltsabrechnung mit Beitragsbemessungsgrenzen, Kaufmann, Firma, Vollmachten und KG." },
 
     { id: "ki-rechtslehre", fach: "ki-coaches", name: "Rechtslehre",
       ordner: "ki-coaches/rechtslehre", status: "aktiv",
@@ -232,6 +236,17 @@ window.INHALTE = {
       kurz: "Jump-and-run-Lernspiel zu Lieferverzug, Zahlungsverzug mit Verzugszinsen und Annahmeverzug – fünf Levels von Begriffen über Fälle und Fristen bis zum Urteil, mit Lernkompass.",
       faecher: ["rechtslehre", "pruefungsvorbereitung"],
       material: ["Jump-and-run-Lernspiel", "5 Levels", "Lernkompass"]
+    },
+
+    {
+      id: "netto-nova",
+      name: "Netto Nova: Gehalt, Sozialversicherung, HGB",
+      bereich: "awl-entgelt-handelsrecht",
+      pfad: "awl/entgelt-und-handelsrecht/netto-nova",
+      status: "aktiv",
+      kurz: "8-Bit-Weltraum-Lernspiel: drei Sektoren zu Sozialversicherung, Gehaltsabrechnung und Kaufmann bis KG, dann ein Endboss, den nur schwere Rechen- und Fallfragen besiegen – mit Lernkompass.",
+      faecher: ["awl", "pruefungsvorbereitung"],
+      material: ["Weltraum-Lernspiel", "Endboss", "Lernkompass"]
     },
 
     {

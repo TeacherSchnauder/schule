@@ -3,8 +3,10 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 16.11.2026 – neu: 3D-Lernspiel „The Capitalism Chronicles“ unter GGK › Geschichte
-und Fachseite FWS (Verweis). Vorher: Rechtslehre als Fach mit eigenem Inhalt
+**Stand:** 18.11.2026 – neu: AWL als Fach mit eigenem Inhalt (Themenbereich
+„Entgelt, soziale Sicherung und Handelsrecht“, Weltraum-Lernspiel „Netto Nova“).
+Vorher: 3D-Lernspiel „The Capitalism Chronicles“ unter GGK › Geschichte
+und Fachseite FWS (Verweis). Davor: Rechtslehre als Fach mit eigenem Inhalt
 (Themenbereich Vertragsrecht, erstes Lernspiel „Wissenslauf“).
 
 ---
@@ -107,7 +109,16 @@ schule/
 │           ├── coach.html      Schülerseite: Themenkarte, Prompt, Arbeitsweise, KI-Protokoll
 │           └── README.md
 │
-├── awl/  bwl/  vwl/  fws/      Fachseiten, die verlinken
+├── awl/                        Fach mit eigenem Inhalt (Allgemeine Wirtschaftslehre)
+│   ├── index.html              Themenbereiche + alle Materialien zu AWL
+│   └── entgelt-und-handelsrecht/
+│       ├── index.html
+│       └── netto-nova/
+│           ├── index.html      Lehrseite
+│           ├── spiel.html      Weltraum-Lernspiel „Netto Nova“, eigene Adresse für QR-Code
+│           └── README.md
+│
+├── bwl/  vwl/  fws/            Fachseiten, die verlinken
 └── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
 ```
 
@@ -116,15 +127,15 @@ schule/
 ## Zwei Arten von Fächern
 
 **Fächer mit eigenem Inhalt** (`rolle: "fach"`) tragen die Inhaltsseiten im
-eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `rechtslehre/`, `ki-coaches/`. Ihre Fachseite zeigt
+eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `rechtslehre/`, `awl/`, `ki-coaches/`. Ihre Fachseite zeigt
 die Themenbereiche als Kacheln.
 
 **Fächer als Verweis** (`rolle: "sammlung"`) haben keine eigenen Inhaltsseiten.
 Sie zeigen Themen aus anderen Fachbäumen, damit ein Thema nur einmal existiert
-und trotzdem unter mehreren Fächern auftaucht: `awl/`, `bwl/`, `vwl/`, `fws/`,
+und trotzdem unter mehreren Fächern auftaucht: `bwl/`, `vwl/`, `fws/`,
 `lernfelder/`, `pruefungsvorbereitung/`, `methodenkoffer/`.
 
-Die Fachseite von Rechtslehre zeigt beides: die eigenen Themenbereiche
+Die Fachseiten von Rechtslehre und AWL zeigen beides: die eigenen Themenbereiche
 (`data-kacheln="bereiche"`) und darunter alle Themen mit `"rechtslehre"` in
 `faecher` (`data-kacheln="themen-fach"`), also auch den Lerncoach unter
 `ki-coaches/`. Das Feld `rolle` ist nur Dokumentation; `site.js` wertet es
@@ -323,6 +334,27 @@ gesetzt. Fragen ändert nur die Lehrkraft durch Neuhochladen der Datei.
 des Geräts; der Export lässt sich in den passenden KI-Coach einfügen.
 
 ---
+
+## Lernspiel „Netto Nova“
+
+Weltraum-Lernspiel in 8-Bit-Grafik: Das Schiff weicht Gegnern aus und schießt
+automatisch; vor jeder Frage stoppt das Spiel. Mehrere Sektoren mit
+Auswahlfragen, am Ende ein einziger Endboss mit schweren Fragen. Erstes Set:
+`awl/entgelt-und-handelsrecht/netto-nova/spiel.html` (Sozialversicherung,
+Gehaltsabrechnung, Kaufmann bis KG).
+
+- **Fragenformat:** wie beim Wissenslauf, erweitert um `=` (Datenblatt),
+  `@ Konzept | Verweis` (Thema für den Lernkompass), `?1`/`?2`/`?3`
+  (Anforderungsbereich), `~` nach einer falschen Antwort (typische
+  Verwechslung) und `# BOSS: Name | Zeit`. Details im README des Sets.
+- **Lernkompass:** bewertet je Konzept über mehrere Fragen (sicher,
+  wackelig, üben), trennt Zeitüberschreitungen vom Wissen (⏱) und meldet
+  wiederholte Verwechslungen als vermutete Fehlvorstellung.
+- **Speicherschlüssel:** `nn_…_v1_<kürzel>`, im ersten Set `_awl1`. Jedes
+  weitere Set braucht ein eigenes Kürzel.
+- **Schülerversion:** ohne Editor; Fragen ändert nur die Lehrkraft durch
+  Neuhochladen von `spiel.html`. Fragen und Lösungen sind öffentlich – nur
+  Übungsfragen.
 
 ## KI-Coaches
 

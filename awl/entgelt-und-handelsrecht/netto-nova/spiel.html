@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Netto Nova · Gehaltsabrechnung, Sozialversicherung, HGB</title>
+<meta name="description" content="Netto Nova: 8-Bit-Weltraum-Lernspiel zu Sozialversicherung, Altersvorsorge, Gehaltsabrechnung, Kaufmann, Vollmachten und KG (AWL, Verwaltungsfachangestellte).">
+<style>
+:root{--cy:#3ff0ff;--mg:#ff3fb4;--ye:#ffe14a;--gr:#6dff7a;--rd:#ff5a6e;--bg:#07051a;--pn:rgba(10,7,32,.95);--mono:ui-monospace,"Cascadia Mono","Consolas","Courier New",monospace;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#020108;color:#fff;font-family:var(--sans);overflow:hidden;-webkit-tap-highlight-color:transparent}
+body{display:flex;align-items:center;justify-content:center;height:100dvh}
+#wrap{position:relative;aspect-ratio:9/16;height:min(100dvh,177.78vw);max-width:100vw;container-type:size;overflow:hidden;background:var(--bg);touch-action:none;user-select:none;-webkit-user-select:none}
+#cv{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.hidden{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+/* HUD */
+#hud{position:absolute;left:0;right:0;top:0;padding:1.6cqw 2cqw;font-family:var(--mono);font-size:3.3cqw;font-weight:700;display:flex;flex-direction:column;gap:.8cqw;pointer-events:none;text-shadow:0 0 4px #000}
+#hud .row{display:flex;align-items:center;justify-content:space-between;gap:2cqw}
+#hud .btns{display:flex;gap:1.5cqw;pointer-events:auto}
+#hud .btns button{background:rgba(0,0,0,.55);border:2px solid var(--cy);width:8cqw;height:8cqw;font-size:4cqw;line-height:1;padding:0;color:var(--cy)}
+#secname{color:var(--ye);letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hull{color:var(--rd);letter-spacing:.1em}
+#cells{color:var(--cy)}
+#items span{margin-left:1.6cqw}
+#bossbar{height:2.2cqw;border:2px solid var(--mg);background:#200818;position:relative}
+#bossbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--mg),var(--ye));transition:width .4s}
+#bosslbl{color:var(--mg);font-size:3cqw}
+/* Frage */
+#qbox{position:absolute;left:2.5cqw;right:2.5cqw;top:19cqw;max-height:43cqh;overflow:auto;background:var(--pn);border:2px solid var(--cy);box-shadow:0 0 0 2px #000,0 0 18px rgba(63,240,255,.35);padding:2.6cqw 3cqw}
+#qbox.boss{border-color:var(--mg);box-shadow:0 0 0 2px #000,0 0 18px rgba(255,63,180,.4)}
+#qhead{display:flex;justify-content:space-between;gap:2cqw;font-family:var(--mono);font-size:3cqw;color:var(--ye);margin-bottom:1.2cqw}
+#qtime{color:var(--cy);white-space:nowrap}
+#qbar{height:1.6cqw;background:#1b1640;margin-bottom:2cqw}
+#qbar i{display:block;height:100%;width:100%;background:var(--cy)}
+#qbar.low i{background:var(--rd)}
+#qtext{font-size:clamp(14px,4.4cqw,22px);line-height:1.38}
+#qtools{display:flex;gap:2cqw;margin-top:2cqw;flex-wrap:wrap}
+#qtools button,.tbtn{background:#140f36;border:2px solid var(--ye);color:var(--ye);font-family:var(--mono);font-size:3.2cqw;padding:1.2cqw 2.2cqw}
+#qtools button:disabled{opacity:.35;cursor:default}
+/* Antworten */
+#answers{position:absolute;left:2.5cqw;right:2.5cqw}
+#answers.gates{top:calc(19cqw + 45cqh);display:flex;gap:2cqw}
+#answers.cockpit{bottom:3cqw;display:flex;flex-direction:column;gap:1.8cqw;max-height:44cqh;overflow:auto}
+.ans{position:relative;background:rgba(8,6,30,.92);border:2px solid var(--mg);color:#fff;text-align:left;font-size:clamp(13px,4cqw,20px);line-height:1.3;padding:2cqw 2.5cqw 2cqw 8cqw;min-height:11cqw}
+.ans b{position:absolute;left:2cqw;top:1.8cqw;font-family:var(--mono);color:var(--ye);font-size:3.4cqw}
+.gates .ans{flex:1 1 0;min-width:0;overflow-wrap:anywhere;hyphens:auto;-webkit-hyphens:auto;font-size:clamp(12px,3.6cqw,18px);text-align:center;padding:7cqw 1.6cqw 2.4cqw;min-height:24cqw;border-width:3px;border-style:solid;border-color:var(--mg) var(--cy) var(--cy) var(--cy);box-shadow:inset 0 0 12px rgba(255,63,180,.35)}
+.gates .ans b{left:50%;transform:translateX(-50%);top:1.4cqw}
+.gates .ans.sel{border-color:var(--ye);box-shadow:inset 0 0 16px rgba(255,225,74,.6),0 0 10px rgba(255,225,74,.5)}
+.ans.ok{border-color:var(--gr)!important;background:rgba(20,70,30,.95)}
+.ans.bad{border-color:var(--rd)!important;background:rgba(80,15,25,.95)}
+.ans.gone{opacity:.15;pointer-events:none}
+.ans:disabled{cursor:default}
+/* Feedback */
+#fb{position:absolute;left:2.5cqw;right:2.5cqw;bottom:3cqw;max-height:56cqh;overflow:auto;background:var(--pn);border:2px solid var(--gr);padding:3cqw;font-size:clamp(13px,4cqw,19px);line-height:1.4}
+#fb.bad{border-color:var(--rd)}#fb.time{border-color:var(--ye)}
+#fb h3{margin:0 0 1.5cqw;font-family:var(--mono);font-size:4.6cqw}
+#fb .ok{color:var(--gr)}#fb .bad{color:var(--rd)}#fb .time{color:var(--ye)}
+#fb p{margin:.8em 0}
+#fb .rw{color:var(--ye);font-family:var(--mono);font-size:3.4cqw}
+.go{display:block;width:100%;margin-top:2.5cqw;background:var(--cy);color:#05031a;border:0;font-family:var(--mono);font-weight:800;font-size:4.2cqw;padding:2.6cqw;box-shadow:0 4px 0 #0a7f8c}
+.go:active{transform:translateY(2px);box-shadow:0 2px 0 #0a7f8c}
+.go.alt{background:#1c1650;color:var(--cy);border:2px solid var(--cy);box-shadow:none}
+.go.mg{background:var(--mg);color:#fff;box-shadow:0 4px 0 #8c1f62}
+/* Screens */
+#screen{position:absolute;inset:0;overflow:auto;padding:6cqw 5cqw 8cqw;background:rgba(4,2,16,.95)}
+#screen h1{font-family:var(--mono);font-size:10cqw;line-height:1;margin:6cqw 0 1cqw;color:var(--ye);text-shadow:3px 3px 0 var(--mg),6px 6px 0 #2a0d4a;letter-spacing:.04em;text-align:center}
+#screen h2{font-family:var(--mono);font-size:5.4cqw;color:var(--cy);margin:4cqw 0 2cqw;text-align:center}
+#screen .sub{text-align:center;color:#d8d2ff;font-size:3.6cqw;margin:0 0 4cqw}
+#screen p,#screen li{font-size:clamp(13px,3.8cqw,18px);line-height:1.45}
+#screen .box{background:var(--pn);border:2px solid #3a2f7a;padding:3cqw;margin:3cqw 0}
+.opt{display:flex;align-items:center;gap:2.5cqw;font-size:3.7cqw;margin:2cqw 0}
+.opt input{width:5cqw;height:5cqw;accent-color:var(--mg)}
+.small{font-size:3.1cqw!important;color:#a9a3d6}
+/* Kompass */
+.chips{display:flex;flex-wrap:wrap;gap:1.6cqw;justify-content:center;margin:2cqw 0}
+.chip{font-family:var(--mono);font-size:3.2cqw;padding:1cqw 2cqw;border:2px solid}
+.c-ueben{color:var(--rd);border-color:var(--rd)}.c-wack{color:var(--ye);border-color:var(--ye)}.c-sicher{color:var(--gr);border-color:var(--gr)}.c-zeit{color:var(--cy);border-color:var(--cy)}.c-offen{color:#9a94c8;border-color:#5a5490}
+.kc{background:var(--pn);border-left:5px solid;padding:2.6cqw 3cqw;margin:2.4cqw 0}
+.kc h4{margin:0 0 1cqw;font-size:4cqw;display:flex;justify-content:space-between;gap:2cqw}
+.kc h4 small{font-family:var(--mono);font-size:3cqw;white-space:nowrap}
+.kc .why{margin:.4em 0;color:#e6e1ff}
+.kc details{margin-top:1.4cqw;font-size:3.5cqw}
+.kc summary{cursor:pointer;color:var(--cy);font-family:var(--mono);font-size:3.2cqw}
+.kc .wq{border-top:1px dashed #3a2f7a;padding-top:1.4cqw;margin-top:1.4cqw}
+.kc .wq em{color:var(--rd);font-style:normal}.kc .wq strong{color:var(--gr)}
+.mis{border:2px dashed var(--mg);padding:2.4cqw 3cqw;margin:3cqw 0;background:rgba(60,10,45,.6)}
+.mis h4{margin:0 0 1cqw;color:var(--mg);font-family:var(--mono);font-size:3.6cqw}
+/* Modal + Toast */
+#modal{position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:4cqw;z-index:5}
+#modal .in{background:var(--pn);border:2px solid var(--ye);padding:3.5cqw;max-height:90cqh;overflow:auto;width:100%}
+#modal h3{margin:0 0 2cqw;font-family:var(--mono);color:var(--ye);font-size:4.4cqw}
+#modal li{font-size:clamp(13px,3.8cqw,18px);line-height:1.45;margin:.35em 0}
+#toast{position:absolute;left:50%;top:30cqw;transform:translateX(-50%);font-family:var(--mono);font-weight:800;font-size:4.2cqw;color:var(--ye);text-shadow:2px 2px 0 #000;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .25s;z-index:4}
+#toast.on{opacity:1}
+#scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+#wrap.paused #qbox,#wrap.paused #answers,#wrap.paused #fb{visibility:hidden}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv" width="270" height="480"></canvas>
+  <div id="scan"></div>
+  <div id="hud" class="hidden">
+    <div class="row"><span id="secname"></span><span class="btns"><button id="bData" title="Datenblatt (I)" aria-label="Datenblatt">≡</button><button id="bMute" title="Ton (M)" aria-label="Ton an oder aus">♪</button><button id="bPause" title="Pause (P)" aria-label="Pause">II</button></span></div>
+    <div class="row"><span id="hull"></span><span id="cells"></span></div>
+    <div class="row"><span id="items"></span><span id="bosslbl" class="hidden">ABZUGS-KOLOSS</span></div>
+    <div id="bossbar" class="hidden"><i></i></div>
+  </div>
+  <div id="qbox" class="hidden"><div id="qhead"><span id="qtag"></span><span id="qtime"></span></div><div id="qbar"><i></i></div><div id="qtext"></div><div id="qtools" class="hidden"><button id="bJoker">50:50-Joker</button><button id="bStretch">+30 s Zeitdehner</button></div></div>
+  <div id="answers" class="hidden"></div>
+  <div id="fb" class="hidden"></div>
+  <div id="screen"></div>
+  <div id="modal" class="hidden"></div>
+  <div id="toast"></div>
+</div>
+<script>
+const SAMPLE = `= Krankenversicherung: 14,6 % + durchschnittlicher Zusatzbeitrag 2,9 %, je zur Hälfte AG und AN (AN zusammen 8,75 %)
+= Pflegeversicherung: 3,6 %, je 1,8 % AG und AN; Kinderlose ab 23 Jahren zahlen 0,6 % Zuschlag allein (AN dann 2,4 %)
+= Rentenversicherung: 18,6 %, je 9,3 % AG und AN
+= Arbeitslosenversicherung: 2,6 %, je 1,3 % AG und AN
+= Beitragsbemessungsgrenze KV/PV: 5.812,50 € im Monat
+= Beitragsbemessungsgrenze RV/AV: 8.450,00 € im Monat
+= Kirchensteuer Baden-Württemberg: 8 % der Lohnsteuer
+= In diesem Spiel: höchstens 1 Kind; Unfallversicherung und Umlagen werden nicht berechnet
+
+# Sektor 1 · Sicherungsnebel | 35
+@ Zweige, Träger und Fälle | Lerncheckliste 1
+?2 Herr Yilmaz ist Tarifbeschäftigter im Bürgeramt. Auf dem direkten Weg zur Arbeit stürzt er mit dem Fahrrad und bricht sich den Arm. Welcher Träger ist für die Behandlung zuständig?
++ Unfallkasse (gesetzliche UV)
+- Seine Krankenkasse ~ Wegeunfall nicht als Fall der Unfallversicherung erkannt
+- Deutsche Rentenversicherung ~ Träger der Sozialversicherung verwechselt
+! Der direkte Weg zur Arbeit ist in der gesetzlichen Unfallversicherung versichert (Wegeunfall, § 8 Abs. 2 SGB VII). Träger für Beschäftigte der Kommunen ist die Unfallkasse.
+?1 In einem Amt arbeiten die Beamtin Frau Kern und der Tarifbeschäftigte Herr Lutz. Wer zahlt Beiträge zur gesetzlichen Renten- und Arbeitslosenversicherung?
++ Nur Herr Lutz
+- Beide ~ Beamte wie Tarifbeschäftigte behandelt
+- Nur Frau Kern ~ Beamte und Tarifbeschäftigte vertauscht
+! Beamte sind in der Renten- und Arbeitslosenversicherung versicherungsfrei, sie werden vom Dienstherrn versorgt. Tarifbeschäftigte sind pflichtversichert.
+
+@ Finanzierung und Ausnahmen | Lerncheckliste 1
+?2 Welche Aussage zur Finanzierung der Sozialversicherung ist richtig?
++ Die UV zahlt nur der AG, den Kinderlosenzuschlag nur der AN.
+- Die UV und den Kinderlosenzuschlag zahlt nur der AG. ~ Kinderlosenzuschlag dem Arbeitgeber zugeordnet
+- Die UV zahlt nur der AN, den Kinderlosenzuschlag nur der AG. ~ Ausnahmen der paritätischen Finanzierung vertauscht
+- Beide werden zwischen AG und AN je zur Hälfte geteilt. ~ Alle Beiträge für paritätisch gehalten
+! Das sind die beiden Ausnahmen von der paritätischen Finanzierung. Die UV trägt der Arbeitgeber allein, den Kinderlosenzuschlag zur Pflegeversicherung der Arbeitnehmer allein.
+?2 Warum finanziert der Arbeitgeber die gesetzliche Unfallversicherung allein?
++ Sie ersetzt seine Haftung für Arbeitsunfälle
+- Arbeitnehmer erhalten aus ihr keine Leistungen ~ Leistungen der Unfallversicherung verkannt
+- Der Staat erstattet ihm die Beiträge ~ Unfallversicherung für steuerfinanziert gehalten
+! Die UV löst die Haftung des Unternehmers für Arbeitsunfälle ab (§ 104 SGB VII). Dafür trägt er die Beiträge allein.
+?2 Welche Leistung wird aus Steuern bezahlt und nicht aus Beiträgen zur Arbeitslosenversicherung?
++ Grundsicherung für Arbeitsuchende
+- Arbeitslosengeld der Arbeitsagentur ~ Arbeitslosengeld und Grundsicherung verwechselt
+- Kurzarbeitergeld der Arbeitsagentur ~ Arbeitslosengeld und Grundsicherung verwechselt
+! Die Grundsicherung für Arbeitsuchende ist steuerfinanziert und keine Versicherungsleistung. Arbeitslosengeld und Kurzarbeitergeld zahlt die Bundesagentur für Arbeit aus Beiträgen.
+
+@ Rente: Umlageverfahren und Demografie | Lerncheckliste 2
+?1 Woher kommt im Umlageverfahren das Geld für die Renten, die heute ausgezahlt werden?
++ Von heutigen Beitragszahlern und dem Bund
+- Aus den früher angesparten Beiträgen ~ Umlageverfahren mit Kapitaldeckung verwechselt
+- Aus Erträgen von Aktienfonds ~ Umlageverfahren mit Kapitaldeckung verwechselt
+! Die Beiträge von heute bezahlen die Renten von heute, dazu kommt der Bundeszuschuss. Angespart wird im Umlageverfahren nicht.
+?2 Die Lebenserwartung steigt, die Geburtenrate bleibt niedrig. Beitragssatz, Rentenniveau und Renteneintrittsalter sollen trotzdem gleich bleiben. Was folgt daraus?
++ Der Bundeszuschuss muss steigen
+- Es ändert sich nichts ~ Wirkung des demografischen Wandels unterschätzt
+- Rücklagen der Rentner decken die Lücke ~ Umlageverfahren mit Kapitaldeckung verwechselt
+! Auf jeden Beitragszahler kommen mehr Rentner (Altenquotient steigt). Sind die anderen drei Stellschrauben fest, bleibt nur ein höherer Bundeszuschuss (vereinfacht: auch Beschäftigung, Zuwanderung und Löhne wirken).
+?2 Angenommen, das Rentenniveau sinkt von 48 % auf 46 %. Was bedeutet das?
++ Die Standardrente wächst langsamer als Löhne
+- Jede laufende Rente wird um 2 % gekürzt ~ Rentenniveau mit der eigenen Rente verwechselt
+- Jeder erhält 46 % seines letzten Gehalts ~ Rentenniveau mit der eigenen Rente verwechselt
+! Das Rentenniveau vergleicht eine Standardrente (45 Beitragsjahre, Durchschnittsverdienst) mit dem Durchschnittslohn. Es ist ein Verhältniswert, keine Aussage über die eigene Rente.
+
+@ Schichtenmodell und Förderung | Lerncheckliste 3
+?1 Zu welcher Schicht der Altersvorsorge gehört die Basisrente („Rürup-Rente“)?
++ Schicht 1
+- Schicht 2 ~ Basisrente mit Riester-Rente verwechselt
+- Schicht 3 ~ Private Verträge automatisch der 3. Schicht zugeordnet
+! Die Basisrente gehört wie die gesetzliche Rente zur Basisversorgung (Schicht 1). Riester-Rente und betriebliche Altersversorgung bilden Schicht 2.
+?2 Frau Brandt lässt monatlich 100 € ihres Bruttogehalts in eine Betriebsrente umwandeln (innerhalb der Höchstbeträge). Was gilt?
++ Ihr Netto sinkt um weniger als 100 €.
+- Ihr Netto sinkt um genau 100 €. ~ Förderung der Entgeltumwandlung übersehen
+- Ihr Netto steigt durch die Förderung. ~ Förderung der Entgeltumwandlung überschätzt
+- Die Betriebsrente ist später steuerfrei. ~ Nachgelagerte Besteuerung verkannt
+! Der umgewandelte Betrag ist steuerfrei und bis 4 % der BBG RV beitragsfrei, deshalb sinkt das Netto um weniger als 100 €. Dafür wird die Betriebsrente später versteuert (nachgelagerte Besteuerung).
+
+# Sektor 2 · Lohngürtel | 50
+@ Abzüge und Rechenweg | Lerncheckliste 4
+?2 Herr Kaya verdient 4.000 € brutto und hat ein Kind. Wie hoch ist sein Arbeitnehmeranteil zur Sozialversicherung insgesamt (Werte laut Datenblatt)?
++ 846,00 €
+- 870,00 € ~ Kinderlosenzuschlag trotz Kind berechnet
+- 788,00 € ~ Zusatzbeitrag der Krankenversicherung vergessen
+- 1.692,00 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+! KV 8,75 % + PV 1,8 % + RV 9,3 % + AV 1,3 % = 21,15 %. 4.000 € · 21,15 % = 846,00 €.
+?2 Herr Kaya: Brutto 4.000 €, Sozialversicherung (AN) 846,00 €, Lohnsteuer 520,00 €, Kirchensteuer 41,60 €, kein Solidaritätszuschlag. Wie hoch ist sein Nettoentgelt?
++ 2.592,40 €
+- 2.634,00 € ~ Abzüge unvollständig
+- 3.154,00 € ~ Abzüge unvollständig
+- 1.746,40 € ~ Arbeitgeberanteil zusätzlich abgezogen
+! Netto = Brutto − Steuern − AN-Anteil zur Sozialversicherung: 4.000 € − 520,00 € − 41,60 € − 846,00 € = 2.592,40 €.
+
+@ Kirchensteuer | Lerncheckliste 4
+?2 Frau Weber (Baden-Württemberg, keine Kinder, Kirchenmitglied) verdient 4.200 € brutto und zahlt 600 € Lohnsteuer. Wie hoch ist ihre Kirchensteuer?
++ 48,00 €
+- 336,00 € ~ Kirchensteuer vom Bruttoentgelt berechnet
+- 54,00 € ~ Kirchensteuersatz anderer Bundesländer (9 %) verwendet
+! In Baden-Württemberg beträgt die Kirchensteuer 8 % der Lohnsteuer: 600 € · 8 % = 48,00 €. Grundlage ist die Lohnsteuer, nicht das Brutto.
+?2 Frau Weber erhält eine Gehaltserhöhung. Ihre Lohnsteuer steigt dadurch um 50 €. Was passiert mit ihrer Kirchensteuer?
++ Sie steigt um 4,00 €.
+- Sie steigt um 8 % der Gehaltserhöhung. ~ Kirchensteuer vom Bruttoentgelt berechnet
+- Sie bleibt gleich. ~ Zusammenhang von Lohnsteuer und Kirchensteuer verkannt
+! Die Kirchensteuer hängt an der Lohnsteuer: 50 € · 8 % = 4,00 € mehr.
+
+@ Beitragsbemessungsgrenzen | Lerncheckliste 4
+?2 Frau Dorn verdient 6.000 € brutto. Von welchem Betrag werden ihre Sozialversicherungsbeiträge berechnet?
++ KV/PV von 5.812,50 €, RV/AV von 6.000 €
+- Alle Beiträge von 6.000 € ~ Beitragsbemessungsgrenze nicht beachtet
+- Alle Beiträge von 5.812,50 € ~ Nur eine Beitragsbemessungsgrenze für alle Zweige angenommen
+- KV/PV von 6.000 €, RV/AV von 5.812,50 € ~ Grenzen von KV/PV und RV/AV vertauscht
+! 6.000 € liegen über der Grenze für KV/PV (5.812,50 €), aber unter der Grenze für RV/AV (8.450 €). Oberhalb einer Grenze steigt der Beitrag nicht weiter.
+?2 Frau Dorn verdient 6.000 € brutto und hat ein Kind. Wie hoch ist ihr Arbeitnehmeranteil zur Krankenversicherung (8,75 %)?
++ 508,59 €
+- 525,00 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 424,31 € ~ Zusatzbeitrag der Krankenversicherung vergessen
+- 1.017,19 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+! 5.812,50 € · 8,75 % = 508,59 €. Über der Grenze für KV/PV zählt nur das Entgelt bis zur Grenze.
+?2 Herr Vogt verdient 9.000 € brutto. Wie hoch ist sein Arbeitnehmeranteil zur Rentenversicherung?
++ 785,85 €
+- 837,00 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 540,56 € ~ Grenze der KV/PV statt der RV/AV verwendet
+- 1.571,70 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+! Für RV und AV gilt die höhere Grenze von 8.450 €: 8.450 € · 9,3 % = 785,85 €.
+?3 Welche Wirkung hat die Beitragsbemessungsgrenze für Beschäftigte mit sehr hohem Gehalt?
++ Ihr Beitrag in % des Bruttos sinkt
+- Sie zahlen prozentual mehr als andere ~ Wirkung der Beitragsbemessungsgrenze umgekehrt
+- Sie zahlen keine Beiträge mehr ~ Beitragsbemessungsgrenze mit Versicherungspflichtgrenze verwechselt
+! Über der Grenze bleibt der Beitrag gleich, obwohl das Brutto steigt, deshalb sinkt der Anteil am Brutto. Kritiker sehen darin eine Entlastung hoher Einkommen, Befürworter verweisen auf begrenzte Leistungen, z. B. bei der Rente.
+
+@ Arbeitgeberanteil und Personalkosten | Lerncheckliste 4
+?2 Herr Kaya verdient 4.000 € brutto und hat ein Kind. Wie hoch sind die Personalkosten seines Arbeitgebers (ohne UV und Umlagen)?
++ 4.846,00 €
+- 3.154,00 € ~ Arbeitnehmeranteil abgezogen statt Arbeitgeberanteil addiert
+- 5.692,00 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+- 4.000,00 € ~ Arbeitgeberanteil vergessen
+! Personalkosten = Brutto + Arbeitgeberanteil: 4.000 € + 846,00 € = 4.846,00 €. Der Arbeitnehmeranteil steckt schon im Brutto.
+?2 Frau Lenz ist 25, kinderlos und verdient 3.000 € brutto. Wer zahlt welchen Beitrag zur Pflegeversicherung?
++ Sie 72,00 €, der Arbeitgeber 54,00 €
+- Beide je 63,00 € ~ Alle Beiträge für paritätisch gehalten
+- Sie 54,00 €, der Arbeitgeber 72,00 € ~ Kinderlosenzuschlag dem Arbeitgeber zugeordnet
+! Frau Lenz zahlt 1,8 % + 0,6 % = 2,4 % von 3.000 € = 72,00 €. Der Arbeitgeber zahlt nur 1,8 % = 54,00 €.
+?3 Frau Lenz (25, kinderlos) verdient 3.000 € brutto. Wie hoch sind die Personalkosten ihres Arbeitgebers (ohne UV und Umlagen)?
++ 3.634,50 €
+- 3.652,50 € ~ Kinderlosenzuschlag dem Arbeitgeber zugeordnet
+- 3.000,00 € ~ Arbeitgeberanteil vergessen
+- 2.347,50 € ~ Arbeitnehmeranteil abgezogen statt Arbeitgeberanteil addiert
+! Arbeitgeberanteil ohne Kinderlosenzuschlag: 3.000 € · 21,15 % = 634,50 €, Personalkosten 3.634,50 €. Den Zuschlag von 0,6 % trägt nur Frau Lenz.
+
+@ Netto, Auszahlung und Unterschiede | Lerncheckliste 4
+?2 Herr Kaya hat 2.592,40 € Netto. Der Arbeitgeber überweist 40 € vermögenswirksame Leistungen direkt auf seinen Bausparvertrag. Wie hoch ist der Auszahlungsbetrag?
++ 2.552,40 €
+- 2.592,40 € ~ Nettoentgelt mit Auszahlungsbetrag gleichgesetzt
+- 2.632,40 € ~ Vermögenswirksame Leistungen zum Netto addiert
+! Auszahlungsbetrag = Netto − VL-Sparbetrag: 2.592,40 € − 40 € = 2.552,40 €. Netto und Auszahlungsbetrag sind nicht dasselbe.
+?2 Mia und Tom (beide 30) arbeiten im selben Amt: gleiches Brutto, gleiche Krankenkasse, beide Steuerklasse IV mit gleicher Lohnsteuer, beide ohne Kirchensteuer. Mia hat ein Kind, Tom ist kinderlos. Warum hat Tom weniger Netto?
++ Er zahlt den Zuschlag zur PV
+- Er zahlt einen höheren RV-Beitrag ~ Beitragssätze der Zweige verwechselt
+- Er hat die ungünstigere Steuerklasse ~ Angaben im Fall überlesen
+! Kinderlose ab 23 zahlen 0,6 % Zuschlag zur Pflegeversicherung allein. Weitere mögliche Gründe für ein anderes Netto: Steuerklasse, Kirchensteuer, Zusatzbeitrag der Krankenkasse.
+?2 Herr Brandl hat eine Vollzeitstelle und zusätzlich einen zweiten, regulär versteuerten Job. Welche Steuerklasse gilt für den zweiten Job?
++ Steuerklasse VI
+- Steuerklasse I ~ Steuerklassen den Personengruppen falsch zugeordnet
+- Steuerklasse V ~ Steuerklassen V und VI verwechselt
+! Für jedes weitere Arbeitsverhältnis gilt Steuerklasse VI. Steuerklasse V gilt für Verheiratete, deren Partner Steuerklasse III hat.
+
+# Sektor 3 · Handelsstation HGB | 40
+@ Kaufmannsarten und Eintragung | Lerncheckliste 5
+?2 Frau Öztürk betreibt allein einen kleinen Kiosk. Einen kaufmännisch eingerichteten Geschäftsbetrieb braucht sie nicht, im Handelsregister steht sie nicht. Ist sie Kauffrau?
++ Nein, sie ist Kleingewerbetreibende
+- Ja, Istkauffrau nach § 1 HGB ~ Jeden Gewerbetreibenden für einen Kaufmann gehalten
+- Ja, Kannkauffrau nach § 2 HGB ~ Kannkaufmann ohne Eintragung angenommen
+! Ohne Bedarf an kaufmännischem Geschäftsbetrieb liegt kein Handelsgewerbe vor (§ 1 Abs. 2 HGB). Kauffrau würde sie erst durch Eintragung (§ 2 HGB).
+?2 Frau Öztürk lässt sich freiwillig ins Handelsregister eintragen. Welche Wirkung hat die Eintragung?
++ Konstitutiv: Erst dadurch wird sie Kauffrau
+- Deklaratorisch: Sie war schon Kauffrau ~ Deklaratorische und konstitutive Wirkung vertauscht
+- Keine: Kleingewerbe bleibt Kleingewerbe ~ Freiwillige Eintragung (§ 2 HGB) nicht gekannt
+! Beim Kannkaufmann (§ 2 HGB) wirkt die Eintragung konstitutiv, also rechtsbegründend.
+?2 Ein Großhändler mit 40 Mitarbeitern ist noch nicht im Handelsregister eingetragen. Gilt für ihn schon das HGB?
++ Ja, er ist Istkaufmann (§ 1 HGB)
+- Nein, erst ab der Eintragung ~ Deklaratorische und konstitutive Wirkung vertauscht
+- Nein, er ist nur Kannkaufmann ~ Kaufmannsarten verwechselt
+! Wer ein Handelsgewerbe betreibt, ist Kaufmann (§ 1 HGB). Die Pflichteintragung wirkt nur deklaratorisch, also rechtsbekundend.
+
+@ Firma und Firmengrundsätze | Lerncheckliste 5
+?2 Lisa Brandt eröffnet ein Fahrradgeschäft als eingetragene Kauffrau. Welche Firma ist zulässig?
++ Radwerk Lisa Brandt e. K.
+- Radwerk Lisa Brandt GmbH ~ Falscher Rechtsformzusatz
+- Radwerk Lisa Brandt ~ Fehlenden Rechtsformzusatz übersehen
+- Fahrrad-Zentrale Deutschland e. K. ~ Irreführende Firma übersehen
+! Die Firma braucht den Rechtsformzusatz (§ 19 HGB) und darf nicht irreführen (§ 18 Abs. 2 HGB). „Fahrrad-Zentrale Deutschland“ täuscht eine Größe vor, die nicht besteht.
+?2 Max Huber kauft die Bäckerei „Sonnenbäck Müller e. K.“ und will den Namen weiterführen. Was erlaubt das?
++ Firmenbeständigkeit, wenn Müller einwilligt
+- Firmenwahrheit, ohne weitere Bedingung ~ Firmengrundsätze verwechselt
+- Firmenausschließlichkeit, wenn Huber zahlt ~ Firmengrundsätze verwechselt
+! Wer ein Handelsgeschäft erwirbt, darf die bisherige Firma mit Einwilligung fortführen, auch mit Nachfolgezusatz (§ 22 HGB, Firmenbeständigkeit).
+
+@ Prokura und Handlungsvollmacht | Lerncheckliste 6
+?2 Prokurist Weller kauft für den Betrieb ein Grundstück. Eine besondere Befugnis hat er nicht. Ist der Kauf wirksam?
++ Ja, der Kauf ist von der Prokura gedeckt
+- Nein, er braucht eine besondere Befugnis ~ Kauf und Verkauf von Grundstücken verwechselt
+- Nein, das darf nur der Inhaber ~ Umfang der Prokura unterschätzt
+! Prokura deckt alle Geschäfte eines Handelsgewerbes (§ 49 Abs. 1 HGB). Nur Verkauf und Belastung von Grundstücken brauchen eine besondere Befugnis (§ 49 Abs. 2 HGB).
+?2 Der Inhaber hat die Prokura von Frau Lang intern auf 50.000 € begrenzt. Sie kauft eine Maschine für 80.000 €, der Lieferant kennt die Grenze nicht. Ist der Kauf wirksam?
++ Ja, die Grenze wirkt nicht nach außen
+- Nein, sie hat die Grenze überschritten ~ Innen- und Außenverhältnis vermischt
+- Nur bis 50.000 €, der Rest nicht ~ Innen- und Außenverhältnis vermischt
+! Eine Beschränkung der Prokura ist Dritten gegenüber unwirksam (§ 50 HGB). Im Innenverhältnis hat die Überschreitung trotzdem Folgen für Frau Lang.
+?3 Herr Sommer hat allgemeine Handlungsvollmacht. Ohne besondere Befugnis nimmt er für die Firma einen Kredit über 30.000 € auf. Ist das wirksam?
++ Nein, dafür fehlt die besondere Befugnis
+- Ja, die Vollmacht deckt das ab ~ Umfang der Handlungsvollmacht überschätzt
+- Ja, wenn die Bank nichts davon wusste ~ § 54 Abs. 2 und Abs. 3 HGB verwechselt
+! Darlehen aufnehmen, Grundstücke veräußern oder belasten, Wechsel und Prozesse brauchen eine besondere Befugnis (§ 54 Abs. 2 HGB). Auf die Kenntnis der Bank kommt es dabei nicht an.
+
+@ Kommanditgesellschaft | Lerncheckliste 7
+?2 Kommanditistin Ruf hat ihre Einlage von 20.000 € voll eingezahlt. Ein Gläubiger der KG verlangt 50.000 € von ihr persönlich. Was muss sie zahlen?
++ Nichts mehr
+- 20.000 € ~ Haftung des Kommanditisten falsch berechnet
+- 50.000 € ~ Kommanditist wie Komplementär behandelt
+! Der Kommanditist haftet nur bis zur Höhe seiner Einlage. Ist sie voll eingezahlt, haftet er nicht weiter (§ 171 Abs. 1 HGB).
+?1 Wer führt die Geschäfte der Hoch KG und vertritt sie nach außen?
++ Die Komplementäre
+- Die Kommanditisten ~ Rollen von Komplementär und Kommanditist vertauscht
+- Alle Gesellschafter gemeinsam ~ Kommanditist wie Komplementär behandelt
+! Kommanditisten sind von Geschäftsführung und Vertretung ausgeschlossen (§§ 164, 170 HGB). Sie haben aber Widerspruchs- und Kontrollrechte (§§ 164, 166 HGB).
+?3 Herr Arnold e. K. braucht 100.000 € Kapital. Er will die Geschäfte weiter allein führen und keine festen Zins- und Tilgungszahlungen leisten. Was passt am besten?
++ Einen Kommanditisten aufnehmen
+- Einen Bankkredit aufnehmen ~ Kredit und Eigenkapital nicht unterschieden
+- Einen Komplementär aufnehmen ~ Kommanditist wie Komplementär behandelt
+! Der Kommanditist bringt Eigenkapital ohne feste Zinsen und Tilgung und ist von der Geschäftsführung ausgeschlossen. Nachteil: Er ist am Gewinn beteiligt.
+
+# BOSS: Der Abzugs-Koloss | 120
+@ Abzüge und Rechenweg | Lerncheckliste 4
+?3 Frau Dorn: Brutto 6.000 €, ein Kind, Lohnsteuer 1.050 € (angenommen), kein Solidaritätszuschlag, Kirchenmitglied in Baden-Württemberg. Werte laut Datenblatt. Wie hoch ist ihr Nettoentgelt?
++ 3.616,78 €
+- 3.597,00 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 3.220,78 € ~ Kirchensteuer vom Bruttoentgelt berechnet
+- 3.581,91 € ~ Kinderlosenzuschlag trotz Kind berechnet
+! SV: KV 508,59 + PV 104,63 (beide von 5.812,50 €) + RV 558,00 + AV 78,00 = 1.249,22 €. Netto: 6.000 − 1.050 − 84,00 (Kirchensteuer) − 1.249,22 = 3.616,78 €.
+?3 Herr Vogt ist 31, kinderlos und verdient 9.000 € brutto. Wie hoch ist sein gesamter Arbeitnehmeranteil zur Sozialversicherung (Werte laut Datenblatt)?
++ 1.543,79 €
+- 1.957,50 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 1.264,21 € ~ Nur eine Beitragsbemessungsgrenze für alle Zweige angenommen
+- 1.508,92 € ~ Kinderlosenzuschlag vergessen
+! KV 508,59 + PV 139,50 (2,4 %, beide von 5.812,50 €) + RV 785,85 + AV 109,85 (beide von 8.450 €) = 1.543,79 €. Zwei Grenzen und der Zuschlag entscheiden.
+@ Arbeitgeberanteil und Personalkosten | Lerncheckliste 4
+?3 Frau Dorn verdient 6.000 € brutto und hat ein Kind. Wie hoch sind die Personalkosten ihres Arbeitgebers (ohne UV und Umlagen)?
++ 7.249,22 €
+- 7.269,00 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 8.498,44 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+- 4.750,78 € ~ Arbeitnehmeranteil abgezogen statt Arbeitgeberanteil addiert
+! Der Arbeitgeberanteil ist hier genauso hoch wie ihr Anteil: 1.249,22 €. Personalkosten: 6.000 € + 1.249,22 € = 7.249,22 €.
+@ Beitragsbemessungsgrenzen | Lerncheckliste 4
+?3 Frau Albers verdient 7.000 € brutto, Herr Vogt 9.000 €. Um wie viel Euro ist der Arbeitnehmeranteil zur Rentenversicherung bei Herrn Vogt höher?
++ 134,85 €
+- 186,00 € ~ Beitragsbemessungsgrenze nicht beachtet
+- 0,00 € ~ Grenze der KV/PV statt der RV/AV verwendet
+- 269,70 € ~ Arbeitgeber- und Arbeitnehmeranteil zusammengerechnet
+! Albers: 7.000 € · 9,3 % = 651,00 €. Vogt: nur bis 8.450 €, also 785,85 €. Unterschied: 134,85 €.
+?3 Angenommen, die Beitragsbemessungsgrenze der Kranken- und Pflegeversicherung wird auf 8.450 € angehoben. Welche Folge ist zutreffend?
++ Mehr Einnahmen; Gutverdienende und ihre Arbeitgeber zahlen mehr.
+- Beschäftigte mit geringem Einkommen zahlen höhere Beiträge. ~ Wirkung der Beitragsbemessungsgrenze auf die falsche Gruppe bezogen
+- Die Beitragssätze müssen dafür angehoben werden. ~ Beitragsbemessungsgrenze mit Beitragssatz verwechselt
+! Betroffen ist nur, wer mehr als 5.812,50 € verdient. Befürworter sehen mehr Solidarität und Einnahmen, Kritiker höhere Lohnnebenkosten.
+@ Prokura und Handlungsvollmacht | Lerncheckliste 6
+?3 Die Prokura von Herrn Kunz ist intern auf 50.000 € begrenzt. Ohne besondere Befugnis verkauft er ein Betriebsgrundstück für 40.000 €; die Käuferin kennt die interne Grenze. Ist der Verkauf wirksam?
++ Nein, der Verkauf braucht eine besondere Befugnis.
+- Ja, er bleibt unter der Grenze von 50.000 €. ~ Innen- und Außenverhältnis vermischt
+- Ja, Prokura deckt alle Geschäfte ab. ~ Kauf und Verkauf von Grundstücken verwechselt
+- Nein, weil die Käuferin die Grenze kannte. ~ Innen- und Außenverhältnis vermischt
+! Den Verkauf eines Grundstücks deckt die Prokura nur mit besonderer Befugnis (§ 49 Abs. 2 HGB). Die interne Grenze spielt keine Rolle (§ 50 HGB).
+@ Kommanditgesellschaft | Lerncheckliste 7
+?3 Kommanditist Polat hat eine Haftsumme von 30.000 €, eingezahlt hat er erst 10.000 €. Ein Gläubiger der KG verlangt 50.000 € von ihm persönlich. Bis zu welchem Betrag haftet er?
++ 20.000 €
+- 30.000 € ~ Haftung des Kommanditisten falsch berechnet
+- 50.000 € ~ Kommanditist wie Komplementär behandelt
+- 0 € ~ Haftung des Kommanditisten falsch berechnet
+! Der Kommanditist haftet bis zur Haftsumme, soweit die Einlage noch nicht geleistet ist (§ 171 Abs. 1 HGB): 30.000 € − 10.000 € = 20.000 €.`;
+const COACH_URL = '../../../ki-coaches/awl/lerncoach/coach.html';
+</script>
+<script>
+'use strict';
+/* ===== Grundlagen ===== */
+const $=s=>document.querySelector(s);
+const W=270,H=480;
+const KEY={log:'nn_log_v1_awl1',prog:'nn_prog_v1_awl1',opt:'nn_opt_v1_awl1',best:'nn_best_v1_awl1'};
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const OPT=Object.assign({mute:false,calm:false},LS.get(KEY.opt,{}));
+const saveOpt=()=>LS.set(KEY.opt,OPT);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const BOSS_HP=5, BOSS_SHARE=2/3, POWER_EVERY=4, POWER_ORDER=['shield','joker','stretch'];
+
+/* ===== Fragen einlesen ===== */
+function parseSet(txt){
+  const D={datenblatt:[],sectors:[],boss:null,concepts:[],errors:[],byId:{}};
+  let sec=null,con=null,q=null,n=0;
+  txt.split(/\r?\n/).forEach((raw,i)=>{
+    const l=raw.trim(); if(!l) return;
+    const c=l[0], rest=l.slice(1).trim();
+    if(c==='='){D.datenblatt.push(rest);return}
+    if(c==='#'){const p=rest.split('|');let name=p[0].trim();const boss=/^BOSS\s*:/i.test(name);name=name.replace(/^BOSS\s*:/i,'').trim();
+      sec={name,base:clamp(parseInt(p[1])||35,10,180),boss,qs:[],idx:boss?'boss':D.sectors.length};
+      if(boss)D.boss=sec;else D.sectors.push(sec);con=null;q=null;return}
+    if(!sec){D.errors.push('Zeile '+(i+1)+': vor dem ersten Level');return}
+    if(c==='@'){const p=rest.split('|');con={name:p[0].trim(),ref:(p[1]||'').trim()};if(!D.concepts.find(x=>x.name===con.name))D.concepts.push(con);return}
+    if(c==='?'){const m=l.match(/^\?([123])?\s*(.*)$/);n++;
+      const cn=con?con.name:sec.name; if(!con&&!D.concepts.find(x=>x.name===cn))D.concepts.push({name:cn,ref:''});
+      q={id:'q'+n,text:m[2],afb:+(m[1]||2),concept:cn,right:null,wrong:[],expl:'',sec};sec.qs.push(q);D.byId[q.id]=q;return}
+    if(!q){D.errors.push('Zeile '+(i+1)+': Antwort ohne Frage');return}
+    if(c==='+'){if(!q.right)q.right=rest.split('~')[0].trim();return}
+    if(c==='-'){const p=rest.split('~');q.wrong.push({t:p[0].trim(),mis:(p[1]||'').trim()});return}
+    if(c==='!'){q.expl=rest;return}
+    D.errors.push('Zeile '+(i+1)+': unbekannter Zeilenanfang „'+c+'“');
+  });
+  [...D.sectors,...(D.boss?[D.boss]:[])].forEach(s=>{s.qs=s.qs.filter(x=>x.right&&x.wrong.length)});
+  D.sectorQs=D.sectors.reduce((a,s)=>a+s.qs.length,0);
+  D.need=Math.ceil(D.sectorQs*BOSS_SHARE);
+  return D;
+}
+const SET=parseSet(SAMPLE);
+const conRef=name=>(SET.concepts.find(c=>c.name===name)||{}).ref||'';
+
+/* ===== Audio: eigene Chiptune-Musik (Web Audio) ===== */
+const AU={ctx:null};
+function auInit(){
+  if(AU.ctx)return; const C=window.AudioContext||window.webkitAudioContext; if(!C)return;
+  const ctx=AU.ctx=new C();
+  AU.master=ctx.createGain();AU.master.gain.value=OPT.mute?0:.55;AU.master.connect(ctx.destination);
+  AU.music=ctx.createGain();AU.music.gain.value=.3;AU.music.connect(AU.master);
+  AU.sfx=ctx.createGain();AU.sfx.gain.value=.5;AU.sfx.connect(AU.master);
+  const len=ctx.sampleRate*.6,b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;AU.noise=b;
+  AU.track=null;AU.step=0;AU.next=0;
+  setInterval(schedule,25);
+}
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+function tone(dest,type,f,t,dur,vol,slide,filt){const c=AU.ctx,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.setValueAtTime(vol,t+dur*.6);g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  let n=o;if(filt){const fl=c.createBiquadFilter();fl.type='lowpass';fl.frequency.value=filt;o.connect(fl);n=fl}n.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+.02)}
+function noise(dest,t,dur,vol,hp){const c=AU.ctx,s=c.createBufferSource(),g=c.createGain(),f=c.createBiquadFilter();s.buffer=AU.noise;f.type='highpass';f.frequency.value=hp||1000;
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0008,t+dur);s.connect(f);f.connect(g);g.connect(dest);s.start(t);s.stop(t+dur+.02)}
+const TRACKS={
+  space:{bpm:112,bass:[45,41,48,43],chords:[[69,72,76],[65,69,72],[67,72,76],[67,71,74]],
+    lead:[[[0,76,3],[3,74,1],[4,72,2],[6,74,2],[8,76,4],[12,79,2],[14,76,2]],[[0,77,3],[3,76,1],[4,74,2],[6,72,2],[8,69,6],[14,72,2]],[[0,72,2],[2,74,2],[4,76,4],[8,79,3],[11,81,1],[12,79,2],[14,76,2]],[[0,74,4],[4,76,2],[6,74,2],[8,71,6],[14,74,2]]]},
+  boss:{bpm:140,bass:[38,46,48,45],chords:[[62,65,69],[62,65,70],[64,67,72],[61,64,69]],
+    lead:[[[0,74,2],[2,74,1],[3,77,1],[4,76,2],[6,74,2],[8,72,2],[10,74,2],[12,69,4]],[[0,70,2],[2,70,1],[3,74,1],[4,72,2],[6,70,2],[8,69,4],[12,65,4]],[[0,72,2],[2,72,1],[3,76,1],[4,79,2],[6,76,2],[8,72,4],[12,74,2],[14,76,2]],[[0,73,4],[4,76,4],[8,81,4],[12,79,2],[14,76,2]]]}
+};
+function music(name){if(!AU.ctx)return;if(AU.track===name)return;AU.track=name;AU.step=0;AU.next=AU.ctx.currentTime+.08}
+function duck(on){if(!AU.ctx)return;AU.music.gain.setTargetAtTime(on?.1:.3,AU.ctx.currentTime,.25)}
+function schedule(){const c=AU.ctx;if(!c||!AU.track||c.state!=='running')return;const T=TRACKS[AU.track],sd=60/T.bpm/4;
+  if(AU.next<c.currentTime-.5)AU.next=c.currentTime+.05;
+  while(AU.next<c.currentTime+.12){const st=AU.step,bar=Math.floor(st/16)%4,s=st%16,t=AU.next,M=AU.music;
+    if(s%2===0)tone(M,'sawtooth',mtof(T.bass[bar]+(s%4===2?12:0)),t,sd*1.8,.22,0,700);
+    const ch=T.chords[bar];tone(M,'square',mtof(ch[s%3]+(s%6>2?12:0)),t,sd*.8,.035);
+    if(s===0||s===8||(AU.track==='boss'&&s===10))tone(M,'sine',140,t,.18,.5,40);
+    if(s===4||s===12)noise(M,t,.12,.22,1800);
+    if(s%2===1)noise(M,t,.03,.07,7000);
+    T.lead[bar].forEach(n=>{if(n[0]===s)tone(M,'square',mtof(n[1]),t,sd*n[2]*.95,.07)});
+    AU.step++;AU.next+=sd}}
+const SFX={
+  hit(){const t=AU.ctx.currentTime;noise(AU.sfx,t,.25,.5,300);tone(AU.sfx,'square',220,t,.25,.25,60)},
+  ok(){const t=AU.ctx.currentTime;[72,76,79,84].forEach((m,i)=>tone(AU.sfx,'square',mtof(m),t+i*.07,.12,.18))},
+  bad(){const t=AU.ctx.currentTime;tone(AU.sfx,'sawtooth',320,t,.45,.2,90)},
+  laser(){const t=AU.ctx.currentTime;tone(AU.sfx,'square',1400,t,.35,.2,180)},
+  boom(){const t=AU.ctx.currentTime;noise(AU.sfx,t,.7,.6,150);tone(AU.sfx,'sine',90,t,.6,.5,30)},
+  power(){const t=AU.ctx.currentTime;[64,67,71,76,79].forEach((m,i)=>tone(AU.sfx,'triangle',mtof(m),t+i*.06,.12,.3))},
+  time(){const t=AU.ctx.currentTime;tone(AU.sfx,'triangle',660,t,.15,.25);tone(AU.sfx,'triangle',520,t+.18,.25,.25)},
+  click(){const t=AU.ctx.currentTime;tone(AU.sfx,'square',900,t,.04,.08)},
+  pew(){const t=AU.ctx.currentTime;tone(AU.sfx,'square',1700,t,.06,.03,700)},
+  pop(){const t=AU.ctx.currentTime;noise(AU.sfx,t,.18,.28,600);tone(AU.sfx,'square',300,t,.12,.1,80)},
+  tink(){const t=AU.ctx.currentTime;tone(AU.sfx,'triangle',2200,t,.05,.06)}
+};
+const sfx=n=>{if(AU.ctx&&AU.ctx.state==='running')try{SFX[n]()}catch(e){}};
+function setMute(m){OPT.mute=m;saveOpt();if(AU.ctx)AU.master.gain.setTargetAtTime(m?0:.55,AU.ctx.currentTime,.05);$('#bMute').textContent=m?'×':'♪'}
+
+/* ===== Pixel-Sprites ===== */
+function sprite(rows,pal){const w=Math.max(...rows.map(r=>r.length)),h=rows.length,c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{if(pal[ch]){g.fillStyle=pal[ch];g.fillRect(x,y,1,1)}}));return c}
+const SPR={
+  ship:sprite(['......c......','.....cwc.....','.....cbc.....','....cwbwc....','....cwwwc....','...ccwwwcc...','..mccwwwccm..','.mmccwwwccmm.','mmcccwwwcccmm','mm.cc...cc.mm','m...........m'],{c:'#3ff0ff',w:'#e8fbff',b:'#2a5cff',m:'#ff3fb4'}),
+  enA:sprite(['r.........r','rr..rrr..rr','.rrrrkrrrr.','..rrkkkrr..','.rrrrrrrrr.','rr.r...r.rr','r..y...y..r'],{r:'#ff4d6d',k:'#ffe14a',y:'#ff9f1c'}),
+  enB:sprite(['....ggggg....','..ggwwwwwgg..','.ggggggggggg.','ggyggyggyggyg','.ggggggggggg.','...g.....g...'],{g:'#6dff7a',w:'#d9ffe0',y:'#ffe14a'}),
+  rock:sprite(['...aaaa...','.aaaddaaa.','aaddaaaaaa','aaaaaadaaa','adaaaaaada','aaaadaaaaa','.aaaaaaad.','..aaaaaa..'],{a:'#8a8aa0',d:'#55556a'})
+};
+SPR.boss=(()=>{const w=64,h=34,c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');
+  const R=(x,y,ww,hh,col)=>{g.fillStyle=col;g.fillRect(x,y,ww,hh);g.fillRect(w-x-ww,y,ww,hh)};
+  R(0,9,7,15,'#6b1a52');R(1,24,5,7,'#3a0d2e');R(2,30,3,4,'#ff3fb4');
+  R(7,5,11,22,'#9a2770');R(9,8,4,3,'#ffe14a');R(9,14,4,3,'#ffe14a');
+  R(18,1,14,28,'#c8358f');R(20,3,12,3,'#ff7ccf');
+  R(16,26,6,6,'#3a0d2e');R(17,31,4,3,'#ff3fb4');
+  g.fillStyle='#4a1038';g.fillRect(24,8,16,22);
+  R(20,10,6,4,'#ffffff');R(22,11,3,2,'#ff2d2d');
+  g.fillStyle='#ffe14a';for(let i=0;i<4;i++)g.fillRect(25+i*4,28,2,4);
+  return c})();
+
+SPR.gun=sprite(['..o.....o..','.ooo...ooo.','oovoo.oovoo','ooooooooooo','.ooorrrooo.','..oorwroo..','...ooroo...','....o.o....'],{o:'#b04dff',v:'#ffe14a',r:'#ff3fb4',w:'#ffffff'});
+SPR.mine=sprite(['...r...','.r.r.r.','..rkr..','rrkkkrr','..rkr..','.r.r.r.','...r...'],{r:'#ff4d4d',k:'#ffe14a'});
+const ETYPE={rock:{spr:'rock',hp:1,sc:1,pts:10},big:{spr:'rock',hp:4,sc:2,pts:40},enA:{spr:'enA',hp:1,sc:1,pts:20},enB:{spr:'enB',hp:2,sc:1,pts:30},mine:{spr:'mine',hp:1,sc:1,pts:15},gun:{spr:'gun',hp:3,sc:1,pts:60}};
+
+/* ===== Spielzustand ===== */
+const cv=$('#cv'),ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=false;
+const stars=[];for(let i=0;i<70;i++)stars.push({x:rnd(0,W),y:rnd(0,H),z:Math.random()});
+let G=null;
+function newRun(){G={shots:[],score:0,shotT:0,state:'menu',sector:0,qi:0,cells:0,correct:0,shields:0,jokers:0,stretch:0,hull:3,attempts:[],dock:[],dockI:0,
+  ship:{x:W/2,y:H-60,tx:W/2,ty:H-60,inv:0,vis:true},enemies:[],bullets:[],parts:[],timers:[],flyT:0,spawnT:0,cur:null,boss:null,beam:null,paused:false,t:0,snap:null,reason:''}}
+newRun();
+const SEC_COL=['#0b2a3a','#3a2a08','#26103f','#3a0820'];
+
+function later(s,fn){G.timers.push({t:s,fn})}
+function toast(txt){const el=$('#toast');el.textContent=txt;el.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('on'),1400)}
+function boom(x,y,n,cols){for(let i=0;i<n;i++){const a=rnd(0,6.283),v=rnd(20,110);G.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:rnd(.4,.9),c:cols[i%cols.length],s:Math.random()<.3?3:2})}}
+
+/* ===== HUD ===== */
+function hud(){
+  const inBoss=G.state.startsWith('boss')||G.boss;
+  $('#secname').textContent=inBoss?'ENDBOSS':(SET.sectors[G.sector]?SET.sectors[G.sector].name.toUpperCase():'');
+  $('#hull').textContent='♥'.repeat(Math.max(0,G.hull))+'♡'.repeat(Math.max(0,3-G.hull));
+  $('#cells').textContent='⚡ '+G.cells+' / '+SET.need;
+  $('#cells').style.color=G.cells>=SET.need?'var(--gr)':'var(--cy)';
+  $('#items').innerHTML='<span title="Schilde">◈ '+G.shields+'</span><span title="50:50-Joker">J '+G.jokers+'</span><span title="Zeitdehner">⏳ '+G.stretch+'</span><span title="Punkte" style="color:var(--ye)">★ '+G.score+'</span>';
+  $('#bosslbl').classList.toggle('hidden',!G.boss);$('#bossbar').classList.toggle('hidden',!G.boss);
+  if(G.boss)$('#bossbar i').style.width=(100*G.boss.hp/BOSS_HP)+'%';
+}
+
+/* ===== Bildschirme ===== */
+function screen(html){const s=$('#screen');s.innerHTML=html;s.classList.remove('hidden');s.scrollTop=0}
+function hideScreen(){$('#screen').classList.add('hidden')}
+function hideQ(){['#qbox','#answers','#fb'].forEach(s=>$(s).classList.add('hidden'));$('#qtools').classList.add('hidden')}
+
+function menu(){
+  newRun();hideQ();$('#hud').classList.add('hidden');music('space');
+  const prog=LS.get(KEY.prog,null),last=LS.get(KEY.log,null);
+  const cont=prog&&prog.v===1?(prog.sector==='boss'?'Weiter: Endboss':'Weiter ab '+(SET.sectors[prog.sector]||{}).name):'';
+  screen(`<h1>NETTO<br>NOVA</h1><p class="sub">AWL-Weltraummission<br>Sozialversicherung · Gehaltsabrechnung · Kaufmann & KG</p>
+  <button class="go" id="mStart">▶ MISSION STARTEN</button>
+  ${cont?`<button class="go alt" id="mCont" style="margin-top:2.5cqw">${esc(cont)}</button>`:''}
+  ${last?`<button class="go alt" id="mLast" style="margin-top:2.5cqw">Letzter Lernkompass</button>`:''}
+  <div class="box">
+   <label class="opt"><input type="checkbox" id="oCalm" ${OPT.calm?'checked':''}> Ruhiger Modus (50 % mehr Zeit, weniger Gegner)</label>
+   <label class="opt"><input type="checkbox" id="oMute" ${OPT.mute?'checked':''}> Ton aus</label>
+  </div>
+  <div class="box"><p><b style="color:var(--ye)">So geht's</b></p><ul style="padding-left:1.2em;margin:0">
+   <li>Steuern: Finger ziehen oder Pfeiltasten. Dein Schiff schießt automatisch. Weiche Asteroiden, Minen und Feinden aus – die lila Jäger schießen zurück!</li><li>Abschüsse bringen ★ Punkte. Energie ⚡ gibt es nur für richtige Antworten, und jede richtige Antwort repariert dein Schiff ♥.</li>
+   <li>Vor jeder Frage stoppt das Spiel fast. Wähle die Antwort: antippen oder Taste 1–4, bei Toren auch Pfeile + Leertaste.</li>
+   <li>Jede richtige Antwort = ⚡ Energiezelle. Jede ${POWER_EVERY}. richtige Antwort bringt Schild ◈, Joker J oder Zeitdehner ⏳.</li>
+   <li>Zeit abgelaufen ist kein Fehler: Die Frage kommt im Reparaturdock ohne Zeitdruck wieder.</li>
+   <li>Für den Endboss brauchst du ${SET.need} von ${SET.sectorQs} Energiezellen. Besiegen kannst du ihn nur mit ${BOSS_HP} richtigen Antworten auf schwere Fragen.</li>
+   <li>≡ (Taste I) öffnet das Datenblatt mit Beitragssätzen und Grenzen.</li></ul></div>
+  <p class="small">Lernstände bleiben nur auf diesem Gerät. Musik und Grafik: eigene Erstellung.</p>`);
+  $('#mStart').onclick=()=>{auInit();LS.del(KEY.prog);startSector(0)};
+  if(cont)$('#mCont').onclick=()=>{auInit();Object.assign(G,{cells:prog.cells,correct:prog.correct,shields:prog.shields,jokers:prog.jokers,stretch:prog.stretch,attempts:prog.attempts||[],score:prog.score||0});prog.sector==='boss'?bossIntro():startSector(prog.sector)};
+  if(last)$('#mLast').onclick=()=>endScreen(last.reason,last.attempts,true);
+  $('#oCalm').onchange=e=>{OPT.calm=e.target.checked;saveOpt()};
+  $('#oMute').onchange=e=>{auInit();setMute(e.target.checked)};
+}
+function saveProg(sector){LS.set(KEY.prog,{v:1,sector,cells:G.cells,correct:G.correct,shields:G.shields,jokers:G.jokers,stretch:G.stretch,attempts:G.attempts,score:G.score})}
+function snapshot(){return JSON.parse(JSON.stringify({cells:G.cells,correct:G.correct,shields:G.shields,jokers:G.jokers,stretch:G.stretch,attempts:G.attempts,score:G.score}))}
+
+function startSector(i){
+  G.sector=i;G.snap=snapshot();saveProg(i);G.boss=null;
+  const s=SET.sectors[i],cons=[...new Set(s.qs.map(q=>q.concept))];
+  hideQ();$('#hud').classList.add('hidden');G.state='intro';music('space');
+  screen(`<h2>SEKTOR ${i+1} / ${SET.sectors.length}</h2><h1 style="font-size:7cqw">${esc(s.name.replace(/^Sektor \d+\s*·\s*/,'').toUpperCase())}</h1>
+   <div class="box"><p><b style="color:var(--ye)">Themen in diesem Sektor</b></p><ul style="padding-left:1.2em;margin:0">${cons.map(c=>`<li>${esc(c)} <span class="small">(${esc(conRef(c))})</span></li>`).join('')}</ul>
+   <p class="small">${s.qs.length} Fragen · Energie bisher ⚡ ${G.cells} · für den Endboss nötig: ${SET.need}</p></div>
+   <button class="go" id="sGo">▶ LOSFLIEGEN</button>`);
+  $('#sGo').onclick=()=>{hideScreen();G.hull=3;G.qi=0;G.dock=[];G.enemies=[];G.bullets=[];G.shots=[];G.state='fly';G.flyT=OPT.calm?9:8;G.spawnT=1;$('#hud').classList.remove('hidden');hud()};
+}
+
+/* ===== Fragen ===== */
+function ask(q,mode){
+  G.state=mode==='boss'?'bossQ':'question';
+  G.enemies.forEach(e=>boom(e.x,e.y,8,['#ffe14a','#ff9f1c']));G.enemies=[];G.bullets.forEach(b=>boom(b.x,b.y,3,['#ff3fb4']));G.bullets=[];G.shots=[];
+  const wrong=shuffle(q.wrong.slice()).slice(0,3);
+  const ans=shuffle([{t:q.right,ok:true,mis:''},...wrong.map(w=>({t:w.t,ok:false,mis:w.mis}))]);
+  const words=(q.text+' '+ans.map(a=>a.t).join(' ')).split(/\s+/).length;
+  let T=mode==='boss'?Math.max(q.sec.base,Math.round(30+words)):Math.max(q.sec.base,Math.round(8+words*.8));
+  if(OPT.calm)T=Math.round(T*1.5);
+  const gate=mode==='sector'&&ans.length<=3&&ans.every(a=>a.t.length<=34);
+  G.cur={q,mode,ans,T,left:mode==='dock'?Infinity:T,gate,sel:1,done:false,joker:false};
+  const sec=SET.sectors[G.sector];
+  $('#qtag').textContent=mode==='boss'?'ENDBOSS · '+q.concept:mode==='dock'?'REPARATURDOCK · ohne Zeitdruck':'FRAGE '+(G.qi+1)+'/'+sec.qs.length+' · '+q.concept;
+  $('#qbox').classList.toggle('boss',mode==='boss');
+  $('#qtext').textContent=q.text;
+  $('#qbar').classList.toggle('hidden',mode==='dock');$('#qtime').textContent=mode==='dock'?'∞':T+' s';
+  $('#qtools').classList.toggle('hidden',mode!=='boss');
+  if(mode==='boss'){$('#bJoker').disabled=G.jokers<1;$('#bStretch').disabled=G.stretch<1;$('#bJoker').textContent='50:50-Joker ('+G.jokers+')';$('#bStretch').textContent='+30 s Zeitdehner ('+G.stretch+')'}
+  const box=$('#answers');box.className=gate?'gates':'cockpit';
+  box.innerHTML=ans.map((a,i)=>`<button class="ans${gate&&i===1?' sel':''}" data-i="${i}"><b>${i+1}</b>${esc(a.t)}</button>`).join('');
+  box.querySelectorAll('.ans').forEach(b=>b.onclick=e=>{e.stopPropagation();choose(+b.dataset.i)});
+  ['#qbox','#answers'].forEach(s=>$(s).classList.remove('hidden'));$('#fb').classList.add('hidden');$('#qbox').scrollTop=0;
+  if(gate){G.ship.tx=laneX(1);G.ship.ty=H-60}
+  duck(true);sfx('time');hud();
+}
+const laneX=i=>W*(i*2+1)/6;
+function setSel(i){if(!G.cur||!G.cur.gate||G.cur.done)return;G.cur.sel=clamp(i,0,G.cur.ans.length-1);
+  document.querySelectorAll('#answers .ans').forEach((b,j)=>b.classList.toggle('sel',j===G.cur.sel));G.ship.tx=laneX(G.cur.sel)}
+function record(a,timeout){const c=G.cur;G.attempts.push({id:c.q.id,mode:c.mode,ok:!!(a&&a.ok),to:!!timeout,jk:c.joker,mis:a&&!a.ok?a.mis:'',ch:a?a.t:'',s:c.left===Infinity?0:Math.round(c.T-c.left)})}
+function choose(i){
+  const c=G.cur;if(!c||c.done||G.paused)return;if(!(G.state==='question'||G.state==='bossQ'))return;
+  c.done=true;const a=c.ans[i];record(a,false);
+  const btns=[...document.querySelectorAll('#answers .ans')];btns.forEach((b,j)=>{b.disabled=true;if(c.ans[j].ok)b.classList.add('ok');else if(j===i)b.classList.add('bad')});
+  sfx(a.ok?'ok':'bad');
+  let reward='';
+  if(a.ok&&c.mode!=='boss'){G.cells++;G.correct++;reward='+1 ⚡ Energiezelle';if(G.hull<3){G.hull++;reward+=' · Schiff repariert ♥'}
+    if(G.correct%POWER_EVERY===0){const p=POWER_ORDER[(G.correct/POWER_EVERY-1)%3];if(p==='shield')G.shields++;if(p==='joker')G.jokers++;if(p==='stretch')G.stretch++;
+      reward+=' · '+({shield:'◈ Schild',joker:'J 50:50-Joker',stretch:'⏳ Zeitdehner'})[p]+' erhalten!';later(.4,()=>sfx('power'))}}
+  if(c.mode==='boss'){if(a.ok){fireBeam();reward='Treffer! Der Koloss verliert Energie.'}else{G.boss.over++;reward='Der Koloss lädt sich auf – sein nächster Angriff wird stärker.'}}
+  hud();
+  const show=()=>feedback(a.ok?'ok':'bad',a,reward);
+  if(c.gate){G.state='flythrough';G.ship.tx=laneX(i);G.ship.ty=-30;later(.55,()=>{G.ship.y=H+20;G.ship.ty=H-60;show()})}
+  else later(c.mode==='boss'&&a.ok?.9:.35,show);
+}
+function timeout(){
+  const c=G.cur;if(c.done)return;c.done=true;record(null,true);sfx('time');
+  if(c.mode==='sector'){G.dock.push(c.q);feedback('time',null,'Kein Fehler: Die Frage kommt im Reparaturdock ohne Zeitdruck wieder.')}
+  else if(c.mode==='boss'){if(!G.boss.retried.includes(c.q.id)){G.boss.retried.push(c.q.id);G.boss.queue.push(c.q);feedback('time',null,'Der Koloss stellt dir diese Frage am Ende noch einmal.')}
+    else{G.boss.over++;feedback('bad',null,'Die Zeit ist wieder abgelaufen. Das zählt jetzt als verfehlt.')}}
+}
+function feedback(kind,a,reward){
+  const c=G.cur,fb=$('#fb');$('#answers').classList.add('hidden');
+  fb.className=kind==='ok'?'':kind;
+  const head=kind==='ok'?'<h3 class="ok">✔ RICHTIG</h3>':kind==='time'?'<h3 class="time">⏱ ZEIT ABGELAUFEN</h3>':'<h3 class="bad">✘ LEIDER FALSCH</h3>';
+  let body='';
+  if(kind==='bad'||kind==='ok'){if(kind==='bad')body+=`<p>Richtig ist: <b class="ok">${esc(c.q.right)}</b></p>`;if(c.q.expl)body+=`<p>${esc(c.q.expl)}</p>`}
+  if(kind==='bad'&&a&&a.mis)body+=`<p class="small">Mögliche Verwechslung: ${esc(a.mis)}</p>`;
+  if(kind==='time'&&c.mode==='boss'&&!G.boss.queue.includes(c.q)){body+=`<p>Richtig ist: <b class="ok">${esc(c.q.right)}</b></p><p>${esc(c.q.expl)}</p>`}
+  fb.innerHTML=head+body+(reward?`<p class="rw">${esc(reward)}</p>`:'')+'<button class="go" id="fGo">WEITER ▶</button>';
+  fb.classList.remove('hidden');fb.scrollTop=0;G.state='feedback';
+  $('#fGo').onclick=e=>{e.stopPropagation();next()};
+}
+function next(){
+  const c=G.cur;if(!c||G.state!=='feedback')return;hideQ();duck(false);G.cur=null;
+  if(c.mode==='sector'){G.qi++;if(G.qi<SET.sectors[G.sector].qs.length){G.state='fly';G.flyT=OPT.calm?9:8;G.spawnT=.6;G.ship.inv=Math.max(G.ship.inv,1)}else finishSector()}
+  else if(c.mode==='dock'){G.dockI++;if(G.dockI<G.dock.length)ask(G.dock[G.dockI],'dock');else sectorDone()}
+  else if(c.mode==='boss'){if(G.boss.hp<=0)bossDown();else bossAttack()}
+}
+function finishSector(){
+  G.state='intro';G.enemies=[];
+  if(G.dock.length){screen(`<h2>REPARATURDOCK</h2><div class="box"><p>${G.dock.length} Frage${G.dock.length>1?'n':''} lief${G.dock.length>1?'en':''} aus der Zeit. Hier beantwortest du sie <b>ohne Zeitdruck</b>.</p>
+   <p>Jede richtige Antwort bringt eine ⚡ Energiezelle und repariert dein Schiff.</p><p class="small">Im Lernkompass erscheinen diese Fragen unter „Zeit“, nicht unter „Üben“, wenn du sie hier richtig löst.</p></div><button class="go" id="dGo">▶ ANDOCKEN</button>`);
+    $('#dGo').onclick=()=>{hideScreen();G.dockI=0;ask(G.dock[0],'dock')}}
+  else sectorDone();
+}
+function sectorDone(){
+  G.state='intro';hideQ();const s=SET.sectors[G.sector];const ids=s.qs.map(q=>q.id);
+  const ok=ids.filter(id=>G.attempts.some(a=>a.id===id&&a.ok)).length;
+  const last=G.sector===SET.sectors.length-1;
+  screen(`<h2>SEKTOR ${G.sector+1} GESCHAFFT</h2><div class="box"><p>Richtig in diesem Sektor: <b style="color:var(--gr)">${ok} / ${ids.length}</b></p>
+   <p>Energie gesamt: <b style="color:var(--cy)">⚡ ${G.cells}</b> · für den Endboss nötig: <b>${SET.need}</b></p><p>Arsenal: ◈ ${G.shields} Schild · J ${G.jokers} Joker · ⏳ ${G.stretch} Zeitdehner</p></div>
+   <button class="go" id="nGo">${last?'▶ ZUM ENDBOSS':'▶ SEKTOR '+(G.sector+2)}</button><button class="go alt" id="nK" style="margin-top:2.5cqw">Zwischenstand im Lernkompass</button>`);
+  $('#nGo').onclick=()=>{if(last){if(G.cells>=SET.need)bossIntro();else endGame('energy')}else startSector(G.sector+1)};
+  $('#nK').onclick=()=>{const back=()=>sectorDone();kompassView(G.attempts,back)};
+}
+
+/* ===== Endboss ===== */
+function bossIntro(){
+  G.state='intro';G.snap=snapshot();saveProg('boss');hideQ();$('#hud').classList.add('hidden');music('boss');
+  screen(`<h2>ENDBOSS</h2><h1 style="font-size:8cqw">DER ABZUGS-<br>KOLOSS</h1>
+   <div class="box"><p>Dein Energievorrat (⚡ ${G.cells}) bricht seinen Schutzschild. Jetzt zählt nur noch Wissen:</p>
+   <ul style="padding-left:1.2em"><li>Er feuert und schickt Jäger-Drohnen – weiche aus. Schilde ◈ fangen Treffer ab.</li><li>Deine Laser prallen an seinem Schild ab. Nur richtige Antworten treffen den Kern. Seine Drohnen kannst du abschießen.</li><li>Dann stellt er eine schwere Frage. <b>Richtig = Treffer.</b> Falsch = sein nächster Angriff wird stärker.</li>
+   <li>Du brauchst <b>${BOSS_HP} Treffer</b> aus ${SET.boss.qs.length} Fragen – höchstens ${SET.boss.qs.length-BOSS_HP} Fehler.</li><li>Ab halber Energie gerät er in Raserei: schneller, dichter, mehr Drohnen.</li><li>Joker J entfernt zwei falsche Antworten, ⏳ gibt 30 s mehr. Mit Joker gelöste Fragen zählen im Lernkompass nicht als „sicher“.</li></ul>
+   <p>Arsenal: ◈ ${G.shields} · J ${G.jokers} · ⏳ ${G.stretch}</p><p class="small">Papier, Stift und Taschenrechner bereitlegen.</p></div><button class="go mg" id="bGo">▶ KAMPF BEGINNEN</button>`);
+  $('#bGo').onclick=()=>{hideScreen();G.hull=3;G.enemies=[];G.bullets=[];G.shots=[];G.boss={droneT:1.5,msg:0,rage:false,x:W/2,y:-40,hp:BOSS_HP,t:0,over:0,queue:SET.boss.qs.slice(),retried:[],fireT:1,pat:0,flash:0};
+    $('#hud').classList.remove('hidden');bossAttack()};
+}
+function bossAttack(){const b=G.boss;G.state='bossAtk';b.atkT=(OPT.calm?8:10);b.fireT=.7;b.droneT=Math.min(b.droneT,1.5);if(!b.rage&&b.hp<=2){b.rage=true;b.flash=.6;toast('DER KOLOSS RAST!');sfx('boom')}hud()}
+function bossAskNext(){const b=G.boss;if(!b.queue.length){endGame('boss_lost');return}ask(b.queue.shift(),'boss')}
+function fireBeam(){G.beam={t:.7};sfx('laser');later(.35,()=>{const b=G.boss;b.hp--;b.flash=.4;boom(b.x,b.y+4,26,['#ffe14a','#ff3fb4','#fff']);sfx('boom');hud()})}
+function bossDown(){G.state='bossDie';const b=G.boss;for(let i=0;i<10;i++)later(i*.18,()=>{boom(b.x+rnd(-28,28),b.y+rnd(-14,14),22,['#ffe14a','#ff3fb4','#fff','#ff9f1c']);sfx('boom')});later(2.2,()=>{G.boss.dead=true;endGame('win')})}
+function bossFire(){const b=G.boss,sp=(OPT.calm?62:92)*(1+.15*b.over)*(b.rage?1.25:1),cx=b.x,cy=b.y+10,p=b.pat%5;
+  if(p===0){const a=Math.atan2(G.ship.y-cy,G.ship.x-cx);for(let k=-1;k<=1;k++)G.bullets.push({x:cx,y:cy,vx:Math.cos(a+k*.22)*sp,vy:Math.sin(a+k*.22)*sp})}
+  else if(p===1){const n=7+b.over*2,o=b.t;for(let k=0;k<n;k++){const a=o+k*6.283/n;G.bullets.push({x:cx,y:cy,vx:Math.cos(a)*sp*.8,vy:Math.abs(Math.sin(a))*sp*.8+20})}}
+  else if(p===2){[-26,26].forEach(dx=>G.bullets.push({x:cx+dx,y:cy+12,vx:rnd(-12,12),vy:sp*1.1}))}
+  else if(p===3){const gap=clamp(G.ship.x+rnd(-50,50),30,W-30);for(let x=8;x<W;x+=14)if(Math.abs(x-gap)>(OPT.calm?34:27))G.bullets.push({x,y:cy+14,vx:0,vy:sp*.7});b.pat++}
+  else{const n=OPT.calm?6:9;for(let k=0;k<n;k++){const a=b.t*2.2+k*6.283/n;G.bullets.push({x:cx,y:cy,vx:Math.cos(a)*sp*.7,vy:Math.abs(Math.sin(a))*sp*.7+25})}}
+}
+
+/* ===== Ende + Lernkompass ===== */
+function endGame(reason){
+  G.state='end';G.reason=reason;hideQ();duck(false);
+  LS.set(KEY.log,{reason,attempts:G.attempts,date:new Date().toISOString()});
+  {const b=LS.get(KEY.best,{wins:0,score:0});G.record=G.score>(b.score||0);if(G.record)b.score=G.score;if(reason==='win'){LS.del(KEY.prog);b.wins=(b.wins||0)+1}LS.set(KEY.best,b)}
+  later(/^shot/.test(reason)?1.1:0,()=>endScreen(reason,G.attempts,false));
+}
+function analyse(att){
+  const res={};
+  att.forEach(a=>{const r=res[a.id]||(res[a.id]={id:a.id,to:false,ans:null,all:[]});if(a.to)r.to=true;else{r.ans=a;r.all.push(a)}});
+  const cons=SET.concepts.map(c=>{
+    const qs=[...SET.sectors.flatMap(s=>s.qs),...(SET.boss?SET.boss.qs:[])].filter(q=>q.concept===c.name);
+    const rs=qs.map(q=>({q,r:res[q.id]})).filter(x=>x.r);
+    const answered=rs.filter(x=>x.r.ans);const n=answered.length,k=answered.filter(x=>x.r.ans.ok).length;
+    const jk=answered.some(x=>x.r.ans.ok&&x.r.ans.jk);const timeOk=answered.filter(x=>x.r.to&&x.r.ans.ok).length;
+    const okLow=answered.some(x=>x.r.ans.ok&&x.q.afb===1),badHigh=answered.some(x=>!x.r.ans.ok&&x.q.afb>=2);
+    const onlyLow=k===n&&answered.every(x=>x.q.afb===1);
+    let cat,why;
+    if(n===0){cat='offen';why=rs.length?'Nur Zeit abgelaufen, noch keine Antwort.':'Noch nicht erreicht.'}
+    else if(n===1){cat='offen';why=k?'1 Frage richtig – zu wenig, um sicher zu sein (Raten möglich).':'1 Frage falsch – noch zu wenig Daten, schau dir die Erklärung an.'}
+    else if(k===n&&!jk&&!onlyLow){cat='sicher';why=`Alle ${n} Fragen richtig, auch Anwendungsfälle.`}
+    else if(k/n>=.5){cat='wack';why=jk&&k===n?'Alles richtig, aber mit Joker – noch nicht sicher.':onlyLow?'Nur Grundwissen geprüft, Anwendung fehlt noch.':okLow&&badHigh?`Grundwissen sitzt, die Anwendung auf Fälle noch nicht (${k} von ${n}).`:`${k} von ${n} richtig – teils gewusst.`}
+    else{cat='ueben';why=`Nur ${k} von ${n} richtig.`}
+    return {c,cat,why,n,k,timeOk,wrong:answered.filter(x=>!x.r.ans.ok)};
+  });
+  const misCount={};att.forEach(a=>{if(!a.to&&!a.ok&&a.mis)misCount[a.mis]=(misCount[a.mis]||0)+1});
+  const mis=Object.entries(misCount).filter(([,n])=>n>=2).sort((a,b)=>b[1]-a[1]);
+  const timeQs=Object.values(res).filter(r=>r.to).length;
+  return {cons,mis,timeQs};
+}
+const CAT={ueben:['Üben','c-ueben','#ff5a6e'],wack:['Wackelig','c-wack','#ffe14a'],sicher:['Sicher','c-sicher','#6dff7a'],offen:['Offen','c-offen','#7a74b0']};
+function kompassHTML(att){
+  const A=analyse(att),ord=['ueben','wack','sicher','offen'];
+  const cnt=k=>A.cons.filter(x=>x.cat===k).length;
+  let h=`<div class="chips">${ord.map(k=>`<span class="chip ${CAT[k][1]}">${CAT[k][0]}: ${cnt(k)}</span>`).join('')}<span class="chip c-zeit">⏱ Zeit: ${A.timeQs}</span></div>`;
+  const ue=A.cons.filter(x=>x.cat==='ueben').map(x=>x.c.name),wa=A.cons.filter(x=>x.cat==='wack').map(x=>x.c.name);
+  h+=`<div class="box"><p>${ue.length?`<b style="color:var(--rd)">Zuerst üben:</b> ${esc(ue.join(', '))}.`:'Keine Themen mit großem Übungsbedarf.'} ${wa.length?`<br><b style="color:var(--ye)">Festigen:</b> ${esc(wa.join(', '))}.`:''}</p>
+   ${A.timeQs?`<p class="small">⏱ ${A.timeQs} Frage(n) liefen aus der Zeit. Wurden sie im Dock richtig gelöst, ist das Wissen da – dann hilft genaueres, ruhiges Lesen oder der Ruhige Modus.</p>`:''}</div>`;
+  if(A.mis.length)h+=`<div class="mis"><h4>MÖGLICHE FEHLVORSTELLUNGEN (Vermutung)</h4>${A.mis.map(([m,n])=>`<p>• ${esc(m)} <span class="small">(${n}× gewählt)</span></p>`).join('')}<p class="small">Mehrmals dieselbe Verwechslung deutet auf einen Denkfehler hin, nicht auf Zufall.</p></div>`;
+  const unreached=A.cons.filter(x=>x.cat==='offen'&&x.n===0);
+  ord.forEach(k=>A.cons.filter(x=>x.cat===k&&!unreached.includes(x)).forEach(x=>{
+    h+=`<div class="kc" style="border-color:${CAT[k][2]}"><h4><span>${esc(x.c.name)}</span><small class="${CAT[k][1]}" style="border:0">${CAT[k][0].toUpperCase()}</small></h4>
+    <div class="why">${esc(x.why)}${x.timeOk?` <span class="c-zeit" style="border:0">⏱ ${x.timeOk}× erst ohne Zeitdruck gelöst.</span>`:''}</div>
+    ${x.c.ref?`<div class="small">Nachlesen: ${esc(x.c.ref)}</div>`:''}
+    ${x.wrong.length?`<details><summary>${x.wrong.length} falsche Antwort${x.wrong.length>1?'en':''} ansehen</summary>${x.wrong.map(w=>`<div class="wq"><p>${esc(w.q.text)}</p><p>Deine Antwort: <em>${esc(w.r.ans.ch)}</em><br>Richtig: <strong>${esc(w.q.right)}</strong></p><p class="small">${esc(w.q.expl)}</p></div>`).join('')}</details>`:''}</div>`}));
+  if(unreached.length)h+=`<div class="box"><p class="small">Noch nicht erreicht oder nur Zeit abgelaufen: ${esc(unreached.map(x=>x.c.name).join(', '))}</p></div>`;
+  return h;
+}
+function exportText(att,reason){
+  const A=analyse(att),L=[];
+  L.push('# Lernkompass aus dem Lernspiel „Netto Nova“');L.push('Fach: Allgemeine Wirtschaftslehre – Sozialversicherung, Altersvorsorge, Gehaltsabrechnung, Kaufmann & Vollmachten, KG');
+  L.push('Datum: '+new Date().toLocaleDateString('de-DE'));L.push('Ergebnis: '+REASON[reason][0]);L.push('');
+  [['ueben','Üben'],['wack','Wackelig'],['sicher','Sicher'],['offen','Noch offen']].forEach(([k,t])=>{const xs=A.cons.filter(x=>x.cat===k);if(!xs.length)return;L.push('## '+t);
+    xs.forEach(x=>{L.push(`- ${x.c.name}${x.c.ref?' ('+x.c.ref+')':''}: ${x.k} von ${x.n} richtig${x.timeOk?', '+x.timeOk+'× erst ohne Zeitdruck':''}`);
+      x.wrong.forEach(w=>L.push(`  - Frage: ${w.q.text} | Meine Antwort: ${w.r.ans.ch} | Richtig: ${w.q.right}`))});L.push('')});
+  if(A.timeQs){L.push('## Zeit');L.push(`- ${A.timeQs} Frage(n) liefen aus der Zeit.`);L.push('')}
+  if(A.mis.length){L.push('## Mögliche Fehlvorstellungen (Vermutung)');A.mis.forEach(([m,n])=>L.push(`- ${m} (${n}×)`));L.push('')}
+  L.push('Auftrag an den KI-Lerncoach:');
+  L.push('1. Erkläre mir die Themen unter „Üben“ einfach und mit einem Beispiel aus der Verwaltung.');
+  L.push('2. Geh auf die vermuteten Fehlvorstellungen ein und zeig mir den Unterschied.');
+  L.push('3. Stell mir danach einzeln Fragen im Chat zu „Üben“ und „Wackelig“ – immer nur eine, dann warte auf meine Antwort. Nimm andere Fälle als im Spiel.');
+  L.push('4. Bei Rechnungen: Lass mich den Rechenweg aufschreiben und prüfe jeden Schritt.');
+  L.push('5. Sag mir am Ende kurz, was jetzt sitzt und was ich noch wiederholen sollte.');
+  return L.join('\n');
+}
+function copyText(t){const done=()=>toast('Kopiert!');try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(done,()=>manual());else manual()}catch(e){manual()}
+  function manual(){const m=$('#modal');m.innerHTML=`<div class="in"><h3>LERNKOMPASS KOPIEREN</h3><p class="small">Text markieren und kopieren (Strg+C bzw. lange tippen), dann in den KI-Lerncoach einfügen.</p><textarea id="mTxt" readonly style="width:100%;height:50cqh;background:#05031a;color:#fff;border:2px solid var(--cy);font-size:13px;padding:8px"></textarea><button class="go" id="mClose">SCHLIESSEN</button></div>`;
+    m.classList.remove('hidden');const ta=$('#mTxt');ta.value=t;ta.focus();ta.select();$('#mClose').onclick=closeModal}}
+const REASON={win:['Der Abzugs-Koloss ist besiegt!','Stark! Du hast die schweren Fragen gelöst. Unten siehst du, was sicher sitzt und wo du noch festigen kannst.'],
+  energy:['Zu wenig Energie für den Endboss','Sein Schutzschild hält: Dir fehlen richtige Antworten aus den Sektoren. Schau dir an, wo du üben solltest, und fliege die Mission neu.'],
+  shot_sector:['Schiff zerstört','Das lag am Ausweichen, nicht an deinem Wissen. Du kannst den Sektor mit deinem Stand vom Sektorbeginn wiederholen.'],
+  shot_boss:['Vom Koloss abgeschossen','Das lag am Ausweichen. Du kannst den Bosskampf mit deinem gesammelten Arsenal wiederholen.'],
+  boss_lost:['Der Koloss hat gewonnen','Für den Sieg fehlten richtige Antworten auf schwere Fragen. Der Lernkompass zeigt dir, woran es lag.'],
+  quit:['Mission abgebrochen','Hier ist dein Zwischenstand.']};
+function endScreen(reason,att,fromMenu){
+  G.state='end';$('#hud').classList.add('hidden');hideQ();
+  const r=REASON[reason]||REASON.quit;
+  const retry=!fromMenu&&(reason==='shot_sector'?'<button class="go" id="eSec">↻ SEKTOR WIEDERHOLEN</button>':(reason==='shot_boss'||reason==='boss_lost')?'<button class="go" id="eBoss">↻ ENDBOSS ERNEUT</button>':'');
+  screen(`<h2 style="color:${reason==='win'?'var(--gr)':'var(--ye)'}">${esc(r[0].toUpperCase())}</h2><p class="sub">${esc(r[1])}</p>${fromMenu?'':`<p class="sub" style="color:var(--ye);font-family:var(--mono)">★ ${G.score} Punkte${G.record?' · NEUER REKORD!':''}</p>`}${retry}
+   <h2>LERNKOMPASS</h2>${kompassHTML(att)}
+   <button class="go alt" id="eCopy">Lernkompass für den KI-Lerncoach kopieren</button>${COACH_URL?`<a class="go alt" href="${COACH_URL}" target="_blank" rel="noopener" style="margin-top:2.5cqw;text-align:center;text-decoration:none">Zum KI-Lerncoach AWL ↗</a>`:''}
+   <button class="go" id="eMenu" style="margin-top:2.5cqw">HAUPTMENÜ</button>`);
+  if($('#eSec'))$('#eSec').onclick=()=>{Object.assign(G,JSON.parse(JSON.stringify(G.snap)));G.enemies=[];G.parts=[];G.ship.vis=true;startSector(G.sector)};
+  if($('#eBoss'))$('#eBoss').onclick=()=>{Object.assign(G,JSON.parse(JSON.stringify(G.snap)));G.bullets=[];G.parts=[];G.ship.vis=true;G.boss=null;bossIntro()};
+  $('#eCopy').onclick=()=>copyText(exportText(att,reason));
+  $('#eMenu').onclick=menu;
+}
+function kompassView(att,back){screen(`<h2>ZWISCHENSTAND</h2>${kompassHTML(att)}<button class="go" id="kBack">ZURÜCK</button>`);$('#kBack').onclick=back}
+
+/* ===== Schaden ===== */
+function damage(){
+  const s=G.ship;if(s.inv>0||!s.vis)return;
+  if(G.shields>0){G.shields--;s.inv=1.2;toast('◈ Schild hat dich geschützt');sfx('power');hud();return}
+  G.hull--;s.inv=1.6;sfx('hit');boom(s.x,s.y,14,['#3ff0ff','#ff3fb4','#fff']);hud();
+  if(G.hull<=0){s.vis=false;sfx('boom');boom(s.x,s.y,40,['#3ff0ff','#ff3fb4','#ffe14a','#fff']);G.enemies=[];G.bullets=[];G.shots=[];endGame(G.boss?'shot_boss':'shot_sector')}
+}
+
+/* ===== Gegner ===== */
+const SPD=()=>(OPT.calm?.75:1)*(1+G.sector*.12);
+function spawnEnemy(type,x,y,vx,vy,extra){const T=ETYPE[type];const e=Object.assign({type,x,y,vx,vy,hp:T.hp,sc:T.sc,spr:SPR[T.spr],ph:rnd(0,6),hit:0},extra||{});G.enemies.push(e);return e}
+function spawnWave(){
+  const r=Math.random(),sp=SPD(),lvl=G.sector,guns=G.enemies.filter(e=>e.type==='gun').length;
+  const gunP=(OPT.calm?.05:.09)+lvl*.04;
+  if(r<gunP){if(guns<(OPT.calm?1:2))spawnEnemy('gun',rnd(30,W-30),-12,0,95*sp,{stopY:rnd(70,150),fireT:.9,stay:2.6,phase:'in'});return}
+  if(r<gunP+.08){const cx=rnd(45,W-45);for(let i=-2;i<=2;i++)spawnEnemy('enA',cx+i*16,-10-Math.abs(i)*12,0,100*sp);return}
+  if(r<gunP+.15){const dir=Math.random()<.5?-1:1;for(let i=0;i<6;i++)spawnEnemy('rock',dir>0?rnd(0,W*.6):rnd(W*.4,W),-10-i*18,dir*60*sp,150*sp);return}
+  if(r<gunP+.26){spawnEnemy('big',rnd(25,W-25),-18,rnd(-10,10),58*sp);return}
+  if(r<gunP+.37){spawnEnemy('mine',rnd(15,W-15),-8,rnd(-15,15),48*sp);return}
+  const t=Math.random();
+  if(t<.35)spawnEnemy('enA',rnd(12,W-12),-10,rnd(-20,20),115*sp);
+  else if(t<.75)spawnEnemy('rock',rnd(10,W-10),-10,rnd(-25,25),rnd(95,135)*sp);
+  else spawnEnemy('enB',rnd(25,W-25),-10,0,85*sp);
+}
+function gunFire(e){const sp=105*(OPT.calm?.75:1)*(1+.08*G.sector)*(G.boss?1+.1*G.boss.over:1),a=Math.atan2(G.ship.y-e.y,G.ship.x-e.x);
+  const spread=(G.sector>=1||G.boss)&&!OPT.calm?[-.18,0,.18]:[0];spread.forEach(d=>G.bullets.push({x:e.x,y:e.y+4,vx:Math.cos(a+d)*sp,vy:Math.sin(a+d)*sp}))}
+function kill(e){boom(e.x,e.y,e.sc>1?26:12,e.type==='gun'?['#b04dff','#ffe14a','#fff']:e.type==='mine'?['#ff4d4d','#ffe14a']:['#ffe14a','#ff9f1c','#fff']);G.score+=ETYPE[e.type].pts;sfx('pop');hud()}
+function moveEnemies(dt){
+  G.enemies.forEach(e=>{e.hit=Math.max(0,e.hit-dt);
+    if(e.type==='gun'){if(e.phase==='in'){e.y+=e.vy*dt;if(e.y>=e.stopY)e.phase='hold'}
+      else if(e.phase==='hold'){e.x=clamp(e.x+Math.sin(G.t*1.5+e.ph)*28*dt,12,W-12);e.stay-=dt;e.fireT-=dt;if(e.fireT<=0){gunFire(e);e.fireT=OPT.calm?1.6:1.1}if(e.stay<=0)e.phase='out'}
+      else e.y+=e.vy*1.5*dt}
+    else if(e.type==='enB'){e.y+=e.vy*dt;e.x+=Math.sin(G.t*3+e.ph)*65*dt}
+    else if(e.type==='enA'){e.y+=e.vy*dt;e.x+=(e.vx+Math.sin(G.t*2+e.ph)*14)*dt}
+    else{e.y+=e.vy*dt;e.x+=e.vx*dt}});
+  G.enemies=G.enemies.filter(e=>e.hp>0&&e.y<H+24&&e.x>-50&&e.x<W+50);
+}
+
+/* ===== Update ===== */
+function update(dt){
+  if(G.paused)return;G.t+=dt;
+  for(let i=G.timers.length-1;i>=0;i--){const tm=G.timers[i];tm.t-=dt;if(tm.t<=0){G.timers.splice(i,1);tm.fn()}}
+  const slow=(G.state==='question'||G.state==='bossQ'||G.state==='feedback'||G.state==='intro'||G.state==='end')?.15:1;
+  stars.forEach(s=>{s.y+=(14+s.z*80)*dt*slow*(G.boss?1.4:1);if(s.y>H){s.y=0;s.x=rnd(0,W)}});
+  G.parts.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt});G.parts=G.parts.filter(p=>p.l>0);
+  const s=G.ship;s.inv=Math.max(0,s.inv-dt);
+  const ctrl=G.state==='fly'||G.state==='bossAtk';
+  if(ctrl){const sp=190;let dx=(K.r?1:0)-(K.l?1:0),dy=(K.d?1:0)-(K.u?1:0);if(dx||dy){s.tx=s.x+dx*sp*dt*3;s.ty=s.y+dy*sp*dt*3}
+    s.tx=clamp(s.tx,10,W-10);s.ty=clamp(s.ty,G.boss?H*.42:H*.4,H-18)}
+  const k=G.state==='flythrough'?9:ctrl?16:6;s.x+=(s.tx-s.x)*Math.min(1,dt*k);s.y+=(s.ty-s.y)*Math.min(1,dt*k);
+  // eigene Schüsse (automatisch)
+  if(ctrl&&s.vis){G.shotT-=dt;if(G.shotT<=0){G.shotT=.17;G.shots.push({x:s.x-3,y:s.y-6},{x:s.x+3,y:s.y-6});G.pew=(G.pew||0)+1;if(G.pew%2)sfx('pew')}}
+  G.shots.forEach(q=>q.y-=320*dt);
+  const b=G.boss;
+  G.shots.forEach(q=>{
+    for(const e of G.enemies){const hw=e.spr.width*e.sc/2+1,hh=e.spr.height*e.sc/2+2;
+      if(e.hp>0&&Math.abs(q.x-e.x)<hw&&Math.abs(q.y-e.y)<hh){q.y=-99;e.hp--;e.hit=.08;if(e.hp<=0)kill(e);else sfx('tink');break}}
+    if(b&&!b.dead&&q.y>-50&&Math.abs(q.x-b.x)<30&&Math.abs(q.y-b.y)<17){q.y=-99;G.parts.push({x:q.x,y:b.y+15,vx:rnd(-30,30),vy:rnd(10,40),l:.25,c:'#9ff',s:1});
+      if(!b.msg){b.msg=1;toast('Nur richtige Antworten treffen!')}}});
+  G.shots=G.shots.filter(q=>q.y>-8);
+  if(G.state==='fly'){
+    G.flyT-=dt;G.spawnT-=dt;
+    if(G.spawnT<=0&&G.flyT>1.3){G.spawnT=(OPT.calm?.85:.5)-G.sector*.05;spawnWave()}
+    if(G.flyT<=0&&G.state==='fly'){ask(SET.sectors[G.sector].qs[G.qi],'sector')}
+  }
+  if(ctrl){moveEnemies(dt);
+    G.enemies.forEach(e=>{const hw=e.spr.width*e.sc/2+2,hh=e.spr.height*e.sc/2+2;
+      if(s.vis&&e.hp>0&&Math.abs(e.x-s.x)<hw&&Math.abs(e.y-s.y)<hh){if(s.inv>0)return;e.hp=0;kill(e);damage()}})}
+  if((G.state==='question'||G.state==='bossQ')&&G.cur&&!G.cur.done&&G.cur.left!==Infinity){
+    G.cur.left-=dt;const f=Math.max(0,G.cur.left/G.cur.T);$('#qbar i').style.width=(f*100)+'%';$('#qbar').classList.toggle('low',f<.2);
+    $('#qtime').textContent=Math.ceil(Math.max(0,G.cur.left))+' s';if(G.cur.left<=0)timeout()}
+  if(b&&!b.dead){b.t+=dt;b.flash=Math.max(0,b.flash-dt);const ty=78;b.y+=(ty-b.y)*Math.min(1,dt*1.5);
+    if(G.state==='bossAtk'||G.state==='bossDie')b.x=W/2+Math.sin(b.t*(b.rage?1.25:.8))*80;
+    if(G.state==='bossAtk'){b.atkT-=dt;b.fireT-=dt;b.droneT-=dt;
+      if(b.fireT<=0&&b.atkT>.8){bossFire();b.fireT=(OPT.calm?1.05:.7)/(1+.2*b.over)*(b.rage?.82:1);if(Math.random()<.4)b.pat++}
+      if(b.droneT<=0&&b.atkT>2.5&&G.enemies.filter(e=>e.type==='gun').length<(OPT.calm?2:4)){[-1,1].slice(0,b.over>0||b.rage?2:1+(Math.random()<.5?1:0)).forEach(d=>spawnEnemy('gun',b.x+d*22,b.y+12,0,85,{stopY:rnd(130,200),fireT:.9,stay:2.2,phase:'in'}));b.droneT=(OPT.calm?4.5:2.6)/(1+.15*b.over)*(b.rage?.75:1)}
+      if(b.atkT<=0&&G.bullets.length===0)bossAskNext();else if(b.atkT<=-2.5){G.bullets=[];bossAskNext()}}
+  }
+  G.bullets.forEach(q=>{q.x+=q.vx*dt;q.y+=q.vy*dt});G.bullets=G.bullets.filter(q=>q.y<H+6&&q.y>-20&&q.x>-6&&q.x<W+6);
+  if(ctrl)G.bullets.forEach(q=>{if(s.vis&&Math.abs(q.x-s.x)<5&&Math.abs(q.y-s.y)<6){q.y=H+50;damage()}});
+  if(G.beam){G.beam.t-=dt;if(G.beam.t<=0)G.beam=null}
+}
+
+/* ===== Zeichnen ===== */
+function render(){
+  const c=ctx;const col=G.boss?SEC_COL[3]:SEC_COL[G.sector]||SEC_COL[0];
+  const gr=c.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#05031a');gr.addColorStop(1,col);c.fillStyle=gr;c.fillRect(0,0,W,H);
+  stars.forEach(s=>{c.fillStyle=s.z>.7?'#ffffff':s.z>.4?'#9fb4ff':'#4a4a8a';c.fillRect(s.x|0,s.y|0,s.z>.85?2:1,s.z>.85?2:1)});
+  c.fillStyle='rgba(255,63,180,.12)';for(let y=H-90;y<H;y+=6)c.fillRect(0,y,W,1);
+  G.enemies.forEach(e=>{const w=e.spr.width*e.sc,h=e.spr.height*e.sc;if(e.hit>0)c.globalAlpha=.45;c.drawImage(e.spr,(e.x-w/2)|0,(e.y-h/2)|0,w,h);c.globalAlpha=1;
+    if(e.type==='gun'&&e.phase==='hold'&&e.fireT<.4){c.fillStyle=Math.floor(G.t*20)%2?'#ffe14a':'#ffffff';c.fillRect((e.x-1)|0,(e.y+4)|0,3,3)}
+    if(e.type==='mine'&&Math.floor(G.t*4+e.ph)%2){c.fillStyle='#ffffff';c.fillRect(e.x|0,e.y|0,1,1)}});
+  const b=G.boss;
+  if(b&&!b.dead){const bx=(b.x-32)|0,by=(b.y-17)|0;c.drawImage(SPR.boss,bx,by);
+    const pulse=3+Math.sin(G.t*6)*1.2;c.fillStyle=b.flash>0?'#ffffff':'#ff2d6f';c.beginPath();c.arc(b.x,b.y+3,pulse+2,0,6.283);c.fill();c.fillStyle='#ffe14a';c.fillRect((b.x-1)|0,(b.y+2)|0,2,2);
+    if(b.flash>0){c.globalAlpha=b.flash;c.fillStyle='#fff';c.fillRect(bx,by,64,34);c.globalAlpha=1}}
+  if(G.beam&&b){const a=G.beam.t/.7;c.fillStyle=`rgba(63,240,255,${a})`;c.fillRect((G.ship.x-2)|0,b.y,4,G.ship.y-b.y);c.fillStyle=`rgba(255,255,255,${a})`;c.fillRect((G.ship.x-1)|0,b.y,2,G.ship.y-b.y);if(Math.abs(G.ship.x-b.x)>2){G.ship.tx=b.x}}
+  c.fillStyle='#bff8ff';G.shots.forEach(q=>c.fillRect(q.x|0,q.y|0,1,4));
+  G.bullets.forEach(q=>{c.fillStyle='#ff3fb4';c.fillRect((q.x-2)|0,(q.y-2)|0,4,4);c.fillStyle='#fff';c.fillRect((q.x-1)|0,(q.y-1)|0,2,2)});
+  const s=G.ship;
+  if(s.vis&&G.state!=='menu'&&!(s.inv>0&&Math.floor(G.t*12)%2)){
+    c.drawImage(SPR.ship,(s.x-6)|0,(s.y-6)|0);const fl=Math.floor(G.t*20)%2;c.fillStyle=fl?'#ffe14a':'#ff9f1c';c.fillRect((s.x-4)|0,(s.y+5)|0,1,2+fl);c.fillRect((s.x+3)|0,(s.y+5)|0,1,2+fl);
+    if(G.shields>0){c.strokeStyle='rgba(63,240,255,.35)';c.beginPath();c.arc(s.x,s.y,10,0,6.283);c.stroke()}}
+  G.parts.forEach(p=>{c.globalAlpha=Math.min(1,p.l*2);c.fillStyle=p.c;c.fillRect(p.x|0,p.y|0,p.s,p.s)});c.globalAlpha=1;
+}
+let lastT=performance.now();
+function loop(t){const dt=Math.min(.05,(t-lastT)/1000);lastT=t;try{update(dt)}catch(e){console.error(e)}render();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+
+/* ===== Eingabe ===== */
+const K={l:0,r:0,u:0,d:0};
+const KM={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',ArrowUp:'u',w:'u',W:'u',ArrowDown:'d',s:'d',S:'d'};
+addEventListener('keydown',e=>{
+  if(!$('#modal').classList.contains('hidden')){if(e.key==='Escape'||e.key==='Enter'||e.key==='i'||e.key==='I')closeModal();return}
+  if(e.key==='p'||e.key==='P'||e.key==='Escape'){togglePause();return}
+  if(e.key==='m'||e.key==='M'){auInit();setMute(!OPT.mute);return}
+  if(G.paused)return;
+  if(G.state==='question'||G.state==='bossQ'){
+    if(/^[1-4]$/.test(e.key)&&G.cur&&+e.key<=G.cur.ans.length){const btn=document.querySelectorAll('#answers .ans')[+e.key-1];if(btn&&!btn.classList.contains('gone'))choose(+e.key-1);return}
+    if(G.cur&&G.cur.gate){if(e.key==='ArrowLeft'||e.key==='a'){setSel(G.cur.sel-1);return}if(e.key==='ArrowRight'||e.key==='d'){setSel(G.cur.sel+1);return}if(e.key===' '||e.key==='Enter'){e.preventDefault();choose(G.cur.sel);return}}
+  }
+  if(G.state==='feedback'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();next();return}
+  if((e.key==='i'||e.key==='I')&&!['menu','intro','end'].includes(G.state)){openData();return}
+  if(KM[e.key]){K[KM[e.key]]=1;e.preventDefault()}
+});
+addEventListener('keyup',e=>{if(KM[e.key])K[KM[e.key]]=0});
+const wrap=$('#wrap');let drag=null;
+wrap.addEventListener('pointerdown',e=>{auInit();if(AU.ctx&&AU.ctx.state==='suspended')AU.ctx.resume();if(e.target.closest('button,#screen,#qbox,#fb,#modal,input,label,details'))return;
+  const r=wrap.getBoundingClientRect(),sc=W/r.width;drag={px:e.clientX,py:e.clientY,sx:G.ship.tx,sy:G.ship.ty,sc}});
+addEventListener('pointermove',e=>{if(!drag||!(G.state==='fly'||G.state==='bossAtk'))return;G.ship.tx=drag.sx+(e.clientX-drag.px)*drag.sc*1.25;G.ship.ty=drag.sy+(e.clientY-drag.py)*drag.sc*1.25});
+addEventListener('pointerup',()=>drag=null);addEventListener('pointercancel',()=>drag=null);
+$('#bMute').onclick=e=>{e.stopPropagation();auInit();setMute(!OPT.mute)};
+$('#bPause').onclick=e=>{e.stopPropagation();togglePause()};
+$('#bData').onclick=e=>{e.stopPropagation();openData()};
+$('#bJoker').onclick=e=>{e.stopPropagation();const c=G.cur;if(!c||c.done||c.joker||G.jokers<1)return;G.jokers--;c.joker=true;sfx('power');
+  const wr=c.ans.map((a,i)=>a.ok?-1:i).filter(i=>i>=0);shuffle(wr).slice(0,Math.min(2,wr.length-1)).forEach(i=>document.querySelectorAll('#answers .ans')[i].classList.add('gone'));$('#bJoker').disabled=true;hud()};
+$('#bStretch').onclick=e=>{e.stopPropagation();const c=G.cur;if(!c||c.done||G.stretch<1)return;G.stretch--;c.left+=30;c.T+=30;sfx('power');toast('+30 Sekunden');$('#bStretch').disabled=G.stretch<1;hud()};
+function togglePause(){
+  if(['menu','intro','end'].includes(G.state))return;
+  G.paused=!G.paused;wrap.classList.toggle('paused',G.paused);
+  if(G.paused){screen(`<h2>PAUSE</h2><p class="sub">Die Frage ist während der Pause verdeckt.</p><button class="go" id="pGo">▶ WEITER</button><button class="go alt" id="pQuit" style="margin-top:2.5cqw">Mission abbrechen</button>`);
+    $('#pGo').onclick=togglePause;$('#pQuit').onclick=()=>{G.paused=false;wrap.classList.remove('paused');endGame('quit')}}
+  else hideScreen();
+}
+function openData(){const m=$('#modal');m.innerHTML=`<div class="in"><h3>DATENBLATT</h3><p class="small">Werte 2026 (angenommen) – vergleiche mit den Werten aus dem Unterricht.</p><ul style="padding-left:1.2em">${SET.datenblatt.map(l=>`<li>${esc(l)}</li>`).join('')}</ul><button class="go" id="mClose">SCHLIESSEN</button></div>`;
+  m.classList.remove('hidden');$('#mClose').onclick=closeModal;m.onclick=e=>{if(e.target===m)closeModal()}}
+function closeModal(){$('#modal').classList.add('hidden')}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&!G.paused&&!['menu','intro','end','feedback'].includes(G.state))togglePause()});
+setMute(OPT.mute);
+if(SET.errors.length)console.warn('Fragenset:',SET.errors);
+menu();
+</script>
+</body>
+</html>
