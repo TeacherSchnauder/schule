@@ -3,6 +3,8 @@
 import * as THREE from 'three';
 import { Bauer, FARBEN, weltMaterial, lichtMaterial, ziegelhaus, schornstein, laterne, passant, ballen, fass, kiste, Rauch, schild, zufall } from '../../engine/bausteine.js';
 import { baueFigur, animiereFigur } from '../../engine/figur.js';
+import { Passanten } from '../../engine/passanten.js';
+import { Pfad } from '../../engine/pfad.js';
 import { baueUmgebung, strassenboden, schlange } from './umgebung.js';
 import { FIG } from './figuren.js';
 
@@ -13,6 +15,9 @@ export const UMGEBUNG_A = {
   1930: { horizont: 0xa9aca8, zenit: 0x6d7a83, glut: 0xb8b8b0, nebel: [0xa3a6a2, 30, 220], licht: [0xcfd2d0, 1.1], hemi: [0xb4bcc2, 0x55524e, 1.2] },
 };
 const TOR_Z = -52;
+const BODEN = (x) => (Math.abs(x) > 6 ? 0.16 : 0);           // Gehwege liegen 16 cm höher
+// 1863 Winter der Baumwollnot (Schnee), um 1910 warmer Mittag, um 1930 grauer Krisentag
+const JAHRESZEIT_A = { 1863: 'kalt', 1910: 'warm', 1930: 'kalt' };
 
 export function baueStrasseA() {
   const szene = new THREE.Scene();
@@ -72,9 +77,13 @@ export function baueStrasseA() {
   // ------------------------------------------------------------ Zeitschichten
   const schichten = {};
   const rauch = {};
+  const leuteFest = {};
   const neueSchicht = (jahr, seed, baue) => {
     const g = new THREE.Group();
     const sb = new Bauer(seed), sl = new Bauer(seed + 1).teileStapel(sb);
+    // stehende Leute in der Kleidung ihrer Zeit, auf dem Gehweg auf Gehweghöhe; Standorte für die Gehenden merken
+    sb.epoche = jahr; sb.jahreszeit = JAHRESZEIT_A[jahr]; sb.boden = BODEN; sb.leute = [];
+    leuteFest[jahr] = sb.leute;
     const quellen = [];
     baue(sb, sl, g, quellen);
     g.add(sb.netz(mat), sl.netz(lmat, { schatten: false }));
@@ -210,6 +219,27 @@ export function baueStrasseA() {
   stelle('arthurAlt', FIG.arthurAlt, -6.4, TOR_Z + 1.2, PI / 2, 1930);
   stelle('jack', FIG.jack, 5.4, -57.0, -PI / 2 - 0.4, 1930);
 
+  // ------------------------------------------------------------ Leute, die unterwegs sind (je Zeitschicht)
+  // Spuren als x-Werte (Mittellinie der Straße bei x = 0): Gehwege links und rechts, Fahrbahn dazwischen.
+  const mitte = new Pfad([[0, 10], [0, -106]]);
+  const s = (z) => 10 - z;
+  const laternen = (x, von, bis, abstand) => { const l = []; for (let z = von; z > bis; z -= abstand) l.push({ x, z, r: 0.2 }); return l; };
+  const gehweg = (seite, anzahl, o = {}) => ({ pfad: mitte, von: s(6), bis: s(-104), spuren: [seite * 7.3], anzahl, qMin: seite < 0 ? -7.9 : 6.4, qMax: seite < 0 ? -6.4 : 7.9, ...o });
+  const fahrbahn = (spuren, anzahl, o = {}) => ({ pfad: mitte, von: s(8), bis: s(-104), spuren, anzahl, qMin: -5.6, qMax: 5.6, ...o });
+  const WEGE_A = {
+    1863: [gehweg(-1, 2, { tempo: 0.85 }), gehweg(1, 2, { tempo: 0.85 }), fahrbahn([-2.5, 2.0, 0.2], 4, { tempo: 0.85 })],
+    1910: [gehweg(-1, 4), gehweg(1, 5), fahrbahn([-3.0, -1.0, 0.4, 4.5], 9)],
+    1930: [gehweg(-1, 3, { tempo: 0.8 }), gehweg(1, 2, { tempo: 0.8 }), fahrbahn([-2.8, 1.5, 4.6], 5, { tempo: 0.8 })],
+  };
+  const unterwegs = {};
+  for (const jahr of [1863, 1910, 1930]) {
+    aktiv = jahr;
+    const feste = [...hindernisse.filter((h) => !h.aus || !h.aus()), ...leuteFest[jahr], ...laternen(-6.5, 2, -110, 20)];
+    if (jahr === 1910) feste.push(...laternen(6.6, 6, -112, 16));
+    if (jahr === 1930) feste.push(...laternen(-6.5, 2, -110, 20));
+    unterwegs[jahr] = new Passanten(schichten[jahr], WEGE_A[jahr], { seed: jahr, epoche: jahr, jahreszeit: JAHRESZEIT_A[jahr], feste, boden: BODEN });
+  }
+
   const setze = (jahr) => { aktiv = jahr; for (const j in schichten) schichten[j].visible = Number(j) === jahr; umg.setze(UMGEBUNG_A[jahr]); };
   setze(1910);
 
@@ -227,9 +257,12 @@ export function baueStrasseA() {
       haustuer: new THREE.Vector3(7.5, 0, HAEUSER[4]),
     },
     titelKamera: { pos: new THREE.Vector3(1.5, 5.5, 12), ziel: new THREE.Vector3(-3, 6, -50), fokus: new THREE.Vector3(0, 0, -30) },
-    update(dt, t) {
+    // bewegliche Hindernisse der aktiven Zeitschicht
+    leute: () => unterwegs[aktiv].hindernisse(),
+    update(dt, t, sp) {
       rauch[aktiv]?.update(t);
       for (const n in figuren) if (figuren[n].gruppe.parent.visible) animiereFigur(figuren[n], dt, 0);
+      if (sp) { unterwegs[aktiv].setzeAnteil(sp.qualitaet === 'niedrig' ? 0.5 : 1); unterwegs[aktiv].update(dt, sp); }
     },
   };
 }

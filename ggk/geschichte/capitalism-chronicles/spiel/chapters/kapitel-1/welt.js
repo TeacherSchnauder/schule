@@ -29,6 +29,9 @@ export function baueAussen() {
   const licht = new Bauer(6).teileStapel(b);
   const rnd = zufall(21);
   const rauchQuellen = [];
+  // Hindernisse auf der begehbaren Straße (Korridor): Kreise { x, z, r } und Rechtecke
+  const hindA = [];
+  const mensch = (o) => { passant(b, o); hindA.push({ x: o.x, z: o.z, r: 0.32 * (o.g || 1) }); };
 
   // --- Boden, Kanal, Ufer -------------------------------------------------
   const N = 76, DS = achse.laenge / (N - 1);
@@ -75,9 +78,19 @@ export function baueAussen() {
   baueZug(b, licht, -19, 23, rauchQuellen);
   // Gepäck auf dem Bahnsteig
   kiste(b, { x: -15, z: 18.6, ry: 0.3 }); kiste(b, { x: -14.1, z: 19.1, ry: -0.2, s: 0.7 }); fass(b, { x: -9, z: 19.2 });
-  passant(b, { x: -17, z: 13.2, ry: 1.2, rock: 0x4a3b2c }); passant(b, { x: -29, z: 18.4, ry: 2.2, rock: 0x5a6468, kleid: true, hut: false });
-  passant(b, { x: -30, z: 17.6, ry: 1.6, rock: 0x3a3836 });
+  hindA.push({ x: -15, z: 18.6, r: 0.58 }, { x: -14.1, z: 19.1, r: 0.45 }, { x: -9, z: 19.2, r: 0.4 });
+  mensch({ x: -17, z: 13.2, ry: 1.2, rock: 0x4a3b2c }); mensch({ x: -29, z: 18.4, ry: 2.2, rock: 0x5a6468, kleid: true, hut: false });
+  mensch({ x: -30, z: 17.6, ry: 1.6, rock: 0x3a3836 });
+  // Reisende am Zug, ein Gepäckträger, eine Frau mit Korb, Kinder
+  mensch({ x: -21.6, z: 18.7, ry: 0.2, rock: 0x232224 }); mensch({ x: -20.8, z: 18.9, ry: -0.6, rock: 0x4f5a4a, kleid: true, hut: false });
+  mensch({ x: -21.1, z: 19.15, ry: -0.2, rock: 0x5a6468, kleid: true, g: 0.66 });
+  mensch({ x: -12.9, z: 18.3, ry: 2.6, rock: 0x6b5a47, hut: true }); mensch({ x: -33.5, z: 13.4, ry: 1.0, rock: 0x6a5e50, kleid: true, hut: false });
+  mensch({ x: -35.6, z: 18.8, ry: -2.0, rock: 0x55504a }); mensch({ x: -35, z: 18.2, ry: -2.4, rock: 0x4a3b2c, g: 0.72 });
   laterne(b, licht, { x: -27, z: 12.2 }); laterne(b, licht, { x: -9.5, z: 12.2 });
+  hindA.push({ x: -27, z: 12.2, r: 0.2 }, { x: -9.5, z: 12.2, r: 0.2 });
+  // Empfangsgebäude, Stützen des Vordachs und Wegweiser
+  hindA.push({ minX: -28.2, maxX: -7.8, minZ: 3.4, maxZ: 10.6 }, { x: -6.0, z: 10.6, r: 0.12 });
+  for (let i = -2; i <= 2; i++) hindA.push({ x: -18 + i * 4.6, z: 14.2, r: 0.12 });
 
   // Häuser südlich der Gleise (schließen den Blick nach hinten)
   for (const [x, w, e] of [[-58, 16, 3], [-40, 14, 4], [-24, 15, 3], [-8, 13, 4], [34, 18, 4], [56, 15, 3]]) {
@@ -113,6 +126,12 @@ export function baueAussen() {
           ballen(b, { x: bx, y: by, z: tiefe / 2 + bz, ry: br });
       }
     });
+    if (h.lager) {
+      for (const [bx, bz] of [[-3.5, 1.1], [-2.1, 1.2], [-0.6, 1.3], [3.6, 1.0]]) {
+        const lz = tiefe / 2 + bz;
+        hindA.push({ x: o.x + Math.cos(o.ry) * bx + Math.sin(o.ry) * lz, z: o.z - Math.sin(o.ry) * bx + Math.cos(o.ry) * lz, r: 0.72 });
+      }
+    }
   }
   // zweite Reihe und Fabriken im Westen
   for (const [x, z, w, e] of [[-34, -16, 22, 5], [-36, -46, 20, 4], [-33, -72, 16, 5], [-62, -30, 26, 6], [-60, -70, 20, 4]]) {
@@ -121,12 +140,18 @@ export function baueAussen() {
   for (const [x, z, h] of [[-46, -30, 34], [-50, -84, 30]]) rauchQuellen.push({ x, y: schornstein(b, { x, z, h }), z, groesse: 2.3, hoehe: 18 });
 
   // Laternen, Poller und Leben am Kai
-  for (const z of [0, -16, -32, -48, -64, -79]) { const o = anAchse(z, 3.9); laterne(b, licht, { x: o.x, z: o.z }); }
-  for (let z = 2; z > -86; z -= 4) { if (Math.abs((z % 16)) < 1) continue; const o = anAchse(z, 4.5); b.zylinder(0.11, 0.14, 0.6, 6, FARBEN.eisen, { x: o.x, y: 0.3, z: o.z }); }
-  const leute = [[-13, -4.6, 0x4a3b2c, false], [-14, -5.2, 0x5a6468, true], [-27, -4.4, 0x3d4a3b, false], [-40, 3.6, 0x55504a, false], [-41.2, 3.4, 0x6b4f3a, true], [-55, -4.8, 0x3a3836, false], [-68, 3.7, 0x4a3b2c, false], [-76, -4.5, 0x5a6468, true]];
-  for (const [z, off, f, kleid] of leute) { const o = anAchse(z, off); passant(b, { x: o.x, z: o.z, ry: o.ry + (rnd() - 0.5) * 1.6, rock: f, kleid, hut: !kleid, g: 0.94 + rnd() * 0.1 }); }
-  { const o = anAchse(-26, -4.2); fass(b, { x: o.x, z: o.z }); fass(b, { x: o.x + 0.2, z: o.z - 0.9 }); }
-  { const o = anAchse(-52, -4.6); kiste(b, { x: o.x, z: o.z, ry: 0.4 }); kiste(b, { x: o.x - 0.3, z: o.z - 1.1, ry: 0.1, s: 0.7 }); }
+  for (const z of [0, -16, -32, -48, -64, -79]) { const o = anAchse(z, 3.9); laterne(b, licht, { x: o.x, z: o.z }); hindA.push({ x: o.x, z: o.z, r: 0.2 }); }
+  for (let z = 2; z > -86; z -= 4) { if (Math.abs((z % 16)) < 1) continue; const o = anAchse(z, 4.5); b.zylinder(0.11, 0.14, 0.6, 6, FARBEN.eisen, { x: o.x, y: 0.3, z: o.z }); hindA.push({ x: o.x, z: o.z, r: 0.15 }); }
+  const leute = [[-13, -4.6, 0x4a3b2c, false], [-14, -5.2, 0x5a6468, true], [-27, -4.4, 0x3d4a3b, false], [-40, 3.6, 0x55504a, false], [-41.2, 3.4, 0x6b4f3a, true], [-55, -4.8, 0x3a3836, false], [-68, 3.7, 0x4a3b2c, false], [-76, -4.5, 0x5a6468, true],
+    // weitere Gruppen vor den Häusern und am Kai: Gespräche, Kinder, Frauen mit Körben
+    [-6.5, -4.9, 0x55504a, false], [-7.4, -5.3, 0x6a5e50, true], [-19.5, 3.5, 0x44403b, false], [-33.2, -4.8, 0x4f5a4a, true], [-34.1, -5.0, 0x4b4743, false],
+    [-44.6, -4.7, 0x5b4a4a, true], [-60.2, -4.9, 0x6b5a47, false], [-61.1, -4.6, 0x3f4650, true], [-71.5, 3.5, 0x5b4231, false]];
+  for (const [z, off, f, kleid] of leute) { const o = anAchse(z, off); mensch({ x: o.x, z: o.z, ry: o.ry + (rnd() - 0.5) * 1.6, rock: f, kleid, hut: !kleid, g: 0.94 + rnd() * 0.1 }); }
+  for (const [z, off, f, kleid] of [[-33.6, -4.2, 0x5a6468, false], [-46, -5.2, 0x4f5a4a, true], [-70.4, -4.9, 0x6b5a47, false], [-71.2, -5.3, 0x54483c, true]]) {
+    const o = anAchse(z, off); mensch({ x: o.x, z: o.z, ry: o.ry + (rnd() - 0.5) * 2.4, rock: f, kleid, hut: !kleid && rnd() < 0.6, g: 0.6 + rnd() * 0.14 });
+  }
+  { const o = anAchse(-26, -4.2); fass(b, { x: o.x, z: o.z }); fass(b, { x: o.x + 0.2, z: o.z - 0.9 }); hindA.push({ x: o.x, z: o.z, r: 0.42 }, { x: o.x + 0.2, z: o.z - 0.9, r: 0.42 }); }
+  { const o = anAchse(-52, -4.6); kiste(b, { x: o.x, z: o.z, ry: 0.4 }); kiste(b, { x: o.x - 0.3, z: o.z - 1.1, ry: 0.1, s: 0.7 }); hindA.push({ x: o.x, z: o.z, r: 0.55 }, { x: o.x - 0.3, z: o.z - 1.1, r: 0.45 }); }
 
   // Lastkähne
   for (const [z, off, ry] of [[-28, 7.2, 0], [-57, 7.3, 0.03], [-12, 16.6, 3.14], [-96, 7.4, 0]]) {
@@ -249,8 +274,21 @@ export function baueAussen() {
     info_fabrikgesetz: new THREE.Vector3(-3.4, 0, -87.7),
   };
 
+  // Begehbare Fläche der Straße: Bahnsteig und Vorplatz als Rechtecke, dann der Streifen zwischen Häusern und Kaimauer.
+  const korridor = {
+    rechtecke: [{ minX: -38.4, maxX: 4.0, minZ: 10.9, maxZ: 19.6 }, { minX: -7.7, maxX: 4.0, minZ: 2, maxZ: 19.6 }],
+    baender: [{ pfad, von: 22, bis: pfad.laenge, links: -5.7, rechts: 4.0 }],
+    hindernisse: hindA,
+    // Die Kamera darf über Bahnsteig, Vorplatz, Kai und Kanal stehen, nicht in Häusern oder im Zug.
+    kamera: {
+      rechtecke: [{ minX: -38.8, maxX: 30, minZ: 10.7, maxZ: 21.7 }, { minX: -7.9, maxX: 30, minZ: -6, maxZ: 21.7 }],
+      baender: [{ pfad, von: 18, bis: pfad.laenge + 4, links: -6.0, rechts: 21 }],
+      hindernisse: [{ minX: -28.2, maxX: -7.8, minZ: 3.4, maxZ: 10.6 }],
+    },
+  };
+
   return {
-    szene, pfad, achse, sonne, folgeSonne, hof, infoOrte, nord,
+    szene, pfad, achse, sonne, folgeSonne, hof, infoOrte, nord, korridor,
     titelKamera: { pos: new THREE.Vector3(2.4, 8.4, 9), ziel: new THREE.Vector3(9.5, 3.4, -70), fokus: new THREE.Vector3(0, 0, -40) },
     update(dt, t, kamera) {
       rauch.update(t);

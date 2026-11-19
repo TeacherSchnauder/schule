@@ -2,6 +2,7 @@
 // Alles wird im Code modelliert, es gibt keine externen 3D-Modelle.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { figurStatisch, figurAusPassant } from './figur.js';
 
 // Farbwelt laut Art Direction: gedeckt und warm.
 export const FARBEN = {
@@ -73,8 +74,9 @@ export class Bauer {
     return this;
   }
 
+  // glatt: die weichen Normalen der Grundform bleiben erhalten (runde Teile wirken weich statt kantig).
   hinzu(geo, farbe, o = {}) {
-    const { x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0, sx = 1, sy = 1, sz = 1, streu = 0.045, einzeln = false } = o;
+    const { x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0, sx = 1, sy = 1, sz = 1, streu = 0.045, einzeln = false, glatt = false } = o;
     const g = geo.index ? geo.toNonIndexed() : geo.clone();
     if (g.attributes.uv) g.deleteAttribute('uv');
     _e.set(rx, ry, rz);
@@ -82,11 +84,12 @@ export class Bauer {
     _m.compose(_p.set(x, y, z), _q, _s.set(sx, sy, sz));
     _m.premultiply(this.basis);
     g.applyMatrix4(_m);
-    g.computeVertexNormals();
+    if (!glatt || !g.attributes.normal) g.computeVertexNormals();
     const n = g.attributes.position.count;
     const col = new Float32Array(n * 3);
     _c.set(farbe);
-    const schritt = einzeln ? 3 : 6;
+    // Glatte Teile bekommen einen einheitlichen Farbton, sonst wirkt die Streuung fleckig.
+    const schritt = glatt ? n : einzeln ? 3 : 6;
     let f = 1;
     for (let i = 0; i < n; i++) {
       if (i % schritt === 0) f = 1 + (this.rnd() - 0.5) * 2 * streu;
@@ -100,8 +103,14 @@ export class Bauer {
   // einseitige Fläche, Vorderseite zeigt nach +z (mit ry drehen)
   flaeche(b, h, farbe, o) { return this.hinzu(new THREE.PlaneGeometry(b, h), farbe, o); }
   quader(b, h, t, farbe, o) { return this.hinzu(new THREE.BoxGeometry(b, h, t), farbe, o); }
-  zylinder(rOben, rUnten, h, seg, farbe, o) { return this.hinzu(new THREE.CylinderGeometry(rOben, rUnten, h, seg), farbe, o); }
-  kugel(r, farbe, o) { return this.hinzu(new THREE.IcosahedronGeometry(r, 1), farbe, { einzeln: true, ...o }); }
+  // Zylinder ab 6 Segmenten werden rund und weich dargestellt; 4- und 5-kantige Prismen (Laternenglas, Spitzen) bleiben kantig.
+  zylinder(rOben, rUnten, h, seg, farbe, o) {
+    if (seg >= 6) return this.hinzu(new THREE.CylinderGeometry(rOben, rUnten, h, Math.max(seg, 14)), farbe, { glatt: true, ...o });
+    return this.hinzu(new THREE.CylinderGeometry(rOben, rUnten, h, seg), farbe, o);
+  }
+  kugel(r, farbe, o) { return this.hinzu(new THREE.SphereGeometry(r, 14, 10), farbe, { glatt: true, ...o }); }
+  // Kapsel (Zylinder mit runden Enden) entlang der y-Achse; laenge ohne die Kappen.
+  kapsel(r, laenge, farbe, o) { return this.hinzu(new THREE.CapsuleGeometry(r, laenge, 4, 12), farbe, { glatt: true, ...o }); }
   brocken(r, farbe, o) { return this.hinzu(new THREE.IcosahedronGeometry(r, 0), farbe, { einzeln: true, ...o }); }
   satteldach(b, h, t, farbe, o) { return this.hinzu(prismaGeo(b, h, t), farbe, { einzeln: true, ...o }); }
 
@@ -143,8 +152,9 @@ export function prismaGeo(b, h, t) {
   return g;
 }
 
+// Kantige Teile tragen Flächennormalen und wirken weiter flach schattiert; runde Teile (glatt) wirken weich.
 export function weltMaterial() {
-  return new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: true });
+  return new THREE.MeshLambertMaterial({ vertexColors: true });
 }
 export function lichtMaterial() {
   return new THREE.MeshBasicMaterial({ vertexColors: true });
@@ -252,29 +262,14 @@ export function kiste(b, { x = 0, z = 0, y = 0, ry = 0, s = 0.9 } = {}) {
   b.quader(s * 1.04, s * 0.1, s * 1.04, FARBEN.holz, { x, y: y + s * 0.95, z, ry });
 }
 
-// Eine stehende Nebenfigur, fest in die Welt eingebaut (keine Animation).
-export function passant(b, { x = 0, z = 0, ry = 0, rock = FARBEN.braun, hose = FARBEN.anthrazit, hut = true, kleid = false, g = 1 } = {}) {
-  b.mit({ x, z, ry, s: g }, () => {
-    if (kleid) {
-      b.zylinder(0.19, 0.36, 0.95, 7, rock, { y: 0.5 });
-      b.zylinder(0.16, 0.2, 0.5, 6, rock, { y: 1.2, sz: 0.8 });
-      b.quader(0.42, 0.12, 0.24, FARBEN.kalk, { y: 1.42 });
-    } else {
-      b.quader(0.15, 0.86, 0.17, hose, { x: -0.1, y: 0.43 });
-      b.quader(0.15, 0.86, 0.17, hose, { x: 0.1, y: 0.43 });
-      b.zylinder(0.2, 0.27, 0.85, 6, rock, { y: 1.05, sz: 0.75 });
-      b.quader(0.5, 0.13, 0.25, rock, { y: 1.42 });
-    }
-    b.quader(0.11, 0.6, 0.13, rock, { x: -0.29, y: 1.12 });
-    b.quader(0.11, 0.6, 0.13, rock, { x: 0.29, y: 1.12 });
-    b.kugel(0.115, FARBEN.haut, { y: 1.62, sy: 1.12, streu: 0.03 });
-    if (hut) {
-      b.zylinder(0.17, 0.17, 0.02, 8, FARBEN.anthrazit, { y: 1.72 });
-      b.zylinder(0.1, 0.105, 0.14, 8, FARBEN.anthrazit, { y: 1.79 });
-    } else {
-      b.kugel(0.125, kleid ? FARBEN.ocker : FARBEN.braun, { y: 1.67, z: -0.02, sy: 0.9 });
-    }
-  });
+// Eine stehende Nebenfigur, fest in die Welt eingebaut (keine Animation). Aussehen, Größe und Statur
+// werden aus dem Ort abgeleitet und sind deshalb bei jedem Laden gleich; Farbe, Kleid, Hut und Maßstab (g) wie angegeben.
+// def: vollständige Figurbeschreibung (wie bei baueFigur) statt der Kurzangaben.
+// Zeit, Jahreszeit und Bodenhöhe kommen aus dem Aufruf oder vom Bauer (b.epoche, b.jahreszeit, b.boden); b.leute sammelt die Standorte.
+export function passant(b, { x = 0, z = 0, ry = 0, y = b.boden ? b.boden(x, z) : 0, rock, hose, hut = true, kleid = false, g = 1, def = null, epoche = b.epoche ?? 1845, jahreszeit = b.jahreszeit ?? 'kalt' } = {}) {
+  const rnd = zufall(Math.abs(Math.round(x * 73.1 + z * 19.7 + ry * 7)) + 11);
+  figurStatisch(b, def || figurAusPassant({ rock, hose, hut, kleid, g, epoche, jahreszeit }, rnd), { x, z, ry, y });
+  if (b.leute) b.leute.push({ x, z, r: 0.32 * g });
 }
 
 // ---------------------------------------------------------------------------
@@ -321,8 +316,8 @@ export class Rauch {
     this.quellen = quellen; // {x,y,z, groesse, hoehe, tempo, farbe?}
     this.je = jeQuelle;
     const n = quellen.length * jeQuelle;
-    const mat = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
-    this.netz = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), mat, n);
+    const mat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    this.netz = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 2), mat, n);
     this.netz.frustumCulled = false;
     this.netz.castShadow = false; this.netz.receiveShadow = false;
     const c = new THREE.Color();

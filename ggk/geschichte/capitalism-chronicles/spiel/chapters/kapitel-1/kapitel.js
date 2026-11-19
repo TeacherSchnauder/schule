@@ -13,6 +13,9 @@ import { Station3, FERTIG3 } from './stationen/station-3.js';
 import { Station4, FERTIG4 } from './stationen/station-4.js';
 import { baueFigur, FIGUREN } from '../../engine/figur.js';
 import { Brief, VERGABE, BIS_STATION, neuerBrief } from './stationen/brief.js';
+import { Korridor } from '../../engine/korridor.js';
+import { Passanten } from '../../engine/passanten.js';
+import { Pfad } from '../../engine/pfad.js';
 
 // Zusätzliche Felder im Spielstand von Kapitel I
 export const standZusatz = () => ({ brief: neuerBrief() });
@@ -38,8 +41,20 @@ export function baueKapitel(spiel, ui, daten) {
   const st = () => spiel.stand;
   let nordtorOffen = () => st().schritt >= 6;
 
+  // Leute auf den Straßen: Bahnsteig, Kai, Geschäftsstraße und Gasse
+  const La = aussen.pfad.laenge, Lb = nord.pfad.laenge;
+  const leute = new Passanten(aussen.szene, [
+    { pfad: new Pfad([[-25, 16], [-6, 16]]), von: 0, bis: 19, spuren: [-4.6, 0.9], anzahl: 5, qMin: -4.7, qMax: 1.3, figuren: { stand: 0.35 } },
+    { pfad: aussen.pfad, von: 38, bis: La - 7, spuren: [-3.0, 1.5, -1.6, 2.6], anzahl: 13, qMin: -3.4, qMax: 2.85 },
+    { pfad: nord.pfad, von: 1.5, bis: 31, spuren: [-1.8, 0.8], anzahl: 6, qMin: -2.4, qMax: 1.0, figuren: { stand: 0.4 } },
+    { pfad: nord.pfad, von: 50, bis: Lb - 2.5, spuren: [-1.2, 1.2], anzahl: 3, qMin: -1.6, qMax: 1.6, figuren: { stand: 0 } },
+  ], { seed: 1845 });
+  const dynamisch = () => leute.hindernisse();
+
   const welt = {
     pfade: { a: aussen.pfad, b: nord.pfad },
+    // Auf beiden Straßen geht man frei: Bahnsteig, Kai und Gassen sind begehbar, nicht nur die Mittellinie.
+    korridore: { a: new Korridor({ ...aussen.korridor, dynamisch }), b: new Korridor({ ...nord.korridor, dynamisch }) },
     enden: {
       a: {
         ende: { bereich: 'hof', ...HOF_EINTRITT },
@@ -79,7 +94,11 @@ export function baueKapitel(spiel, ui, daten) {
     },
     titelKamera: aussen.titelKamera,
     update(dt, t, sp) {
-      if (sp.szeneName === 'aussen') aussen.update(dt, t, sp.kamera);
+      if (sp.szeneName === 'aussen') {
+        aussen.update(dt, t, sp.kamera);
+        leute.setzeAnteil(sp.qualitaet === 'niedrig' ? 0.5 : 1);
+        leute.update(dt, sp);
+      }
       else if (sp.szeneName === 'saal') saal.update(dt, t);
       else if (sp.szeneName === 'kontor') kontor.update(dt, t);
       else if (sp.szeneName === 'feld') feld.update(dt, t, sp.kamera);

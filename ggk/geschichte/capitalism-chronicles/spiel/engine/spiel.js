@@ -45,6 +45,9 @@ export class Spiel {
     this.marx = baueFigur(FIGUREN.marx);
     this.engels = baueFigur(FIGUREN.engels);
     for (const f of [this.marx, this.engels]) f.gruppe.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = false; } });
+    // Der Begleiter wird durchscheinend, wenn er zwischen Kamera und Spielfigur steht.
+    this.engels.gruppe.traverse(o => { if (o.isMesh) o.material = o.material.clone(); });
+    this._durch = 1;
     this.pos = this.marx.gruppe.position;
     this.ort = { art: 'schiene', s: 0, bereich: null, pfad: 'a' };
     this.szeneName = 'aussen';
@@ -78,6 +81,9 @@ export class Spiel {
 
   get szene() { return this.welt.szenen[this.szeneName].szene; }
   get bereich() { return this.ort.art === 'frei' ? this.welt.bereiche[this.ort.bereich] : null; }
+  // Begehbarer Streifen der aktuellen Straße (falls das Kapitel einen angibt): dann geht man auf der Straße frei.
+  get korridor() { return this.ort.art === 'schiene' ? this.welt.korridore?.[this.ort.pfad] || null : null; }
+  korridorFrei(x, z) { const k = this.korridor; return k ? k.frei(x, z, RADIUS) : true; }
   get blockiert() { return this.sperren > 0 || this.zustand !== 'spiel'; }
 
   sperre() { this.sperren++; this.steuerung.loslassen(); this.ui.versteckeHinweis(); }
@@ -165,6 +171,8 @@ export class Spiel {
     if (this.ort.art === 'schiene') {
       const n = this.pfad.rechts(this.ort.s, _v);
       this.pfad.punkt(this.ort.s - 0.5, e.position).addScaledVector(n, 1.1);
+      const k = this.korridor;
+      if (k && !k.frei(e.position.x, e.position.z, RADIUS)) e.position.copy(this.pos);
     } else {
       e.position.set(this.pos.x - Math.cos(ry) * 0.95 - Math.sin(ry) * 0.7, 0, this.pos.z + Math.sin(ry) * 0.95 - Math.cos(ry) * 0.7);
       const b = this.bereich;
@@ -243,6 +251,8 @@ export class Spiel {
         if (Math.hypot(x - h.x, z - h.z) < h.r + RADIUS) return false;
       } else if (x > h.minX - RADIUS && x < h.maxX + RADIUS && z > h.minZ - RADIUS && z < h.maxZ + RADIUS) return false;
     }
+    // bewegliche Hindernisse (Leute, die unterwegs sind)
+    if (b.dynamisch) for (const h of b.dynamisch()) if (Math.hypot(x - h.x, z - h.z) < h.r + RADIUS) return false;
     return true;
   }
 
@@ -258,11 +268,81 @@ export class Spiel {
     }
   }
 
+  // Bewegt einen Punkt um (dx, dz). Ist der Weg versperrt, wird schräg am Hindernis entlang ausgewichen,
+  // statt stehen zu bleiben: So bleibt man an Ecken, Säulen und Personen nicht hängen.
+  _schiebe(ok, x, z, dx, dz) {
+    if (ok(x + dx, z + dz)) return [x + dx, z + dz];
+    for (const w of [0.4, -0.4, 0.8, -0.8, 1.2, -1.2, 1.5, -1.5]) {
+      const c = Math.cos(w), s = Math.sin(w), f = Math.max(0.3, c);
+      const nx = (dx * c - dz * s) * f, nz = (dx * s + dz * c) * f;
+      if (ok(x + nx, z + nz)) return [x + nx, z + nz];
+    }
+    return [x, z];
+  }
+
+  // Steht die Figur auf keinem freien Punkt (z. B. nach dem Laden), wird sie zum nächsten freien Punkt versetzt.
+  _befreieMit(ok, p) {
+    if (ok(p.x, p.z)) return;
+    for (let r = 0.25; r <= 6; r += 0.25) {
+      for (let k = 0; k < 16; k++) {
+        const w = (k / 16) * Math.PI * 2;
+        const x = p.x + Math.cos(w) * r, z = p.z + Math.sin(w) * r;
+        if (ok(x, z)) { p.x = x; p.z = z; return; }
+      }
+    }
+  }
+
+  // Freies Gehen auf einer Straße mit Korridor. Die Lage auf der Straße (s) steuert weiter Sperren, Enden und Ereignisse.
+  _bewegeKorridor(dt, a, k) {
+    const m = this.marx;
+    if (a.x === 0 && a.y === 0) return 0;
+    const yaw = this.kam.yaw;
+    const fx = Math.sin(yaw), fz = Math.cos(yaw);
+    const dx = (fx * a.y - fz * a.x), dz = (fz * a.y + fx * a.x);
+    const l = Math.hypot(dx, dz) || 1;
+    const sx = dx * TEMPO * dt, sz = dz * TEMPO * dt;
+    const ok = (x, z) => k.frei(x, z, RADIUS);
+    const L = this.pfad.laenge;
+    const enden = this.welt.enden[this.ort.pfad] || {};
+    dreheZu(m.gruppe, Math.atan2(dx / l, dz / l), dt, 11);
+    // Ende oder Anfang der Straße erreicht? Dann wie bisher in den angrenzenden Bereich wechseln.
+    const roh = this.pfad.lage(this.pos.x + sx, this.pos.z + sz);
+    const e = roh.s >= L ? enden.ende : (roh.s <= 0 ? enden.anfang : null);
+    if (e && Math.abs(roh.q) < k.endeBreite && (!e.wenn || e.wenn())) {
+      const vor = roh.s >= L;
+      const ep = this.engels.gruppe.position.clone();
+      const ry = this._bahnYaw() + (vor ? 0 : Math.PI);
+      this.inBereich(e.bereich, e.x, e.z, null, false);
+      this.engels.gruppe.position.copy(ep);
+      this.marx.gruppe.rotation.y = ry;
+      if (Math.cos(this.kam.yaw - ry) < 0.3) { this.kam.yaw = ry; this.steuerung.gesperrt = true; }
+      this.beiBereich?.(e.bereich);
+      return 0;
+    }
+    if (!ok(this.pos.x, this.pos.z)) this._befreieMit(ok, this.pos);
+    const [nx, nz] = this._schiebe(ok, this.pos.x, this.pos.z, sx, sz);
+    if (nx === this.pos.x && nz === this.pos.z) return 0;
+    const neu = this.pfad.lage(nx, nz);
+    // Sperren auf der Straße: erst nach dem Fund der Station geht es weiter
+    for (const sp of enden.sperren || []) {
+      if (!sp.offen() && this.ort.s <= sp.s && neu.s > sp.s) { sp.tu?.(); return 0; }
+    }
+    const weg = Math.hypot(nx - this.pos.x, nz - this.pos.z);
+    this.pos.x = nx; this.pos.z = nz;
+    this.ort.s = begrenze(neu.s, 0, L);
+    this.beiStrecke?.(this.ort.s, this.ort.pfad);
+    return Math.min(1, Math.hypot(a.x, a.y), weg / (TEMPO * dt) + 0.2);
+  }
+
   _bewege(dt) {
     const a = this.steuerung.achsen();
     const m = this.marx;
     let tempo = 0;
-    if (this.ort.art === 'schiene') {
+    const k = this.korridor;
+    if (k) {
+      tempo = this._bewegeKorridor(dt, a, k);
+      if (this.ort.art !== 'schiene') return;     // in einen Bereich gewechselt
+    } else if (this.ort.art === 'schiene') {
       const L = this.pfad.laenge;
       if (a.y !== 0) {
         let s = this.ort.s + a.y * TEMPO * dt;
@@ -298,13 +378,8 @@ export class Spiel {
         const dx = (fx * a.y - fz * a.x), dz = (fz * a.y + fx * a.x);
         const l = Math.hypot(dx, dz) || 1;
         const sx = dx * TEMPO * dt, sz = dz * TEMPO * dt;
-        let nx = this.pos.x + sx, nz = this.pos.z + sz;
         if (!this._begehbar(b, this.pos.x, this.pos.z)) this._befreie(b);
-        if (!this._begehbar(b, nx, nz)) {
-          if (this._begehbar(b, nx, this.pos.z)) nz = this.pos.z;
-          else if (this._begehbar(b, this.pos.x, nz)) nx = this.pos.x;
-          else { nx = this.pos.x; nz = this.pos.z; }
-        }
+        const [nx, nz] = this._schiebe((x, z) => this._begehbar(b, x, z), this.pos.x, this.pos.z, sx, sz);
         if (nx !== this.pos.x || nz !== this.pos.z) tempo = Math.min(1, Math.hypot(a.x, a.y));
         this.pos.x = nx; this.pos.z = nz;
         dreheZu(m.gruppe, Math.atan2(dx / l, dz / l), dt, 11);
@@ -325,11 +400,12 @@ export class Spiel {
   _begleiter(dt) {
     const e = this.engels, ep = e.gruppe.position;
     const ry = this.marx.gruppe.rotation.y;
-    if (this.ort.art === 'schiene') {
+    const k = this.korridor;
+    if (this.ort.art === 'schiene' && !k) {
       const n = this.pfad.rechts(this.ort.s, _v);
       this.pfad.punkt(this.ort.s - 0.5, _ziel).addScaledVector(n, 1.1);
     } else {
-      // im Bereich: Abstand zu Marx halten statt einem festen Punkt nachzulaufen
+      // im Bereich und im Korridor: Abstand zu Marx halten statt einem festen Punkt nachzulaufen
       let ux = ep.x - this.pos.x, uz = ep.z - this.pos.z;
       const ab = Math.hypot(ux, uz);
       if (ab < 1e-3) { ux = -Math.cos(ry); uz = Math.sin(ry); } else { ux /= ab; uz /= ab; }
@@ -345,11 +421,9 @@ export class Spiel {
       const schritt = Math.min(d, v * dt);
       let nx = ep.x + dx / d * schritt, nz = ep.z + dz / d * schritt;
       const b = this.bereich;
-      if (b && !this._begehbar(b, nx, nz)) {
-        if (this._begehbar(b, nx, ep.z)) nz = ep.z;
-        else if (this._begehbar(b, ep.x, nz)) nx = ep.x;
-        else { nx = ep.x; nz = ep.z; }
-      }
+      const ok = b ? (x, z) => this._begehbar(b, x, z) : k ? (x, z) => k.frei(x, z, RADIUS * 0.9) : null;
+      // Steht der Begleiter gerade auf keinem freien Punkt (z. B. nach einem Ortswechsel), geht er ungehindert weiter.
+      if (ok && ok(ep.x, ep.z) && !ok(nx, nz)) [nx, nz] = this._schiebe(ok, ep.x, ep.z, nx - ep.x, nz - ep.z);
       const weg = Math.hypot(nx - ep.x, nz - ep.z);
       if (weg > 1e-4) {
         tempo = Math.min(1, weg / dt / TEMPO);
@@ -408,12 +482,12 @@ export class Spiel {
     if (!this.blockiert) {
       if (blick.dx || blick.dy) k.ruhe = 0;
       k.neig = begrenze(k.neig + blick.dy * 0.004, 0.1, 0.75);
-      if (this.ort.art === 'schiene') k.blick = begrenze(k.blick - blick.dx * 0.005, -0.85, 0.85);
+      if (this.ort.art === 'schiene' && !this.korridor) k.blick = begrenze(k.blick - blick.dx * 0.005, -0.85, 0.85);
       else k.yaw -= blick.dx * 0.005;
     }
     k.ruhe += dt;
     let yaw;
-    if (this.ort.art === 'schiene') {
+    if (this.ort.art === 'schiene' && !this.korridor) {
       const bahn = this._bahnYaw();
       k.yaw += winkelDiff(bahn, k.yaw) * Math.min(1, dt * 3);
       if (this._tempo > 0.1 && !this.steuerung.zieht()) k.blick *= Math.max(0, 1 - dt * 1.2);
@@ -433,6 +507,15 @@ export class Spiel {
     _ziel.set(this.pos.x, 1.5, this.pos.z);
     const ch = Math.cos(k.neig) * k.abstand, sh = Math.sin(k.neig) * k.abstand;
     _w.set(_ziel.x - fx * ch, _ziel.y + sh, _ziel.z - fz * ch);
+    const kor = this.korridor;
+    if (kor?.kamera) {
+      // Kamera nicht in Häuser oder den Zug stellen: entlang der Blickachse näher an die Figur rücken.
+      const ox = _w.x - _ziel.x, oz = _w.z - _ziel.z;
+      let t = 1;
+      while (t > 0.3 && !kor.luft(_ziel.x + ox * t, _ziel.z + oz * t)) t -= 0.05;
+      _w.x = _ziel.x + ox * t; _w.z = _ziel.z + oz * t;
+      _w.y += (1 - t) * 0.6;
+    }
     const g = b?.kamera?.grenzen;
     if (g) {
       // Stößt die Kamera an eine Wand, rückt sie entlang der Blickachse näher an die Figur.
@@ -452,6 +535,20 @@ export class Spiel {
     _ziel.y += 0.25;
     this._blickZiel = (this._blickZiel || _ziel.clone()).lerp(_ziel, Math.min(1, dt * 12));
     cam.lookAt(this._blickZiel);
+    this._begleiterSicht(dt);
+  }
+
+  _begleiterSicht(dt) {
+    const e = this.engels.gruppe.position, c = this.kamera.position, p = this.pos;
+    const vx = p.x - c.x, vz = p.z - c.z, l2 = vx * vx + vz * vz || 1;
+    const t = ((e.x - c.x) * vx + (e.z - c.z) * vz) / l2;
+    const abst = Math.abs((e.x - c.x) * vz - (e.z - c.z) * vx) / Math.sqrt(l2);
+    const ziel = t > -0.1 && t < 0.92 && abst < 0.6 ? 0.28 : 1;
+    if (Math.abs(ziel - this._durch) < 0.005 && (ziel === 1 || this._durch === ziel)) return;
+    this._durch += (ziel - this._durch) * Math.min(1, dt * 8);
+    if (Math.abs(ziel - this._durch) < 0.01) this._durch = ziel;
+    const d = this._durch;
+    this.engels.gruppe.traverse(o => { if (o.isMesh) { o.material.transparent = d < 1; o.material.opacity = d; o.material.depthWrite = d >= 1; } });
   }
 
   // Kamerafahrt vom Titelbild zur Spielfigur

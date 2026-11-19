@@ -3,6 +3,8 @@
 import * as THREE from 'three';
 import { Bauer, FARBEN, weltMaterial, lichtMaterial, passant, schild, zufall } from '../../engine/bausteine.js';
 import { baueFigur, animiereFigur } from '../../engine/figur.js';
+import { Passanten } from '../../engine/passanten.js';
+import { Pfad } from '../../engine/pfad.js';
 import { baueUmgebung, strassenboden, schlange } from './umgebung.js';
 import { FIG } from './figuren.js';
 
@@ -147,8 +149,12 @@ export function baueFrankfurt() {
 
   // ------------------------------------------------------------ Zeitschichten
   const schichten = {}, figuren = {};
+  const leuteFest = {};
   const neueSchicht = (name, seed, baue) => {
     const g = new THREE.Group(); const sb = new Bauer(seed);
+    // stehende Leute in der Kleidung von 1948, auf dem Gehweg auf Gehweghöhe
+    sb.epoche = 1948; sb.jahreszeit = name === 'juni' ? 'warm' : 'kalt'; sb.boden = (x) => (Math.abs(x) > 6 ? 0.16 : 0); sb.leute = [];
+    leuteFest[name] = sb.leute;
     baue(sb, g); g.add(sb.netz(mat)); g.visible = false; szene.add(g); schichten[name] = g;
   };
   const stelle = (name, def, x, z, ry, schicht) => {
@@ -193,6 +199,24 @@ export function baueFrankfurt() {
   stelle('kramer', FIG.kramer, 1.5, -70, 0, 'november');
   stelle('weberN', FIG.weber, 6.4, LAEDEN[4].z + 1, -PI / 2 - 0.6, 'november');
 
+  // ------------------------------------------------------------ Leute, die unterwegs sind (je Zeitschicht)
+  // März: Hunger und Schwarzmarkt, wenige und langsam; Juni: nach der Währungsreform volle Läden, belebt;
+  // November: Generalstreik, Kundgebung im Süden der Straße (die Gehenden bleiben davor).
+  const mitte = new Pfad([[0, 10], [0, -106]]);
+  const s = (z) => 10 - z;
+  const weg = (spuren, anzahl, o = {}) => ({ pfad: mitte, von: s(7), bis: s(-102), spuren, anzahl, qMin: -5.8, qMax: 5.8, ...o });
+  const WEGE_B = {
+    maerz: [weg([-1.5, 2.5, -4.6], 6, { tempo: 0.85 }), { ...weg([7.2], 2, { tempo: 0.85 }), qMin: 6.4, qMax: 7.9 }],
+    juni: [weg([-3.0, 0, 3.0, 5.2, -5.0], 14, { tempo: 1.05 })],
+    november: [weg([-2.0, 1.5, 5.2, -5.0], 8, { bis: s(-74) })],
+  };
+  const unterwegs = {};
+  for (const name of ['maerz', 'juni', 'november']) {
+    aktiv = name;
+    const feste = [...hindernisse.filter((h) => !h.aus || !h.aus()), ...leuteFest[name]];
+    unterwegs[name] = new Passanten(schichten[name], WEGE_B[name], { seed: 1948 + name.length, epoche: 1948, jahreszeit: name === 'juni' ? 'warm' : 'kalt', feste, boden: (x) => (Math.abs(x) > 6 ? 0.16 : 0) });
+  }
+
   const setze = (name) => { aktiv = name; for (const s in schichten) schichten[s].visible = s === name; umg.setze(UMGEBUNG_B[name]); setzeLaeden(name === 'maerz' ? 0 : name === 'juni' ? 2 : [1, 2, 2, 2, 1]); };
   setze('maerz');
 
@@ -207,6 +231,10 @@ export function baueFrankfurt() {
       buero: new THREE.Vector3(-7.6, 0, BZ0), vorBuero: { x: -6.6, z: BZ0, ry: -PI / 2 }, kramer: new THREE.Vector3(1.5, 0, -70), weberN: new THREE.Vector3(6.4, 0, LAEDEN[4].z + 1),
       plakat: new THREE.Vector3(7.4, 0, -15.5),
     },
-    update(dt) { for (const n in figuren) if (figuren[n].gruppe.parent.visible) animiereFigur(figuren[n], dt, 0); },
+    leute: () => unterwegs[aktiv].hindernisse(),
+    update(dt, t, sp) {
+      for (const n in figuren) if (figuren[n].gruppe.parent.visible) animiereFigur(figuren[n], dt, 0);
+      if (sp) { unterwegs[aktiv].setzeAnteil(sp.qualitaet === 'niedrig' ? 0.5 : 1); unterwegs[aktiv].update(dt, sp); }
+    },
   };
 }

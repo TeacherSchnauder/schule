@@ -60,13 +60,13 @@ export function baueKapitel(spiel, ui, daten) {
     },
     bereiche: {
       hoersaal: { flaechen: [hoersaal.flaeche], hindernisse: hoersaal.hindernisse, kamera: { abstand: 5.4, grenzen: hoersaal.grenzen } },
-      strasse: { flaechen: [strasse.flaeche], hindernisse: strasse.hindernisse, kamera: { abstand: 6.6, grenzen: strasse.grenzen } },
+      strasse: { flaechen: [strasse.flaeche], hindernisse: strasse.hindernisse, dynamisch: strasse.leute, kamera: { abstand: 6.6, grenzen: strasse.grenzen } },
       wohnung: { flaechen: [wohnung.flaeche], hindernisse: wohnung.hindernisse, kamera: { abstand: 4.4, grenzen: wohnung.grenzen } },
-      frankfurt: { flaechen: frankfurt.flaechen, hindernisse: frankfurt.hindernisse, kamera: { abstand: 6.6, grenzen: frankfurt.grenzen } },
+      frankfurt: { flaechen: frankfurt.flaechen, hindernisse: frankfurt.hindernisse, dynamisch: frankfurt.leute, kamera: { abstand: 6.6, grenzen: frankfurt.grenzen } },
       buero: { flaechen: [buero.flaeche], hindernisse: buero.hindernisse, kamera: { abstand: 4.6, grenzen: buero.grenzen } },
     },
     titelKamera: { pos: new THREE.Vector3(5.5, 4.6, 5.5), ziel: new THREE.Vector3(-1, 1.6, -5), fokus: new THREE.Vector3(0, 0, 0) },
-    update(dt, t, sp) { szenen[sp.szeneName].update(dt, t); },
+    update(dt, t, sp) { szenen[sp.szeneName].update(dt, t, sp); },
   };
 
   // ------------------------------------------------------------ Orte: Szene, Zeitschicht, Spielfigur

@@ -61,16 +61,18 @@ export function baueSpinnsaal() {
   }
   // Tür (Südwand, westlich)
   const TX = -11.2;
-  b.quader(1.7, 2.6, 0.14, FARBEN.braun, { x: TX, y: 1.3, z: BZ - 0.06 });
-  b.quader(2.0, 0.18, 0.2, 0x6a5038, { x: TX, y: 2.7, z: BZ - 0.06 });
+  // Tür und Sturz nur von innen sichtbar (wie die Südwand), damit sie beim Eintreten nicht den Blick verdecken
+  b.flaeche(1.7, 2.6, FARBEN.braun, { x: TX, y: 1.3, z: BZ - 0.09, ry: Math.PI });
+  b.flaeche(2.0, 0.18, 0x6a5038, { x: TX, y: 2.7, z: BZ - 0.16, ry: Math.PI });
   licht.quader(0.12, 0.12, 0.06, FARBEN.messing, { x: TX + 0.6, y: 1.2, z: BZ - 0.15 });
 
-  // Gusseiserne Säulen
-  for (const sx of [-9.6, -4.1, 1.4]) for (const sz of [-2.62, 3.5]) {
+  // Gusseiserne Säulen. Die südliche Reihe steht so weit von der alten Maschine entfernt,
+  // dass man hinter Mary noch bequem vorbeikommt (vorher blieb man zwischen Säule, Mary und Maschine hängen).
+  for (const sx of [-9.6, -4.1, 1.4]) for (const sz of [-2.62, 4.8]) {
     b.zylinder(0.11, 0.14, H, 8, FARBEN.eisen, { x: sx, y: H / 2, z: sz });
     b.zylinder(0.24, 0.12, 0.3, 8, FARBEN.eisen, { x: sx, y: H - 0.15, z: sz });
     b.zylinder(0.16, 0.22, 0.25, 8, FARBEN.eisen, { x: sx, y: 0.12, z: sz });
-    hind.push({ x: sx, z: sz, r: 0.2 });
+    hind.push({ x: sx, z: sz, r: 0.17 });
   }
 
   // Transmission an der Decke
@@ -100,7 +102,7 @@ export function baueSpinnsaal() {
     b.zylinder(0.5, 0.5, 0.12, 12, neu ? FARBEN.messing : FARBEN.eisen, { x: X1 + 0.4, y: 1.25, z: z0 + 0.3, rz: Math.PI / 2 });
     // Vorgarnspulen im Gatter
     const n = Math.floor(L / 0.26);
-    const spulen = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.07, 0.09, 0.3, 6), new THREE.MeshLambertMaterial({ color: FARBEN.baumwolle, flatShading: true }), n);
+    const spulen = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.07, 0.09, 0.3, 10), new THREE.MeshLambertMaterial({ color: FARBEN.baumwolle }), n);
     const m4 = new THREE.Matrix4();
     for (let i = 0; i < n; i++) { m4.makeTranslation(X0 + 0.2 + i * 0.26, 1.62, z0 + 0.05); spulen.setMatrixAt(i, m4); }
     spulen.castShadow = true; szene.add(spulen);
@@ -111,7 +113,7 @@ export function baueSpinnsaal() {
     wb.quader(L, 0.08, 0.6, FARBEN.braun, { x: MX, y: 0.8 });
     for (const sx of [X0 + 0.4, X1 - 0.4, MX - 3, MX + 3]) wb.zylinder(0.16, 0.16, 0.12, 8, FARBEN.eisen, { x: sx, y: 0.2, rz: Math.PI / 2 });
     const wn = wb.netz(weltMaterial()); wagen.add(wn);
-    const kops = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.035, 0.065, 0.34, 6), new THREE.MeshLambertMaterial({ color: FARBEN.baumwolle, flatShading: true }), n);
+    const kops = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.035, 0.065, 0.34, 10), new THREE.MeshLambertMaterial({ color: FARBEN.baumwolle }), n);
     for (let i = 0; i < n; i++) { m4.makeRotationX(-0.25); m4.setPosition(X0 + 0.2 + i * 0.26, 1.0, 0.02); kops.setMatrixAt(i, m4); }
     kops.castShadow = true; wagen.add(kops);
     szene.add(wagen);
@@ -121,7 +123,7 @@ export function baueSpinnsaal() {
     szene.add(faeden);
     const mule = { wagen, faeden, z0, MX, phase: rnd() * 6, tempo: neu ? 0 : 1, zielTempo: neu ? 0 : 1 };
     mules.push(mule);
-    hind.push({ minX: X0 - 0.5, maxX: X1 + 0.9, minZ: z0 - 0.5, maxZ: z0 + 3.0 });
+    hind.push({ minX: X0 - 0.4, maxX: X1 + 0.9, minZ: z0 - 0.3, maxZ: z0 + 2.95 });
     return mule;
   };
   const muleNeu = baueMule(-5.9, true);
@@ -220,9 +222,9 @@ export function baueSpinnsaal() {
   szene.add(licht.netz(lichtMaterial(), { schatten: false }));
 
   // Riemenscheiben (drehen sich)
-  const scheibenGeo = new THREE.CylinderGeometry(0.34, 0.34, 0.1, 10);
+  const scheibenGeo = new THREE.CylinderGeometry(0.34, 0.34, 0.1, 18);
   scheibenGeo.rotateZ(Math.PI / 2);
-  const scheiben = new THREE.InstancedMesh(scheibenGeo, new THREE.MeshLambertMaterial({ color: 0x55504a, flatShading: true }), wellen.length);
+  const scheiben = new THREE.InstancedMesh(scheibenGeo, new THREE.MeshLambertMaterial({ color: 0x55504a }), wellen.length);
   szene.add(scheiben);
   // Riemen
   for (const w of wellen) {
@@ -284,7 +286,7 @@ export function baueSpinnsaal() {
   whitlow.gruppe.position.set(-6.8, 0, 5.2); whitlow.gruppe.rotation.y = Math.PI / 2;
   whitlow.gruppe.visible = false;
   for (const f of [mary, whitlow]) { f.gruppe.traverse(o => { if (o.isMesh) o.castShadow = true; }); szene.add(f.gruppe); }
-  hind.push({ x: -2, z: 2.75, r: 0.35 });
+  hind.push({ x: -2, z: 2.75, r: 0.3 });
   hind.push({ x: -6.8, z: 5.2, r: 0.4, aus: () => !whitlow.gruppe.visible });
 
   const zustand = { maryBlick: null, whitlowBlick: null, neuSichtbar: false };

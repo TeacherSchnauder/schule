@@ -9,6 +9,8 @@ import {
 export function baueNord(szene, rauchQuellen) {
   const b = new Bauer(41), licht = new Bauer(42).teileStapel(b);
   const rnd = zufall(43);
+  const hindB = [];     // Hindernisse auf der begehbaren Straße
+  const mensch = (o) => { passant(b, o); hindB.push({ x: o.x, z: o.z, r: 0.32 * (o.g || 1) }); };
   const pfad = new Pfad([[-7, -119], [-7, -135], [-7, -150], [-9, -162], [-16, -171.5], [-26, -176], [-38, -176], [-45.5, -176]]);
 
   // Pflaster der Straße
@@ -45,11 +47,16 @@ export function baueNord(szene, rauchQuellen) {
   haus(0.2, -147.5, -W, { breite: 11, tiefe: 7, etagen: 3, farbe: FARBEN.ziegel });
   const es = schild('COTTON BROKERS', { breite: 5.2, hoehe: 0.7, groesse: 0.52, grund: '#3a2a22' });
   es.position.set(-3.38, 4.1, -136); es.rotation.y = -W; szene.add(es);
-  for (const z of [-124, -143]) laterne(b, licht, { x: -10.0, z });
-  laterne(b, licht, { x: -4.0, z: -131 });
-  passant(b, { x: -4.5, z: -128, ry: -1.9, rock: 0x2f2e30 }); passant(b, { x: -4.9, z: -128.9, ry: -0.6, rock: 0x4a3b2c });
-  passant(b, { x: -9.6, z: -145, ry: 1.2, rock: 0x3d4a3b }); passant(b, { x: -4.4, z: -141, ry: -1.5, rock: 0x5a6468, kleid: true, hut: false });
+  for (const z of [-124, -143]) { laterne(b, licht, { x: -10.0, z }); hindB.push({ x: -10.0, z, r: 0.2 }); }
+  laterne(b, licht, { x: -4.0, z: -131 }); hindB.push({ x: -4.0, z: -131, r: 0.2 });
+  mensch({ x: -4.5, z: -128, ry: -1.9, rock: 0x2f2e30 }); mensch({ x: -4.9, z: -128.9, ry: -0.6, rock: 0x4a3b2c });
+  mensch({ x: -9.6, z: -145, ry: 1.2, rock: 0x3d4a3b }); mensch({ x: -4.4, z: -141, ry: -1.5, rock: 0x5a6468, kleid: true, hut: false });
+  // Händler und Kunden vor den Häusern
+  mensch({ x: -9.75, z: -128.6, ry: 1.9, def: { groesse: 1.72, breite: 1.05, dicke: 1.25, rock: 0x232224, hose: 0x2f2e30, weste: 0x6b2f25, haar: 0x8b7a66, bart: 'backenGrau', hut: 'zylinder', seed: 401 } });
+  mensch({ x: -9.8, z: -129.6, ry: 1.2, def: { groesse: 1.79, breite: 0.95, rock: 0x2f3438, hose: 0x33312f, weste: 0xb08d48, haar: 0x3a2c22, bart: 'backen', hut: 'melone', seed: 402 } });
+  mensch({ x: -4.2, z: -146.2, ry: -1.3, rock: 0x6a5e50, kleid: true, hut: false });
   // Droschke vor dem Maklerhaus
+  hindB.push({ minX: -5.65, maxX: -4.15, minZ: -135.7, maxZ: -133.2 });
   b.mit({ x: -4.9, z: -134.5, ry: 0.04 }, () => {
     b.quader(1.3, 1.1, 2.0, 0x2b2a2c, { y: 1.35 });
     b.quader(1.4, 0.1, 2.2, 0x1f1d1c, { y: 1.95 });
@@ -63,6 +70,7 @@ export function baueNord(szene, rauchQuellen) {
   b.quader(3.2, 4.6, 1.0, FARBEN.ziegelDunkel, { x: -1.9, y: 2.3, z: TZ });
   b.quader(13.4, 1.2, 1.0, FARBEN.ziegelDunkel, { x: -7, y: 4.0, z: TZ });
   b.quader(13.6, 0.2, 1.2, FARBEN.sandstein, { x: -7, y: 4.7, z: TZ });
+  hindB.push({ minX: -13.7, maxX: -10.3, minZ: TZ - 0.5, maxZ: TZ + 0.5 }, { minX: -3.5, maxX: -0.3, minZ: TZ - 0.5, maxZ: TZ + 0.5 });
   const fluegel = [];
   {
     const holz = new THREE.MeshLambertMaterial({ color: FARBEN.braun, flatShading: true });
@@ -89,7 +97,16 @@ export function baueNord(szene, rauchQuellen) {
   for (const [x, w, e] of [[-22.5, 11, 3], [-33, 10, 2], [-42.5, 9, 2]]) haus(x, -182.8, 0, { breite: w, tiefe: 8, etagen: e, etagenH: 2.6, farbe: rnd() < 0.5 ? FARBEN.ziegelRuss : FARBEN.ziegelDunkel, lichtAnteil: 0.08, fensterH: 1.2, fensterB: 0.8 });
   for (const [x, w, e] of [[-33, 10, 2], [-42.5, 9, 3]]) haus(x, -169.2, Math.PI, { breite: w, tiefe: 8, etagen: e, etagenH: 2.6, farbe: FARBEN.ziegelRuss, lichtAnteil: 0.08, fensterH: 1.2, fensterB: 0.8 });
   fass(b, { x: -30, z: -178.2 }); kiste(b, { x: -36.5, z: -173.9, ry: 0.4, s: 0.7 });
-  passant(b, { x: -34, z: -178.1, ry: 2.9, rock: 0x55504a, hut: false }); passant(b, { x: -20.5, z: -177.9, ry: 2.4, rock: 0x6b5a47, kleid: true, hut: false });
+  hindB.push({ x: -30, z: -178.2, r: 0.42 }, { x: -36.5, z: -173.9, r: 0.45 });
+  mensch({ x: -34, z: -178.1, ry: 2.9, rock: 0x55504a, hut: false }); mensch({ x: -20.5, z: -177.9, ry: 2.4, rock: 0x6b5a47, kleid: true, hut: false });
+  mensch({ x: -40.6, z: -173.85, ry: -2.8, rock: 0x6b6f72, kleid: true, hut: false }); mensch({ x: -39.8, z: -174.1, ry: 2.6, rock: 0x4a3b2c, hut: false, g: 0.62 });
+  mensch({ x: -27.4, z: -178.3, ry: 0.3, rock: 0x44403b, hut: true });
+  // Mauern und Häuser an der Biegung und in der Gasse
+  hindB.push(
+    { x0: -10.6, z0: -154.6, x1: -10.6, z1: -160.5, r: 0.25 }, { x0: -10.6, z0: -160.5, x1: -18, z1: -168, r: 0.25 }, { x0: -18, z0: -168, x1: -28, z1: -173.2, r: 0.25 },
+    { minX: -3.5, maxX: 4.5, minZ: -170, maxZ: -156 }, { minX: -13.5, maxX: -1.5, minZ: -185.5, maxZ: -177.5 },
+    { minX: -50, maxX: -17, minZ: -190, maxZ: -178.8 }, { minX: -47.5, maxX: -27.5, minZ: -173.2, maxZ: -165 },
+  );
 
   // --- Hof am Irk ------------------------------------------------------------------
   const HX0 = -63.4, HX1 = -47.1, HZ0 = -186.3, HZ1 = -167.6;
@@ -164,8 +181,23 @@ export function baueNord(szene, rauchQuellen) {
   szene.add(licht.netz(lichtMaterial(), { schatten: false }));
 
   let torOffen = false;
+  // Begehbare Fläche der Straße: Geschäftsstraße zwischen den Häuserfronten, dahinter Biegung und Gasse
+  const korridor = {
+    rechtecke: [],
+    baender: [
+      { pfad, von: 0, bis: 35.5, links: -3.6, rechts: 3.7 },
+      { pfad, von: 35.5, bis: pfad.laenge, links: -3.0, rechts: 3.0 },
+    ],
+    hindernisse: hindB,
+    endeBreite: 1.7,
+    kamera: {
+      baender: [{ pfad, von: -6, bis: 35.5, links: -3.7, rechts: 3.8 }, { pfad, von: 35.5, bis: pfad.laenge + 4, links: -3.1, rechts: 3.1 }],
+      hindernisse: hindB.filter((h) => h.minX !== undefined || h.x0 !== undefined),
+    },
+  };
+
   return {
-    pfad,
+    pfad, korridor,
     sperreS: 33.6,
     kontorTuer: new THREE.Vector3(-10.3, 0, KZ),
     tor: new THREE.Vector3(-7, 0, TZ + 1.6),
