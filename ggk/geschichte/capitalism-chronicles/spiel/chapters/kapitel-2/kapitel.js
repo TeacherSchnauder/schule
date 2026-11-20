@@ -5,7 +5,9 @@ import { Pfad } from '../../engine/pfad.js';
 import { baueFigur } from '../../engine/figur.js';
 import { leseStandVon } from '../../engine/speicher.js';
 import { esc } from '../../ui/oberflaeche.js';
-import { notiz } from '../../ui/raetsel.js';
+import { notiz, rechenblatt, zuordnung } from '../../ui/raetsel.js';
+import { vorhersageFestlegen, vorhersageAbgleich, vorhersageText } from '../../ui/vorhersage.js';
+import { verhoer, verhoerText } from '../../ui/verhoer.js';
 import { zeitreise } from '../../ui/zeitreise.js';
 import { zitatplatz, pruefeZitate } from '../../ui/zitatplatz.js';
 import { simulation, rundenSimulation, freigabe, historisch } from '../../ui/simulation.js';
@@ -27,6 +29,7 @@ export const standZusatz = () => ({
   a0: 0, a1: 0, a2: 0, a3: 0, h: 0, b1: 0, b2: 0, b3: 0, b4: 0, b5: 0, e: 0,
   wo: 'hoersaal', innen: null,
   tippsKapitel1: null, tippsNeu: null, sim: {}, b5Aus: null,
+  vorhersagen: {}, verhoere: {}, schalter: {}, tiefe2: {},
 });
 
 export async function ladeDaten() {
@@ -35,8 +38,8 @@ export async function ladeDaten() {
     if (!r.ok) throw new Error(`${name} konnte nicht geladen werden (${r.status}).`);
     return r.json();
   };
-  const [inhalte, dialoge, simulationen, zitate] = await Promise.all([lade('inhalte.json'), lade('dialoge.json'), lade('simulationen.json'), lade('zitate-plumpe.json')]);
-  return { ...inhalte, dialoge, simulationen, zitate: pruefeZitate(zitate) };
+  const [inhalte, dialoge, simulationen, zitate, tiefe] = await Promise.all([lade('inhalte.json'), lade('dialoge.json'), lade('simulationen.json'), lade('zitate-plumpe.json'), lade('tiefe.json')]);
+  return { ...inhalte, dialoge, simulationen, zitate: pruefeZitate(zitate), tiefe };
 }
 
 export function baueKapitel(spiel, ui, daten) {
@@ -47,6 +50,9 @@ export function baueKapitel(spiel, ui, daten) {
   spiel.musikSchluessel = (name) => name === 'strasse' ? `strasse-${strasse.jahr}` : name === 'frankfurt' ? `frankfurt-${frankfurt.schicht}` : name;
   const st = () => spiel.stand;
   const b5Aktiv = () => (st().b5Aus === null ? daten.kapitel.b5Aktiv !== false : !st().b5Aus);
+  // Tiefe-Update: Bausteine, die die Lehrkraft abschalten kann (Vorgabe in inhalte.json → kapitel.tiefe)
+  const tiefeAktiv = (n) => { const s = st().schalter || {}; return n in s ? s[n] : daten.kapitel.tiefe?.[n] !== false; };
+  const ablage = (n) => { st()[n] ??= {}; return st()[n]; };
 
   const welt = {
     pfade: { a: new Pfad([[0, 0], [0, -10]]) },   // Kapitel II hat keine Schienenstrecke; überall wird frei gegangen
@@ -129,7 +135,7 @@ export function baueKapitel(spiel, ui, daten) {
     // Karte aus dem Tagebuch zeigen und freischalten
     zeige: async (id) => {
       const e = eintrag(id), neu = !st().tagebuch.includes(id);
-      await ui.karte({ titel: e.titel, marke: e.marke, text: e.text, quelle: e.quelle, knopf: neu ? 'Ins Tagebuch' : 'Weiter' });
+      await ui.karte({ titel: e.titel, marke: e.marke, text: e.text, sichten: e.sichten, quelle: e.quelle, knopf: neu ? 'Ins Tagebuch' : 'Weiter' });
       ui.schalteFrei(id);
     },
     zitat: (id) => zitatplatz(ui, daten.zitate, id),
@@ -167,6 +173,38 @@ export function baueKapitel(spiel, ui, daten) {
       return e;
     },
     historisch: (id) => historisch(ui, daten.simulationen[id]),
+    // Baustein A ohne Wertung: Vorhersage vor dem Gang zur Ladenzeile, Abgleich am Schuhladen
+    async vorhersage() {
+      const v = daten.tiefe.vorhersage_b3, a = ablage('vorhersagen');
+      if (!tiefeAktiv('vorhersage') || a[v.id]?.wert) return true;
+      const wert = await vorhersageFestlegen(ui, v);
+      if (!wert) return false;
+      a[v.id] = { wert }; spiel.sichere();
+      return true;
+    },
+    async abgleich() {
+      const v = daten.tiefe.vorhersage_b3, e = ablage('vorhersagen')[v.id];
+      if (!e?.wert || e.notiz) return true;
+      const n = await vorhersageAbgleich(ui, v, e.wert, { text: v.ergebnisText });
+      e.notiz = n; spiel.sichere();
+      return true;
+    },
+    // Baustein C: Verhör mit Herrn Roth
+    async verhoerRoth() {
+      const v = daten.tiefe.verhoer_b3, a = ablage('verhoere');
+      if (!tiefeAktiv('verhoer') || a[v.id]?.erledigt) return true;
+      await k.sag('b3_verhoer_start');
+      const ok = await verhoer(ui, v, a);
+      spiel.sichere();
+      return ok;
+    },
+    // Umtausch nach den Paragrafen und Gewinner/Verlierer
+    async umtausch() {
+      const t = ablage('tiefe2');
+      if (!t.umtausch) { if (!await rechenblatt(ui, daten.tiefe.umtausch_b3)) return false; t.umtausch = true; spiel.sichere(); }
+      if (!t.gewinner) { if (!await zuordnung(ui, daten.tiefe.gewinner_b3)) return false; t.gewinner = true; spiel.sichere(); }
+      return true;
+    },
     async denk(id) {
       const t = await notiz(ui, { zuKurz: 'Schreibt mindestens einen Stichpunkt.', ...daten.denkpausen[id] }, st().notizen[id] || '');
       if (t === null) return false;
@@ -283,8 +321,20 @@ export function baueKapitel(spiel, ui, daten) {
   const NAMEN = { h: 'Zwischenhalt: Rollenwechsel' };
   ui.lehrkraft = {
     spruenge: REIHENFOLGE.map((id) => ({ name: NAMEN[id] || (() => { const d = daten.stationen.find((x) => x.id === id); return `${d.roemisch}: ${d.name}`; })(), tu: sprung(id) })),
-    schalter: [{ name: 'Station B5 (Kartellfall) spielen', an: () => b5Aktiv(), tu: () => { st().b5Aus = b5Aktiv(); spiel.sichere(); aktualisiere(); } }],
+    schalter: [
+      { name: 'Station B5 (Kartellfall) spielen', an: () => b5Aktiv(), tu: () => { st().b5Aus = b5Aktiv(); spiel.sichere(); aktualisiere(); } },
+      ...[['vorhersage', 'Vorhersage Schaufenster (Station B3)'], ['verhoer', 'Verhör mit Herrn Roth (Station B3)']]
+        .map(([n, name]) => ({ name, an: () => tiefeAktiv(n), tu: () => { st().schalter = { ...(st().schalter || {}), [n]: !tiefeAktiv(n) }; spiel.sichere(); } })),
+    ],
   };
+  // Vorhersage und Verhör für „Notizen kopieren“
+  ui.notizenZusatz = () => {
+    const s = st(), z = [], v = daten.tiefe.vorhersage_b3, vh = daten.tiefe.verhoer_b3;
+    if (s.vorhersagen?.[v.id]?.wert) z.push('', 'VORHERSAGE', '- ' + vorhersageText(v, s.vorhersagen[v.id]));
+    z.push(...verhoerText(vh, s.verhoere?.[vh.id]));
+    return z;
+  };
+
 
   return {
     welt, stationen, k, aktuell,

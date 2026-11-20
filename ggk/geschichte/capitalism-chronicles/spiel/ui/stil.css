@@ -606,3 +606,13 @@ button.schnipsel { cursor: pointer; }
 .r-zeile .wert { font-family: var(--titel); text-align: right; white-space: nowrap; }
 @media (max-width: 640px) { .rechner { grid-template-columns: 1fr; } .r-zeile { grid-template-columns: 1fr; gap: 0.1em; } .r-zeile .wert { text-align: left; } }
 .einwand .fussnote { display: block; margin-top: 0.45em; padding-top: 0.3em; border-top: 1px dotted rgba(43,37,32,0.35); font-size: 0.82rem; font-style: normal; color: var(--tinte-weich); }
+
+/* Getrennte Sichtweisen (Kontroverse-Karten) */
+.sichten { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin: 0.5em 0 0.7em; }
+.sichten .sicht { padding: 0.55em 0.85em 0.4em; background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.45); border-top: 4px solid #8f3f2c; border-radius: 2px; }
+.sichten .sicht + .sicht { border-top-color: #3f5560; }
+.sichten h4 { margin: 0 0 0.15em; font-size: 1rem; }
+.sichten .herkunft { margin: 0 0 0.4em; font-size: 0.82rem; font-style: italic; opacity: 0.85; }
+.sichten ul { margin: 0; padding-left: 1.1em; }
+.sichten li { margin: 0 0 0.3em; }
+@media (max-width: 680px) { .sichten { grid-template-columns: 1fr; } }

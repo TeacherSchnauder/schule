@@ -36,6 +36,30 @@ export function vorhersageAbgleich(ui, def, wert, ergebnis, vorgabe = '') {
     const kopf = def.marke ? el('div', '', ui.markeHtml(def.marke)) : null;
     const f = ui.fenster({ titel: def.abgleichTitel || 'Abgleich', klasse: 'vorhersage', kopf, schliessbar: false, beiSchliessen: (w) => fertig(w) });
     const karte = (id) => def.karten.find((k) => k.id === id)?.text || '';
+    // Ohne Wertung (Kapitel II): Vorhersage neben dem Quellenbefund, kein Treffer-Satz
+    if (def.ohneWertung) {
+      const paar = el('div', 'vergleich2');
+      paar.append(
+        el('div', 'vh eigen', `<small>Eure Vorhersage</small><b>${esc(karte(wert))}</b>`),
+        el('div', 'vh ergebnis', `<small>${esc(def.befundTitel || 'Was die Quellen berichten')}</small><b>${esc(def.befund)}</b>`),
+      );
+      f.inhalt.append(paar, el('p', 'klein', esc(def.ohneWertungText || 'Vorhersagen werden hier nicht bewertet. Wichtig ist, was ihr daraus lernt.')));
+      f.inhalt.append(el('p', '', esc(ergebnis.text)));
+      if (def.quelle) f.inhalt.append(el('p', 'quelle', 'Quelle: ' + esc(def.quelle)));
+      f.inhalt.append(el('p', 'auftrag', esc(def.notiz.frage)));
+      const t = el('textarea'); t.value = vorgabe; t.maxLength = 600; t.setAttribute('aria-label', def.notiz.frage);
+      const rueck = el('div', 'rueck');
+      f.inhalt.append(t, rueck);
+      const ok = el('button', 'knopf', 'Notiz sichern');
+      f.fuss.append(ok);
+      ok.addEventListener('click', () => {
+        const text = t.value.trim();
+        if (text.length < (def.notiz.min || 8)) { rueck.className = 'rueck falsch'; rueck.textContent = def.notiz.zuKurz; return; }
+        f.schliessen(text);
+      });
+      if (!ui.touch) t.focus();
+      return;
+    }
     const paar = el('div', 'vergleich2');
     paar.append(
       el('div', 'vh eigen', `<small>Eure Vorhersage</small><b>${esc(karte(wert))}</b>`),
@@ -66,5 +90,6 @@ export function vorhersageAbgleich(ui, def, wert, ergebnis, vorgabe = '') {
 // Hält Vorhersage und Notiz im Spielstand fest: stand.vorhersagen[id] = { wert, ergebnis, notiz }
 export function vorhersageText(def, eintrag) {
   const karte = (id) => def.karten.find((k) => k.id === id)?.text || '–';
+  if (def.ohneWertung) return `${def.frage} Vorhersage: ${karte(eintrag.wert)} Quellenbefund: ${def.befund}${eintrag.notiz ? ' Notiz: ' + eintrag.notiz : ''}`;
   return `${def.frage} Vorhersage: ${karte(eintrag.wert)} Ergebnis: ${eintrag.ergebnis ? karte(eintrag.ergebnis) : 'noch offen'}${eintrag.notiz ? ' Notiz: ' + eintrag.notiz : ''}`;
 }

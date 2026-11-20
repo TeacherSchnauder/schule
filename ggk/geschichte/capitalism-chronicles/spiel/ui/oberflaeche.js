@@ -273,12 +273,18 @@ export class Oberflaeche {
   }
 
   // Informationskarte (Dokument, Erklärung, Fund).
-  karte({ titel, marke = null, text = '', zitat = null, quelle = null, knopf = 'Weiter', klasse = '', tabelle = null }) {
+  // Zwei (oder mehr) Sichtweisen nebeneinander, je mit Herkunft und Stichpunkten
+  sichtenHtml(sichten) {
+    if (!sichten?.length) return '';
+    return `<div class="sichten">${sichten.map((x) => `<section class="sicht"><h4>${esc(x.kopf)}</h4>${x.herkunft ? `<p class="herkunft">${esc(x.herkunft)}</p>` : ''}<ul>${String(x.text).split('\n').map((t) => `<li>${esc(t)}</li>`).join('')}</ul></section>`).join('')}</div>`;
+  }
+
+  karte({ titel, marke = null, text = '', zitat = null, quelle = null, knopf = 'Weiter', klasse = '', tabelle = null, sichten = null }) {
     return new Promise((fertig) => {
       const kopf = marke ? el('div', '', this.markeHtml(marke)) : null;
       const f = this.fenster({ titel, schliessbar: false, kopf, klasse, beiSchliessen: () => fertig() });
       f.inhalt.innerHTML = (zitat ? `<blockquote>„${esc(zitat)}“</blockquote>` : '') +
-        text.split('\n').map((t) => `<p>${esc(t)}</p>`).join('') + (tabelle ? tabelleHtml(tabelle) : '') +
+        text.split('\n').map((t) => `<p>${esc(t)}</p>`).join('') + this.sichtenHtml(sichten) + (tabelle ? tabelleHtml(tabelle) : '') +
         (quelle ? `<p class="quelle">Quelle: ${esc(quelle)}</p>` : '');
       const b = el('button', 'knopf', esc(knopf));
       b.addEventListener('click', () => f.schliessen());
@@ -361,6 +367,7 @@ export class Oberflaeche {
           <h3><span>${esc(e.titel)}</span>${this.markeHtml(e.marke)}</h3>
           ${e.zitat ? `<blockquote>„${esc(e.zitat)}“</blockquote>` : ''}
           ${String(e.text).split('\n').map((t) => `<p>${esc(t)}</p>`).join('')}
+          ${this.sichtenHtml(e.sichten)}
           ${e.quelle ? `<p class="quelle">Quelle: ${esc(e.quelle)}</p>` : ''}
         </div>`).join('') : `<div class="leer">Hier steht noch nichts. Einträge kommen hinzu, während ihr die Stadt erkundet.</div>`;
       if (r === 'funde') {
@@ -397,7 +404,7 @@ export class Oberflaeche {
     z.push(...(belege.length ? belege.map((b) => `- ${b.titel}: ${b.text}`) : ['- noch keine']));
     z.push('', (this.daten.kapitel.reiterStadt || 'Stadt 1845').toUpperCase() + ', BEGRIFFE UND DOKUMENTE');
     for (const e of d.tagebuch.filter((x) => st.tagebuch.includes(x.id) && (x.reiter === 'begriffe' || x.reiter === 'dokumente' || x.reiter === 'stadt')))
-      z.push(`- ${e.titel} [${d.marken[e.marke].name}]: ${e.zitat ? '„' + e.zitat + '“ ' : ''}${e.text}${e.quelle ? ' (Quelle: ' + e.quelle + ')' : ''}`);
+      z.push(`- ${e.titel} [${d.marken[e.marke].name}]: ${e.zitat ? '„' + e.zitat + '“ ' : ''}${e.text}${(e.sichten || []).map((x) => ` ${x.kopf}${x.herkunft ? ' (' + x.herkunft + ')' : ''}: ${String(x.text).replace(/\n/g, ' ')}`).join('')}${e.quelle ? ' (Quelle: ' + e.quelle + ')' : ''}`);
     for (const [k, titel] of Object.entries(d.notizTitel || {})) if (st.notizen[k]) z.push('', titel.toUpperCase(), st.notizen[k]);
     // Abschnitte mit festen Kopfzeilen: Kapitel III liest sie beim Einfügen auf einem anderen Gerät.
     const tipps = (x) => ['p1', 'p2', 'p3'].map((p) => `${p}: ${x[p]}`).join(', ');

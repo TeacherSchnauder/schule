@@ -1,0 +1,269 @@
+{
+  "vorhersage_b3": {
+    "id": "k2-b3-vorhersage",
+    "typ": "vorhersage",
+    "kapitel": 2,
+    "station": "b3",
+    "titel": "Vorhersage: Montag, 21. Juni 1948",
+    "abgleichTitel": "Abgleich: Montag, 21. Juni 1948",
+    "lage": "Am Sonntag gibt es das neue Geld. Am Montag öffnen die Läden der Ladenzeile wieder. Seit Monaten waren ihre Regale fast leer.",
+    "frage": "Was sehen die Menschen am Montag in den Schaufenstern?",
+    "karten": [
+      {
+        "id": "leer",
+        "text": "Leere Regale, genau wie in der Woche davor."
+      },
+      {
+        "id": "wenig",
+        "text": "Ein paar Waren mehr, vor allem Lebensmittel."
+      },
+      {
+        "id": "voll",
+        "text": "Volle Regale mit Waren, die lange fehlten."
+      }
+    ],
+    "ohneWertung": true,
+    "befund": "Viele Schaufenster waren über Nacht voll.",
+    "ergebnisText": "Die Deutsche Bundesbank beschreibt den „Schaufenstereffekt“: In vielen Schaufenstern lagen plötzlich Waren, die es vorher nicht zu kaufen gab. Grundnahrungsmittel blieben dagegen zunächst preiskontrolliert.",
+    "quelle": "Deutsche Bundesbank: Die Währungsreform von 1948 (eigene Worte)",
+    "notiz": {
+      "frage": "Was überrascht euch? Woher könnten die Waren über Nacht gekommen sein?",
+      "min": 15,
+      "zuKurz": "Schreibt mindestens einen Satz."
+    }
+  },
+  "verhoer_b3": {
+    "id": "k2-b3-roth",
+    "typ": "verhoer",
+    "kapitel": 2,
+    "station": "b3",
+    "marke": "erfunden",
+    "abschaltbar": true,
+    "figur": "schuster",
+    "name": "Herr Roth",
+    "titel": "Drei Fragen an Herrn Roth",
+    "auftrag": "Herr Roth beantwortet nur drei Fragen. Findet heraus, warum seine Regale vor der Reform leer waren und heute voll sind.",
+    "protokollAuftrag": "Übernehmt ins Protokoll nur die Antworten, die die vollen Regale erklären. Rechtfertigungen und Ausweichen gehören nicht hinein.",
+    "anzahl": 3,
+    "ziele": {
+      "z1": "dass und seit wann er Ware zurückgehalten hat",
+      "z2": "warum er nicht für Reichsmark verkaufen wollte"
+    },
+    "karten": [
+      {
+        "id": "k1",
+        "typ": "kern",
+        "ziel": "z1",
+        "frage": "Seit wann lagen die Schuhe in Ihrem Keller?",
+        "antwort": "Seit dem Frühjahr. Als die ersten Gerüchte über neues Geld umgingen, habe ich nichts mehr ins Regal gestellt, was nicht sein musste."
+      },
+      {
+        "id": "k2",
+        "typ": "kern",
+        "ziel": "z2",
+        "frage": "Warum haben Sie die Schuhe nicht schon im Mai verkauft?",
+        "antwort": "Für Reichsmark? Die war bald nichts mehr wert. Für den Erlös hätte ich kein neues Leder bekommen. Für die neue Mark bekomme ich es."
+      },
+      {
+        "id": "k3",
+        "typ": "hintergrund",
+        "frage": "Wie sind Sie vor dem Juni an Ware gekommen?",
+        "antwort": "Über Kompensation: Schuhe gegen Leder, Leder gegen Zigaretten. Geld wollte kaum einer."
+      },
+      {
+        "id": "k4",
+        "typ": "hintergrund",
+        "frage": "Wer hat Ihnen das Leder für diese Stiefel geliefert?",
+        "antwort": "Eine Gerberei aus der Nähe. Auch die hat seit Wochen nur noch gegen Ware geliefert, nicht gegen Geld."
+      },
+      {
+        "id": "k5",
+        "typ": "gegenseite",
+        "frage": "Ist das nicht Betrug an Ihren Kunden?",
+        "antwort": "Betrug? Ich habe niemandem etwas weggenommen. Jeder Kaufmann im Viertel hat es so gemacht.",
+        "ausrede": true,
+        "warum": "Herr Roth rechtfertigt sich. Warum die Regale voll sind, erklärt die Antwort nicht."
+      },
+      {
+        "id": "k6",
+        "typ": "suggestiv",
+        "frage": "Geben Sie zu: Sie wollten nur reich werden?",
+        "antwort": "Ich will mein Geschäft retten, mehr nicht. Reich wird in dieser Straße keiner.",
+        "ausrede": true,
+        "warum": "Herr Roth weist einen Vorwurf zurück. Das ist keine Auskunft über seine Ware."
+      },
+      {
+        "id": "k7",
+        "typ": "moral",
+        "frage": "Denken Sie nicht an die Kinder, die im Winter ohne Schuhe waren?",
+        "antwort": "Glauben Sie, das hat mir gefallen? Von Mitleid allein kann ich kein Leder kaufen.",
+        "ausrede": true,
+        "warum": "Die Antwort verteidigt Herrn Roth moralisch. Über die vollen Regale sagt sie nichts."
+      },
+      {
+        "id": "k8",
+        "typ": "neben",
+        "frage": "Wie geht es Ihrer Familie, Herr Roth?",
+        "antwort": "Gut, danke. Mein Sohn ist aus der Gefangenschaft zurück. Aber was hat das mit meinen Schuhen zu tun?",
+        "ausrede": true,
+        "warum": "Die Frage ist freundlich, bringt aber nichts zur Sache."
+      }
+    ],
+    "fehlt": {
+      "z1": "Es fehlt noch, dass und seit wann Herr Roth Ware zurückgehalten hat.",
+      "z2": "Es fehlt noch, warum er nicht für Reichsmark verkaufen wollte.",
+      "ziel1Protokoll": "Ihr habt gehört, seit wann die Schuhe im Keller lagen, es aber nicht ins Protokoll übernommen.",
+      "ziel2Protokoll": "Ihr habt gehört, warum er nicht für Reichsmark verkaufte, es aber nicht ins Protokoll übernommen."
+    },
+    "abbruch": "Herr Roth verschränkt die Arme: „Genug gefragt, Herr Doktor. Ich habe Kundschaft.“",
+    "erfolg": "Euer Protokoll erklärt die vollen Regale: Herr Roth hat seit dem Frühjahr Ware zurückgehalten, weil die Reichsmark bald wertlos sein würde. Erst gegen die neue Mark lohnte sich der Verkauf.",
+    "schluss": "Herr Roth: „Sie fragen wie ein Steuerprüfer, Herr Doktor.“",
+    "loesung": "Nötig sind zwei Fragen: seit wann die Schuhe im Keller lagen und warum Herr Roth nicht im Mai verkaufte. Ins Protokoll gehören genau diese beiden Antworten; die dritte Frage ist frei, ihre Antwort nur, wenn sie keine Rechtfertigung ist.",
+    "hilfen": [
+      "Themenbereich: Es geht nicht um Schuld oder Mitleid, sondern um Zeitpunkt und Geld.",
+      "Fragetyp: Fragen nach Betrug oder Gewissen bringen Rechtfertigungen. Fragt, wann er was getan hat und warum.",
+      "Eine Frage zielt auf den Keller, eine auf die Reichsmark. Die dritte ist frei."
+    ]
+  },
+  "umtausch_b3": {
+    "titel": "Frau Webers Rechnung nach dem Gesetz",
+    "angaben": [
+      "Währungsgesetz § 6: „Jeder Einwohner des Währungsgebiets erhält im Umtausch gegen Altgeldnoten … desselben Nennbetrages bis zu sechzig Deutsche Mark in bar (Kopfbetrag). Ein Teil des Kopfbetrags in Höhe von nicht mehr als vierzig Deutsche Mark wird sofort ausgezahlt, der Rest innerhalb von zwei Monaten.“",
+      "Umstellungsgesetz § 2: Guthaben werden so umgewandelt, „daß den Inhabern für je zehn Reichsmark eine Deutsche Mark gutgeschrieben wird. Hiervon ist die Hälfte frei verfügbar (Freikonto); die andere Hälfte wird einem gesperrten Konto (Festkonto) gutgeschrieben …“",
+      "Umstellungsgesetz § 18: Löhne, Gehälter, Mieten und Renten werden so umgestellt, „daß der Schuldner für jede Reichsmark eine Deutsche Mark zu zahlen hat“.",
+      "Festkontogesetz, Oktober 1948 (nach Angabe der Deutschen Bundesbank): Für 100 Reichsmark Guthaben blieben am Ende 6,50 DM.",
+      "Frau Weber (erfunden): 3.000 RM auf dem Sparbuch; ihr Mann verdient 180 RM im Monat. Vereinfacht: Eigentlich wurde der Kopfbetrag auf das Guthaben angerechnet. Das lassen wir hier weg."
+    ],
+    "fragen": [
+      {
+        "frage": "Wie viel D-Mark bekommt Frau Weber am 20. Juni für sich selbst sofort in bar?",
+        "einheit": "DM",
+        "loesung": 40,
+        "weg": "§ 6: höchstens 40 DM sofort, die übrigen 20 DM innerhalb von zwei Monaten.",
+        "fehler": {
+          "60": "60 DM ist der ganze Kopfbetrag. Sofort ausgezahlt wurden höchstens 40 DM.",
+          "20": "20 DM sind der Rest, der später kam. Gefragt ist, was sofort ausgezahlt wurde."
+        },
+        "sonst": "Lest § 6: Welcher Teil wird sofort ausgezahlt?",
+        "hilfen": [
+          "Gesucht ist nur der Teil des Kopfbetrags, der sofort ausgezahlt wird."
+        ]
+      },
+      {
+        "frage": "Ihr Sparbuch mit 3.000 RM wird im Juni umgestellt. Über wie viel D-Mark davon kann sie frei verfügen?",
+        "einheit": "DM",
+        "loesung": 150,
+        "weg": "3.000 RM : 10 = 300 DM. Die Hälfte, 150 DM, liegt auf dem Freikonto, die andere Hälfte ist gesperrt.",
+        "fehler": {
+          "300": "Das ist der ganze umgestellte Betrag. Frei verfügbar ist nur die Hälfte.",
+          "3000": "Für je zehn Reichsmark gibt es eine D-Mark.",
+          "1500": "Erst zehn zu eins umstellen, dann halbieren."
+        },
+        "sonst": "Lest § 2 des Umstellungsgesetzes: erst umstellen, dann die freie Hälfte.",
+        "hilfen": [
+          "Zuerst: 3.000 RM geteilt durch 10.",
+          "Dann: Nur die Hälfte davon ist frei verfügbar."
+        ]
+      },
+      {
+        "frage": "Im Oktober entscheidet das Festkontogesetz über die gesperrte Hälfte. Wie viel D-Mark bleiben von den 3.000 RM insgesamt?",
+        "einheit": "DM",
+        "loesung": 195,
+        "weg": "3.000 RM sind 30-mal 100 RM; 30 × 6,50 DM = 195 DM. Vom Ersparten bleiben 6,5 Prozent.",
+        "fehler": {
+          "300": "300 DM wären es ohne Festkontogesetz gewesen. Im Oktober wurde ein Teil des Festkontos gestrichen.",
+          "150": "Das ist nur das Freikonto vom Juni. Ein kleiner Teil des Festkontos kam noch dazu.",
+          "19.5": "Das wären 6,50 DM je 1.000 RM. Die Regel gilt je 100 RM."
+        },
+        "sonst": "Nutzt die Angabe zum Festkontogesetz: 6,50 DM je 100 RM.",
+        "hilfen": [
+          "Wie oft stecken 100 RM in 3.000 RM?",
+          "Für jede 100 RM bleiben 6,50 DM."
+        ]
+      },
+      {
+        "frage": "Und der Monatslohn ihres Mannes von 180 RM? Wie viel D-Mark bekommt er nach der Reform im Monat?",
+        "einheit": "DM",
+        "loesung": 180,
+        "weg": "§ 18: Löhne werden eins zu eins umgestellt. Der Lohn bleibt, das Ersparte schrumpft.",
+        "fehler": {
+          "18": "Löhne sind keine Guthaben. Lest § 18."
+        },
+        "sonst": "Lest § 18 des Umstellungsgesetzes.",
+        "hilfen": [
+          "Gehört ein Lohn zu den Guthaben (§ 2) oder zu den Zahlungen in § 18?"
+        ]
+      }
+    ]
+  },
+  "gewinner_b3": {
+    "titel": "Wer kommt gut weg, wer verliert?",
+    "einleitung": "Leitet aus den Paragrafen ab: Wie trifft die Reform diese Menschen? Tippt eine Karte an, dann das passende Feld.",
+    "mehrfach": true,
+    "erfolg": "Die Regel dahinter: Wer Sachen besaß oder Schulden hatte, kam gut weg. Wer Geld besaß, verlor den größten Teil. Löhne und Mieten liefen eins zu eins weiter.",
+    "felder": [
+      {
+        "id": "gut",
+        "titel": "Kommt gut weg",
+        "text": "Das Gesetz trifft ihn kaum oder hilft ihm"
+      },
+      {
+        "id": "verliert",
+        "titel": "Verliert",
+        "text": "Das Gesetz streicht den größten Teil"
+      }
+    ],
+    "karten": [
+      {
+        "id": "k1",
+        "text": "Herr Roth: Schuhe im Keller, bezahlt mit Reichsmark",
+        "ziele": [
+          "gut"
+        ],
+        "hinweis": "Sucht im Gesetz nach Schuhen oder Waren. Steht dort etwas?",
+        "passt": "Kommt gut weg: Über Waren steht nichts im Gesetz. Sie behielten ihren Wert und ließen sich jetzt gegen gutes Geld verkaufen."
+      },
+      {
+        "id": "k2",
+        "text": "Frau Weber: 3.000 Reichsmark auf dem Sparbuch",
+        "ziele": [
+          "verliert"
+        ],
+        "hinweis": "Rechnet nach: Was blieb von 3.000 RM?",
+        "passt": "Verliert: Von 3.000 RM blieben 195 DM."
+      },
+      {
+        "id": "k3",
+        "text": "Ein Hausbesitzer: 20.000 Reichsmark Hypothekenschuld",
+        "ziele": [
+          "gut"
+        ],
+        "hinweis": "Eine Schuld ist eine Reichsmarkforderung. Was sagt § 16, und was § 18 über Mieten?",
+        "passt": "Kommt gut weg: Seine Schuld schrumpft nach § 16 auf ein Zehntel, die Miete, die er einnimmt, läuft nach § 18 eins zu eins weiter. Einen Teil dieses Gewinns forderte der Staat später im Lastenausgleich zurück."
+      },
+      {
+        "id": "k4",
+        "text": "Ein Bauer: Land, Vieh und Saatgut, keine Schulden",
+        "ziele": [
+          "gut"
+        ],
+        "hinweis": "Werden Land und Vieh in D-Mark umgestellt?",
+        "passt": "Kommt gut weg: Land und Vieh werden nicht umgestellt."
+      },
+      {
+        "id": "k5",
+        "text": "Ein Heimkehrer: 800 Reichsmark Bargeld in der Tasche",
+        "ziele": [
+          "verliert"
+        ],
+        "hinweis": "Nur der Kopfbetrag wurde eins zu eins getauscht. Was geschah mit dem übrigen Bargeld?",
+        "passt": "Verliert: Altes Bargeld über den Kopfbetrag hinaus musste abgeliefert werden und wurde wie ein Guthaben zehn zu eins umgestellt."
+      }
+    ],
+    "hilfen": [
+      "Fragt bei jeder Person: Besitzt sie Geld, Sachen oder Schulden?",
+      "Geld wurde zehn zu eins umgestellt, Sachen gar nicht.",
+      "Wer Schulden hat, muss nach § 16 nur ein Zehntel zurückzahlen."
+    ]
+  }
+}

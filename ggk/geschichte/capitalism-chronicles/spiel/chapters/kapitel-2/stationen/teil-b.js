@@ -97,13 +97,23 @@ export function stationenB(k) {
             buero.zeige([]);
             await k.sag('b3_radio');
             await k.zeige('d_tagx');
+            await k.zeige('d_paragraf6');
+            if (!await k.vorhersage()) return false;
             st().b3 = 1; frankfurt.setzeLaeden(2);
-            await k.zeige('d_schaufenster');
           },
         },
         {
           szene: 'frankfurt', pos: F.schuhladen, text: 'Mit dem Schuhhändler sprechen', tu: async () => {
             await k.sag('b3_schuster');
+            if (!await k.abgleich()) return false;
+            if (!await k.verhoerRoth()) return false;
+            await k.zeige('d_schaufenster');
+            await k.zeige('d_horten');
+          },
+        },
+        {
+          szene: 'frankfurt', pos: F.schuhladen, text: 'Herrn Roth beim Preisschild helfen', tu: async () => {
+            await k.sag('b3_preis');
             const e = await k.runden('B3', (r) => frankfurt.setzeLaden('schuhe', r.rest > 12 ? 2 : r.rest > 0 ? 1 : 0));
             frankfurt.setzeLaden('schuhe', 2);
             if (!e) return false;
@@ -112,9 +122,18 @@ export function stationenB(k) {
         {
           szene: 'frankfurt', pos: F.weber, text: 'Mit Frau Weber sprechen', tu: async () => {
             await k.sag('b3_weber');
+            if (!await k.umtausch()) return false;
+            await k.sag('b3_weber_schluss');
             await k.zeige('d_richtig');
             if (!await k.denk('b3_denkpause')) return false;
-            st().b3 = 3;
+          },
+        },
+        {
+          szene: 'frankfurt', pos: F.weber, text: 'Frau Weber nach dem Schwarzmarkt fragen', tu: async () => {
+            await k.sag('b3_weber2');
+            await k.zeige('d_schwarzmarkt');
+            if (!await k.denk('b3_schwarzmarkt')) return false;
+            st().b3 = 5;
             await k.reise(1948, 1948, 'Frankfurt am Main · November 1948', 'fNov');
             await k.sag('b4_ankunft');
           },
