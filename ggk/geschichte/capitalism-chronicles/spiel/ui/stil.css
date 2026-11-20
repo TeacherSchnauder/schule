@@ -517,3 +517,92 @@ button.schnipsel { cursor: pointer; }
 .infokopf:first-child { margin-top: 0; }
 .infoliste { margin: 0 0 0.4em 1.1em; padding: 0; }
 .infoliste li { margin: 0.25em 0; }
+
+/* --- Tiefe-Update: zweistufige Auswahl, Vorhersage, Verhör, zwei Zeitungen --- */
+.rueck.hinweis { border-color: var(--tinte-weich); background: rgba(90,78,66,0.08); }
+.rueck .loesung { margin: 0.5em 0 0; padding-top: 0.4em; border-top: 1px dashed rgba(43,37,32,0.35); }
+.rueck ul.gruende { margin: 0.4em 0 0; padding-left: 1.2em; }
+.option.gewaehlt { border: 2px solid var(--tinte); background: #fbf5e6; box-shadow: inset 4px 0 0 var(--messing); }
+.option.gewaehlt::before { content: "● "; color: var(--messing-dunkel); }
+.option.richtig::before { content: ""; }
+.fenster.zweistufig { width: min(760px, 100%); }
+.zweistufig .stufe { margin: 0 0 0.7em; }
+.zweistufig .stufe h3 { margin: 0.2em 0 0.1em; font-family: var(--titel); font-weight: 400; font-size: 0.95rem; letter-spacing: 0.04em; color: var(--tinte-weich); text-transform: uppercase; }
+.zweistufig .stufe + .stufe { padding-top: 0.5em; border-top: 1px solid rgba(43,37,32,0.18); }
+.zweistufig .stufe .auftrag { margin: 0.2em 0 0.4em; }
+.vorspann { margin: 0 0 0.3em; font-style: italic; }
+.karten3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5em; }
+.vergleich2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em; margin: 0.3em 0 0.6em; }
+.vergleich2 .vh { padding: 0.5em 0.8em; background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.45); border-radius: 2px; }
+.vergleich2 .vh.eigen { border-style: dashed; border-width: 2px; }
+.vergleich2 .vh small { display: block; color: var(--tinte-weich); font-size: 0.8rem; }
+.verhoerraster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 0.9em; align-items: start; }
+.verhoer .fragen { display: flex; flex-direction: column; gap: 0.4em; }
+.verhoer .option.gestellt { color: var(--tinte-weich); background: transparent; border-style: dashed; }
+.verhoer .option.gestellt::after { content: " · gestellt"; font-size: 0.8rem; }
+.verhoer .protokoll { background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.3); padding: 0.5em 0.8em; min-height: 8em; }
+.verhoer .protokoll h3 { margin: 0 0 0.4em; font-family: var(--titel); font-weight: 400; font-size: 1rem; }
+.verhoer .qa { padding: 0.4em 0; border-top: 1px solid rgba(43,37,32,0.15); }
+.verhoer .qa.drin { background: rgba(185,138,69,0.12); }
+.verhoer .qa p { margin: 0.1em 0; }
+.verhoer .qa .q { font-weight: 600; }
+.verhoer .uebernehmen { font: inherit; font-size: 0.88rem; margin-top: 0.3em; padding: 0.35em 0.7em; min-height: 40px; background: var(--papier); border: 1px solid var(--tinte-weich); border-radius: 2px; }
+.verhoer .uebernehmen[aria-pressed="true"] { border: 2px solid var(--tinte); font-weight: 600; }
+.verhoer .zaehler { margin: 0 0 0.4em; }
+.zeitungen .koepfe { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em; margin-bottom: 0.5em; }
+.zeitungen .blattkopf { text-align: center; border-top: 3px double var(--tinte); border-bottom: 1px solid var(--tinte); padding: 0.2em 0.4em; }
+.zeitungen .blattkopf b { display: block; font-family: var(--titel); font-size: 1.15rem; font-weight: 400; letter-spacing: 0.02em; }
+.zeitungen .blattkopf small { color: var(--tinte-weich); font-size: 0.78rem; }
+.zeitungen .stuecke { display: flex; flex-direction: column; gap: 0.55em; }
+.zeitungen .stueck { padding: 0.5em 0.7em; background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.3); }
+.zeitungen .stueck.fest { border-color: var(--gruen); }
+.zeitungen .zeitungstext { margin: 0 0 0.35em; font-family: Georgia, "Times New Roman", serif; }
+.zeitungen .zeitungstext small { font-family: var(--titel); color: var(--tinte-weich); margin-right: 0.3em; }
+.zeitungen .wahl { display: flex; flex-wrap: wrap; gap: 0.4em; }
+.zeitungen .wahl button { font: inherit; font-size: 0.9rem; padding: 0.35em 0.75em; min-height: 40px; background: var(--papier); border: 1px solid var(--tinte-weich); border-radius: 2px; }
+.zeitungen .wahl button.an { border: 2px solid var(--tinte); font-weight: 600; background: #fbf5e6; color: var(--tinte); }
+.zeitungen .wahl button.an::before { content: "✓ "; }
+.zeitungen .stueckrueck:empty { display: none; }
+.zeitungen .stueckrueck { margin: 0.3em 0 0; }
+.zeitungen .berichte { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-bottom: 0.7em; }
+.zeitungen .bericht { background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.3); padding: 0.5em 0.8em; }
+.zeitungen .bericht h4 { font-family: Georgia, "Times New Roman", serif; font-size: 1.05rem; margin: 0.4em 0; }
+.zeitungen .aussagen { display: flex; flex-direction: column; gap: 0.4em; }
+@media (max-width: 700px) {
+  .verhoerraster, .zeitungen .berichte, .zeitungen .koepfe, .vergleich2 { grid-template-columns: 1fr; }
+}
+
+/* Mehrwert-Rechner im Spinnsaal: Regler links, Kennzahlen rechts, Arbeitstag und Balkenvergleich darunter */
+.rechnerfenster { width: min(900px, 100%); }
+.rechner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0.6em 1.2em; margin: 0.2em 0 0.5em; }
+.r-feld { margin-bottom: 0.55em; }
+.r-feld label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.6em; font-size: 0.9rem; color: var(--tinte-weich); }
+.r-feld label b { margin-left: auto; font-family: var(--titel); font-weight: 400; color: var(--tinte); }
+.r-feld input[type="range"] { width: 100%; }
+.r-fest { margin: 0.15em 0 0; font-size: 0.82rem; color: var(--tinte-weich); font-style: italic; }
+.r-unter { margin: 0; font-size: 0.78rem; color: var(--tinte-weich); }
+.r-kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4em; align-content: start; }
+.r-kachel { background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.25); border-radius: 3px; padding: 0.35em 0.6em; }
+.r-kachel small { display: block; font-size: 0.78rem; color: var(--tinte-weich); }
+.r-kachel span { font-family: var(--titel); font-size: 1.25rem; }
+.r-kachel.mw span { color: var(--ziegel); }
+.r-tag h4, .r-vergleich h4 { margin: 0.5em 0 0.2em; font-size: 0.82rem; font-weight: 600; color: var(--tinte-weich); }
+.r-tag .spur { position: relative; height: 1.6em; background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.45); border-radius: 2px; overflow: hidden; }
+.r-tag .spur i { position: absolute; top: 0; bottom: 0; font-style: normal; font-size: 0.78rem; line-height: 1.6em; text-align: center; white-space: nowrap; overflow: hidden; color: #fff; }
+.r-tag .lauf { background: #8a6a3a; }
+.r-tag .lohn { background: #6f8a5c; }
+.r-tag .mehr { background: #a5553c; }
+.r-tag .weg { background: repeating-linear-gradient(135deg, #8d8780 0 6px, #a39d95 6px 12px); }
+.r-tag .skala { position: relative; height: 1.1em; font-size: 0.72rem; color: var(--tinte-weich); }
+.r-tag .skala span { position: absolute; transform: translateX(-50%); }
+.r-tag .skala span:first-child { transform: none; }
+.r-tag .skala span:last-child { transform: translateX(-100%); }
+.r-zeile { display: grid; grid-template-columns: minmax(8em, 13em) minmax(0, 1fr) minmax(5.5em, auto); gap: 0.6em; align-items: center; font-size: 0.86rem; margin: 0.25em 0; }
+.r-zeile .bahn { display: flex; height: 1.1em; background: var(--papier-hell); border: 1px solid rgba(43,37,32,0.25); border-radius: 2px; overflow: hidden; }
+.r-zeile .bahn i { display: block; height: 100%; }
+.r-zeile .bahn i.lohn, .r-zeile .bahn i.lohnfix { background: #6f8a5c; }
+.r-zeile .bahn i.mehr { background: #a5553c; }
+.r-zeile .bahn i.neu { background: #8a6a3a; }
+.r-zeile .wert { font-family: var(--titel); text-align: right; white-space: nowrap; }
+@media (max-width: 640px) { .rechner { grid-template-columns: 1fr; } .r-zeile { grid-template-columns: 1fr; gap: 0.1em; } .r-zeile .wert { text-align: left; } }
+.einwand .fussnote { display: block; margin-top: 0.45em; padding-top: 0.3em; border-top: 1px dotted rgba(43,37,32,0.35); font-size: 0.82rem; font-style: normal; color: var(--tinte-weich); }

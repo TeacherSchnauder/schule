@@ -1,0 +1,96 @@
+{
+  "k1-s3-whitlow": {
+    "id": "k1-s3-whitlow",
+    "typ": "verhoer",
+    "kapitel": 1,
+    "station": 3,
+    "schritt": 4,
+    "marke": "erfunden",
+    "abschaltbar": true,
+    "figur": "whitlow",
+    "name": "Mr. Whitlow",
+    "titel": "Drei Fragen an Mr. Whitlow",
+    "auftrag": "Mr. Whitlow beantwortet nur drei Fragen. Findet heraus, welchem Druck er ausgesetzt ist.",
+    "protokollAuftrag": "Übernehmt ins Protokoll nur die Antworten, die zeigen, welchem Druck Whitlow ausgesetzt ist. Ausreden und Rechtfertigungen gehören nicht hinein.",
+    "anzahl": 3,
+    "ziele": {
+      "z1": "was der Konkurrent mit seinem Preis tut, und wie oft",
+      "z2": "was das für Whitlows Spanne bedeutet, wenn seine Kosten bleiben"
+    },
+    "karten": [
+      {
+        "id": "k1",
+        "typ": "kern",
+        "ziel": "z1",
+        "frage": "Zu welchem Preis verkauft Mr. Ashworth sein Garn?",
+        "antwort": "Dieses Jahr 1,2 Pence billiger als ich. Und er geht jedes Jahr ein Stück herunter. Das war nicht das letzte Mal."
+      },
+      {
+        "id": "k2",
+        "typ": "kern",
+        "ziel": "z2",
+        "frage": "Was wird aus Ihrer Spanne, wenn er billiger wird?",
+        "antwort": "Bleiben meine Kosten, wie sie sind, schrumpft sie, bis nichts übrig ist. Dann kann ich weder Zinsen noch Löhne zahlen."
+      },
+      {
+        "id": "k3",
+        "typ": "hintergrund",
+        "frage": "Welcher Teil Ihres Erlöses geht eigentlich an Löhne?",
+        "antwort": "2.000 von 10.000 Pfund, ein Fünftel. Für Baumwolle zahle ich dreimal so viel."
+      },
+      {
+        "id": "k4",
+        "typ": "hintergrund",
+        "frage": "Wer hat Ihnen das Geld für die Maschinen geliehen?",
+        "antwort": "Die Bank. Der Kredit läuft weiter, ob ich Gewinn mache oder nicht. Die Zinsen sind jedes Quartal fällig."
+      },
+      {
+        "id": "k5",
+        "typ": "gegenseite",
+        "frage": "Wer hat die 1.000 Pfund Gewinn wirklich erarbeitet?",
+        "antwort": "Ich, mit meinem Kapital, meinem Risiko und meiner Leitung. Ohne mich stünde hier keine Spindel. Dr. Marx sieht das anders, ich weiß.",
+        "ausrede": true,
+        "warum": "Die Antwort verteidigt Whitlows Anspruch auf den Gewinn. Über den Druck, unter dem er steht, sagt sie nichts."
+      },
+      {
+        "id": "k6",
+        "typ": "suggestiv",
+        "frage": "Geben Sie zu: Sie drücken die Löhne, um reich zu werden?",
+        "antwort": "Ich habe die Löhne nie gesenkt. Was gezahlt wird, bestimmen der Markt und das Gesetz, nicht ich.",
+        "ausrede": true,
+        "warum": "Whitlow weist einen Vorwurf zurück. Das ist eine Rechtfertigung, keine Auskunft über seinen Druck."
+      },
+      {
+        "id": "k7",
+        "typ": "moral",
+        "frage": "Schämen Sie sich nicht, dass Mary so wenig verdient?",
+        "antwort": "Ich zahle den Lohn, der in Manchester üblich ist. Für das Gewissen ist Ihr Pfarrer zuständig, nicht ich.",
+        "ausrede": true,
+        "warum": "Whitlow beruft sich auf das Übliche. Das ist eine Ausrede, keine Information."
+      },
+      {
+        "id": "k8",
+        "typ": "neben",
+        "frage": "Wie groß soll Ihr neues Landhaus in Cheshire werden?",
+        "antwort": "Zwei Stockwerke und ein Garten, wenn das Geschäft es erlaubt. Was haben Sie damit zu schaffen?",
+        "ausrede": true,
+        "warum": "Die Antwort weicht aus. Über den Druck auf Whitlow erfahrt ihr daraus nichts."
+      }
+    ],
+    "fehlt": {
+      "z1": "Es fehlt noch, was der Konkurrent mit seinem Preis tut, und wie oft.",
+      "z2": "Es fehlt noch, was das für Whitlows Spanne bedeutet.",
+      "ziel1Protokoll": "Ihr habt gehört, was Ashworth tut, es aber nicht ins Protokoll übernommen.",
+      "ziel2Protokoll": "Ihr habt gehört, was mit der Spanne geschieht, es aber nicht ins Protokoll übernommen."
+    },
+    "abbruch": "Mr. Whitlow klappt das Hauptbuch zu: „Genug gefragt, Herr Doktor. Guten Tag.“",
+    "erfolg": "Euer Protokoll zeigt den Druck: Ashworth senkt seinen Preis jedes Jahr, und bleiben Whitlows Kosten gleich, schrumpft seine Spanne, bis nichts mehr übrig ist.",
+    "schluss": "Mr. Whitlow: „Sie haben gut zugehört, Herr Doktor.“",
+    "loesung": "Nötig sind zwei Fragen: die nach Ashworths Preis und die nach Whitlows Spanne. Ins Protokoll gehören genau diese beiden Antworten; die dritte Frage ist frei, ihre Antwort nur, wenn sie keine Ausrede ist.",
+    "hilfen": [
+      "Themenbereich: Der Druck kommt nicht von Mary und nicht vom Gewissen. Er kommt vom Markt.",
+      "Fragetyp: Fragen nach Schuld, Scham oder Privatem bringen Ausreden. Fragt nach Preisen und nach Whitlows Rechnung.",
+      "Eine Frage zielt auf den Preis des Konkurrenten, eine auf das, was Whitlow pro Pfund übrig bleibt. Die dritte ist frei."
+    ]
+  }
+}

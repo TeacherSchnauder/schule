@@ -1,6 +1,6 @@
 // Station 1 – Die Stadt. Kerngedanke: Industrialisierung und Urbanisierung teilen Manchester in zwei Städte.
 // Die Infopunkte am Weg sind die Hinweise; am Fabriktor wird Bilanz gezogen.
-import { zuordnung, auswahl, notiz } from '../../../ui/raetsel.js';
+import { zuordnung, auswahl2, notiz } from '../../../ui/raetsel.js';
 
 export const FERTIG1 = 1;
 export const SPERRE1 = 3.5;   // Meter vor dem Ende der Straße am Fabriktor
@@ -51,7 +51,7 @@ export class Station1 {
     await ui.karte({ titel: d.titel, marke: d.marke, zitat: d.zitat, text: d.text, quelle: d.quelle });
     await ui.dialog(dlg.nachOrdnen1);
     await this.schnipsel?.('F');
-    if (!(await auswahl(ui, t.denkpause))) return;
+    if (!(await auswahl2(ui, t.denkpause, spiel.stand.auswahl2))) return;
     ui.schalteFrei('b_quellenkritik');
     const text = await notiz(ui, t.denkpause.notiz, spiel.stand.notizen.s1_denkpause || '');
     if (text === null) return;

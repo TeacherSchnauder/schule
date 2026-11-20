@@ -1,5 +1,5 @@
 // Station 4 – Das Arbeiterviertel. Kerngedanke: Das Elend ist belegt, die Ursache ist strittig (System oder fehlende Regeln).
-import { rechenblatt, zuordnung, auswahl, notiz } from '../../../ui/raetsel.js';
+import { rechenblatt, zuordnung, auswahl2, notiz } from '../../../ui/raetsel.js';
 
 export const FERTIG4 = 7;
 const HOF = ['h_pumpe', 'h_abort', 'h_fluss'], WOHNUNG = ['w_ellen', 'w_betten', 'w_wand', 'w_eimer'];
@@ -107,8 +107,7 @@ export class Station4 {
   async statistik() {
     const { ui } = this;
     await ui.karte({ titel: 'Chadwicks Tabelle (1842)', marke: 'tatsache', text: 'Durchschnittliches Sterbealter in Jahren.', tabelle: this.t.tabelle });
-    if (!(await auswahl(ui, this.t.rutland))) return;
-    if (!(await auswahl(ui, this.t.durchschnitt))) return;
+    if (!(await auswahl2(ui, this.t.durchschnitt, this.spiel.stand.auswahl2))) return;
     ui.schalteFrei('b_durchschnitt');
     ui.gibBeleg('beleg_chadwick');
     this.setze(4); this.start();
@@ -135,7 +134,7 @@ export class Station4 {
 
   async denkpause() {
     const { ui, spiel } = this, t = this.t.denkpause;
-    if (!(await auswahl(ui, t))) return;
+    if (!(await auswahl2(ui, t, spiel.stand.auswahl2))) return;
     const text = await notiz(ui, t.notiz, spiel.stand.notizen.s4_denkpause || '');
     if (text === null) return;
     spiel.stand.notizen.s4_denkpause = text;

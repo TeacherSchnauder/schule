@@ -545,5 +545,43 @@
       "wer": "engels",
       "text": "Das soll er. Dann streiten wir wenigstens über Gründe."
     }
+  ],
+  "whitlowVerhoer": [
+    {
+      "wer": "whitlow",
+      "text": "Sie schon wieder. Sie haben mein Hauptbuch gelesen: tausend Pfund Gewinn. Was wollen Sie noch wissen?"
+    },
+    {
+      "wer": "marx",
+      "text": "Woher der Druck kommt, unter dem Sie stehen."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Drei Fragen, Herr Doktor. Mehr Zeit habe ich nicht."
+    }
+  ],
+  "whitlowNachVerhoer": [
+    {
+      "wer": "whitlow",
+      "text": "Meine Frau wünscht sich ein Landhaus in Cheshire. Die Spinnerinnen wünschen sich mehr Lohn."
+    },
+    {
+      "wer": "whitlow",
+      "text": "Setzen Sie sich auf meinen Stuhl, Herr Doktor. Entscheiden Sie drei Jahre lang an meiner Stelle."
+    }
+  ],
+  "zeitungen": [
+    {
+      "wer": "holt",
+      "text": "Doktor, die Morgenzeitungen! Zwei Blätter, und man könnte meinen, sie waren auf zwei verschiedenen Versammlungen."
+    },
+    {
+      "wer": "engels",
+      "text": "Lass sehen. Wer schreibt, und für wen?"
+    },
+    {
+      "wer": "marx",
+      "text": "Dieselbe Frage, die man an dein Buch stellt, Friedrich. Prüfen wir beide Blätter."
+    }
   ]
 }

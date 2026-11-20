@@ -15,6 +15,42 @@ export function leseZahl(text) {
 }
 export const zahlText = (x) => String(Math.round(x * 100) / 100).replace('.', ',');
 
+// Würfelt eine neue Reihenfolge (Fisher-Yates). Richtige Antworten werden nie über ihre Position geprüft.
+export function mische(liste, zufall = Math.random) {
+  const a = [...liste];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(zufall() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+// Gestufte Hinweise wie beim zerrissenen Brief: erst nach dem ersten Prüfen freigeschaltet,
+// vom Rahmen bis zur eindeutigen Angabe, immer nur der neueste sichtbar.
+export function hinweisStufen(hilfen, ziel) {
+  let n = 0;
+  const b = el('button', 'knopf still'); b.hidden = true;
+  const text = () => (b.textContent = n >= hilfen.length ? 'Alle Hinweise gezeigt' : `Hinweis (${n + 1} von ${hilfen.length})`);
+  text();
+  b.addEventListener('click', () => {
+    if (n >= hilfen.length) return;
+    ziel.innerHTML = '';
+    ziel.append(el('div', 'rueck hilfe', `<b>Hinweis ${n + 1}:</b> ${esc(hilfen[n])}`));
+    n++; text();
+    if (n >= hilfen.length) b.disabled = true;
+    ziel.lastChild.scrollIntoView({ block: 'nearest' });
+  });
+  return {
+    knopf: b,
+    freigeben: () => { if (hilfen.length && b.hidden && !b.dataset.aus) b.hidden = false; },
+    aus: () => { b.dataset.aus = '1'; b.hidden = true; ziel.innerHTML = ''; },
+    get gezeigt() { return n; },
+  };
+}
+
+// Rückmeldung mit Symbol und Text, nie allein über die Farbe.
+export function meldung(ziel, art, kopf, text) {
+  ziel.className = 'rueck ' + art;
+  ziel.innerHTML = `<b>${art === 'richtig' ? '✓' : art === 'falsch' ? '✗' : '•'} ${esc(kopf)}</b> ${esc(text || '')}`;
+}
+
 // Hinweisknopf, der die Hilfen der Reihe nach aufdeckt.
 function hilfeKnopf(hilfen, ziel) {
   let n = 0;
@@ -164,13 +200,14 @@ export function auswahl(ui, def) {
     const rueck = el('div', 'rueck');
     const hilfenEl = el('div', 'hilfen');
     f.inhalt.append(liste, rueck, hilfenEl);
-    const h = hilfeKnopf(def.hilfen || [], hilfenEl);
+    // def.mischen: Reihenfolge bei jedem Öffnen neu, Hinweise erst nach der ersten falschen Wahl
+    const h = def.mischen ? hinweisStufen(def.hilfen || [], hilfenEl) : hilfeKnopf(def.hilfen || [], hilfenEl);
     const links = el('div', 'links'); links.append(h.knopf);
     const weiter = el('button', 'knopf', 'Weiter'); weiter.hidden = true;
     f.fuss.append(links, weiter);
     weiter.addEventListener('click', () => f.schliessen(true));
     let fertigGeloest = false;
-    for (const o of def.optionen) {
+    for (const o of def.mischen ? mische(def.optionen) : def.optionen) {
       const b = el('button', 'option', esc(o.text));
       b.addEventListener('click', () => {
         if (fertigGeloest || b.classList.contains('falsch')) return;
@@ -180,10 +217,90 @@ export function auswahl(ui, def) {
           b.classList.add('richtig'); rueck.className = 'rueck richtig';
           h.knopf.hidden = true; hilfenEl.innerHTML = '';
           weiter.hidden = false;
-        } else { b.classList.add('falsch'); rueck.className = 'rueck falsch'; }
+        } else { b.classList.add('falsch'); rueck.className = 'rueck falsch'; h.freigeben?.(); }
+        if (def.mischen) meldung(rueck, o.richtig ? 'richtig' : 'falsch', o.richtig ? 'Richtig.' : 'Noch nicht.', o.rueck);
       });
       liste.append(b);
     }
+  });
+}
+
+// Zweistufige Auswahl: erst die Antwort, dann die Begründung, geprüft wird nur das Paar.
+// def: { id, titel, marke, stufe1: { frage, richtig, optionen: [{ id, text, rueck }] }, stufe2: {…}, erfolg, loesung, hilfen }
+// ablage: Objekt im Spielstand; dort steht danach { selbst, fehlversuche }.
+// Ergebnis: true (gelöst, auch mit Lösung nach dem vierten Fehlversuch) oder false (abgebrochen).
+export const ZWEISTUFIG = {
+  MAX: 4,
+  r1: 'Das Ergebnis stimmt, aber der Grund trägt nicht.',
+  r2: 'Die Begründung passt, aber nicht zu eurer ersten Antwort.',
+  ff: 'Beides trägt noch nicht.',
+};
+export function auswahl2(ui, def, ablage = null) {
+  return new Promise((fertig) => {
+    const kopf = def.marke ? el('div', '', ui.markeHtml(def.marke)) : null;
+    const f = ui.fenster({ titel: def.titel, klasse: 'zweistufig', kopf, beiSchliessen: (w) => fertig(w === true) });
+    const stufen = [def.stufe1, def.stufe2];
+    const listen = stufen.map((s, k) => {
+      const box = el('section', 'stufe');
+      box.append(el('h3', '', k === 0 ? '1 · Antwort' : '2 · Begründung'), el('p', 'auftrag', esc(s.frage)));
+      const liste = el('div', 'optionen'); liste.setAttribute('role', 'group');
+      box.append(liste); f.inhalt.append(box);
+      return liste;
+    });
+    const rueck = el('div', 'rueck'); rueck.setAttribute('aria-live', 'polite');
+    const hilfenEl = el('div', 'hilfen');
+    f.inhalt.append(rueck, hilfenEl);
+    const h = hinweisStufen(def.hilfen || [], hilfenEl);
+    const links = el('div', 'links'); links.append(h.knopf);
+    const pruefen = el('button', 'knopf', 'Prüfen'); pruefen.disabled = true;
+    const weiter = el('button', 'knopf', 'Weiter'); weiter.hidden = true;
+    f.fuss.append(links, pruefen, weiter);
+    weiter.addEventListener('click', () => f.schliessen(true));
+    const wahl = [null, null];
+    let fehl = 0, zu = false;
+    const opt = (k, id) => stufen[k].optionen.find((o) => o.id === id);
+    const baue = (reihen) => {
+      stufen.forEach((s, k) => {
+        const liste = listen[k]; liste.innerHTML = '';
+        for (const o of reihen ? reihen[k] : mische(s.optionen)) {
+          const b = el('button', 'option', esc(o.text)); b.dataset.id = o.id; b.setAttribute('aria-pressed', 'false');
+          b.addEventListener('click', () => {
+            if (zu) return;
+            wahl[k] = o.id;
+            for (const x of liste.children) { const an = x === b; x.classList.toggle('gewaehlt', an); x.setAttribute('aria-pressed', String(an)); }
+            pruefen.disabled = !(wahl[0] && wahl[1]);
+          });
+          liste.append(b);
+        }
+      });
+    };
+    const abschluss = (selbst) => {
+      zu = true; pruefen.hidden = true; weiter.hidden = false; h.aus();
+      for (const [k, s] of stufen.entries()) for (const b of listen[k].children) {
+        b.disabled = true;
+        if (b.dataset.id === s.richtig) { b.classList.add('richtig'); b.prepend('✓ '); }
+      }
+      if (ablage) ablage[def.id] = { selbst, fehlversuche: fehl };
+      if (!ui.touch) weiter.focus();
+    };
+    pruefen.addEventListener('click', () => {
+      if (zu || !wahl[0] || !wahl[1]) return;
+      const r1 = wahl[0] === def.stufe1.richtig, r2 = wahl[1] === def.stufe2.richtig;
+      if (r1 && r2) { meldung(rueck, 'richtig', 'Richtig.', def.erfolg); abschluss(true); return; }
+      fehl++;
+      const [kopfText, text] = r1 ? [ZWEISTUFIG.r1, opt(1, wahl[1]).rueck] : r2 ? [ZWEISTUFIG.r2, opt(0, wahl[0]).rueck] : [ZWEISTUFIG.ff, opt(0, wahl[0]).rueck];
+      meldung(rueck, 'falsch', kopfText, text);
+      if (fehl >= ZWEISTUFIG.MAX) {
+        rueck.append(el('p', 'loesung', `<b>Lösung (nicht selbst gelöst):</b> ${esc(def.loesung)}`));
+        baue(stufen.map((s) => s.optionen));
+        abschluss(false);
+        return;
+      }
+      h.freigeben();
+      wahl[0] = wahl[1] = null; pruefen.disabled = true;
+      baue();   // beide Stufen neu gemischt, keine Option fällt weg
+    });
+    baue();
   });
 }
 

@@ -176,6 +176,13 @@ export function baueSpinnsaal() {
     bk.unten.scale.y = Math.max(hu, 0.001); bk.unten.position.y = BASIS + hu / 2;
     bk.oben.scale.y = Math.max(ho, 0.001); bk.oben.position.y = BASIS + hu + ho / 2;
   };
+  // Ziellinie am Neuwert-Balken („vorher: 6 Schilling“), nur im Schritt mit der neuen Maschine sichtbar
+  const ziellinie = new THREE.Group();
+  ziellinie.add(new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.05, 1.2), new THREE.MeshBasicMaterial({ color: 0x1f1b19 })));
+  const zielSchild = schild('VORHER', { breite: 0.9, hoehe: 0.24, groesse: 0.55, rand: null });
+  zielSchild.rotation.y = -Math.PI / 2; zielSchild.position.set(-0.01, 0.17, 0.95);
+  ziellinie.add(zielSchild);
+  ziellinie.position.set(WX - 0.22, BASIS, -2.9 + 0.22); ziellinie.visible = false; szene.add(ziellinie);
   const sektorGeo = (h1, h2) => {
     if (h2 - h1 < 0.01) return new THREE.BufferGeometry();
     const k = (Math.PI * 2) / 12;
@@ -185,8 +192,10 @@ export function baueSpinnsaal() {
     mitte: new THREE.Vector3(WX, 2.75, 0),
     normale: new THREE.Vector3(-1, 0, 0),
     // stunden: Zeigerstellung; neuwert/lohn in Schilling; teilung: Wert, ab dem der Neuwert als Mehrwert gefärbt wird
-    setze({ stunden, neuwert, lohn, teilung = null, notwendig = null, ende = 12 }) {
+    // ziel: Höhe der Ziellinie am Neuwert-Balken in Schilling (null: ausgeblendet)
+    setze({ stunden, neuwert, lohn, teilung = null, notwendig = null, ende = 12, ziel = null }) {
       zeigerDreh.rotation.z = -(stunden / 12) * Math.PI * 2;
+      ziellinie.visible = ziel !== null; if (ziel !== null) ziellinie.position.y = BASIS + ziel * SCH;
       balken.neuwert.ziel = neuwert; balken.neuwert.teilung = teilung;
       balken.lohn.ziel = lohn;
       const g = [

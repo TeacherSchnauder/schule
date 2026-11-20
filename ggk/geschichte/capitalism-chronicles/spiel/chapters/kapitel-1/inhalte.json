@@ -3,7 +3,12 @@
     "nummer": "I",
     "titel": "Marx & Engels: Der Preis des Fortschritts",
     "ort": "Manchester, Sommer 1845",
-    "hinweisFiktion": "Belegt ist die Reise von Marx und Engels nach Manchester im Sommer 1845. Gespräche, Besuche und Nebenfiguren sind erfunden. Das Titelbild ist eine Stimmungsvorlage, keine historische Fotografie."
+    "hinweisFiktion": "Belegt ist die Reise von Marx und Engels nach Manchester im Sommer 1845. Gespräche, Besuche und Nebenfiguren sind erfunden. Das Titelbild ist eine Stimmungsvorlage, keine historische Fotografie.",
+    "tiefe": {
+      "vorhersage": true,
+      "verhoer": true,
+      "zeitungen": true
+    }
   },
   "marken": {
     "tatsache": {
@@ -595,6 +600,14 @@
       "quelle": "Karl Marx: Das Kapital, Bd. 1 (1867), Kap. 23, Abschnitt 4 und Kap. 24, Abschnitt 7; Manifest der Kommunistischen Partei (1848), Kap. I"
     },
     {
+      "id": "d_zeitungen",
+      "reiter": "dokumente",
+      "marke": "nachbildung",
+      "titel": "Erfunden, aber möglich: zwei Zeitungen",
+      "text": "Belegt ist: Die Chartisten veröffentlichten 1838 ihre Charta mit der Forderung nach dem Wahlrecht für alle Männer. Am 24. September 1838 hielten sie auf dem Kersal Moor bei Manchester eine Massenversammlung ab. Wie viele kamen, war schon damals umstritten: Die Angaben der Zeitungen reichten von etwa 30.000 bis zu mehreren Hunderttausend. Im Mai 1842 lehnte es das Unterhaus mit 287 zu 49 Stimmen ab, die Unterzeichner einer Bittschrift mit über drei Millionen Unterschriften anzuhören.\nErfunden sind: die Versammlung von 1845 mit Marx als Redner, beide Zeitungen, alle Texte und Zahlen. Die Haltungen lehnen sich an das Chartistenblatt Northern Star und den liberalen Manchester Guardian an; deren Texte werden weder zitiert noch nachgeahmt. Vereinfacht ist auch die Auswahl: Es gab mehr als zwei Sichtweisen, etwa konservative Blätter, Flugschriften und Polizeiberichte.\nZum Nachdenken: Wenn zwei Zeitungen dieselbe Versammlung so verschieden zählen, wer könnte unabhängig zählen?",
+      "quelle": "Mark Hovell: The Chartist Movement (1918); History of Parliament: „The 1842 Chartist petition“ (2018); UK Parliament, Living Heritage: „1842 and 1848 Chartist petitions“; Spartacus Educational: „Chartism: Public Meetings“"
+    },
+    {
       "id": "f_anklage",
       "reiter": "funde",
       "marke": "theorie",
@@ -672,18 +685,20 @@
     },
     "uhr": {
       "titel": "Die Fabrikuhr",
-      "einleitung": "Dreht die Uhr durch Marys Arbeitstag. Links wächst der Wert, den sie neu schafft. Rechts steht ihr Tageslohn.",
+      "einleitung": "Schiebt die Fabrikuhr durch Marys Arbeitstag. Der Neuwert wächst mit jeder Stunde, ihr Tageslohn bleibt gleich.",
       "auftrag": "Stellt die Stunde ein, in der Mary den Wert ihres Lohns erarbeitet hat, und markiert sie.",
       "knopf": "Hier ist der Lohn erarbeitet",
       "zuFrueh": "Nach {h} Stunden hat Mary erst {n} Schilling Neuwert geschaffen. Das ist weniger als ihr Tageslohn von 3 Schilling.",
-      "zuSpaet": "Nach {h} Stunden hat Mary schon {n} Schilling Neuwert geschaffen, mehr als ihren Lohn. Sucht die Stunde, in der beide Balken gleich hoch sind.",
+      "zuSpaet": "Nach {h} Stunden hat Mary schon {n} Schilling Neuwert geschaffen, mehr als ihren Lohn. Sucht die Stunde, in der beide Balken gleich lang sind.",
       "hilfen": [
-        "Engels: „Schau auf die beiden Balken, nicht auf den Zeiger. Wann sind sie gleich hoch?“",
+        "Engels: „Schau auf die beiden Balken. Wann sind sie gleich lang?“",
         "Jede Stunde schafft ½ Schilling Neuwert. Wie viele Stunden braucht es für 3 Schilling?"
       ],
       "erfolg": "Nach 6 Stunden hat Mary den Wert ihres Lohns erarbeitet. Marx nennt diese Zeit die notwendige Arbeitszeit. Dreht die Uhr jetzt bis zum Ende des Arbeitstags.",
       "ende": "In den zweiten 6 Stunden arbeitet Mary weiter. Marx nennt das Mehrarbeit: Der Wert, der jetzt entsteht, fällt dem Fabrikanten zu.",
-      "weiter": "Ins Tagebuch"
+      "weiter": "Ins Tagebuch",
+      "tempoFest": "alte Maschine, bleibt in diesem Schritt gleich",
+      "balkenTitel": "Neuwert und Lohn (in Schilling)"
     },
     "rechnen": {
       "titel": "Am Pult des Aufsehers",
@@ -749,15 +764,15 @@
     },
     "maschine": {
       "titel": "Die neue Maschine",
-      "einleitung": "Der Arbeitstag endet jetzt nach 10 Stunden. Mr. Whitlow will weiter 3 Schilling Mehrwert am Tag. Stellt ein, wie viel Neuwert Mary an der schnelleren Maschine je Stunde schafft.",
+      "einleitung": "Ab jetzt endet der Arbeitstag nach 10 Stunden. Stellt das Tempo der neuen Maschine so ein, dass Whitlow trotzdem wieder 3 Schilling Mehrwert bleiben, so viel wie vorher.",
       "knopf": "So einstellen",
-      "zuWenig": "Bei {p} Schilling je Stunde entstehen in 10 Stunden {n} Schilling Neuwert. Nach Abzug des Lohns bleiben {m} Schilling Mehrwert, weniger als die 3 Schilling vorher.",
-      "zuViel": "Bei {p} Schilling je Stunde bleiben {m} Schilling Mehrwert, mehr als vorher. Gesucht ist die Einstellung, bei der der Mehrwert genau gleich bleibt.",
+      "zuWenig": "Bei {p} Schilling je Stunde schafft Mary in 10 Stunden {n} Schilling Neuwert. Für Whitlow bleiben nur {m} Schilling, weniger als vorher. Stellt die Maschine schneller.",
+      "zuViel": "Bei {p} Schilling je Stunde schafft Mary in 10 Stunden {n} Schilling Neuwert. Für Whitlow bleiben {m} Schilling, mehr als vorher. Gesucht ist das Tempo, bei dem es genau gleich viel bleibt.",
       "hilfen": [
-        "Engels: „Er braucht am Abend dieselben 6 Schilling Neuwert, nur in 10 statt in 12 Stunden.“",
+        "Engels: „Er braucht am Abend dieselben 6 Schilling Neuwert, nur in 10 statt in 12 Stunden. Vergleich die beiden Balken.“",
         "6 Schilling Neuwert : 10 Stunden = ? Schilling je Stunde"
       ],
-      "erfolg": "10 Stunden × 0,6 Schilling = 6 Schilling Neuwert. Der Mehrwert bleibt bei 3 Schilling, obwohl der Arbeitstag kürzer ist.",
+      "erfolg": "10 Stunden × 0,6 Schilling = 6 Schilling Neuwert, wie vorher in 12 Stunden. Seht auf Marys Arbeitstag: Ihren Lohn hat sie jetzt schon nach 5 statt nach 6 Stunden verdient (3 : 0,6 = 5). Die notwendige Arbeitszeit ist kürzer, darum bleiben Whitlow trotz kürzerem Tag 3 Schilling. Marx nennt das relativen Mehrwert.",
       "frage": {
         "id": "notwendig",
         "frage": "Wie viele Stunden braucht Mary jetzt, um den Wert ihres Lohns zu erarbeiten?",
@@ -774,7 +789,13 @@
           "3 Schilling Lohn : 0,6 Schilling je Stunde = ?"
         ],
         "weg": "3 Schilling : 0,6 Schilling je Stunde = 5 Stunden. Die notwendige Arbeitszeit sinkt von 6 auf 5 Stunden. Marx nennt den so gewonnenen Mehrwert relativen Mehrwert."
-      }
+      },
+      "regler": "Tempo der neuen Maschine",
+      "sechstel": "Vorhersage prüfen: ein Sechstel schneller",
+      "sechstelText": "etwa 0,58 Schilling je Stunde (ein Sechstel schneller)",
+      "tagFest": "durch das Gesetz auf 10 Stunden festgelegt",
+      "unter": "0,5 Schilling je Stunde = alte Maschine",
+      "balkenTitel": "Lohn und Mehrwert: vorher und jetzt (in Schilling)"
     },
     "entfremdung": {
       "titel": "Marys Arbeitstag",
@@ -835,37 +856,67 @@
       "erfolg": "Marx nennt das Entfremdung: Die Arbeit gehört nicht zu Mary, sie steht ihr als etwas Fremdes gegenüber."
     },
     "denkpause": {
+      "id": "k1-s2-denkpause",
       "titel": "Denkpause",
-      "frage": "Mr. Whitlow fragt nach seinem Risiko. Auf welcher Annahme beruht Marx' Rechnung?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Der Fabrikant zahlt weniger Lohn, als vereinbart war.",
-          "richtig": false,
-          "rueck": "Nein. In Marx' Rechnung wird der Lohn vollständig und pünktlich gezahlt. Der Mehrwert entsteht trotz erfülltem Vertrag."
-        },
-        {
-          "id": "b",
-          "text": "Nur Arbeit schafft neuen Wert. Maschinen und Baumwolle geben ihren Wert bloß weiter.",
-          "richtig": true,
-          "rueck": "Richtig. Das ist die Arbeitswertlehre. Nur wenn sie gilt, ist der ganze Neuwert das Werk der Spinnerin."
-        },
-        {
-          "id": "c",
-          "text": "Das Garn wird teurer verkauft, als es wert ist.",
-          "richtig": false,
-          "rueck": "Nein. Bei Marx werden Waren zu ihrem Wert verkauft. Der Mehrwert entsteht in der Produktion, nicht durch einen Aufschlag beim Verkauf."
-        },
-        {
-          "id": "d",
-          "text": "Mary arbeitet schneller als andere Spinnerinnen.",
-          "richtig": false,
-          "rueck": "Nein. Marx rechnet mit durchschnittlicher Arbeit. Die Rechnung gilt für jede Spinnerin im Saal."
-        }
-      ],
+      "marke": "theorie",
+      "stufe1": {
+        "frage": "Mr. Whitlow fragt nach seinem Risiko. Welche Annahme steckt hinter Marx' Rechnung, nach der er Mehrwert erzielt?",
+        "richtig": "c",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Whitlow zahlt Mary nur die Hälfte des vertraglich vereinbarten Lohns.",
+            "rueck": "In Marx' Rechnung wird der Lohn vollständig und pünktlich gezahlt. Der Mehrwert entsteht trotz erfülltem Vertrag."
+          },
+          {
+            "id": "b",
+            "text": "Whitlow verkauft das Garn teurer, als es seinem Wert entspricht.",
+            "rueck": "Bei Marx werden Waren zu ihrem Wert verkauft. Ein Aufschlag beim Verkauf erklärt nichts, weil jeder Käufer auch Verkäufer ist."
+          },
+          {
+            "id": "c",
+            "text": "Nur Arbeit schafft neuen Wert; Maschinen geben nur Wert weiter.",
+            "rueck": "Diese Annahme trägt bei Marx die ganze Rechnung. Was folgt aus ihr?"
+          },
+          {
+            "id": "d",
+            "text": "Mary arbeitet schneller als der Durchschnitt der Spinnerinnen.",
+            "rueck": "Marx rechnet mit durchschnittlicher Arbeit. Die Rechnung gilt für jede Spinnerin im Saal."
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Was folgt daraus bei Marx für die Herkunft von Whitlows Gewinn?",
+        "richtig": "a",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Er stammt aus Marys Arbeit, die mehr Wert schafft, als ihr Lohn kostet.",
+            "rueck": "Das folgt bei Marx aus der Annahme. Welche Annahme ist es?"
+          },
+          {
+            "id": "b",
+            "text": "Er stammt aus den Maschinen, die mehr Wert abgeben, als sie kosten.",
+            "rueck": "Wenn Maschinen ihren Wert nur weitergeben, können sie keinen zusätzlichen Wert abgeben."
+          },
+          {
+            "id": "c",
+            "text": "Er stammt aus dem Verkauf, weil Käufer mehr zahlen, als das Garn wert ist.",
+            "rueck": "So sehen es viele Kaufleute. Bei Marx wird aber zum Wert verkauft; der Gewinn muss vorher entstanden sein."
+          },
+          {
+            "id": "d",
+            "text": "Er stammt aus Whitlows Risiko, für das ihn der Markt mit Gewinn belohnt.",
+            "rueck": "So würde Whitlow antworten, und viele Ökonomen geben ihm recht. In Marx' Rechnung kommt Risiko aber nicht als Quelle von Wert vor."
+          }
+        ]
+      },
+      "erfolg": "Das ist die Arbeitswertlehre. Nur wenn sie gilt, ist der ganze Neuwert das Werk der Spinnerin, und Whitlows Gewinn stammt aus unbezahlter Mehrarbeit. Wer Risiko oder Maschinen als Quelle von Wert ansieht, kommt zu einem anderen Ergebnis.",
+      "loesung": "Die Annahme lautet: Nur Arbeit schafft neuen Wert, Maschinen geben nur Wert weiter. Daraus folgt bei Marx, dass der Gewinn aus Marys Arbeit stammt, die mehr Wert schafft, als ihr Lohn kostet.",
       "hilfen": [
-        "Engels: „Sieh dir an, wem die Rechnung den ganzen Neuwert zuschreibt.“",
-        "Maschine, Kapital und Risiko tauchen in der Rechnung nicht als Quelle von Wert auf. Welche Annahme steckt dahinter?"
+        "Die Frage sagt „bei Marx“. Gesucht ist nicht, was Whitlow denkt, sondern was Marx' Rechnung voraussetzt.",
+        "Engels: „Sieh dir an, wem die Rechnung den ganzen Neuwert zuschreibt. Maschine, Kapital und Risiko tauchen darin nicht als Quelle von Wert auf.“",
+        "Die Antwort nennt eine Annahme über die Quelle von Wert. Die Begründung nennt die Person, aus deren Arbeit der Gewinn dann stammen muss."
       ],
       "notiz": {
         "titel": "Eure Notiz für das Tribunal",
@@ -1104,37 +1155,67 @@
         "Die Firma macht nur Gewinn, wenn ihre Kosten mindestens so schnell sinken wie der Marktpreis."
       ],
       "frage": {
+        "id": "k1-s3-jahre",
         "titel": "Was zeigt der Versuch?",
-        "frage": "Was folgert Marx aus dem, was ihr in den drei Jahren erlebt habt?",
-        "optionen": [
-          {
-            "id": "a",
-            "text": "Fabrikanten sind von Natur aus gierig.",
-            "richtig": false,
-            "rueck": "Gerade nicht. Auch ein großzügiger Fabrikant musste in eurem Versuch investieren, sonst wäre er untergegangen."
-          },
-          {
-            "id": "b",
-            "text": "Die Konkurrenz zwingt jeden Fabrikanten, den Gewinn wieder zu investieren. Der Zwang liegt im Wettbewerb, nicht im Charakter.",
-            "richtig": true,
-            "rueck": "Richtig. Marx nennt das den Zwang zur Akkumulation."
-          },
-          {
-            "id": "c",
-            "text": "Neue Maschinen lohnen sich nie.",
-            "richtig": false,
-            "rueck": "Im Gegenteil: Ohne sie hat die Firma in eurem Versuch nicht überlebt."
-          },
-          {
-            "id": "d",
-            "text": "Höhere Löhne sind in jedem Fall unmöglich.",
-            "richtig": false,
-            "rueck": "Das zeigt das Modell nicht. Es zeigt nur, was geschieht, wenn ein einzelner Fabrikant allein die Löhne erhöht und die Konkurrenz nicht."
-          }
-        ],
+        "marke": "vereinfachung",
+        "stufe1": {
+          "frage": "Was folgert Marx aus dem, was ihr in den drei Jahren erlebt habt?",
+          "richtig": "a",
+          "optionen": [
+            {
+              "id": "a",
+              "text": "Die Konkurrenz zwingt jeden Fabrikanten, den Gewinn neu zu investieren.",
+              "rueck": "Das folgert Marx. Woran sieht man es im Versuch?"
+            },
+            {
+              "id": "b",
+              "text": "Die Gier treibt jeden Fabrikanten, immer mehr Gewinn anzuhäufen.",
+              "rueck": "Gerade nicht. Auch ein großzügiger Fabrikant musste in eurem Versuch investieren, sonst wäre er untergegangen."
+            },
+            {
+              "id": "c",
+              "text": "Der Fleiß trennt die klugen Fabrikanten von denen, die verprassen.",
+              "rueck": "Im Versuch entscheidet kein Charakterzug, sondern was Ashworth tut. Wer nicht mithält, geht unter, ob klug oder nicht."
+            },
+            {
+              "id": "d",
+              "text": "Die Bank zwingt jeden Fabrikanten, den Gewinn für Zinsen zu sparen.",
+              "rueck": "Die Bank kündigt erst, wenn kein Gewinn mehr bleibt. Warum bleibt keiner? Das liegt nicht an der Bank."
+            }
+          ]
+        },
+        "stufe2": {
+          "frage": "Woran erkennt man das im Verlauf der drei Jahre?",
+          "richtig": "c",
+          "optionen": [
+            {
+              "id": "a",
+              "text": "Wer auf das Landhaus verzichtete und sparte, kam bei gleichen Kosten durch.",
+              "rueck": "Gleiche Kosten reichen nicht, wenn der Marktpreis jedes Jahr sinkt. Die Spanne schrumpft trotzdem."
+            },
+            {
+              "id": "b",
+              "text": "Wer die Löhne erhöhte, kam durch, weil zufriedene Leute mehr leisteten.",
+              "rueck": "Im Modell steigen mit höheren Löhnen die Kosten; dass Arbeiter dann mehr schaffen, sieht es nicht vor. Das wäre ein anderes Modell."
+            },
+            {
+              "id": "c",
+              "text": "Wer nicht jedes Jahr in Maschinen steckte, kam nicht durch, gleich wie gütig.",
+              "rueck": "Das zeigt der Verlauf. Welchen Schluss zieht Marx daraus?"
+            },
+            {
+              "id": "d",
+              "text": "Wer seinen alten Preis hielt, kam durch, weil Stammkunden bei ihm blieben.",
+              "rueck": "Die Kunden kaufen bei Ashworth, sobald er billiger ist. Einen eigenen Preis kann Whitlow nicht halten."
+            }
+          ]
+        },
+        "erfolg": "Marx nennt das den Zwang zur Akkumulation: Nicht der Charakter, sondern die Konkurrenz entscheidet, was mit dem Gewinn geschieht. Das Modell ist stark vereinfacht; es kennt weder höhere Leistung durch bessere Löhne noch treue Kunden.",
+        "loesung": "Marx folgert: Die Konkurrenz zwingt jeden Fabrikanten, den Gewinn neu zu investieren. Im Versuch kam nicht durch, wer nicht jedes Jahr in Maschinen steckte, gleich wie gütig er sein wollte.",
         "hilfen": [
-          "Engels: „Hätte ein gütigerer Mann an Whitlows Stelle anders handeln können?“",
-          "Überlegt, wer in eurem Versuch die Entscheidung erzwungen hat: Whitlow, Mary oder Ashworth?"
+          "Engels: „Sieh nicht auf Whitlow. Sieh auf Ashworth: Was tut der jedes Jahr?“",
+          "Überlegt, wer in eurem Versuch die Entscheidung erzwungen hat: Whitlow selbst, die Bank oder der Konkurrent.",
+          "Die Antwort nennt den Zwang von außen. Die Begründung beschreibt, was mit allen geschah, die anders entschieden haben."
         ]
       },
       "start": "Heute: Kosten 10,8 Pence, Verkaufspreis 12 Pence je Pfund Garn, Gewinn 1.000 Pfund."
@@ -1208,72 +1289,68 @@
       "passt": "Richtig: Schritt ",
       "erfolg": "Geld, Ware, mehr Geld: Marx schreibt G – W – G′. Wird das Mehr wieder eingesetzt, wächst das Kapital von Runde zu Runde."
     },
-    "garn": {
-      "titel": "Wem nützt das billigere Garn?",
-      "frage": "Garn und Stoff werden von Jahr zu Jahr billiger. Wem nützt das nach Marx’ und Engels’ eigener Einschätzung?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Nur dem Adel.",
-          "richtig": false,
-          "rueck": "Der Adel konnte sich feine Stoffe schon vorher leisten."
-        },
-        {
-          "id": "b",
-          "text": "Allen, die Stoff kaufen, auch Familien mit kleinem Einkommen. Kleidung wird zur erschwinglichen Massenware.",
-          "richtig": true,
-          "rueck": "Richtig. Marx und Engels bestreiten das nicht. Sie fragen, zu welchem Preis für die, die das Garn herstellen."
-        },
-        {
-          "id": "c",
-          "text": "Niemandem.",
-          "richtig": false,
-          "rueck": "Sinkende Preise nützen allen, die die Ware kaufen."
-        },
-        {
-          "id": "d",
-          "text": "Nur den Fabrikanten.",
-          "richtig": false,
-          "rueck": "Der Fabrikant muss den niedrigeren Preis an die Käufer weitergeben, sonst verliert er sie an die Konkurrenz."
-        }
-      ],
-      "hilfen": [
-        "Engels: „Wer trägt heute Baumwolle, und wer trug sie vor sechzig Jahren?“",
-        "Überlegt, wer sich Stoff leisten kann, wenn er nur noch einen Bruchteil kostet."
-      ]
-    },
     "denkpause": {
+      "id": "k1-s3-denkpause",
       "titel": "Denkpause",
-      "frage": "Marx erwartet, dass kleine Betriebe untergehen und die Löhne niedrig bleiben. An welcher Annahme hängt diese Erwartung?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Dass keine neuen Maschinen mehr erfunden werden.",
-          "richtig": false,
-          "rueck": "Marx rechnet im Gegenteil mit immer neuen Maschinen."
-        },
-        {
-          "id": "b",
-          "text": "Dass die Löhne trotz steigender Produktivität niedrig bleiben und weder der Staat noch organisierte Arbeiter daran etwas ändern.",
-          "richtig": true,
-          "rueck": "Richtig. Steigen die Löhne mit der Produktivität oder setzt der Staat Regeln, reißt die Kette."
-        },
-        {
-          "id": "c",
-          "text": "Dass die Baumwolle ausgeht.",
-          "richtig": false,
-          "rueck": "Rohstoffknappheit spielt in diesem Argument keine Rolle."
-        },
-        {
-          "id": "d",
-          "text": "Dass alle Fabrikanten Landhäuser kaufen.",
-          "richtig": false,
-          "rueck": "Dann gäbe es keine Akkumulation. Marx erwartet das Gegenteil."
-        }
-      ],
+      "marke": "theorie",
+      "stufe1": {
+        "frage": "Marx erwartet, dass kleine Betriebe untergehen und die Löhne niedrig bleiben. An welcher Annahme hängt diese Erwartung?",
+        "richtig": "b",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Dass die Erfinder bald keine neuen und schnelleren Maschinen mehr bauen.",
+            "rueck": "Marx rechnet im Gegenteil mit immer neuen Maschinen. Gerade sie treiben die Konkurrenz an."
+          },
+          {
+            "id": "b",
+            "text": "Dass weder der Staat noch organisierte Arbeiter höhere Löhne durchsetzen.",
+            "rueck": "Das ist die Annahme. Was müsste geschehen, damit sie nicht mehr gilt?"
+          },
+          {
+            "id": "c",
+            "text": "Dass die Fabrikanten den Gewinn am Ende doch lieber für sich verbrauchen.",
+            "rueck": "Dann gäbe es keine Akkumulation. Marx erwartet das Gegenteil."
+          },
+          {
+            "id": "d",
+            "text": "Dass die Arbeiter selbst zu wenig sparen, um eigene Betriebe zu gründen.",
+            "rueck": "So argumentierten liberale Zeitgenossen. Für Marx liegt die Ursache nicht im Verhalten einzelner Arbeiter."
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Welche Entwicklung würde die Erwartung schwächen?",
+        "richtig": "d",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Wenn die Fabrikanten noch schneller in neue Maschinen investieren.",
+            "rueck": "Das verschärft die Konkurrenz und stützt damit Marx' Erwartung, statt sie zu schwächen."
+          },
+          {
+            "id": "b",
+            "text": "Wenn die Baumwolle knapp wird und das Garn dadurch wieder teurer wird.",
+            "rueck": "Rohstoffknappheit spielt in diesem Argument keine Rolle."
+          },
+          {
+            "id": "c",
+            "text": "Wenn sich kleine Betriebe zu großen Firmen zusammenschließen müssen.",
+            "rueck": "Das ist gerade die Konzentration, die Marx erwartet. Sie schwächt seine Erwartung nicht."
+          },
+          {
+            "id": "d",
+            "text": "Wenn Gesetze und starke Arbeitervereine höhere Löhne durchsetzen.",
+            "rueck": "Das würde die Erwartung schwächen. An welcher Annahme hängt sie also?"
+          }
+        ]
+      },
+      "erfolg": "Steigen die Löhne mit der Produktivität oder setzt der Staat Regeln, reißt die Kette. Ob das geschieht, kann man 1845 nicht wissen. Die Zeitkapsel in Station V hält genau diese Frage fest.",
+      "loesung": "Die Erwartung hängt daran, dass weder der Staat noch organisierte Arbeiter höhere Löhne durchsetzen. Geschwächt würde sie, wenn Gesetze und starke Arbeitervereine höhere Löhne durchsetzen.",
       "hilfen": [
         "Engels: „Was müsste geschehen, damit Mary von den neuen Maschinen mehr hat als billigeres Garn?“",
-        "Denkt an die Fabrikgesetze am Tor und an die Arbeiter, die sich zusammenschließen könnten."
+        "Denkt an die Fabrikgesetze am Tor und an die Arbeiter, die sich zusammenschließen könnten.",
+        "Antwort und Begründung sind zwei Seiten derselben Sache: was fehlen muss, damit die Erwartung eintritt, und was sie zu Fall bringt."
       ],
       "notiz": {
         "titel": "Eure Notiz für das Tribunal",
@@ -1345,72 +1422,68 @@
         }
       ]
     },
-    "rutland": {
-      "titel": "Stadt und Land",
-      "frage": "Vergleicht die Landarbeiter in Rutland mit der Oberschicht in Manchester. Was fällt auf?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Die Oberschicht lebt überall gleich lang.",
-          "richtig": false,
-          "rueck": "Nein: 38 Jahre in Manchester, 52 in Rutland."
-        },
-        {
-          "id": "b",
-          "text": "Beide erreichen im Durchschnitt 38 Jahre. Der Wohnort wirkt also mindestens so stark wie die Klasse.",
-          "richtig": true,
-          "rueck": "Richtig. Ein armer Landarbeiter wird so alt wie ein reicher Städter. Das spricht dafür, dass die Stadt selbst krank macht."
-        },
-        {
-          "id": "c",
-          "text": "Arbeiter sterben überall gleich früh.",
-          "richtig": false,
-          "rueck": "Nein: 17 Jahre in Manchester, 38 in Rutland."
-        },
-        {
-          "id": "d",
-          "text": "Auf dem Land ist der Abstand zwischen den Klassen größer als in der Stadt.",
-          "richtig": false,
-          "rueck": "Nein: In Rutland beträgt er 14 Jahre, in Manchester 21."
-        }
-      ],
-      "hilfen": [
-        "Engels: „Such die Zahl 38. Sie steht zweimal in der Tabelle.“",
-        "Vergleicht: Arbeiter in Rutland und Oberschicht in Manchester."
-      ]
-    },
     "durchschnitt": {
+      "id": "k1-s4-durchschnitt",
       "titel": "Was heißt „17 Jahre“?",
-      "frage": "Was bedeutet ein durchschnittliches Sterbealter von 17 Jahren genau?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Fast alle Arbeiter starben mit etwa 17 Jahren.",
-          "richtig": false,
-          "rueck": "Nein. Ein Durchschnitt sagt nichts darüber, wie die einzelnen Werte verteilt sind. Mary und Ellen sind beide älter."
-        },
-        {
-          "id": "b",
-          "text": "Sehr viele Kinder starben in den ersten Lebensjahren und zogen den Durchschnitt stark nach unten. Wer die Kindheit überlebte, wurde deutlich älter.",
-          "richtig": true,
-          "rueck": "Richtig. Die Zahl zeigt vor allem eine erschütternd hohe Kindersterblichkeit. Sie ist echt, muss aber richtig gelesen werden."
-        },
-        {
-          "id": "c",
-          "text": "Die Zahl ist erfunden.",
-          "richtig": false,
-          "rueck": "Nein. Sie stammt aus amtlichen Sterberegistern."
-        },
-        {
-          "id": "d",
-          "text": "Arbeiter durften erst mit 17 Jahren in die Fabrik.",
-          "richtig": false,
-          "rueck": "Nein. Kinder arbeiteten ab acht Jahren. Mit dem Sterbealter hat das nichts zu tun."
-        }
-      ],
+      "marke": "tatsache",
+      "stufe1": {
+        "frage": "Was bedeutet ein durchschnittliches Sterbealter von 17 Jahren genau?",
+        "richtig": "c",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Die meisten Arbeiter starben ungefähr im Alter von 17 Jahren an den Folgen der Arbeit.",
+            "rueck": "Ein Durchschnitt sagt nichts darüber, wie die einzelnen Werte verteilt sind. Mary und Ellen sind beide älter."
+          },
+          {
+            "id": "b",
+            "text": "Wer als Arbeiter die Kindheit überlebte, wurde im Durchschnitt ebenfalls nur 17 Jahre alt.",
+            "rueck": "Dann wären fast alle Erwachsenen im Viertel Jugendliche. Mary und Ellen widerlegen das."
+          },
+          {
+            "id": "c",
+            "text": "Sehr viele Kinder starben früh und zogen den Durchschnitt aller Gestorbenen stark nach unten.",
+            "rueck": "So entsteht die niedrige Zahl. Welche Angabe bräuchte man, um das zu prüfen?"
+          },
+          {
+            "id": "d",
+            "text": "Die Zahl gilt nur für Fabrikkinder, weil Kinder schon ab acht Jahren in der Fabrik arbeiteten.",
+            "rueck": "Die Zahl gilt für alle gestorbenen Arbeiter und ihre Kinder, nicht nur für Fabrikkinder."
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Welche Zusatzangabe wäre nötig, um diese Deutung zu prüfen?",
+        "richtig": "b",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Wie lange die Arbeiter jeden Tag in der Fabrik standen.",
+            "rueck": "Die Arbeitszeit sagt etwas über die Arbeit, aber nichts darüber, wie sich die Sterbefälle auf die Lebensalter verteilen."
+          },
+          {
+            "id": "b",
+            "text": "Wie viele der Gestorbenen jünger als fünf Jahre waren.",
+            "rueck": "Diese Angabe trennt die Kindersterblichkeit vom übrigen Leben. Was zeigt sie dann?"
+          },
+          {
+            "id": "c",
+            "text": "Wie viele Arbeiter es 1845 in Manchester insgesamt gab.",
+            "rueck": "Die Größe der Bevölkerung ändert nichts daran, wie ein Durchschnitt zustande kommt."
+          },
+          {
+            "id": "d",
+            "text": "In welchem Jahr die amtlichen Sterberegister begannen.",
+            "rueck": "Das Alter der Register sagt nichts darüber, wie sich die Sterbefälle verteilen."
+          }
+        ]
+      },
+      "erfolg": "Die Zahl zeigt vor allem eine erschütternd hohe Kindersterblichkeit. Sie stammt aus amtlichen Registern und ist echt, muss aber richtig gelesen werden. Wer die Kindheit überlebte, wurde deutlich älter.",
+      "loesung": "Sehr viele Kinder starben früh und zogen den Durchschnitt stark nach unten. Prüfen ließe sich das mit der Angabe, wie viele der Gestorbenen jünger als fünf Jahre waren.",
       "hilfen": [
         "Engels: „Ellen hat zwei Kinder begraben. Wie alt waren sie, und was macht das mit einem Durchschnitt?“",
-        "Rechnet im Kopf: Ein Kind stirbt mit 1 Jahr, ein Erwachsener mit 49. Wie hoch ist der Durchschnitt?"
+        "Rechnet im Kopf: Ein Kind stirbt mit 1 Jahr, ein Erwachsener mit 49. Wie hoch ist der Durchschnitt?",
+        "Die Antwort erklärt, wie die niedrige Zahl entsteht. Die Begründung nennt die Angabe, die genau diese Erklärung prüfbar macht."
       ]
     },
     "ursachen": {
@@ -1539,37 +1612,67 @@
       "erfolg": "Zwei Antworten auf dasselbe Elend: überwinden oder reformieren."
     },
     "denkpause": {
+      "id": "k1-s4-denkpause",
       "titel": "Denkpause",
-      "frage": "Welche Information bräuchte man, um zu entscheiden, wer recht hat: Engels oder Chadwick?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Wie viele Fabriken es 1845 in Manchester gab.",
-          "richtig": false,
-          "rueck": "Das ändert nichts an der Frage nach der Ursache."
-        },
-        {
-          "id": "b",
-          "text": "Wie sich die Sterblichkeit entwickelt, wenn Kanalisation und Schutzgesetze eingeführt werden, der Kapitalismus aber bestehen bleibt.",
-          "richtig": true,
-          "rueck": "Richtig. Sinkt die Sterblichkeit dann, spricht das für Chadwick. Bleibt sie hoch, spricht das für Engels. Die Antwort liegt 1845 in der Zukunft."
-        },
-        {
-          "id": "c",
-          "text": "Was Engels’ Vater über das Buch dachte.",
-          "richtig": false,
-          "rueck": "Das ist für die Frage nach der Ursache unerheblich."
-        },
-        {
-          "id": "d",
-          "text": "Ob Chadwick selbst in Manchester wohnte.",
-          "richtig": false,
-          "rueck": "Auch das entscheidet nicht, welche Ursache die richtige ist."
-        }
-      ],
+      "marke": "kontroverse",
+      "stufe1": {
+        "frage": "Welche Information bräuchte man, um zu entscheiden, wer recht hat: Engels oder Chadwick?",
+        "richtig": "d",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Wie hoch die Sterblichkeit 1845 in Manchester im Vergleich zu London und Leeds war.",
+            "rueck": "Damit wüsste man, wo es schlimmer ist, aber nicht, warum. Beide Erklärungen passen zu hohen Zahlen."
+          },
+          {
+            "id": "b",
+            "text": "Wie viele Arbeiterfamilien 1845 in Manchester in feuchten Kellerwohnungen lebten.",
+            "rueck": "Auch das beschreibt die Lage. Die Frage nach der Ursache entscheidet es nicht."
+          },
+          {
+            "id": "c",
+            "text": "Wie viele Ärzte und Apotheker es 1845 in den Arbeitervierteln Manchesters gab.",
+            "rueck": "Ärzte konnten damals wenig ausrichten. Und wie viele es gab, trennt die beiden Erklärungen nicht."
+          },
+          {
+            "id": "d",
+            "text": "Wie sich die Sterblichkeit ändert, wenn Kanäle kommen, die Fabriken aber bleiben.",
+            "rueck": "Das ist ein Prüffall. Wie liest man sein Ergebnis?"
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Wie unterscheidet diese Information die beiden Erklärungen?",
+        "richtig": "a",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Sinkt die Sterblichkeit dann, spricht das für Chadwick; bleibt sie hoch, für Engels.",
+            "rueck": "So unterscheidet der Prüffall die Erklärungen. Welche Information liefert ihn?"
+          },
+          {
+            "id": "b",
+            "text": "Sinkt die Sterblichkeit dann, spricht das für Engels; bleibt sie hoch, für Chadwick.",
+            "rueck": "Umgekehrt. Chadwick erwartet, dass Kanäle helfen. Wer hätte also recht, wenn sie es tun?"
+          },
+          {
+            "id": "c",
+            "text": "Die Zahl zeigt nur, wie viele sterben; über die Ursache sagt sie letztlich nichts.",
+            "rueck": "Allein sagt eine Zahl wenig. Ändert man aber eine Ursache und lässt die andere, wird sie aussagekräftig."
+          },
+          {
+            "id": "d",
+            "text": "Sie zeigt, wer 1845 genauer beobachtet hat, weil sie aus genau dieser Zeit stammt.",
+            "rueck": "Gerade nicht: Die Antwort liegt 1845 in der Zukunft. Beide hatten dieselben Zahlen vor sich."
+          }
+        ]
+      },
+      "erfolg": "Man ändert eine Ursache und lässt die andere bestehen. Sinkt die Sterblichkeit, spricht das für Chadwick; bleibt sie hoch, für Engels. Die Antwort liegt 1845 in der Zukunft. Einen ersten Hinweis gibt Chadwicks Tabelle schon: Landarbeiter in Rutland werden im Durchschnitt so alt wie die Oberschicht in Manchester, 38 Jahre. Der Ort wirkt also mindestens so stark wie die Klasse.",
+      "loesung": "Man bräuchte die Entwicklung der Sterblichkeit, wenn Kanäle gebaut werden, die Fabriken aber bleiben. Sinkt sie dann, spricht das für Chadwick; bleibt sie hoch, für Engels.",
       "hilfen": [
         "Engels: „Wir müssten abwarten, was geschieht, wenn sie die Kanäle wirklich bauen.“",
-        "Überlegt, welche der beiden Ursachen man beseitigen könnte, ohne die andere anzutasten."
+        "Überlegt, welche der beiden Ursachen man beseitigen könnte, ohne die andere anzutasten. Schaut dazu noch einmal in Chadwicks Tabelle: Wer wird in Rutland so alt wie wer in Manchester?",
+        "Die Antwort beschreibt einen Prüffall, in dem sich nur eine Ursache ändert. Die Begründung sagt, welches Ergebnis für wen spricht."
       ],
       "notiz": {
         "titel": "Eure offene Frage für Kapitel II",
@@ -1667,37 +1770,66 @@
       "erfolg": "Alle drei Entwicklungen hängen zusammen: Die Fabriken ziehen die Menschen in die Stadt, und die Stadt teilt sich nach Klassen."
     },
     "denkpause": {
+      "id": "k1-s1-denkpause",
       "titel": "Denkpause",
-      "frage": "Engels ist der Sohn eines Fabrikanten und arbeitete im Kontor der Firma seines Vaters. Was folgt daraus für sein Buch über Manchester?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Sein Buch ist wertlos, weil er Partei ergreift.",
-          "richtig": false,
-          "rueck": "Zu weit. Parteilichkeit macht Beobachtungen nicht falsch. Sie heißt nur, dass man sie prüfen muss."
-        },
-        {
-          "id": "b",
-          "text": "Er kennt die Welt der Fabrikanten von innen, schreibt aber als Kritiker mit einem klaren Ziel. Seine Angaben muss man an anderen Quellen prüfen.",
-          "richtig": true,
-          "rueck": "Richtig. Engels ist Augenzeuge und Ankläger zugleich. Historiker vergleichen seine Angaben mit amtlichen Berichten: Vieles bestätigen sie, manches halten sie für zugespitzt."
-        },
-        {
-          "id": "c",
-          "text": "Als Fabrikantensohn schreibt er sicher besonders neutral.",
-          "richtig": false,
-          "rueck": "Nein. Engels schreibt ausdrücklich als Kritiker. Seine Herkunft macht ihn nicht neutral."
-        },
-        {
-          "id": "d",
-          "text": "Er übertreibt nur, weil er sich mit seinem Vater gestritten hat.",
-          "richtig": false,
-          "rueck": "Das ist eine Vermutung über seine Gefühle, kein Argument. Ob er übertreibt, zeigt nur der Vergleich mit anderen Quellen."
-        }
-      ],
+      "stufe1": {
+        "frage": "Engels ist der Sohn eines Fabrikanten und arbeitete im Kontor der Firma seines Vaters. Was folgt daraus für ihn als Zeugen?",
+        "richtig": "a",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Er kennt die Fabriken von innen und schreibt als Kritiker: Augenzeuge und Partei zugleich.",
+            "rueck": "Er ist beides zugleich. Das ist für einen Zeugen keine Ausnahme, sondern der Normalfall."
+          },
+          {
+            "id": "b",
+            "text": "Er kennt die Fabriken von innen und hat keinen Grund zu lügen: ein verlässlicher Augenzeuge.",
+            "rueck": "Wer etwas aus der Nähe sieht, ist deshalb noch nicht unparteiisch. Engels verfolgt mit seinem Buch ein Ziel."
+          },
+          {
+            "id": "c",
+            "text": "Er schreibt als Kritiker gegen die Fabrikherren und ergreift Partei: ein wertloser Zeuge.",
+            "rueck": "Zu weit. Parteilichkeit macht Beobachtungen nicht falsch. Sie heißt nur, dass man sie prüfen muss."
+          },
+          {
+            "id": "d",
+            "text": "Er schreibt gegen den eigenen Stand und den eigenen Vorteil: ein besonders neutraler Zeuge.",
+            "rueck": "Wer gegen die eigene Herkunft schreibt, ist nicht neutral, sondern hat sich für eine Seite entschieden."
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Was folgt daraus für den Umgang mit seinen Angaben?",
+        "richtig": "a",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Man prüft seine Angaben an anderen Quellen, etwa an amtlichen Berichten.",
+            "rueck": "Prüfen ist richtig. Woran, und warum gerade daran?"
+          },
+          {
+            "id": "b",
+            "text": "Man übernimmt seine Angaben, weil er als Augenzeuge selbst vor Ort war.",
+            "rueck": "Auch Augenzeugen wählen aus, was sie berichten. Dabeisein ersetzt die Prüfung nicht."
+          },
+          {
+            "id": "c",
+            "text": "Man verwirft seine Angaben und stützt sich allein auf amtliche Berichte.",
+            "rueck": "Auch amtliche Berichte haben Verfasser mit Interessen. Wer Engels ganz verwirft, verliert einen Augenzeugen."
+          },
+          {
+            "id": "d",
+            "text": "Man liest seine Angaben vor allem als Folge seines Streits mit dem Vater.",
+            "rueck": "Das ist eine Vermutung über Gefühle. Ob Angaben stimmen, zeigt nur der Vergleich mit anderen Quellen."
+          }
+        ]
+      },
+      "erfolg": "Engels ist Augenzeuge und Ankläger zugleich. Historiker vergleichen seine Angaben mit amtlichen Berichten: Vieles bestätigen sie, manches halten sie für zugespitzt.",
+      "loesung": "Engels ist Augenzeuge und Partei zugleich. Deshalb prüft man seine Angaben an anderen Quellen, etwa an amtlichen Berichten.",
       "hilfen": [
+        "Unterscheidet zwei Fragen: Was weiß Engels aus eigener Anschauung? Und was will er mit seinem Buch erreichen?",
         "Marx: „Ein Zeuge, der beide Seiten kennt, ist wertvoll. Ein Zeuge, der ein Ziel hat, muss geprüft werden.“",
-        "Unterscheidet: Was weiß Engels aus eigener Anschauung, und was will er mit seinem Buch erreichen?"
+        "Die Antwort verbindet beides, Nähe und Ziel. Die Begründung nennt einen Weg, wie man prüft, statt zu glauben oder zu verwerfen."
       ],
       "notiz": {
         "titel": "Eure Notiz",
@@ -1716,7 +1848,8 @@
       "grimshaw": "Mr. Grimshaw verlangt das Wort. Stellt euch ihm.",
       "kapsel": "Versiegelt mit Engels die Zeitkapsel am Wagen.",
       "fertig": "Kapitel I ist abgeschlossen.",
-      "brief": "Setzt mit Engels seinen zerrissenen Brief zusammen."
+      "brief": "Setzt mit Engels seinen zerrissenen Brief zusammen.",
+      "zeitungen": "Mr. Holt hat die Morgenzeitungen. Sprecht mit ihm."
     },
     "anklage": {
       "titel": "Die Anklageschrift",
@@ -1807,143 +1940,154 @@
     },
     "duell": {
       "titel": "Streitgespräch mit Mr. Grimshaw",
-      "einleitung": "Grimshaw bringt fünf Einwände. Widerlegt, was sich widerlegen lässt, und räumt ein, was stimmt. Pauschales Abwehren kostet die Zustimmung der Versammlung.",
+      "einleitung": "Grimshaw bringt drei Einwände. Die Versammlung glaubt nur, was ihr belegen könnt. Widerlegt, was sich mit euren Funden widerlegen lässt, und räumt ein, was stimmt. Ausweichen, Angriffe auf Personen und Behauptungen ohne Beleg kosten Zustimmung.",
       "zustimmung": "Zustimmung der Versammlung",
       "niederlage": "Die Versammlung wendet sich ab. Holt ruft: „Belege, Doktor, keine Predigt!“ Versucht es noch einmal.",
-      "sieg": "Die Versammlung ist auf eurer Seite, und doch habt ihr zweimal nachgeben müssen. Genau das macht die Anklage glaubwürdig.",
+      "sieg": "Die Versammlung ist auf eurer Seite, und doch habt ihr zweimal einräumen müssen. Genau das macht die Anklage glaubwürdig.",
       "einwaende": [
         {
-          "text": "Ein Professor aus Oxford hat es bewiesen: Der ganze Reingewinn einer Spinnerei entsteht in der letzten Arbeitsstunde. Wer den Arbeitstag verkürzt, ruiniert die Fabriken.",
-          "art": "widerlegen",
+          "text": "Professor Senior aus Oxford hat es nachgerechnet: In elfeinhalb Stunden ersetzt die Arbeit erst das Kapital, der ganze Reingewinn entsteht in der letzten Stunde. Nehmen Sie uns diese Stunde mit Ihrem Zehnstundengesetz, und jede Spinnerei in Manchester schließt.",
           "optionen": [
             {
-              "text": "Widerlegen mit der Rechnung vom Pult und dem Zehnstundentag: Der Mehrwert entsteht in der ganzen Mehrarbeit, nicht in einer Stunde. Und mit schnelleren Maschinen bleibt er auch bei zehn Stunden gleich.",
+              "id": "a",
               "richtig": true,
-              "rueck": "Treffer. In Marys Tag bringen sechs Stunden Mehrarbeit den Mehrwert, und an der neuen Maschine blieb er bei kürzerem Tag gleich."
+              "text": "Widerlegen: Der Mehrwert stammt aus sechs Stunden Mehrarbeit und blieb an der schnelleren Maschine auch bei kürzerem Tag erhalten.",
+              "rueck": "Treffer. In Marys Tag bringen sechs Stunden Mehrarbeit den Mehrwert, und an der schnelleren Maschine blieb er bei zehn Stunden gleich. Seniors Rechnung hält nicht."
             },
             {
-              "text": "Einräumen: Fällt die letzte Stunde weg, ist der Gewinn verloren.",
-              "richtig": false,
-              "rueck": "Damit gebt ihr einen Punkt auf, den eure eigene Rechnung widerlegt."
+              "id": "b",
+              "text": "Einräumen: Wenn der ganze Gewinn wirklich in der letzten Stunde steckt, ruiniert das Zehnstundengesetz tatsächlich jede Spinnerei.",
+              "rueck": "Damit gebt ihr einen Punkt auf, den eure eigene Rechnung vom Pult widerlegt."
             },
             {
-              "text": "Professoren reden, wie die Fabrikanten sie bezahlen!",
-              "richtig": false,
-              "rueck": "Ein Angriff auf die Person ist kein Argument. Die Versammlung will Zahlen hören."
+              "id": "c",
+              "text": "Widerlegen: Professoren wie Senior rechnen genau so, wie die Fabrikanten es bei ihnen bestellen. Seine Zahlen verdienen keine Antwort.",
+              "rueck": "Ein Angriff auf die Person ist kein Argument. Die Versammlung will Zahlen hören, und Grimshaw hat welche."
+            },
+            {
+              "id": "d",
+              "text": "Widerlegen: Dann sollen die Fabrikanten eben weniger verdienen. Die Gesundheit der Spinnerinnen ist mehr wert als jeder Gewinn.",
+              "rueck": "Die Versammlung nickt, aber Grimshaw lächelt: Ihr habt seine Rechnung nicht widerlegt, nur übergangen. Und eine Spinnerei, die schließt, zahlt gar keinen Lohn mehr."
             }
           ]
         },
         {
-          "text": "Der Lohn wird frei vereinbart und pünktlich gezahlt. Niemand wird gezwungen, niemand betrogen. Wo ist da Ausbeutung?",
-          "art": "widerlegen",
+          "text": "Lesen Sie Chadwicks Bericht, Herr Doktor! Auch die feinen Herren in Manchester sterben im Durchschnitt mit 38, auf dem Land werden sie 52. Nicht meine Spindeln töten, sondern Kloaken und verdorbenes Wasser. Bauen Sie Kanäle, nicht Barrikaden!",
           "optionen": [
             {
-              "text": "Widerlegen mit dem Gerücht über den Aufseher bei Hadley.",
-              "richtig": false,
-              "rueck": "Ein Gerücht über einen Einzelfall beweist nichts über den Lohnvertrag."
+              "id": "a",
+              "text": "Widerlegen: Nicht das Wasser tötet, sondern die Fabrik. Wer zwölf Stunden in Staub und Hitze steht, stirbt früher als jeder andere.",
+              "rueck": "Chadwicks Tabelle spricht dagegen: Auch die Oberschicht in Manchester, die keine Fabrik betritt, stirbt im Durchschnitt mit 38. Grimshaw hält euch die Tabelle hin."
             },
             {
-              "text": "Widerlegen mit der Rechnung vom Pult: Gerade wenn der Lohn voll gezahlt wird, bleibt nach Marx ein Mehrwert. Mary schafft 6 Schilling Neuwert und erhält 3.",
+              "id": "b",
               "richtig": true,
-              "rueck": "Treffer. Nach Marx’ Rechnung entsteht der Mehrwert trotz erfülltem Vertrag. Grimshaw kann die Zahlen nicht bestreiten, nur die Werttheorie dahinter."
+              "text": "Teilweise einräumen: Chadwicks Zahlen zeigen, dass der Ort krank macht. Ob Kanäle allein genügen, wird sich erst noch zeigen.",
+              "rueck": "Treffer. Ihr bestreitet nicht, was belegt ist, und haltet offen, was erst die Zukunft zeigt. Genau diesen Prüffall habt ihr im Arbeiterviertel beschrieben."
             },
             {
-              "text": "Einräumen: Wenn der Lohn bezahlt ist, gibt es keine Ausbeutung.",
-              "richtig": false,
-              "rueck": "Damit gebt ihr den Kern der Anklage auf."
+              "id": "c",
+              "text": "Einräumen: Sind erst Kanäle und Wasserleitungen gebaut, dann ist die Anklage gegen die Fabrikanten der Stadt erledigt.",
+              "rueck": "Damit räumt ihr mehr ein, als die Zahlen hergeben. Ob Kanäle reichen, weiß 1845 niemand. Und auch in Rutland sterben Arbeiter 14 Jahre früher als die Oberschicht."
+            },
+            {
+              "id": "d",
+              "text": "Widerlegen: Chadwick ist ein Beamter der Regierung. Seine Berichte schreibt er nur, um die Fabrikanten der Stadt zu schonen.",
+              "rueck": "Ein Angriff auf die Person ist kein Argument. Außerdem stützt ihr eure eigene Anklage auf Chadwicks Zahlen."
             }
           ]
         },
         {
-          "text": "Das Elend liegt an den Arbeitern selbst: Trunk, Unordnung, zu viele Kinder. Mit Fabriken hat das nichts zu tun.",
-          "art": "widerlegen",
+          "text": "Ihre Großmutter trug grobes, kratziges Leinen, Mr. Holt. Ihre Tochter trägt weichen, bunt bedruckten Kattun, der sich leicht waschen lässt, und zahlt dafür nur einen Bruchteil des alten Preises. Das hat ihr nicht die Charta gebracht, sondern meine Maschinen und der Wettbewerb.",
+          "fussnote": "Kattun: glatter, leichter Baumwollstoff, oft bunt bedruckt.",
           "optionen": [
             {
-              "text": "Arbeiter werden in Manchester nur 17 Jahre alt, das sagt doch alles!",
-              "richtig": false,
-              "rueck": "So gelesen ist die Zahl falsch: Es ist ein Durchschnitt, den die Kindersterblichkeit drückt. Grimshaw lacht."
+              "id": "a",
+              "text": "Widerlegen: Billiger Kattun nützt den Arbeitern nichts, weil ihre Löhne im selben Maß fallen wie die Preise des Stoffs.",
+              "rueck": "So stimmt das nicht: Die Reallöhne fielen nicht, sie stiegen langsam. Wer das bestreitet, verliert an Glaubwürdigkeit."
             },
             {
-              "text": "Wer so redet, war nie in einem Keller am Irk!",
-              "richtig": false,
-              "rueck": "Das mag stimmen, ist aber kein Beleg. Die Versammlung will Zahlen hören."
+              "id": "b",
+              "text": "Widerlegen: Nicht die Maschinen machen Stoff billig, sondern die billige Baumwolle aus den Sklavenstaaten Amerikas.",
+              "rueck": "Billige Rohbaumwolle half, und sie wurde von Versklavten geerntet: ein schwerer Einwand gegen die ganze Branche. Den Preis senkten aber vor allem Maschinen und Konkurrenz; das habt ihr im Kontor erlebt. Hier hat Grimshaw recht."
             },
             {
-              "text": "Widerlegen mit Chadwicks Tabelle: Landarbeiter in Rutland werden im Durchschnitt 38 Jahre alt, Arbeiter in Manchester 17. Dieselbe Klasse, ein anderer Ort: Es sind die Verhältnisse.",
+              "id": "c",
+              "text": "Widerlegen: Die Maschinen sind das Übel. Die Handweber in Salford haben recht, wenn sie die neuen Webstühle zerschlagen.",
+              "rueck": "Das forderten die Maschinenstürmer. Marx will die Maschinen nicht zerschlagen; er fragt, wem sie gehören und wem ihr Ertrag zufließt."
+            },
+            {
+              "id": "d",
               "richtig": true,
-              "rueck": "Treffer. Der Vergleich zeigt, dass die Lebensweise der Einzelnen den Unterschied nicht erklärt."
-            }
-          ]
-        },
-        {
-          "text": "Ich trage das Risiko, Herr Doktor. Ich plane, leihe Geld und verliere alles, wenn es schiefgeht. Davon steht nichts in Ihrer Rechnung.",
-          "art": "einraeumen",
-          "optionen": [
-            {
-              "text": "Widerlegen: Fabrikanten tragen kein Risiko.",
-              "richtig": false,
-              "rueck": "Das stimmt nicht. Im Kontor habt ihr gesehen, wie schnell eine Firma ohne Gewinn untergeht."
-            },
-            {
-              "text": "Teilweise einräumen: Risiko und Leitung kommen in der Rechnung nicht vor, weil sie auf der Arbeitswertlehre beruht. Ob der Gewinn deshalb gerechtfertigt ist, bleibt eine offene Frage.",
-              "richtig": true,
-              "rueck": "Richtig eingeräumt. Wer offen sagt, wo die eigene Rechnung an Grenzen stößt, gewinnt Vertrauen."
-            },
-            {
-              "text": "Das ist Fabrikantengerede!",
-              "richtig": false,
-              "rueck": "Pauschales Abwehren überzeugt niemanden. Der Einwand hat einen wahren Kern."
-            }
-          ]
-        },
-        {
-          "text": "Ihre verhassten Maschinen machen Garn und Stoff so billig wie nie. Davon haben auch Ihre Arbeiter etwas.",
-          "art": "einraeumen",
-          "optionen": [
-            {
-              "text": "Maschinen sind das Übel. Man muss sie zerschlagen.",
-              "richtig": false,
-              "rueck": "Das forderten die Maschinenstürmer. Marx will die Maschinen nicht zerschlagen; er fragt, wem sie gehören."
-            },
-            {
-              "text": "Widerlegen: Billiges Garn nützt den Arbeitern nicht.",
-              "richtig": false,
-              "rueck": "Doch: Kleidung wurde erschwinglich. Wer das bestreitet, verliert an Glaubwürdigkeit."
-            },
-            {
-              "text": "Einräumen: Das stimmt, die Produktivkraft ist gewaltig. Die Frage ist, warum die, die das Garn herstellen, so wenig davon haben.",
-              "richtig": true,
-              "rueck": "Richtig eingeräumt. Marx und Engels erkennen die Leistung der Bourgeoisie selbst an."
+              "text": "Einräumen: Die Maschinen machen Stoff für alle erschwinglich. Offen ist, warum Mary vom Ertrag so wenig bleibt.",
+              "rueck": "Richtig eingeräumt. Marx und Engels erkennen die Leistung der Bourgeoisie selbst an. Ihre Anklage gilt nicht dem Fortschritt, sondern seiner Verteilung. Grimshaws Vergleich ist allerdings geschönt: Leinen hält länger, Kattun ist vor allem billiger geworden."
             }
           ]
         }
       ]
     },
     "diagnose": {
+      "id": "k1-s5-diagnose",
       "titel": "Stimmt die Diagnose?",
-      "frage": "Zwischen 1780 und 1840 stieg die Produktion je Arbeiter um 46 %, der Reallohn um 12 %. Was bedeutet das für Marx’ und Engels’ Beobachtungen von 1845?",
-      "optionen": [
-        {
-          "id": "a",
-          "text": "Sie haben das Elend erfunden.",
-          "richtig": false,
-          "rueck": "Nein. Die Löhne hinkten der Produktion sechzig Jahre lang weit hinterher."
-        },
-        {
-          "id": "b",
-          "text": "Ihre Diagnose trifft für ihre Zeit zu: Die Wirtschaft wuchs kräftig, bei den Arbeitern kam wenig davon an.",
-          "richtig": true,
-          "rueck": "Richtig. Marx und Engels haben genau hingesehen. Offen ist, ob aus einer richtigen Diagnose auch eine richtige Prognose folgt."
-        },
-        {
-          "id": "c",
-          "text": "Die Arbeiter wurden absolut ärmer.",
-          "richtig": false,
-          "rueck": "Nicht ganz: Die Reallöhne stiegen leicht, aber viel langsamer als die Produktion."
-        }
-      ],
+      "marke": "tatsache",
+      "stufe1": {
+        "frage": "Zwischen 1780 und 1840 stieg die Produktion je Arbeiter um 46 %, der Reallohn um 12 %. Was bedeutet das für Marx' und Engels' Beobachtungen von 1845?",
+        "richtig": "a",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Ihre Diagnose trifft für ihre Zeit zu: Die Wirtschaft wuchs, die Löhne kaum.",
+            "rueck": "Das stimmt. Welcher Vergleich trägt diese Einschätzung?"
+          },
+          {
+            "id": "b",
+            "text": "Ihre Diagnose ist übertrieben: Die Reallöhne stiegen, es ging also aufwärts.",
+            "rueck": "Die Reallöhne stiegen, aber sechzig Jahre lang viel langsamer als die Produktion. Wem kam das Wachstum zugute?"
+          },
+          {
+            "id": "c",
+            "text": "Ihre Diagnose ist zu schwach: Die Arbeiter wurden damals absolut ärmer.",
+            "rueck": "Ein Reallohn, der um 12 % steigt, heißt nicht absolut ärmer. Lest die Zahl noch einmal."
+          },
+          {
+            "id": "d",
+            "text": "Ihre Diagnose ist widerlegt: Die Löhne stiegen fast so stark wie die Produktion.",
+            "rueck": "46 und 12 liegen weit auseinander. Vergleicht die Zahlen noch einmal."
+          }
+        ]
+      },
+      "stufe2": {
+        "frage": "Welcher Blick auf die beiden Zahlen trägt diese Einschätzung?",
+        "richtig": "d",
+        "optionen": [
+          {
+            "id": "a",
+            "text": "Der Reallohn allein: 12 % in sechzig Jahren sind so gut wie gar nichts.",
+            "rueck": "Allein betrachtet ist ein Anstieg ein Anstieg. Erst der Vergleich mit der Produktion zeigt, wie wenig ankam."
+          },
+          {
+            "id": "b",
+            "text": "Die Produktion allein: 46 % mehr zeigen, dass alle mehr zur Verfügung hatten.",
+            "rueck": "Mehr Produktion heißt nicht, dass alle gleich viel davon bekommen. Dafür braucht man die zweite Zahl."
+          },
+          {
+            "id": "c",
+            "text": "Weder noch: Erst Preise und Mieten zeigen, ob die Löhne zum Leben reichten.",
+            "rueck": "Der Reallohn rechnet die Preise schon ein. Genau dafür gibt es ihn."
+          },
+          {
+            "id": "d",
+            "text": "Der Abstand: Die Produktion stieg fast viermal so stark wie der Reallohn.",
+            "rueck": "Das ist der entscheidende Vergleich. Was folgt daraus für Marx und Engels?"
+          }
+        ]
+      },
+      "erfolg": "Marx und Engels haben genau hingesehen. Offen ist, ob aus einer richtigen Diagnose auch eine richtige Prognose folgt. Das zeigt erst die Zeitkapsel.",
+      "loesung": "Die Diagnose trifft für ihre Zeit zu: Die Wirtschaft wuchs, die Löhne kaum. Das zeigt der Abstand: Die Produktion stieg fast viermal so stark wie der Reallohn.",
       "hilfen": [
-        "Engels: „Vergleiche die beiden Zahlen. Was ist gewachsen, und was kaum?“"
+        "Engels: „Vergleiche die beiden Zahlen. Was ist gewachsen, und was kaum?“",
+        "Reallohn heißt: Der Lohn ist schon um die Preise bereinigt. Er zeigt, was man sich vom Lohn kaufen kann.",
+        "Teilt 46 durch 12. Die Begründung arbeitet mit beiden Zahlen zugleich, nicht mit einer allein."
       ]
     },
     "tabelle": {
@@ -2168,26 +2312,32 @@
       "frage": "Ihr habt den Schnipsel über die Maschinen aussortiert. Begründet die Entscheidung.",
       "optionen": [
         {
-          "text": "Die Handschrift ist anders.",
-          "rueck": "Nein, es ist Engels' Handschrift: Er hat ein Flugblatt abgeschrieben. Prüft den Inhalt, nicht das Aussehen."
+          "id": "a",
+          "text": "Die Schrift weicht ab: Engels hat diesen Schnipsel gar nicht selbst geschrieben.",
+          "rueck": "Es ist Engels' Handschrift: Er hat ein Flugblatt abgeschrieben. Prüft den Inhalt, nicht das Aussehen."
         },
         {
-          "text": "Engels und Marx klagen nicht die Maschinen an, sondern wie sie eingesetzt werden. Im Kontor erkennt Marx sogar an, wie viel die Fabriken hervorbringen.",
+          "id": "b",
           "richtig": true,
-          "rueck": "Richtig. Es ist Engels' Abschrift eines Flugblatts von Maschinenstürmern. Solche Texte hat er für sein Buch gesammelt."
+          "text": "Der Gedanke weicht ab: Engels klagt nicht die Maschinen an, sondern ihren Einsatz.",
+          "rueck": "Richtig. Es ist Engels' Abschrift eines Flugblatts von Maschinenstürmern. Solche Texte hat er für sein Buch gesammelt. Im Kontor erkennt Marx sogar an, wie viel die Fabriken hervorbringen."
         },
         {
-          "text": "Der Schnipsel ist zu wütend formuliert.",
+          "id": "c",
+          "text": "Der Ton weicht ab: Engels schreibt sachlich, der Schnipsel dagegen ist wütend.",
           "rueck": "Der Ton beweist nichts. Auch Engels schreibt scharf. Entscheidend ist, ob der Gedanke zu seiner Argumentation passt."
         },
         {
-          "text": "In Manchester gab es 1845 keine Weber mehr.",
+          "id": "d",
+          "text": "Die Zeit weicht ab: In Manchester gab es 1845 keine Handweber mehr, die so klagten.",
           "rueck": "Doch, Handweber gab es noch; ihre Not beschreibt Engels selbst. Prüft, was der Schnipsel fordert."
         }
       ],
       "hilfen": [
-        "Fragt nicht, wie der Schnipsel aussieht, sondern was er fordert. Würden Engels und Marx das fordern?"
-      ]
+        "Fragt nicht, wie der Schnipsel aussieht, sondern was er fordert.",
+        "Würden Engels und Marx fordern, was auf diesem Schnipsel steht? Denkt an Marx' Blick aus dem Kontorfenster."
+      ],
+      "mischen": true
     },
     "ergebnis": {
       "titel": "Engels' Brief an den Vater",

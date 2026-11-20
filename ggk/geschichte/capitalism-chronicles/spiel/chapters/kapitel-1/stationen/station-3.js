@@ -1,6 +1,8 @@
 // Station 3 – Das Kontor. Kerngedanke: Die Konkurrenz zwingt zur Akkumulation; Marx erkennt zugleich die Produktivkraft an.
 import { el, esc } from '../../../ui/oberflaeche.js';
-import { rechenblatt, zuordnung, auswahl, notiz, zahlText } from '../../../ui/raetsel.js';
+import { rechenblatt, zuordnung, auswahl2, notiz, zahlText } from '../../../ui/raetsel.js';
+import { vorhersageFestlegen, vorhersageAbgleich } from '../../../ui/vorhersage.js';
+import { verhoer } from '../../../ui/verhoer.js';
 
 export const FERTIG3 = 8;
 const S_KONTOR = 18.5;      // Stelle der Straße vor dem Kontor
@@ -96,11 +98,33 @@ export class Station3 {
 
   async jahre() {
     const { ui, kontor, spiel } = this;
+    const st = spiel.stand, los = () => kontor.blickZu('whitlow', null);
     this.wendeZu(kontor.punkte.whitlow); kontor.blickZu('whitlow', spiel.pos);
-    await ui.dialog(this.daten.dialoge.whitlowKontor);
+    // Baustein C: Verhör mit drei von acht Fragen, vor den Geschäftsjahren
+    const vh = this.tiefe?.aktiv('verhoer') ? this.daten.verhoere['k1-s3-whitlow'] : null;
+    if (vh && !st.verhoere[vh.id]?.erledigt) {
+      await ui.dialog(this.daten.dialoge.whitlowVerhoer);
+      const ok = await verhoer(ui, vh, st.verhoere);
+      spiel.sichere();
+      if (!ok) { los(); return; }
+    }
+    await ui.dialog(vh ? this.daten.dialoge.whitlowNachVerhoer : this.daten.dialoge.whitlowKontor);
+    // Baustein A-I-2: Vorhersage vor dem Versuch
+    const v = this.tiefe?.aktiv('vorhersage') ? this.daten.vorhersagen['k1-s3-vorhersage-2'] : null;
+    if (v && !st.vorhersagen[v.id]?.wert) {
+      const wert = await vorhersageFestlegen(ui, v);
+      if (!wert) { los(); return; }
+      st.vorhersagen[v.id] = { wert }; spiel.sichere();
+    }
     const ok = await this.versuch();
-    if (!ok) { kontor.blickZu('whitlow', null); return; }
-    const ok2 = await auswahl(ui, this.t.jahre.frage);
+    if (!ok) { los(); return; }
+    if (v && st.vorhersagen[v.id]?.wert && !st.vorhersagen[v.id].notiz) {
+      const name = Object.fromEntries(this.t.jahre.optionen.map((o) => [o.id, o.titel]));
+      const zusatz = 'Eure Versuche: ' + this.laeufe.map((l, i) => `${i + 1}. ${l.wahl.map((w) => name[w]).join(', ')}: ${l.ueberlebt ? 'Firma hält durch' : 'Firma schließt'}`).join('; ') + '.';
+      const notiz = await vorhersageAbgleich(ui, v, st.vorhersagen[v.id].wert, { id: v.ergebnis, text: v.ergebnisText, zusatz });
+      Object.assign(st.vorhersagen[v.id], { ergebnis: v.ergebnis, notiz, laeufe: this.laeufe }); spiel.sichere();
+    }
+    const ok2 = await auswahl2(ui, this.t.jahre.frage, spiel.stand.auswahl2);
     if (!ok2) { kontor.blickZu('whitlow', null); return; }
     ui.schalteFrei('b_konkurrenz', 'b_modell3', 'd_akkumulation');
     ui.gibBeleg('beleg_kontor');
@@ -131,8 +155,10 @@ export class Station3 {
       f.fuss.append(links, neu, weiter);
       weiter.addEventListener('click', () => f.schliessen(true));
       let jahr, kosten, preis;
+      this.laeufe = [];   // Läufe für den Abgleich der Vorhersage
       const beginne = () => {
         jahr = 1; kosten = 10.8; preis = 12;
+        this.laeufe.push({ wahl: [], ueberlebt: false });
         liste.innerHTML = `<div class="jahr"><b>1844</b>${esc(t.start)}</div>`;
         rueck.className = 'rueck'; rueck.textContent = '';
         neu.hidden = true; weiter.hidden = true; wahl.hidden = false;
@@ -148,6 +174,7 @@ export class Station3 {
         auftrag.textContent = jahr === 1 ? t.einleitung : `Jahr ${1844 + jahr}: Was geschieht mit dem Gewinn von 1.000 Pfund?`;
       };
       const entscheide = (id) => {
+        this.laeufe[this.laeufe.length - 1].wahl.push(id);
         kosten = Math.round((kosten + (id === 'maschine' ? -1.2 : id === 'lohn' ? 0.6 : 0)) * 10) / 10;
         preis = Math.round((preis - 1.2) * 10) / 10;
         const marge = Math.round((preis - kosten) * 10) / 10;
@@ -159,6 +186,7 @@ export class Station3 {
           wahl.hidden = true; neu.hidden = false;
           rueck.className = 'rueck falsch'; rueck.textContent = t.ende.pleite;
         } else if (jahr === 3) {
+          this.laeufe[this.laeufe.length - 1].ueberlebt = true;
           wahl.hidden = true; weiter.hidden = false; hinweis.hidden = true; hilfenEl.innerHTML = '';
           rueck.className = 'rueck richtig'; rueck.textContent = t.ende.erfolg;
         } else { jahr++; zeigeWahl(); }
@@ -185,8 +213,8 @@ export class Station3 {
     const d = this.eintrag('d_produktivkraft');
     await ui.karte({ titel: d.titel, marke: d.marke, zitat: d.zitat, text: d.text, quelle: d.quelle });
     ui.schalteFrei('d_produktivkraft');
-    const ok = await auswahl(ui, this.t.garn);
-    if (!ok) return;
+    // Die frühere Auswahlaufgabe „Wem nützt das billigere Garn?“ ist gestrichen (Tiefe-Update);
+    // der Gedanke steckt in der Manifest-Karte, im Versuch und in Grimshaws Einwand 5.
     ui.schalteFrei('b_garn');
     ui.gibBeleg('beleg_manifest');
     this.setze(7);
@@ -196,7 +224,7 @@ export class Station3 {
 
   async denkpause() {
     const { ui, spiel, nord } = this, t = this.t.denkpause;
-    const ok = await auswahl(ui, t);
+    const ok = await auswahl2(ui, t, spiel.stand.auswahl2);
     if (!ok) return;
     ui.schalteFrei('b_annahme3');
     const text = await notiz(ui, t.notiz, spiel.stand.notizen.s3_denkpause || '');

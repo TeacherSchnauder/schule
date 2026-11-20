@@ -1,0 +1,91 @@
+{
+  "k1-s2-vorhersage-1": {
+    "id": "k1-s2-vorhersage-1",
+    "typ": "vorhersage",
+    "kapitel": 1,
+    "station": 2,
+    "schritt": 4,
+    "art": "richtung",
+    "marke": "vereinfachung",
+    "abschaltbar": true,
+    "titel": "Vorhersage: Die schnellere Maschine",
+    "lage": "Mary soll nur noch 10 statt 12 Stunden am Tag arbeiten. Mr. Whitlow stellt ihr dafür eine Maschine hin, an der sie um ein Sechstel schneller spinnt. Ihr Lohn bleibt bei 3 Schilling am Tag.",
+    "frage": "Kann Whitlow damit seinen Mehrwert von 3 Schilling am Tag halten?",
+    "karten": [
+      {
+        "id": "steigt",
+        "text": "Ja, der Mehrwert steigt sogar."
+      },
+      {
+        "id": "gleich",
+        "text": "Ja, der Mehrwert bleibt genau gleich."
+      },
+      {
+        "id": "sinkt",
+        "text": "Nein, der Mehrwert sinkt."
+      }
+    ],
+    "ergebnis": "sinkt",
+    "ergebnisText": "Um ein Sechstel schneller heißt: Mary schafft etwa 0,58 statt 0,5 Schilling Neuwert je Stunde. In 10 Stunden sind das etwa 5,83 Schilling. Nach Abzug des Lohns bleiben etwa 2,83 Schilling Mehrwert. Damit es 3 Schilling bleiben, muss Mary um ein Fünftel schneller arbeiten: 0,6 Schilling je Stunde, so wie ihr es am Regler eingestellt habt.",
+    "abgleichTitel": "Abgleich: Die schnellere Maschine",
+    "abgleich": {
+      "treffer": "Ihr habt erwartet, dass der Mehrwert sinkt. So ist es: Er liegt knapp unter 3 Schilling.",
+      "gleich": "Ihr habt erwartet, dass ein Sechstel mehr Tempo das Sechstel weniger Zeit genau ausgleicht. Das Ergebnis liegt knapp darunter.",
+      "steigt": "Ihr habt mit mehr Mehrwert gerechnet. Das Ergebnis liegt darunter, knapp unter 3 Schilling."
+    },
+    "quelle": "Modellzahlen nach Marx' Garn-Beispiel (Das Kapital, Bd. 1, Kap. 5), für das Spiel vereinfacht",
+    "notiz": {
+      "frage": "Was hat euch überrascht, oder warum lagt ihr richtig?",
+      "frageRichtig": "Was hat euch überrascht, oder warum lagt ihr richtig?",
+      "min": 8,
+      "zuKurz": "Schreibt mindestens einen kurzen Satz."
+    }
+  },
+  "k1-s3-vorhersage-2": {
+    "id": "k1-s3-vorhersage-2",
+    "typ": "vorhersage",
+    "kapitel": 1,
+    "station": 3,
+    "schritt": 5,
+    "art": "richtung",
+    "marke": "vereinfachung",
+    "abschaltbar": true,
+    "titel": "Vorhersage: Drei Geschäftsjahre",
+    "lage": "Gleich übernehmt ihr drei Jahre lang Whitlows Platz. Jedes Jahr entscheidet ihr, wofür der Gewinn verwendet wird: Landhaus, höhere Löhne oder neue Maschinen.",
+    "frage": "Mit welcher Verwendung des Gewinns hält Whitlow drei Jahre durch?",
+    "karten": [
+      {
+        "id": "haus",
+        "text": "Mit dem Landhaus"
+      },
+      {
+        "id": "lohn",
+        "text": "Mit höheren Löhnen"
+      },
+      {
+        "id": "maschine",
+        "text": "Mit neuen Maschinen"
+      },
+      {
+        "id": "jede",
+        "text": "Mit jeder der drei"
+      }
+    ],
+    "ergebnis": "maschine",
+    "ergebnisText": "Durch kommt die Firma nur, wenn der Gewinn jedes Jahr in neue Maschinen fließt. Bei jeder anderen Wahl schrumpft die Spanne, weil Ashworth den Preis jedes Jahr senkt.",
+    "abgleichTitel": "Abgleich: Drei Geschäftsjahre",
+    "abgleich": {
+      "treffer": "Ihr habt auf die Maschinen gesetzt. Der Versuch bestätigt das, allerdings nur, wenn man es jedes Jahr tut.",
+      "haus": "Ihr habt erwartet, dass das Landhaus reicht, weil die Kosten gleich bleiben. Der Preis sinkt aber, und die Spanne verschwindet.",
+      "lohn": "Ihr habt erwartet, dass die Firma mit höheren Löhnen durchhält. Im Modell steigen damit die Kosten, während der Preis sinkt.",
+      "jede": "Ihr habt erwartet, dass jede Wahl reicht. Im Versuch reichte nur eine."
+    },
+    "quelle": "Modellzahlen des Spiels (Preis sinkt um 1,2 Pence je Jahr), stark vereinfacht",
+    "notiz": {
+      "frage": "Was hat euch überrascht, oder warum lagt ihr richtig?",
+      "frageRichtig": "Was hat euch überrascht, oder warum lagt ihr richtig?",
+      "min": 8,
+      "zuKurz": "Schreibt mindestens einen kurzen Satz."
+    }
+  }
+}

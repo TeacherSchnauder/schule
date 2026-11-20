@@ -1,9 +1,66 @@
 // Station 2 – Die Spinnerei. Kerngedanke: Mehrwert aus unbezahlter Mehrarbeit; dazu Entfremdung an der Maschine.
 // Ablauf laut Konzept: Gespräch, Fabrikuhr, Rechnen, Zehnstundentag, Entfremdung, Denkpause, Fund.
 import { el, esc } from '../../../ui/oberflaeche.js';
-import { rechenblatt, zuordnung, auswahl, notiz, zahlText } from '../../../ui/raetsel.js';
+import { rechenblatt, zuordnung, auswahl2, notiz, zahlText } from '../../../ui/raetsel.js';
+import { vorhersageFestlegen, vorhersageAbgleich } from '../../../ui/vorhersage.js';
 
 const LOHN = 3, JE_STUNDE = 0.5;
+
+// Mehrwert-Rechner im Fenster (Aufbau wie ein Regler-Rechner): links Regler, rechts Kennzahlen,
+// darunter Marys Arbeitstag als Leiste (0 bis 12 Uhr) und ein Balkenvergleich.
+// Die Fabrikuhr und die Balken an der Wand laufen nur noch mit.
+function rechner({ regler, kacheln, balkenTitel }) {
+  const box = el('div', 'rechner');
+  const links = el('div', 'r-regler'), rechts = el('div', 'r-kacheln');
+  box.append(links, rechts);
+  const felder = {};
+  for (const r of regler) {
+    const feld = el('div', 'r-feld');
+    feld.innerHTML = `<label for="${r.id}">${esc(r.name)} <b></b></label>`;
+    if (r.fest) feld.append(el('p', 'r-fest', `<span aria-hidden="true">▪</span> ${esc(r.fest)}`));
+    else {
+      const inp = el('input'); inp.type = 'range'; inp.id = r.id; inp.min = r.min; inp.max = r.max; inp.step = r.step; inp.value = r.wert;
+      feld.append(inp);
+      if (r.unter) feld.append(el('p', 'r-unter', esc(r.unter)));
+      felder[r.id] = inp;
+    }
+    feld.wert = feld.querySelector('label b');
+    links.append(feld); felder[r.id + 'Wert'] = feld.wert;
+  }
+  const kz = {};
+  for (const [id, name] of kacheln) { const k = el('div', 'r-kachel' + (id === 'mw' ? ' mw' : ''), `<small>${esc(name)}</small><span></span>`); rechts.append(k); kz[id] = k.querySelector('span'); }
+  const tag = el('div', 'r-tag', '<h4>Marys Arbeitstag</h4><div class="spur"><i class="lauf"></i><i class="lohn"></i><i class="mehr"></i><i class="weg"></i></div><div class="skala">' +
+    Array.from({ length: 13 }, (_, k) => `<span style="left:${(k / 12) * 100}%">${k}</span>`).join('') + '</div>');
+  const [lauf, lohn, mehr, weg] = tag.querySelectorAll('.spur i');
+  const vergleich = el('div', 'r-vergleich', `<h4>${esc(balkenTitel)}</h4>`);
+  const teil = (e, von, bis, text) => {
+    const b = Math.max(0, bis - von);
+    e.style.left = (von / 12) * 100 + '%'; e.style.width = (b / 12) * 100 + '%';
+    e.textContent = b >= 2.6 ? text : b >= 1.2 ? text.split(': ')[1] || text : ''; e.title = text;
+  };
+  return {
+    el: [box, tag, vergleich],
+    felder,
+    // Kennzahl setzen (Text)
+    kachel(id, text) { kz[id].textContent = text; },
+    // Arbeitstag: stunden gearbeitet; notwendig: Lohn verdient nach … Stunden (null: noch nicht markiert); ende: Feierabend
+    tag({ stunden, notwendig = null, ende = 12 }) {
+      const h = Math.min(stunden, ende);
+      if (notwendig === null) { teil(lauf, 0, h, 'Arbeitszeit'); teil(lohn, 0, 0, ''); teil(mehr, 0, 0, ''); }
+      else { teil(lauf, 0, 0, ''); teil(lohn, 0, Math.min(h, notwendig), 'notwendige Arbeit: Lohn'); teil(mehr, notwendig, Math.max(notwendig, h), 'Mehrarbeit: für Whitlow'); }
+      teil(weg, ende, 12, 'gestrichen');
+    },
+    // Balkenzeilen: [{ name, teile: [{ wert, art: 'lohn'|'mehr'|'neu'|'lohnfix' }], text }], Maßstab 0 bis max Schilling
+    balken(zeilen, max = 6) {
+      vergleich.querySelectorAll('.r-zeile').forEach((z) => z.remove());
+      for (const z of zeilen) {
+        const zeile = el('div', 'r-zeile');
+        zeile.innerHTML = `<span>${esc(z.name)}</span><span class="bahn">${z.teile.map((t) => `<i class="${t.art}" style="width:${Math.max(0, Math.min(100, (t.wert / max) * 100))}%"></i>`).join('')}</span><span class="wert">${esc(z.text)}</span>`;
+        vergleich.append(zeile);
+      }
+    },
+  };
+}
 
 export class Station2 {
   constructor(spiel, ui, daten, aussen, saal) {
@@ -41,7 +98,7 @@ export class Station2 {
     spiel.registriere({ id: 'pult', szene: 'saal', pos: p.pult, radius: 2.2, hoehe: 1.9, text: 'Am Pult rechnen',
       wenn: () => this.schritt === 2, tu: einmal(() => this.pult()) });
     spiel.registriere({ id: 'maschine', szene: 'saal', pos: p.maschine, radius: 2.4, hoehe: 2.0, text: 'Neue Maschine einstellen',
-      wenn: () => this.schritt === 3, tu: einmal(() => this.maschine()) });
+      wenn: () => this.schritt === 3, tu: einmal(() => this.maschineMitVorhersage()) });
     spiel.registriere({ id: 'whitlow', szene: 'saal', pos: p.whitlow, radius: 2.4, hoehe: 2.05, text: 'Mr. Whitlow ansprechen',
       wenn: () => this.schritt === 5, tu: einmal(() => this.whitlow()) });
 
@@ -93,7 +150,7 @@ export class Station2 {
       spiel.kameraAufFlaeche(tafel.mitte, tafel.normale, 8.8, 5.0);
       let markiert = false, hilfe = 0;
       const f = ui.fenster({
-        titel: t.titel, klasse: 'bedienfeld', art: 'klar unten',
+        titel: t.titel, klasse: 'bedienfeld rechnerfenster', art: 'klar unten',
         beiSchliessen: async (ok) => {
           spiel.kameraFrei();
           if (ok === true) {
@@ -105,14 +162,18 @@ export class Station2 {
         },
       });
       const auftrag = el('p', 'auftrag', esc(t.einleitung + ' ' + t.auftrag));
-      const werte = el('div', 'werte');
-      const regler = el('div', 'regler', '<label for="uhrregler">Fabrikuhr</label>');
-      const r = el('input'); r.type = 'range'; r.id = 'uhrregler'; r.min = 0; r.max = 12; r.step = 0.5; r.value = 0;
-      regler.append(r);
+      const rx = rechner({
+        regler: [
+          { id: 'uhrregler', name: 'Fabrikuhr: Arbeitsstunden', min: 0, max: 12, step: 0.5, wert: 0 },
+          { id: 'tempo1', name: 'Tempo der Maschine', fest: t.tempoFest },
+        ],
+        kacheln: [['nw', 'Neuwert bis jetzt'], ['lohn', 'Tageslohn'], ['nt', 'Lohn verdient nach'], ['mw', 'Mehrwert für Whitlow']],
+        balkenTitel: t.balkenTitel,
+      });
+      const r = rx.felder.uhrregler;
+      rx.felder.tempo1Wert.textContent = '0,5 Schilling je Stunde';
       const rueck = el('div', 'rueck');
-      const legende = el('div', 'legende', '<span><i style="background:#6f8a5c"></i>notwendige Arbeitszeit</span><span><i style="background:#a5553c"></i>Mehrarbeit</span>');
-      legende.hidden = true;
-      f.inhalt.append(auftrag, werte, regler, rueck, legende);
+      f.inhalt.append(auftrag, ...rx.el, rueck);
       const hinweis = el('button', 'knopf still', 'Hinweis');
       const marke = el('button', 'knopf', esc(t.knopf));
       const weiter = el('button', 'knopf', esc(t.weiter)); weiter.hidden = true;
@@ -121,8 +182,15 @@ export class Station2 {
 
       const zeige = () => {
         const h = Number(r.value), n = h * JE_STUNDE;
-        werte.innerHTML = `<span>Arbeitsstunden<b>${zahlText(h)}</b></span><span>Neuwert<b>${zahlText(n)} Schilling</b></span><span>Tageslohn<b>${LOHN} Schilling</b></span>` +
-          (markiert ? `<span class="mw">Mehrwert<b>${zahlText(Math.max(0, n - LOHN))} Schilling</b></span>` : '');
+        rx.felder.uhrreglerWert.textContent = `${zahlText(h)} Stunden`;
+        rx.kachel('nw', `${zahlText(n)} S.`); rx.kachel('lohn', `${LOHN} S.`);
+        rx.kachel('nt', markiert ? '6 Stunden' : '?');
+        rx.kachel('mw', markiert ? `${zahlText(Math.max(0, n - LOHN))} S.` : '–');
+        rx.tag({ stunden: h, notwendig: markiert ? 6 : null });
+        rx.balken([
+          { name: 'Neuwert', teile: markiert ? [{ wert: Math.min(n, LOHN), art: 'lohn' }, { wert: Math.max(0, n - LOHN), art: 'mehr' }] : [{ wert: n, art: 'neu' }], text: `${zahlText(n)} S.` },
+          { name: 'Tageslohn', teile: [{ wert: LOHN, art: 'lohnfix' }], text: `${LOHN} S.` },
+        ]);
         tafel.setze({ stunden: h, neuwert: n, lohn: LOHN, teilung: markiert ? LOHN : null, notwendig: markiert ? 6 : null });
         if (markiert && h >= 12 && weiter.hidden) {
           rueck.className = 'rueck richtig'; rueck.textContent = t.ende;
@@ -139,7 +207,7 @@ export class Station2 {
         const h = Number(r.value), n = h * JE_STUNDE;
         if (h === 6) {
           markiert = true;
-          marke.hidden = true; hinweis.hidden = true; legende.hidden = false;
+          marke.hidden = true; hinweis.hidden = true;
           rueck.className = 'rueck richtig'; rueck.textContent = t.erfolg;
           auftrag.hidden = true;
           zeige();
@@ -171,19 +239,35 @@ export class Station2 {
     this.setzeSchritt(3);
   }
 
+  // --- Schritt 4 mit Vorhersage (Baustein A-I-1): festlegen, Regler, Abgleich -------------
+  async maschineMitVorhersage() {
+    const { ui, spiel } = this, ab = spiel.stand.vorhersagen;
+    const v = this.tiefe?.aktiv('vorhersage') ? this.daten.vorhersagen['k1-s2-vorhersage-1'] : null;
+    if (v && !ab[v.id]?.wert) {
+      const wert = await vorhersageFestlegen(ui, v);
+      if (!wert) return;
+      ab[v.id] = { wert }; spiel.sichere();
+    }
+    await this.maschine();
+    if (v && spiel.stand.schritt >= 4 && ab[v.id]?.wert && !ab[v.id].notiz) {
+      const notiz = await vorhersageAbgleich(ui, v, ab[v.id].wert, { id: v.ergebnis, text: v.ergebnisText });
+      Object.assign(ab[v.id], { ergebnis: v.ergebnis, notiz }); spiel.sichere();
+    }
+  }
+
   // --- Schritt 4: Zehnstundentag und schnellere Maschine ------------------------------
+  // Derselbe Rechner wie an der Fabrikuhr; der Arbeitstag ist durch das Gesetz auf 10 Stunden festgelegt,
+  // die Gruppe stellt das Tempo der neuen Maschine ein, bis Whitlow wieder 3 Schilling Mehrwert bleiben.
   maschine() {
     const { ui, saal, spiel } = this, t = this.t.maschine, tafel = saal.tafel;
     return new Promise((fertig) => {
       spiel.kameraAufFlaeche(tafel.mitte, tafel.normale, 8.8, 5.0);
       let hilfe = 0, geloest = false;
       const f = ui.fenster({
-        titel: t.titel, klasse: 'bedienfeld', art: 'klar unten',
+        titel: t.titel, klasse: 'bedienfeld rechnerfenster', art: 'klar unten',
         beiSchliessen: async (ok) => {
           spiel.kameraFrei();
-          let fertigGeloest = false;
-          if (ok === true) fertigGeloest = await rechenblatt(ui, { titel: t.titel, angaben: ['Arbeitstag: 10 Stunden', 'Neuwert je Stunde: 0,6 Schilling', 'Tageslohn: 3 Schilling'], fragen: [t.frage] });
-          if (fertigGeloest) {
+          if (ok === true) {
             saal.zeigeNeueMaschine(1.2);
             tafel.setze({ stunden: 10, neuwert: 6, lohn: LOHN, teilung: LOHN, notwendig: 5, ende: 10 });
             ui.gibBeleg('beleg_zehn');
@@ -198,39 +282,57 @@ export class Station2 {
         },
       });
       const auftrag = el('p', 'auftrag', esc(t.einleitung));
-      const werte = el('div', 'werte');
-      const regler = el('div', 'regler', '<label for="tempo">Neuwert je Stunde</label>');
-      const r = el('input'); r.type = 'range'; r.id = 'tempo'; r.min = 0.5; r.max = 0.8; r.step = 0.05; r.value = 0.5;
-      regler.append(r);
+      const rx = rechner({
+        regler: [
+          { id: 'tag10', name: 'Arbeitstag', fest: t.tagFest },
+          { id: 'tempo', name: t.regler, min: 0.5, max: 0.8, step: 0.05, wert: 0.5, unter: t.unter },
+        ],
+        kacheln: [['nw', 'Neuwert am Tag'], ['lohn', 'Tageslohn'], ['nt', 'Lohn verdient nach'], ['mw', 'Mehrwert für Whitlow']],
+        balkenTitel: t.balkenTitel,
+      });
+      const r = rx.felder.tempo;
+      rx.felder.tag10Wert.textContent = '10 Stunden';
       const rueck = el('div', 'rueck');
-      f.inhalt.append(auftrag, werte, regler, rueck);
+      f.inhalt.append(auftrag, ...rx.el, rueck);
       const hinweis = el('button', 'knopf still', 'Hinweis');
+      const sechstel = el('button', 'knopf still', esc(t.sechstel));
       const setzen = el('button', 'knopf', esc(t.knopf));
       const weiter = el('button', 'knopf', 'Weiter'); weiter.hidden = true;
-      const links = el('div', 'links'); links.append(hinweis);
+      const links = el('div', 'links'); links.append(hinweis, sechstel);
       f.fuss.append(links, setzen, weiter);
-      const rechne = () => { const p = Math.round(Number(r.value) * 100) / 100; const n = Math.round(p * 10 * 100) / 100; return { p, n, m: Math.round((n - LOHN) * 100) / 100 }; };
+      let p = 0.5;   // Neuwert je Stunde; 0,5 ist die alte Maschine
+      const rund = (x) => Math.round(x * 100) / 100;
       const zeige = () => {
-        const { p, n, m } = rechne();
-        werte.innerHTML = `<span>Arbeitstag<b>10 Stunden</b></span><span>je Stunde<b>${zahlText(p)} Schilling</b></span><span>Neuwert<b>${zahlText(n)} Schilling</b></span><span>Tageslohn<b>${LOHN} Schilling</b></span><span class="mw">Mehrwert<b>${zahlText(m)} Schilling</b></span>`;
-        tafel.setze({ stunden: 10, neuwert: n, lohn: LOHN, teilung: LOHN, notwendig: LOHN / p, ende: 10 });
+        const n = p * 10, m = n - LOHN, nt = LOHN / p;
+        rx.felder.tempoWert.textContent = `${zahlText(rund(p))} Schilling je Stunde`;
+        rx.kachel('nw', `${zahlText(rund(n))} S.`); rx.kachel('lohn', `${LOHN} S.`);
+        rx.kachel('nt', `${zahlText(Math.round(nt * 10) / 10)} Stunden`); rx.kachel('mw', `${zahlText(rund(Math.max(0, m)))} S.`);
+        rx.tag({ stunden: 10, notwendig: nt, ende: 10 });
+        rx.balken([
+          { name: 'Vorher (12 Std., alt)', teile: [{ wert: LOHN, art: 'lohn' }, { wert: 3, art: 'mehr' }], text: '3 S. Mehrwert' },
+          { name: 'Jetzt (10 Std., neu)', teile: [{ wert: Math.min(n, LOHN), art: 'lohn' }, { wert: Math.max(0, m), art: 'mehr' }], text: `${zahlText(rund(Math.max(0, m)))} S. Mehrwert` },
+        ]);
+        tafel.setze({ stunden: 10, neuwert: n, lohn: LOHN, teilung: LOHN, notwendig: nt, ende: 10, ziel: 6 });
         saal.zeigeNeueMaschine(p / JE_STUNDE);
       };
-      r.addEventListener('input', () => { if (!geloest) zeige(); });
+      r.addEventListener('input', () => { if (geloest) return; r.step = 0.05; p = Math.round(Number(r.value) / 0.05) * 0.05; rueck.className = 'rueck'; rueck.textContent = ''; zeige(); });
+      // Nur wenn eine Vorhersage festgelegt wurde: deren Bedingung (ein Sechstel schneller) direkt einstellen
+      sechstel.hidden = !spiel.stand.vorhersagen?.['k1-s2-vorhersage-1']?.wert;
+      sechstel.addEventListener('click', () => { if (geloest) return; r.step = 'any'; p = JE_STUNDE * 7 / 6; r.value = p; zeige(); rx.felder.tempoWert.textContent = t.sechstelText; rueck.className = 'rueck'; rueck.textContent = ''; });
       hinweis.addEventListener('click', () => {
         if (hilfe >= t.hilfen.length) return;
         rueck.className = 'rueck hilfe'; rueck.textContent = t.hilfen[hilfe++];
         if (hilfe >= t.hilfen.length) hinweis.disabled = true;
       });
       setzen.addEventListener('click', () => {
-        const { p, n, m } = rechne();
+        const n = rund(p * 10), m = rund(p * 10 - LOHN);
         if (Math.abs(p - 0.6) < 0.001) {
-          geloest = true; r.disabled = true;
+          geloest = true; r.disabled = true; sechstel.hidden = true;
           rueck.className = 'rueck richtig'; rueck.textContent = t.erfolg;
           setzen.hidden = true; hinweis.hidden = true; weiter.hidden = false;
         } else {
           rueck.className = 'rueck falsch';
-          rueck.textContent = (p < 0.6 ? t.zuWenig : t.zuViel).replace('{p}', zahlText(p)).replace('{n}', zahlText(n)).replace('{m}', zahlText(m));
+          rueck.textContent = (p < 0.6 ? t.zuWenig : t.zuViel).replace('{p}', zahlText(rund(p))).replace('{n}', zahlText(n)).replace('{m}', zahlText(m));
         }
       });
       weiter.addEventListener('click', () => f.schliessen(true));
@@ -261,7 +363,7 @@ export class Station2 {
     this.wendeZu(saal.punkte.whitlow);
     saal.blickZu('whitlow', spiel.pos);
     await ui.dialog(this.daten.dialoge.whitlow);
-    const ok = await auswahl(ui, t);
+    const ok = await auswahl2(ui, t, this.spiel.stand.auswahl2);
     if (!ok) return;
     ui.schalteFrei('b_awl');
     const text = await notiz(ui, t.notiz, spiel.stand.notizen.s2_denkpause || '');

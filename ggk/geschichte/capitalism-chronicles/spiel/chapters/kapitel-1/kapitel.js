@@ -16,9 +16,13 @@ import { Brief, VERGABE, BIS_STATION, neuerBrief } from './stationen/brief.js';
 import { Korridor } from '../../engine/korridor.js';
 import { Passanten } from '../../engine/passanten.js';
 import { Pfad } from '../../engine/pfad.js';
+import { vorhersageText } from '../../ui/vorhersage.js';
+import { verhoerText } from '../../ui/verhoer.js';
+import { zeitungenText } from '../../ui/zeitungen.js';
 
 // Zusätzliche Felder im Spielstand von Kapitel I
-export const standZusatz = () => ({ brief: neuerBrief() });
+// Tiefe-Update: Ergebnisse der zweistufigen Auswahl, Vorhersagen, Verhöre, Zeitungen und die Schalter der Lehrkraft
+export const standZusatz = () => ({ brief: neuerBrief(), auswahl2: {}, vorhersagen: {}, verhoere: {}, zeitungen: {}, schalter: {} });
 
 export async function ladeDaten() {
   const lade = async (name) => {
@@ -26,8 +30,8 @@ export async function ladeDaten() {
     if (!r.ok) throw new Error(`${name} konnte nicht geladen werden (${r.status}).`);
     return r.json();
   };
-  const [inhalte, dialoge] = await Promise.all([lade('inhalte.json'), lade('dialoge.json')]);
-  return { ...inhalte, dialoge };
+  const [inhalte, dialoge, vorhersagen, verhoere, zeitungen] = await Promise.all(['inhalte.json', 'dialoge.json', 'vorhersagen.json', 'verhoere.json', 'zeitungen.json'].map(lade));
+  return { ...inhalte, dialoge, vorhersagen, verhoere, zeitungen };
 }
 
 export function baueKapitel(spiel, ui, daten) {
@@ -114,6 +118,9 @@ export function baueKapitel(spiel, ui, daten) {
   // Engels' zerrissener Brief: Schnipsel als Belohnung in Station I–IV, Zusammensetzen nach Station IV
   const brief = new Brief(spiel, ui, daten);
   for (const s of [station1, station, station3, station4]) s.schnipsel = (id) => brief.gib(id);
+  // Bausteine A, C und D lassen sich im Lehrkraft-Menü abschalten (Voreinstellung: an)
+  const tiefe = { aktiv: (n) => (typeof st().schalter?.[n] === 'boolean' ? st().schalter[n] : daten.kapitel.tiefe?.[n] !== false) };
+  for (const s of [station, station3, station5]) s.tiefe = tiefe;
   station5.briefFertig = () => brief.fertig;
   brief.nachher = () => station5.aufbruch();
   ui.inventarZusatz = () => brief.inventarHtml();
@@ -209,6 +216,26 @@ export function baueKapitel(spiel, ui, daten) {
       { name: 'Engels’ Brief (nach Station IV)', tu: sprung(vorBrief, briefOrt) },
       { name: 'Station V: Versammlung', tu: sprung(() => { vorBrief(); st().brief.fertig = true; st().brief.phase = 4; if (!st().tagebuch.includes('d_vater')) st().tagebuch.push('d_vater'); }, () => { spiel.aktiviereSzene('feld'); spiel.inBereich('feld', feld.punkte.eintritt.x, feld.punkte.eintritt.z, Math.PI); }) },
     ],
+    schalter: [
+      ['vorhersage', 'Vorhersagen (Station II und III)'],
+      ['verhoer', 'Verhör mit Mr. Whitlow (Station III)'],
+      ['zeitungen', 'Zwei Zeitungen (Station V)'],
+    ].map(([n, name]) => ({ name, an: () => tiefe.aktiv(n), tu: () => { st().schalter = { ...st().schalter, [n]: !tiefe.aktiv(n) }; spiel.sichere(); ziel(); } })),
+  };
+
+  // Notizen kopieren: Vorhersagen, Verhörprotokoll, Zeitungsnotiz und Aufgaben mit gezeigter Lösung
+  ui.notizenZusatz = () => {
+    const z = [], s = st();
+    const vh = Object.values(daten.vorhersagen).filter((v) => s.vorhersagen?.[v.id]?.wert);
+    if (vh.length) z.push('', 'VORHERSAGEN', ...vh.map((v) => '- ' + vorhersageText(v, s.vorhersagen[v.id])));
+    for (const v of Object.values(daten.verhoere)) z.push(...verhoerText(v, s.verhoere?.[v.id]));
+    for (const v of Object.values(daten.zeitungen)) z.push(...zeitungenText(v, s.zeitungen?.[v.id]));
+    const titel = {};
+    const sammle = (o) => { if (o && typeof o === 'object') { if (o.stufe1 && o.id) titel[o.id] = o.titel + ': ' + o.stufe1.frage; else Object.values(o).forEach(sammle); } };
+    sammle(daten);
+    const ns = Object.entries(s.auswahl2 || {}).filter(([, e]) => !e.selbst).map(([id]) => '- ' + (titel[id] || id));
+    if (ns.length) z.push('', 'NICHT SELBST GELÖST (Lösung nach dem vierten Fehlversuch gezeigt)', ...ns);
+    return z;
   };
 
   return {

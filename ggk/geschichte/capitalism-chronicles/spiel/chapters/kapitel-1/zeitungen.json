@@ -1,0 +1,249 @@
+{
+  "k1-s5-zeitungen": {
+    "id": "k1-s5-zeitungen",
+    "typ": "zeitungen",
+    "kapitel": 1,
+    "station": 5,
+    "schritt": 4,
+    "marke": "nachbildung",
+    "abschaltbar": true,
+    "titel": "Am nächsten Morgen: zwei Zeitungen",
+    "blaetter": {
+      "A": {
+        "name": "The Lancashire Beacon",
+        "unter": "Wochenblatt, Manchester"
+      },
+      "B": {
+        "name": "The Irwell Chronicle",
+        "unter": "Zeitung für Handel und Gewerbe, Manchester"
+      }
+    },
+    "berichte": {
+      "A": [
+        "s1",
+        "Gestern Abend versammelten sich auf dem Feld vor der Stadt die arbeitenden Menschen Manchesters, um für die Charta einzutreten.",
+        "s3",
+        "Mr. Holt erinnerte an die Bittschrift von 1842, die das Parlament mit 287 zu 49 Stimmen abwies. Auch ein Doktor aus dem Ausland, ein Gelehrter aus Deutschland, ergriff das Wort.",
+        "s5",
+        "Die Versammlung ging in vollkommener Ordnung auseinander."
+      ],
+      "B": [
+        "s2",
+        "Auf dem Feld vor der Stadt fand gestern Abend eine Versammlung der Anhänger der sogenannten Charta statt.",
+        "s4",
+        "Neben Mr. Holt sprach ein Doktor aus dem Ausland, dessen umstürzlerische Lehren hier wenig Anklang finden dürften.",
+        "s6",
+        "Die Polizei hielt sich in der Nähe bereit."
+      ]
+    },
+    "stuecke": [
+      {
+        "id": "s1",
+        "blatt": "A",
+        "art": "Überschrift",
+        "text": "DAS VOLK SPRICHT! Tausende fordern auf dem Feld vor der Stadt ihr Recht",
+        "falsch": "Achtet auf die Wörter „Volk“ und „Tausende“. Wessen Sache machen sie groß?",
+        "merkmale": {
+          "richtig": [
+            "wortwahl",
+            "zahl"
+          ],
+          "abwegig": {
+            "stimme": "In der Überschrift spricht niemand selbst."
+          }
+        },
+        "hinweis": "Welche Wörter machen die Versammlung groß und wichtig?"
+      },
+      {
+        "id": "s2",
+        "blatt": "B",
+        "art": "Überschrift",
+        "text": "Aufregung vor der Stadt: Redner reizen eine Menge gegen die Fabrikherren auf",
+        "falsch": "„Aufregung“, „reizen auf“, „Menge“: Wer würde die Versammlung so beschreiben?",
+        "merkmale": {
+          "richtig": [
+            "wortwahl",
+            "ton"
+          ],
+          "abwegig": {
+            "zahl": "Die Überschrift nennt keine Zahl."
+          }
+        },
+        "hinweis": "Wie klingen „Aufregung“ und „aufreizen“? Wer wird hier „Menge“ genannt?"
+      },
+      {
+        "id": "s3",
+        "blatt": "A",
+        "art": "Teilnehmer",
+        "text": "Nicht weniger als zwanzigtausend Männer und Frauen standen Schulter an Schulter, so weit das Auge reichte.",
+        "falsch": "Dieses Stück nennt eine hohe Zahl ohne Quelle. Wessen Interesse spricht dafür?",
+        "merkmale": {
+          "richtig": [
+            "zahl",
+            "fehlt"
+          ],
+          "abwegig": {
+            "stimme": "Hier spricht niemand selbst; es ist die Stimme der Zeitung."
+          }
+        },
+        "hinweis": "Woher stammt die Zahl? Fragt, was der Satz nicht verrät."
+      },
+      {
+        "id": "s4",
+        "blatt": "B",
+        "art": "Teilnehmer",
+        "text": "Nach unserer Schätzung waren etwa drei- bis viertausend Personen zugegen, höchstens fünftausend, viele davon bloß Neugierige.",
+        "falsch": "Eine niedrige Zahl, „höchstens“ und „bloß Neugierige“: Wem liegt daran, die Versammlung klein zu machen?",
+        "merkmale": {
+          "richtig": [
+            "zahl",
+            "wortwahl"
+          ],
+          "abwegig": {
+            "stimme": "Hier spricht niemand selbst; es ist die Stimme der Zeitung."
+          }
+        },
+        "hinweis": "Achtet auf die Zahl und auf kleine Wörter wie „höchstens“ und „bloß“."
+      },
+      {
+        "id": "s5",
+        "blatt": "A",
+        "art": "Stimme",
+        "text": "Ein Spinner aus Ancoats rief: „Zwölf Stunden stehe ich an der Maschine, und am Samstag reicht der Lohn nicht bis Mittwoch.“",
+        "falsch": "Hier kommt ein Arbeiter zu Wort. Welches Blatt will, dass man ihn hört?",
+        "merkmale": {
+          "richtig": [
+            "stimme",
+            "adressat"
+          ],
+          "abwegig": {
+            "zahl": "Die zwölf Stunden sind keine Teilnehmerzahl."
+          }
+        },
+        "hinweis": "Wer spricht hier, und wer soll sich in ihm wiedererkennen?"
+      },
+      {
+        "id": "s6",
+        "blatt": "B",
+        "art": "Stimme",
+        "text": "Mr. Grimshaw, Fabrikant aus Salford, mahnte: „Die Fabrikgesetze zeigen, dass das Parlament Missstände abstellt. Reform gelingt auf friedlichem Weg.“",
+        "falsch": "Hier kommt ein Fabrikant zu Wort. Welches Blatt gibt ihm das letzte Wort?",
+        "merkmale": {
+          "richtig": [
+            "stimme",
+            "adressat"
+          ],
+          "abwegig": {
+            "zahl": "Grimshaw nennt keine Teilnehmerzahl."
+          }
+        },
+        "hinweis": "Wer spricht hier, und an wen richtet sich seine Mahnung?"
+      }
+    ],
+    "merkmalStuecke": [
+      "s2",
+      "s3",
+      "s6"
+    ],
+    "merkmale": [
+      {
+        "id": "wortwahl",
+        "text": "Wortwahl"
+      },
+      {
+        "id": "zahl",
+        "text": "Zahl der Teilnehmer"
+      },
+      {
+        "id": "stimme",
+        "text": "Wer zu Wort kommt"
+      },
+      {
+        "id": "fehlt",
+        "text": "Was fehlt"
+      },
+      {
+        "id": "ton",
+        "text": "Ton"
+      },
+      {
+        "id": "adressat",
+        "text": "An wen sich der Text richtet"
+      }
+    ],
+    "aussagen": [
+      {
+        "id": "f1",
+        "beide": true,
+        "text": "Die Versammlung fand gestern Abend vor der Stadt statt."
+      },
+      {
+        "id": "f2",
+        "beide": true,
+        "text": "Es ging um die Forderungen der Charta."
+      },
+      {
+        "id": "f3",
+        "beide": true,
+        "text": "Neben Mr. Holt sprach ein Doktor aus dem Ausland."
+      },
+      {
+        "id": "f4",
+        "text": "Rund zwanzigtausend Menschen kamen.",
+        "nur": "Diese Zahl steht nur im Beacon. Der Chronicle schätzt viel weniger."
+      },
+      {
+        "id": "f5",
+        "text": "Ein Fabrikant mahnte zu friedlicher Reform.",
+        "nur": "Den Fabrikanten zitiert nur der Chronicle."
+      },
+      {
+        "id": "f6",
+        "text": "Ein Spinner klagte über seinen Lohn.",
+        "nur": "Den Spinner lässt nur der Beacon zu Wort kommen."
+      }
+    ],
+    "schritte": {
+      "zuordnen": "Schritt 1 von 4: Ordnet jedes Stück einem der beiden Blätter zu.",
+      "kern": "Schritt 2 von 4: Lest beide Berichte. Wählt die drei Aussagen, die in beiden stehen.",
+      "merkmale": "Schritt 3 von 4: Woran erkennt ihr die Haltung? Wählt zu jedem Stück die passenden Merkmale.",
+      "notiz": "Schritt 4 von 4: Eure Notiz."
+    },
+    "rueck": {
+      "zuordnenFertig": "Alle Stücke stimmen. Zwei Blätter, ein Abend.",
+      "zuordnenFehler": "Noch nicht alle Stücke stimmen. Die stimmigen sind festgehalten.",
+      "kernDrei": "Wählt genau drei Aussagen.",
+      "kernFertig": "Das ist der Faktenkern: Ort, Anlass und Redner stehen in beiden Berichten. Alles andere hat jeweils nur ein Blatt.",
+      "merkmaleFertig": "Gut begründet. Zahl, Wortwahl, Stimmen und Ton zeigen die Haltung, auch ohne dass ein Blatt sie ausspricht.",
+      "merkmaleLeer": "Wählt mindestens ein Merkmal.",
+      "merkmaleFehlt": "Dieses Merkmal allein trägt hier noch nicht."
+    },
+    "hilfen": {
+      "zuordnen": [
+        "Das eine Blatt steht auf der Seite der Chartisten, das andere auf der Seite von Handel und Gewerbe.",
+        "Achtet darauf, ob ein Stück die Versammlung groß oder klein macht und wem es das Wort gibt.",
+        "Große Zahl und Arbeiterstimme gehören zusammen, kleine Zahl und Fabrikantenstimme ebenso."
+      ],
+      "kern": [
+        "Gemeinsam ist, was beide Blätter nicht bestreiten: wo, worum und wer.",
+        "Zahlen und Zitate unterscheiden sich. Gesucht ist, was in beiden Berichten steht.",
+        "Ort, Anlass und Redner stehen in beiden Berichten."
+      ],
+      "merkmale": [
+        "Nicht jedes Merkmal passt zu jedem Stück. Fragt, was an genau diesem Stück die Haltung verrät.",
+        "Bei Überschriften verraten oft einzelne Wörter die Haltung, bei Zitaten die Person, die spricht."
+      ]
+    },
+    "notiz": {
+      "frage": "Wie könntet ihr herausfinden, wie viele Menschen wirklich gekommen sind?",
+      "min": 8,
+      "zuKurz": "Schreibt mindestens einen kurzen Satz.",
+      "hinweis": "Es geht um einen Weg zur Prüfung, nicht um ein Urteil, welches Blatt recht hat."
+    },
+    "loesung": {
+      "zuordnen": "Beacon: Überschrift „Das Volk spricht“, zwanzigtausend Teilnehmer, der Spinner. Chronicle: Überschrift „Aufregung“, drei- bis viertausend Teilnehmer, Mr. Grimshaw.",
+      "kern": "In beiden Berichten stehen: Ort und Zeit, die Charta als Anlass und dass neben Mr. Holt ein Doktor aus dem Ausland sprach."
+    },
+    "info": "d_zeitungen"
+  }
+}

@@ -1,6 +1,7 @@
 // Station 5 – Die Versammlung. Kerngedanke: Anklage mit Belegen, Streitgespräch, Prognosen in der Zeitkapsel.
 import { el, esc, tabelleHtml } from '../../../ui/oberflaeche.js';
-import { zuordnung, auswahl } from '../../../ui/raetsel.js';
+import { zuordnung, auswahl2, mische } from '../../../ui/raetsel.js';
+import { zeitungen } from '../../../ui/zeitungen.js';
 
 export const FERTIG5 = 4;
 
@@ -16,6 +17,8 @@ export class Station5 {
   setze(n) { this.spiel.stand.s5 = n; this.spiel.sichere(); this.nachher?.(); }
   eintrag(id) { return this.daten.tagebuch.find((e) => e.id === id); }
   get hofFertig() { return this.spiel.stand.s4 >= this.hofSchwelle; }
+  // Baustein D: zwei Zeitungen am nächsten Morgen, nach der Zeitkapsel (abschaltbar)
+  get zeitungenOffen() { return this.s >= FERTIG5 && !!this.tiefe?.aktiv('zeitungen') && !this.spiel.stand.zeitungen['k1-s5-zeitungen']?.fertig; }
 
   start(hofSchwelle) {
     this.hofSchwelle = hofSchwelle;
@@ -29,7 +32,8 @@ export class Station5 {
     reg('tribuene', 'feld', p.tribuene, 'Anklageschrift zusammenstellen', () => this.s === 1, () => this.anklage(), 2.0);
     reg('grimshaw', 'feld', p.grimshaw, 'Mr. Grimshaw antworten', () => this.s === 2, () => this.streit(), 2.4);
     reg('kapsel', 'feld', p.kapsel, 'Zeitkapsel', () => this.s === 3, () => this.kapsel(), 2.2);
-    reg('ende5', 'feld', p.kapsel, 'Notizen kopieren', () => this.s >= FERTIG5, () => this.schluss(), 2.2);
+    reg('zeitungen', 'feld', p.holt, 'Mr. Holt: die Morgenzeitungen', () => this.zeitungenOffen, async () => { if (await this.zeitungenSchritt()) await this.schluss(); }, 2.4, 3.1);
+    reg('ende5', 'feld', p.kapsel, 'Notizen kopieren', () => this.s >= FERTIG5 && !this.zeitungenOffen, () => this.schluss(), 2.2);
   }
 
   aktualisiere() {
@@ -37,7 +41,7 @@ export class Station5 {
     const hoch = (v, y) => ({ x: v.x, y, z: v.z });
     if (spiel.szeneName !== 'feld') return spiel.setzeZiel(this.briefFertig() ? z.hof : z.brief, hoch(this.aufbruchOrt, 2.6), 'aussen');
     const ziele = [[z.holt, hoch(p.holt, 3.6)], [z.anklage, hoch(p.tribuene, 2.6)], [z.grimshaw, hoch(p.grimshaw, 2.7)], [z.kapsel, hoch(p.kapsel, 2.6)], [z.fertig, null]];
-    const [text, pos] = ziele[Math.min(s, FERTIG5)];
+    const [text, pos] = this.zeitungenOffen ? [z.zeitungen, hoch(p.holt, 3.6)] : ziele[Math.min(s, FERTIG5)];
     spiel.setzeZiel(text, pos, 'feld');
   }
 
@@ -83,9 +87,10 @@ export class Station5 {
     this.setze(3);
   }
 
-  // Endgegner: fünf Einwände; widerlegen oder einräumen. Falsche und pauschale Antworten kosten Zustimmung.
+  // Endgegner: drei Einwände (Mehrwert, Verelendung, Fortschritt); widerlegen, teilweise oder ganz einräumen.
+  // Vier gleich lange Antworten, gemischt. Wer zweimal mehr danebenliegt als trifft, verliert die Versammlung.
   duell() {
-    const { ui } = this, t = this.t.duell, MAX = 6, START = 3;
+    const { ui } = this, t = this.t.duell, MAX = 5, START = 2;
     return new Promise((fertig) => {
       const f = ui.fenster({ titel: t.titel, klasse: 'breit', beiSchliessen: (w) => fertig(w === true) });
       const meter = el('div', 'zustimmung');
@@ -103,10 +108,10 @@ export class Station5 {
       const zeige = () => {
         const e = t.einwaende[i];
         zahl.textContent = `Einwand ${i + 1} von ${t.einwaende.length}`;
-        einwand.innerHTML = `<b>Grimshaw:</b> „${esc(e.text)}“`;
+        einwand.innerHTML = `<b>Grimshaw:</b> „${esc(e.text)}“` + (e.fussnote ? `<small class="fussnote">${esc(e.fussnote)}</small>` : '');
         liste.innerHTML = ''; rueck.className = 'rueck'; rueck.textContent = '';
         weiter.hidden = true; neu.hidden = true; zeigeMeter();
-        for (const o of e.optionen) {
+        for (const o of mische(e.optionen)) {
           const b = el('button', 'option', esc(o.text));
           b.addEventListener('click', () => {
             if (b.disabled) return;
@@ -142,7 +147,7 @@ export class Station5 {
     await ui.dialog(this.daten.dialoge.kapsel);
     const a = this.eintrag('d_allen');
     await ui.karte({ titel: a.titel, marke: a.marke, text: a.text, tabelle: t.tabelle, quelle: a.quelle });
-    if (!(await auswahl(ui, t.diagnose))) return;
+    if (!(await auswahl2(ui, t.diagnose, spiel.stand.auswahl2))) return;
     ui.schalteFrei('d_allen', 'd_prognosen');
     const p = this.eintrag('d_prognosen');
     await ui.karte({ titel: p.titel, marke: p.marke, text: p.text, quelle: p.quelle });
@@ -159,7 +164,23 @@ export class Station5 {
     await ui.dialog(this.daten.dialoge.ende5);
     this.setze(FERTIG5);
     this.laeuft = false;
+    if (this.zeitungenOffen && !(await this.zeitungenSchritt())) return;
     return this.schluss();
+  }
+
+  async zeitungenSchritt() {
+    const { ui, spiel } = this, def = this.daten.zeitungen['k1-s5-zeitungen'];
+    this.feld.blickZu?.('holt', spiel.pos);
+    if (!spiel.stand.zeitungen[def.id]?.schritt) await ui.dialog(this.daten.dialoge.zeitungen);
+    const ok = await zeitungen(ui, def, spiel.stand.zeitungen, () => spiel.sichere());
+    this.feld.blickZu?.('holt', null);
+    spiel.sichere(); this.nachher?.();
+    if (!ok) return false;
+    const info = this.eintrag(def.info);
+    await ui.karte({ titel: info.titel, marke: info.marke, text: info.text, quelle: info.quelle, knopf: 'Ins Tagebuch' });
+    ui.schalteFrei(def.info);
+    spiel.sichere(); this.nachher?.();
+    return true;
   }
 
   tippen() {
