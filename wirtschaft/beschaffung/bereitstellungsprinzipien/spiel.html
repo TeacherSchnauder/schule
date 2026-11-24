@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bereitstellungsprinzipien – Lernpfad | BPE 6</title>
+<style>
+/* Layout: Lernpfad (4 Stufen) oben, Arbeitsfläche darunter, Prinzipien-Karten im Raster.
+   Farbschema der Lernplattform: Blau / Weiß / Dunkelgrau. Statusfarben nur für Eignung. */
+:root{
+  --ink:#1f2933; --muted:#52606d; --blue:#1f56a5; --blue-dark:#163f7a; --blue-soft:#e8f0fb;
+  --line:#d2d9e2; --paper:#ffffff; --page:#f3f5f8;
+  --ok:#14683f; --ok-bg:#e3f4ea; --warn:#7a4f00; --warn-bg:#fff3d1; --bad:#a6262c; --bad-bg:#fbe7e8;
+  --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+h1,h2,h3{line-height:1.25;text-wrap:balance;margin:0}
+h1{font-size:1.5rem} h2{font-size:1.25rem} h3{font-size:1.05rem}
+p{margin:0 0 .6rem}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:16px}
+header.top{background:var(--blue-dark);color:#fff}
+header.top .wrap{padding-top:14px;padding-bottom:10px}
+header.top p{margin:2px 0 10px;color:#d6e4f7;font-size:.95rem}
+header.top .ziel{margin:8px 0 0;font-size:.88rem}
+.tipps{margin-top:10px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.tipp{margin:0;padding:8px 12px;border-left:4px solid var(--blue);background:var(--blue-soft);border-radius:0 8px 8px 0;max-width:100%}
+.path{display:flex;gap:8px;flex-wrap:wrap}
+.path button{flex:1 1 180px;min-height:48px;text-align:left;background:#ffffff1f;border:1px solid #ffffff55;color:#fff;border-radius:8px;padding:6px 12px}
+.path button small{display:block;color:#d6e4f7;font-size:.78rem}
+.path button[aria-current="step"]{background:#fff;color:var(--blue-dark);border-color:#fff}
+.path button[aria-current="step"] small{color:var(--muted)}
+.path button:disabled{opacity:.6;cursor:not-allowed}
+main .wrap{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card.soft{background:var(--blue-soft);border-color:#c5d6ef}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.split{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px}
+@media(max-width:820px){.split{grid-template-columns:minmax(0,1fr)}}
+.split>*,.stack,.card{min-width:0}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.btn{min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid var(--blue);background:var(--blue);color:#fff;font-weight:600}
+.btn.ghost{background:var(--paper);color:var(--blue)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.opt{min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);text-align:left}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue);font-weight:600}
+.gutlist{display:flex;flex-direction:column;gap:8px}
+.gutlist .opt{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.dot{flex:none;font-size:.75rem;padding:1px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.dot.ok{background:var(--ok-bg);color:var(--ok);border-color:#9fd4b6}
+.dot.warn{background:var(--warn-bg);color:var(--warn);border-color:#e6c76d}
+.dot.bad{background:var(--bad-bg);color:var(--bad);border-color:#e3a5a8}
+.step{display:flex;gap:10px;align-items:baseline;margin:2px 0 8px}
+.step b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:inline-grid;place-items:center;font-size:.85rem}
+ul.facts{margin:6px 0 0;padding-left:20px} ul.facts li{margin:3px 0}
+textarea{width:100%;min-height:92px;font:inherit;padding:10px;border:1px solid #9aa7b6;border-radius:8px;background:#fff;color:var(--ink);resize:vertical}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:36px;padding:4px 12px;border-radius:99px;border:1px dashed var(--blue);background:var(--paper);color:var(--blue-dark);font-size:.9rem}
+.msg{padding:8px 12px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-weight:600}
+/* ABC/XYZ-Matrix */
+.matrix{display:grid;grid-template-columns:minmax(72px,.9fr) repeat(3,minmax(0,1fr));gap:4px;max-width:640px}
+.matrix .h{font-size:.8rem;color:var(--muted);padding:2px 4px;display:flex;flex-direction:column;justify-content:center}
+.matrix .h b{color:var(--ink);font-size:1rem}
+.matrix button,.matrix .cell{min-height:64px;border-radius:8px;border:1px solid var(--line);background:#f7f9fc;padding:4px 6px;text-align:left;display:flex;flex-direction:column;justify-content:center}
+.matrix b.k{font-size:1.1rem}
+.matrix small{font-size:.74rem;color:var(--muted);line-height:1.2;overflow-wrap:anywhere;hyphens:auto}
+.matrix .h{overflow-wrap:anywhere}
+.matrix button[aria-pressed="true"],.matrix .cell.on{background:var(--blue);border-color:var(--blue-dark);color:#fff}
+.matrix button[aria-pressed="true"] small,.matrix .cell.on small{color:#e4eefb}
+/* Prinzipien-Karten */
+.sys{display:flex;flex-direction:column;gap:8px;border:2px solid var(--line);border-radius:10px;padding:12px;background:var(--paper)}
+.sys.rec{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft)}
+.sys header{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.pill{flex:none;display:inline-flex;gap:6px;align-items:center;padding:2px 10px;border-radius:99px;font-size:.82rem;font-weight:700}
+.pill.gruen{background:var(--ok-bg);color:var(--ok)} .pill.gelb{background:var(--warn-bg);color:var(--warn)} .pill.rot{background:var(--bad-bg);color:var(--bad)}
+.tag{display:inline-block;font-size:.74rem;padding:0 8px;border-radius:99px;background:var(--blue);color:#fff;margin-right:4px}
+.tag.alt{background:var(--muted)}
+ul.chk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+ul.chk li{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:.92rem}
+ul.chk svg{margin-top:3px}
+ul.chk small{display:block;color:var(--muted);font-size:.75rem}
+.ok-i{color:var(--ok)} .warn-i{color:var(--warn)} .bad-i{color:var(--bad)}
+.banner{padding:12px 14px;border-radius:10px;font-weight:600}
+.banner.klar{background:var(--ok-bg);color:var(--ok)} .banner.grenz{background:var(--warn-bg);color:var(--warn)} .banner.konflikt{background:var(--bad-bg);color:var(--bad)}
+.schema{width:100%;height:auto;max-height:70px}
+.schema rect{fill:var(--blue-soft);stroke:var(--blue)} .schema .lag{fill:var(--blue);stroke:var(--blue-dark)} .schema .lag0{fill:none;stroke:var(--muted);stroke-dasharray:3 3}
+.schema line,.schema path{stroke:var(--muted);fill:none;stroke-width:1.5}
+.schema text{fill:var(--ink);font-size:9px;font-family:var(--font)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.ctrl{display:flex;flex-direction:column;gap:6px}
+.ctrl > b{font-size:.92rem}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--blue-soft)}
+.wrapx{overflow-x:auto}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.vor{background:var(--ok-bg);border-radius:8px;padding:10px} .nach{background:var(--bad-bg);border-radius:8px;padding:10px}
+label.tick{display:flex;gap:10px;align-items:flex-start;padding:4px 0;min-height:36px}
+label.tick input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--blue)}
+footer{color:var(--muted);font-size:.85rem}
+footer p{margin:0 0 6px}
+details summary{cursor:pointer;font-weight:600;min-height:32px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>Bereitstellungsprinzipien bei der BüroMax GmbH</h1>
+  <p>Welches Prinzip passt zu welchem Gut, und warum?</p>
+  <nav class="path" id="path" aria-label="Lernpfad"></nav>
+  <p id="ziel" class="ziel" aria-live="polite"></p>
+</div></header>
+<main><div class="wrap" id="app"></div></main>
+<div id="lkleiste"></div>
+<div class="wrap"><footer><p>Grundlage: Arbeitsblatt BPE 6 „Bereitstellungsprinzipien“ (Ausgangssituation, Anlagen 1 bis 4). Das Entscheidungsmodell ist eine Vereinfachung für den Unterricht. Dein Fortschritt bleibt nur auf diesem Gerät gespeichert.</p><div id="lehrkraft"></div></footer></div>
+
+<script id="daten">
+/* ===== Daten und Entscheidungslogik (ohne DOM, testbar) ===== */
+const ORDER=['jit','kanban','dod','vorrat'];
+const PR={
+  jit:{name:'Just-in-time / Just-in-sequence',kurz:'JIT / JIS',lagerN:1,
+    lager:'Lager: nur Sicherheitsbestand',
+    ausloeser:'Die Lieferung kommt genau dann, wenn die Produktion das Material braucht. Bei JIS zusätzlich in der Einbaureihenfolge.'},
+  kanban:{name:'(Externes) Kanban',kurz:'Kanban',lagerN:2,
+    lager:'Lager: kleiner, über Signale gesteuerter Bestand',
+    ausloeser:'Ein Signal (Karte oder elektronisch) löst die Nachbestellung aus, wenn der Bestand zur Neige geht. Pull-Prinzip.'},
+  dod:{name:'Delivery on demand',kurz:'DoD',lagerN:0,
+    lager:'Lager: gering, geliefert wird erst bei Bedarf',
+    ausloeser:'Der konkrete Bedarf löst die Lieferung auf Abruf aus, ohne festen Lieferzeitpunkt. Pull-Prinzip.'},
+  vorrat:{name:'Vorratsbeschaffung',kurz:'Vorrat',lagerN:6,
+    lager:'Lager: großer Bestand als Puffer',
+    ausloeser:'Große Mengen werden vorab beschafft und gelagert (Push-Prinzip).'}
+};
+const WERT={A:{l:'A',t:'hoher Wertanteil',s:'Hohes Volumen bzw. hoher Wertanteil'},B:{l:'B',t:'mittlerer Wertanteil',s:'Durchschnittliches Volumen bzw. Wertanteil'},C:{l:'C',t:'geringer Wertanteil',s:'Geringes Volumen bzw. geringer Wertanteil'}};
+const VERB={X:{l:'X',t:'konstanter Verbrauch',s:'Kann gut prognostiziert werden',c:'Stabil und konstant im Bedarf'},
+            Y:{l:'Y',t:'schwankender Verbrauch',s:'Kann durchschnittlich gut prognostiziert werden',c:'Schwankender Bedarf'},
+            Z:{l:'Z',t:'unregelmäßiger Verbrauch',s:'Schwierig zu prognostizieren',c:'Unregelmäßiger Bedarf'}};
+
+function chk(ok,text,quelle,ko){return {ok:ok,text:text,quelle:quelle,ko:!!ko};}
+function statusVon(checks){
+  if(checks.some(c=>c.ko&&c.ok===false)) return 'rot';
+  if(checks.some(c=>c.ok==='warn')) return 'gelb';
+  return 'gruen';
+}
+/* s = {w:'A'|'B'|'C', p:'X'|'Y'|'Z', l:boolean (Qualität+Pünktlichkeit zugesichert), t:'kurz'|'lang', d:0|1|2 (Bestellanbindung)} */
+function bewerte(s){
+  const R={};
+  // --- JIT / JIS
+  let c=[],sc=0;
+  c.push(chk(s.p!=='Z', s.p!=='Z'?'Der Bedarf lässt sich genau genug planen.':'Der Bedarf ist kaum vorhersehbar. JIT/JIS verlangt eine präzise Bedarfsplanung.','Anlage 2, Lösung 1',true));
+  c.push(chk(s.l, s.l?'Der Lieferant sichert Qualität und Pünktlichkeit zu.':'Qualität und Pünktlichkeit sind nicht zugesichert. Eine verspätete Lieferung würde die Produktion stoppen.','Anlage 2',true));
+  c.push(chk(s.t==='kurz'?true:'warn', s.t==='kurz'?'Die Lieferzeit ist kurz.':'Die Lieferzeit ist lang. Der Bedarf muss weit im Voraus geplant werden.','Ergänzung'));
+  c.push(chk(s.w==='A'?true:'warn',
+    s.w==='A'?'Hoher Wertanteil: Hier lohnt es sich, Lager und Kapitalbindung zu sparen. Nur ein Sicherheitsbestand wird gelagert.'
+    :(s.w==='B'?'Mittlerer Wertanteil: Die Ersparnis bei Lager und Kapitalbindung ist nur mäßig.':'Geringer Wertanteil: Die Ersparnis ist klein, häufige Lieferungen verursachen aber hohe Transportkosten.'),'Anlage 3, Lösung 2'));
+  sc={A:3,B:1,C:-1}[s.w]+(s.p==='X'?2:s.p==='Y'?1:0)+(s.t==='kurz'?1:-1);
+  R.jit={checks:c,status:statusVon(c),score:sc};
+  // --- Kanban
+  c=[];
+  c.push(chk(s.l, s.l?'Der Lieferant sichert Qualität und Pünktlichkeit zu.':'Qualität und Pünktlichkeit sind nicht zugesichert. Der Lieferant ist in den Kreislauf eingebunden und muss zuverlässig liefern.','Anlage 2',true));
+  c.push(chk(s.t==='kurz', s.t==='kurz'?'Die Lieferzeit ist kurz.':'Die Lieferzeit ist lang. Der Kreislauf aus Signal und Lieferung funktioniert nur mit kurzen Lieferzeiten.','Anlage 2, Lösung 1',true));
+  c.push(s.d===2?chk(true,'Bestellungen sind digital angebunden und laufen automatisiert.','Lösung 1',true)
+    :s.d===1?chk('warn','Automatisierte Bestellungen sind grundsätzlich möglich, aber noch nicht eingerichtet.','Lösung 1',true)
+    :chk(false,'Automatisierte, digital angebundene Bestellungen sind nicht möglich.','Lösung 1',true));
+  c.push(chk(true, s.p==='Z'?'Kanban reagiert auf den tatsächlichen Verbrauch und braucht keine Prognose. Bestandshöhe und Sicherheitsbestand müssen aber sorgfältig festgelegt werden.':'Kanban reagiert auf den tatsächlichen Verbrauch und braucht keine Prognose.','Anlage 2, Ergänzung'));
+  sc={A:0,B:2,C:1}[s.w]+(s.p==='X'?2:s.p==='Y'?1:-1)+(s.d===2?3:0)+(s.t==='kurz'?1:0);
+  R.kanban={checks:c,status:statusVon(c),score:sc};
+  // --- Delivery on demand
+  c=[];
+  c.push(chk(s.l, s.l?'Der Lieferant sichert Qualität und Pünktlichkeit zu.':'Qualität und Pünktlichkeit sind nicht zugesichert. Ohne Lager wäre jede Verspätung ein Problem.','Anlage 2',true));
+  c.push(chk(s.t==='kurz', s.t==='kurz'?'Der Lieferant garantiert kurze Lieferzeiten.':'Die Lieferzeit ist lang. Erst bei Bedarf zu bestellen, würde zu lange warten lassen.','Anlage 2, Lösung 1',true));
+  c.push(chk(s.p==='X'?'warn':true,
+    s.p==='Z'?'Der Bedarf ist unregelmäßig. Bestellt wird erst, wenn er entsteht, eine Prognose ist nicht nötig.'
+    :s.p==='Y'?'Der Bedarf schwankt. Bestellt wird erst, wenn er entsteht.'
+    :'Der Bedarf ist gut planbar. Dann wäre ein planungsgesteuertes Prinzip wie JIT meist günstiger.','Lösung 1, Ergänzung'));
+  c.push(chk(s.w==='C'?'warn':true,
+    s.w==='C'?'Geringer Wertanteil: Kleine Einzelbestellungen verteuern den Einkauf (keine Rabatte), eine Lagerhaltung wäre hier tragbar.'
+    :s.w==='A'?'Hoher Wertanteil: Lagerkosten und Kapitalbindung werden vermieden.':'Mittlerer Wertanteil: Lagerkosten und Kapitalbindung bleiben gering.','Anlage 3'));
+  sc={A:1,B:0,C:-1}[s.w]+(s.p==='Z'?3:s.p==='Y'?0:-1)+(s.t==='kurz'?1:0);
+  R.dod={checks:c,status:statusVon(c),score:sc};
+  // --- Vorratsbeschaffung
+  c=[];
+  c.push(chk(s.w!=='A', s.w!=='A'?'Der Wertanteil ist nicht hoch, die Kapitalbindung bleibt vertretbar.':'Hoher Wertanteil: Ein großer Vorrat würde zu viel Kapital binden. Vorratsbeschaffung scheidet aus.','Lösung 1',true));
+  c.push(chk(s.w==='B'?'warn':true,
+    s.w==='C'?'Geringer Wertanteil (und geringer Platzbedarf): Lagerkosten und Lagerrisiko sind tragbar.'
+    :s.w==='B'?'Mittlerer Wertanteil: Ein Vorrat in größerem Umfang sollte vermieden werden.':'Der Wertanteil spricht gegen einen großen Vorrat.','Lösung 1'));
+  if(!s.l) c.push(chk(true,'Der Vorrat gleicht aus, dass der Lieferant nicht zuverlässig zugesagt hat.','Anlage 3'));
+  if(s.t==='lang') c.push(chk(true,'Der Vorrat überbrückt die lange Lieferzeit.','Anlage 3'));
+  if(s.p!=='X') c.push(chk(true,'Der Vorrat gleicht kurzfristige Nachfrageschwankungen aus.','Anlage 3'));
+  sc=(s.w==='C'?4:s.w==='B'?-1:0)+(s.l?0:1)+(s.t==='lang'?1:0)+(s.p==='Z'?1:0);
+  R.vorrat={checks:c,status:statusVon(c),score:sc};
+
+  // --- Empfehlung: grün vor gelb, dann Punkte, dann feste Reihenfolge
+  const rang=ORDER.filter(id=>R[id].status!=='rot').sort((a,b)=>{
+    const sa=R[a].status==='gruen'?0:1, sb=R[b].status==='gruen'?0:1;
+    if(sa!==sb) return sa-sb;
+    if(R[b].score!==R[a].score) return R[b].score-R[a].score;
+    return ORDER.indexOf(a)-ORDER.indexOf(b);
+  });
+  let emp;
+  if(!rang.length) emp={typ:'zielkonflikt',ids:[]};
+  else{
+    const best=rang[0], zweit=rang[1];
+    if(zweit && R[zweit].status===R[best].status && R[best].score-R[zweit].score<=1) emp={typ:'grenzfall',ids:[best,zweit]};
+    else emp={typ:'klar',ids:[best]};
+  }
+  return {sys:R,empfehlung:emp,rang:rang};
+}
+
+const GUETER=[
+ {id:'mahagoni',kurz:'Mahagoniholz',name:'Mahagoniholz für Schreibtischplatten',w:'A',p:'X',l:true,t:'kurz',d:0,loesung:'jit',
+  hinweis:'Lieferzeit nicht genannt. Aus „Schwankungen mit geringem zeitlichem Vorlauf ausgleichbar“ abgeleitet: kurz.',
+  fakten:['Hoher Wertanteil.','Regelmäßiger, nahezu konstanter Verbrauch.','Der Lieferant sichert einwandfreie Qualität und absolute Pünktlichkeit der Lieferung zu.','Die benötigte Menge kann langfristig geplant werden. Bedarfsschwankungen von +/- 10 % können mit geringem zeitlichem Vorlauf ausgeglichen werden.'],
+  kern:['AX-Gut: hoher Wertanteil, nahezu konstanter Verbrauch.','Wegen des hohen Wertanteils sollen die Lagerbestände gering sein (nur Sicherheitsbestände), damit nicht unnötig Kapital gebunden wird.','Vorratsbeschaffung scheidet deshalb aus.','Der Lieferant sichert Qualität und Pünktlichkeit zu, daher ist JIT möglich: reibungsloser Produktionsprozess, gesicherte Lieferfähigkeit.','Voraussetzung: Der Lieferant hält seine Zusagen ein. Kleine Bedarfsschwankungen werden mit ihm abgestimmt.']},
+ {id:'teak',kurz:'Teakholz',name:'Teakholz für Regalsysteme',w:'A',p:'Y',l:true,t:'kurz',d:0,loesung:'jit',
+  hinweis:'Lieferzeit nicht genannt. Aus „geringem zeitlichem Vorlauf“ abgeleitet: kurz.',
+  fakten:['Hoher Wertanteil.','Leicht schwankender Verbrauch, deshalb mittlere bis gute Vorhersagegenauigkeit.','Der Lieferant sichert einwandfreie Qualität und absolute Pünktlichkeit der Lieferung zu.','Die benötigte Menge kann weitgehend langfristig geplant werden. Bedarfsschwankungen von +/- 25 % können mit geringem zeitlichem Vorlauf ausgeglichen werden.'],
+  kern:['AY-Gut: hoher Wertanteil, leicht schwankender Verbrauch.','Die Bedarfsschwankungen lassen sich gut genug vorhersagen.','Der Lieferant kann kurzfristig die Menge anpassen und sichert Qualität und Pünktlichkeit zu.','Deshalb ist auch hier JIT mit seinen Vorteilen möglich.']},
+ {id:'hirsch',kurz:'Hirschleder',name:'Hirschleder für Chefsessel',w:'A',p:'Z',l:true,t:'kurz',d:0,loesung:'dod',
+  hinweis:'Lieferzeit höchstens 5 Arbeitstage zugesichert: als kurz gewertet.',
+  fakten:['Hoher Wertanteil.','Verbrauch stark schwankend, in der Regel Sonderbestellungen.','Der Lieferant sichert sehr gute Qualität und Lieferzeiten von maximal 5 Arbeitstagen zu.','Bedarfsorientierte Einzelbestellungen sind möglich. Alternativ bietet der Lieferant feste jährliche Gesamtbestellmengen mit bedarfsorientierten Teillieferungen an.'],
+  kern:['AZ-Gut: hoher Wertanteil, stark schwankender Verbrauch (meist Sonderbestellungen).','Vorratsbeschaffung wegen zu hoher Kapitalbindung vermeiden.','JIT kommt nicht in Frage, weil der Bedarf unregelmäßig und kaum vorhersehbar ist.','Delivery on demand passt: Bestellung erst bei Bedarf, der Lieferant garantiert kurze Lieferzeiten.','Option: feste Jahresgesamtmenge mit bedarfsorientierten Teillieferungen, wenn dadurch z. B. Rabatte möglich sind.']},
+ {id:'bueffel',kurz:'Büffelleder',name:'Schreibtischunterlage Büffelleder „Vintage“',w:'B',p:'Z',l:true,t:'kurz',d:2,loesung:'kanban',
+  hinweis:'„Sehr kurze Lieferzeiten mit hoher Zuverlässigkeit“ aus Anlage 1.',
+  fakten:['Mittlerer Wertanteil, geringe Vorhersagegenauigkeit des Verbrauchs.','Bedarfsorientierte Bestellungen können durch digitale Anbindung des Lieferanten automatisiert erfolgen.','Der Lieferant gewährleistet sehr kurze Lieferzeiten mit hoher Zuverlässigkeit.'],
+  kern:['BZ-Gut: mittlerer Wertanteil, geringe Vorhersagegenauigkeit.','Eine Vorratsbeschaffung in größerem Umfang sollte vermieden werden (mittlerer Wertanteil).','JIT kommt wegen der geringen Vorhersagegenauigkeit nicht in Frage.','Durch die digitale Anbindung mit automatisierten Bestellungen ist externes Kanban sinnvoll.','Dafür sprechen auch die kurzen Lieferzeiten und die Zuverlässigkeit des Lieferanten.']},
+ {id:'rollen',kurz:'Drehstuhlrollen',name:'Drehstuhlrollen bis 250 kg Belastbarkeit',w:'C',p:'Z',l:false,t:'kurz',d:1,loesung:'vorrat',
+  hinweis:'Es gibt keine Zusage zu Qualität und Pünktlichkeit, nur eine durchschnittliche Lieferzeit von 3 Arbeitstagen. Deshalb: nicht zugesichert.',
+  fakten:['Geringer Wertanteil, sehr unregelmäßiger Verbrauch.','Bedarfsorientierte, automatisierte Bestellungen beim Lieferanten sind noch nicht eingerichtet, aber grundsätzlich möglich.','Lieferzeit durchschnittlich 3 Arbeitstage nach Bestellungseingang. Bestellungen in Einheiten von je 100 Stück möglich.'],
+  kern:['CZ-Gut: geringer Wertanteil, sehr unregelmäßiger Verbrauch.','Wegen des geringen Wertanteils und des geringen Platzverbrauchs ist Vorratsbeschaffung geeignet.','Automatisierte, bedarfsorientierte Bestellungen sind noch nicht eingerichtet, aber grundsätzlich möglich.','Künftig könnte auf externes Kanban umgestellt werden. Der Vorrat beschränkt sich dann auf Sicherheitsbestände unter Berücksichtigung der Lieferzeit.']}
+];
+
+const VN=[
+ {id:'jit',name:'Just-in-time / Just-in-sequence',
+  v:['Geringe Lagerkosten, da nur Sicherheitsbestände vorgehalten werden.','Dadurch auch geringe Kapitalbindung.','Geringeres Lagerrisiko (Beschädigung, Veralterung usw.).','Reibungsloser Produktionsprozess, wenn JIT zuverlässig funktioniert und Liefermengen ggf. angepasst werden können.'],
+  n:['Gefahr von Produktionsstillständen bei Lieferstörungen (z. B. Streik, Stau) oder Qualitätsmängeln.','Abhängigkeit von der Zuverlässigkeit des Lieferanten.','Hohe Transportkosten wegen häufiger Lieferungen.','Stärkere Umweltbelastung durch mehr Transporte.']},
+ {id:'kanban',name:'(Externes) Kanban',
+  v:['Engpässe und zu hohe Lagerbestände werden vermieden, wenn das externe Kanban funktioniert.','Geringere Kapitalbindung und geringeres Lagerrisiko.','Flexible, bedarfsgerechte Beschaffung.','Geringere Bestellkosten durch automatisierten Prozess.'],
+  n:['Abhängigkeit von Lieferanten.','Der Aufbau der Lieferkette ist komplex und braucht intensive Kommunikation und Koordination.','Gefahr technischer Schwierigkeiten im automatisierten Bestellprozess.','Störungen beim Lieferanten wirken sich direkt auf die eigene Lieferfähigkeit aus.']},
+ {id:'dod',name:'Delivery on demand',
+  v:['Geringere Lagerkosten, Kapitalbindung und Lagerrisiko.','Flexible, bedarfsgerechte Beschaffung.'],
+  n:['Störungen in der Lieferkette können ggf. nicht durch Sicherheitsbestände ausgeglichen werden.','Abhängigkeit vom Lieferanten.','Ggf. höhere Einkaufspreise (keine Rabatte) wegen kleiner Bestellmengen.']},
+ {id:'vorrat',name:'Vorratsbeschaffung',
+  v:['Hohe eigene Produktions- bzw. Lieferbereitschaft, auch wenn der Lieferant zeitweise Störungen hat.','Kostenvorteile, z. B. durch Rabatte bei hohen Bestellmengen.','Ausgleich bei kurzfristigen Nachfrageschwankungen möglich.'],
+  n:['Hohe Lagerkosten und Kapitalbindung.','Erhöhtes Lagerrisiko.']}
+];
+const ASPEKTE=['Platzbedarf im Lager','Mindestbestellmengen','Mengenabhängige Einkaufspreise','Lagerkosten','Bestellkosten','Lieferzeiten','Kundennachfrage und damit der voraussichtliche Bedarf bezogen auf einen Zeitraum','Geeignete Bestellzeitpunkte'];
+
+const KIPP=[
+ {id:'k1',titel:'Der Lieferant sagt nichts mehr zu',start:'mahagoni',aendere:{l:false},
+  frage:'Mahagoni (AX) bleibt wertvoll und planbar, aber der Lieferant sichert Qualität und Pünktlichkeit nicht mehr zu. Was ändert sich, und was bedeutet das für die BüroMax GmbH?',
+  muster:'JIT, Kanban und Delivery on demand verlangen alle einen zuverlässigen Lieferanten. Vorratsbeschaffung scheidet wegen des hohen Wertanteils aus. Es bleibt ein Zielkonflikt zwischen niedrigen Lagerkosten und hoher Lieferbereitschaft. Mögliche Wege: den Lieferanten wechseln oder verbessern, oder bewusst einen Sicherheitsbestand halten und die Kapitalbindung in Kauf nehmen.'},
+ {id:'k2',titel:'Der Bedarf wird unberechenbar',start:'teak',aendere:{p:'Z'},
+  frage:'Bei Teakholz (AY) bricht die Vorhersagbarkeit weg (Z). Welches Prinzip wird jetzt empfohlen, und warum nicht mehr JIT?',
+  muster:'JIT braucht eine präzise Bedarfsplanung. Bei unregelmäßigem Bedarf fällt es aus. Weil der Wertanteil hoch bleibt, scheidet Vorrat aus. Delivery on demand passt: Es wird erst bei Bedarf bestellt, der Lieferant garantiert kurze Lieferzeiten.'},
+ {id:'k3',titel:'Die Anbindung steht',start:'rollen',aendere:{d:2,l:true},
+  frage:'Bei den Drehstuhlrollen (CZ) ist die automatisierte Bestellung jetzt eingerichtet und der Lieferant sichert Qualität und Pünktlichkeit zu. Warum ist das Ergebnis jetzt ein Grenzfall zwischen Kanban und Vorrat?',
+  muster:'Mit digitaler Anbindung und zuverlässigem Lieferanten erfüllt Kanban seine Voraussetzungen. Wegen des geringen Wertanteils bleibt Vorrat aber ebenfalls tragbar. Es ist eine Abwägung: Kanban spart Lager und Bestellkosten, Vorrat ist einfacher und robuster. Nach der Musterlösung kann künftig auf externes Kanban umgestellt werden, mit Sicherheitsbeständen unter Berücksichtigung der Lieferzeit.'},
+ {id:'k4',titel:'Das Gut wird billig',start:'hirsch',aendere:{w:'C'},
+  frage:'Angenommen, Hirschleder (AZ) hätte nur einen geringen Wertanteil (CZ). Welches Prinzip wird jetzt empfohlen, und welches Argument gegen den Vorrat entfällt?',
+  muster:'Der Grund gegen Vorratsbeschaffung war die hohe Kapitalbindung. Bei geringem Wertanteil entfällt er, Lagerkosten und Lagerrisiko sind tragbar. Delivery on demand wäre mit kleinen Einzelbestellungen und fehlenden Rabatten teurer.'}
+];
+/* ===== Tipps (je 3 Stufen; Tipp 3 wird teils in der Oberfläche aus der Logik erzeugt) ===== */
+const TIPP_GUT1='Lies im Steckbrief den Wertanteil und die Angaben zum Verbrauch. Ordne das Gut zuerst in die Matrix ein (A bis C für den Wertanteil, X bis Z für die Vorhersagbarkeit). Prüfe dann nacheinander: Wie teuer wäre ein großes Lager? Lässt sich der Bedarf planen? Ist der Lieferant zuverlässig und schnell? Ist die Bestellung automatisiert?';
+const TIPP_GUT2={
+ mahagoni:'Der Verbrauch ist nahezu konstant und der Lieferant sichert Qualität und Pünktlichkeit zu. Welches Prinzip braucht genau beides? Und wie viel Kapital würde ein großes Lager bei hohem Wertanteil binden?',
+ teak:'Der Verbrauch schwankt leicht, lässt sich aber mit wenig Vorlauf ausgleichen. Reicht diese Vorhersagbarkeit für ein planungsgesteuertes Prinzip? Vergleiche mit dem Mahagoniholz.',
+ hirsch:'Der Verbrauch ist stark schwankend, meist Sonderbestellungen. Welches Prinzip verlangt eine präzise Bedarfsplanung, und welches bestellt erst, wenn der Bedarf da ist?',
+ bueffel:'Der Lieferant ist digital angebunden. Welches Prinzip löst Bestellungen durch Signale aus dem Verbrauch aus, statt eine Prognose zu brauchen? Und warum ist ein größerer Vorrat bei mittlerem Wertanteil nicht ideal?',
+ rollen:'Der Wertanteil ist gering, die automatisierte Bestellung ist noch nicht eingerichtet. Was kostet hier ein Lager? Welches Prinzip ist ohne Einrichtung sofort möglich?'
+};
+const TIPP_KIPP1='Vergleiche die vier Karten vor und nach der Änderung. Achte auf die Muss-Kriterien: Wo wurde aus einem Haken ein Kreuz, wo aus einem Kreuz ein Haken?';
+const TIPP_KIPP2={
+ k1:'Schau dir bei jeder Karte das erste Kreuz an. Was haben JIT, Kanban und Delivery on demand gemeinsam? Und warum bleibt Vorratsbeschaffung trotzdem rot?',
+ k2:'Welche Karte hat jetzt beim Bedarf ein Kreuz, welche nicht mehr? Lies die Zeile zum Bedarf bei JIT und bei Delivery on demand.',
+ k3:'Zähle die grünen Karten. Was spricht bei Kanban dafür, was bei der Vorratsbeschaffung? Bei beiden ist kein Muss-Kriterium verletzt.',
+ k4:'Welches Kreuz bei der Vorratsbeschaffung ist verschwunden? Lies den ersten Punkt auf dieser Karte.'
+};
+const TIPP_VN1='Denke an vier Bereiche: Lagerkosten und Kapitalbindung, Risiko (Lieferausfall, Veralterung), Flexibilität und sonstige Kosten (Einkaufspreis, Transport, Bestellung).';
+const TIPP_VN2={
+ jit:'Stichworte: Vorteil bei den Lagerkosten, Nachteil bei Lieferstörungen und Transporten.',
+ kanban:'Stichworte: Vorteil bei den Bestellkosten (automatisiert), Nachteil bei Aufbau und Abhängigkeit.',
+ dod:'Stichworte: Vorteil bei der Kapitalbindung, Nachteil beim Einkaufspreis (Rabatte) und bei Störungen.',
+ vorrat:'Stichworte: Vorteil bei der Lieferbereitschaft und beim Einkaufspreis, Nachteil bei den Lagerkosten.'
+};
+const TIPP_ZUS=['Frage dich: Was kostet das Lager, was kostet das Bestellen, und wie viel Platz und Zeit braucht man?','Stichworte: Platz, Mindestmenge, Preis je nach Menge, Zeit (Lieferzeit, Bestellzeitpunkt), erwartete Nachfrage.'];
+const TIPP_AB=['Denke an deine fünf Fälle. Wurde jedes Mal dasselbe Prinzip gewählt?','Nenne mindestens zwei Kriterien, die in deinen Fällen entschieden haben (zum Beispiel Wertanteil, Planbarkeit, Lieferant, Anbindung).'];
+
+</script>
+
+<script id="app">
+/* ===== Oberfläche ===== */
+const KEY='bp6-bereitstellung-v1';
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const G=id=>GUETER.find(g=>g.id===id);
+function fresh(){
+  const a={}; GUETER.forEach(g=>a[g.id]={w:null,p:null,prinzip:null,text:'',geprueft:false,kern:{}});
+  return {stufe:1,gut:GUETER[0].id,ant:a,labor:{w:'A',p:'X',l:true,t:'kurz',d:0,vorlage:'mahagoni'},kipp:{},vn:{},zusatz:{text:'',auf:false,h:{}},abschluss:{text:'',auf:false},tipp:{}};
+}
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return fresh();const o=JSON.parse(r);const f=fresh();return Object.assign(f,o,{ant:Object.assign(f.ant,o.ant||{})});}catch(e){return fresh();}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let S=load(), msg='', resetFrage=false, kopie='';
+
+function vnSt(id){const o=Object.assign({vor:'',nach:'',auf:false,h:{}},S.vn[id]||{});if(!o.h)o.h={};S.vn[id]=o;return o;}
+function kippSt(id){const o=Object.assign({text:'',auf:false},S.kipp[id]||{});S.kipp[id]=o;return o;}
+
+/* ---------- Lehrkraft-Zugang (gleiches Kennwort wie im Lernpfad Lagerkennzahlen; gespeichert wird nur der SHA-256-Hash) ---------- */
+const PWD_HASH='5e484a66e24c206a06328a66ccc831f27ea3045576eec35c12070acf1bc3ac99';
+const LK_KEY='bereitstellungsprinzipien-lehrkraft';
+let LEHRKRAFT=false; try{LEHRKRAFT=localStorage.getItem(LK_KEY)===PWD_HASH;}catch(e){}
+let lkOffen=false, lkMsg='';
+async function sha256Hex(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+function lehrkraftZeichnen(){
+  $('#lkleiste').innerHTML=LEHRKRAFT?'<div class="wrap"><p class="banner grenz" style="margin:0">Lehrkraft-Ansicht: Alle Stufen sind frei. <button type="button" class="btn ghost" id="lk_out" style="margin-left:8px">Abmelden</button></p></div>':'';
+  let h='';
+  if(!LEHRKRAFT){
+    h=lkOffen?'<div class="row" style="margin-top:8px"><label for="lk_pw">Kennwort</label><input id="lk_pw" type="password" autocomplete="off" style="min-height:40px;padding:6px 10px;border:1px solid #9aa7b6;border-radius:8px;font:inherit"><button type="button" class="btn" id="lk_ok">Freischalten</button><button type="button" class="btn ghost" id="lk_no">Abbrechen</button></div>'+(lkMsg?'<p class="small" role="alert">'+esc(lkMsg)+'</p>':'')
+      :'<button type="button" class="btn ghost" id="lk_zug" style="min-height:36px;padding:4px 12px;font-size:.88rem">Lehrkraft-Zugang</button>';
+  }
+  $('#lehrkraft').innerHTML=h;
+  const o=$('#lk_out');if(o)o.onclick=()=>{try{localStorage.removeItem(LK_KEY);}catch(e){}LEHRKRAFT=false;render();};
+  const z=$('#lk_zug');if(z)z.onclick=()=>{lkOffen=true;lkMsg='';lehrkraftZeichnen();const f=$('#lk_pw');if(f)f.focus();};
+  const n=$('#lk_no');if(n)n.onclick=()=>{lkOffen=false;lehrkraftZeichnen();};
+  const pr=async()=>{try{const hh=await sha256Hex($('#lk_pw').value);if(hh===PWD_HASH){try{localStorage.setItem(LK_KEY,hh);}catch(e){}LEHRKRAFT=true;lkOffen=false;render();}else{lkMsg='Das Kennwort stimmt nicht.';lehrkraftZeichnen();}}catch(e){lkMsg='Die Prüfung ist in diesem Browser nicht verfügbar (HTTPS nötig).';lehrkraftZeichnen();}};
+  const ok=$('#lk_ok');if(ok){ok.onclick=pr;$('#lk_pw').addEventListener('keydown',e=>{if(e.key==='Enter')pr();});}
+}
+function nachOben(){try{document.body.scrollIntoView({block:'start'});}catch(e){window.scrollTo(0,0);}}
+const anzGeprueft=()=>GUETER.filter(g=>S.ant[g.id].geprueft).length;
+const anzKipp=()=>KIPP.filter(k=>S.kipp[k.id]&&S.kipp[k.id].auf).length;
+const anzVn=()=>VN.filter(v=>S.vn[v.id]&&S.vn[v.id].auf).length;
+
+function tippN(key){return Math.min(3,(S.tipp&&S.tipp[key])||0);}
+function frei(key,laenge,min){return laenge>=min||tippN(key)>=2;}
+function tippBox(key,texte){
+  const n=tippN(key);let h='<div class="tipps">';
+  for(let i=0;i<n;i++)h+='<p class="tipp"><b>Tipp '+(i+1)+':</b> '+esc(texte[i])+'</p>';
+  if(n<3)h+='<button type="button" class="btn ghost" data-act="tipp" data-key="'+esc(key)+'">'+(n===0?'Ich komme nicht weiter: Tipp 1 anzeigen':'Tipp '+(n+1)+' anzeigen')+'</button>';
+  else h+='<p class="small muted">Alle Tipps sind aufgedeckt.</p>';
+  if(n>=2)h+='<p class="small muted">Mit zwei Tipps kannst du auch ohne eigenen Text weitermachen.</p>';
+  return h+'</div>';
+}
+function namen(ids){return ids.map(i=>PR[i].name).join(' oder ');}
+function tippsGut(g){
+  const r=bewerte(g), ids=r.rang;
+  const t3='Einordnung: '+g.w+g.p+'. Nach den Muss-Kriterien '+(ids.length===1?'bleibt nur '+PR[ids[0]].name+' übrig. Begründe, warum die anderen ausscheiden.':'kommen in Frage: '+namen(ids)+'. Frage dich, welches Prinzip die Eigenschaften dieses Gutes am besten nutzt.');
+  return [TIPP_GUT1,TIPP_GUT2[g.id],t3];
+}
+function tippsKipp(k){
+  const g=G(k.start),r=bewerte(Object.assign({},pick(g),k.aendere)),e=r.empfehlung;
+  const erg=e.typ==='zielkonflikt'?'Kein Prinzip erfüllt alle Muss-Kriterien (Zielkonflikt).':e.typ==='grenzfall'?'Grenzfall: '+PR[e.ids[0]].name+' und '+PR[e.ids[1]].name+'.':'Empfohlen wird: '+PR[e.ids[0]].name+'.';
+  return [TIPP_KIPP1,TIPP_KIPP2[k.id],'Ergebnis im Labor: '+erg+' Erkläre jetzt, wodurch es dazu kommt.'];
+}
+function tippsVn(v){return [TIPP_VN1,TIPP_VN2[v.id],'Ein Beispiel zum Anfangen. Vorteil: '+v.v[0]+' Nachteil: '+v.n[0]];}
+function tippsZus(){return [TIPP_ZUS[0],TIPP_ZUS[1],'Die ersten drei Aspekte der Musterlösung: '+ASPEKTE.slice(0,3).join('; ')+'.'];}
+function tippsAb(){return [TIPP_AB[0],TIPP_AB[1],'Satzbaustein: „Es gibt kein bestes Verfahren, weil … Bei hohem Wertanteil und planbarem Bedarf passt …, bei unregelmäßigem Bedarf passt …“'];}
+function zielText(){
+  if(!offen(2))return 'Für Stufe 2 fehlen noch '+(3-anzGeprueft())+' geprüfte Fälle.';
+  if(!offen(3))return 'Für Stufe 3 fehlen noch '+(2-anzKipp())+' bearbeitete Kipp-Aufträge (mit Musterantwort).';
+  if(!offen(4))return 'Für Stufe 4 fehlen noch '+(2-anzVn())+' aufgedeckte Prinzipien in Stufe 3.';
+  return '';
+}
+const offen=n=>n===1||LEHRKRAFT||(n===2&&anzGeprueft()>=3)||(n===3&&offen(2)&&anzKipp()>=2)||(n===4&&offen(3)&&anzVn()>=2);
+
+/* ---------- Bausteine ---------- */
+const ICON={
+  ok:'<svg class="ok-i" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor"/><path d="M5 9.3l2.6 2.6L13 6.5" stroke="#fff" stroke-width="2" fill="none"/></svg>',
+  warn:'<svg class="warn-i" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5l8 14H1z" fill="currentColor"/><path d="M9 6.5v4M9 12.2v1.2" stroke="#fff" stroke-width="1.8"/></svg>',
+  fail:'<svg class="bad-i" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor"/><path d="M6 6l6 6M12 6l-6 6" stroke="#fff" stroke-width="2"/></svg>'
+};
+function matrix(w,p,interaktiv){
+  let h='<div class="matrix" role="group" aria-label="ABC/XYZ-Matrix"><div></div>';
+  ['X','Y','Z'].forEach(x=>h+='<div class="h"><b>'+x+'</b>'+esc(VERB[x].s)+'</div>');
+  ['A','B','C'].forEach(a=>{
+    h+='<div class="h"><b>'+a+'</b>'+esc(WERT[a].s)+'</div>';
+    ['X','Y','Z'].forEach(x=>{
+      const on=w===a&&p===x, inner='<b class="k">'+a+x+'</b><small>'+esc(VERB[x].c)+'</small>';
+      h+=interaktiv?'<button type="button" data-act="cell" data-w="'+a+'" data-p="'+x+'" aria-pressed="'+on+'">'+inner+'</button>':'<div class="cell'+(on?' on':'')+'">'+inner+'</div>';
+    });
+  });
+  return h+'</div>';
+}
+function schema(id){
+  const n=PR[id].lagerN; let blk='';
+  if(n===0) blk='<rect class="lag0" x="88" y="20" width="44" height="26" rx="3" style="fill:none"/>';
+  else{const cols=n>=6?3:n, rows=n>=6?2:1, bw=11, gap=3, x0=110-(cols*(bw+gap)-gap)/2, y0=33-(rows*(bw+gap)-gap)/2;
+    for(let i=0;i<n;i++){blk+='<rect class="lag" x="'+(x0+(i%cols)*(bw+gap))+'" y="'+(y0+Math.floor(i/cols)*(bw+gap))+'" width="'+bw+'" height="'+bw+'" rx="2"/>';}}
+  let extra='';
+  if(id==='kanban') extra='<path d="M196 54 C150 66, 70 66, 28 54" stroke-dasharray="4 3"/><text x="86" y="63">Signal</text>';
+  if(id==='jit') extra='<text x="94" y="12">1 · 2 · 3</text>';
+  if(id==='dod') extra='<text x="84" y="12">Abruf bei Bedarf</text>';
+  return '<svg class="schema" viewBox="0 0 220 70" role="img" aria-label="'+esc(PR[id].lager)+'"><rect x="4" y="18" width="48" height="30" rx="4"/><text x="9" y="36">Lieferant</text><line x1="52" y1="33" x2="84" y2="33"/><line x1="136" y1="33" x2="168" y2="33"/><rect x="168" y="18" width="48" height="30" rx="4"/><text x="172" y="36">Produktion</text>'+blk+extra+'</svg>';
+}
+function pill(st){return '<span class="pill '+st+'">'+(st==='gruen'?ICON.ok+'geeignet':st==='gelb'?ICON.warn+'eingeschränkt':ICON.fail+'nicht geeignet')+'</span>';}
+function karten(res,opt){
+  opt=opt||{};
+  return '<div class="grid2">'+ORDER.map(id=>{
+    const r=res.sys[id], rec=res.empfehlung.ids.includes(id);
+    let tags='';
+    if(rec) tags+='<span class="tag">Empfehlung</span>';
+    if(opt.gewaehlt===id) tags+='<span class="tag alt">Deine Wahl</span>';
+    return '<article class="sys'+(rec?' rec':'')+'"><header><div><h3>'+esc(PR[id].name)+'</h3><div class="small">'+tags+'</div></div>'+pill(r.status)+'</header>'
+      +schema(id)+'<p class="small muted">'+esc(PR[id].ausloeser)+'</p>'
+      +'<ul class="chk">'+r.checks.map(c=>'<li>'+(c.ok===true?ICON.ok:c.ok==='warn'?ICON.warn:ICON.fail)+'<span>'+(c.ko?'<b>Muss:</b> ':'')+esc(c.text)+'<small>'+esc(c.quelle)+'</small></span></li>').join('')+'</ul></article>';
+  }).join('')+'</div>';
+}
+function banner(res){
+  const e=res.empfehlung;
+  if(e.typ==='klar') return '<div class="banner klar">Empfehlung: '+esc(PR[e.ids[0]].name)+'</div>';
+  if(e.typ==='grenzfall') return '<div class="banner grenz">Grenzfall: '+esc(PR[e.ids[0]].name)+' und '+esc(PR[e.ids[1]].name)+' sind beide vertretbar. Die Begründung entscheidet.</div>';
+  return '<div class="banner konflikt">Kein Prinzip erfüllt alle Muss-Kriterien. Das ist der Zielkonflikt zwischen niedrigen Lagerkosten und hoher Lieferbereitschaft: Entweder wird der Lieferant gewechselt oder verbessert, oder ein Sicherheitsbestand mit Kapitalbindung wird bewusst in Kauf genommen.</div>';
+}
+function seg(k,optionen,cur){
+  return '<div class="seg" role="group">'+optionen.map(o=>'<button type="button" class="opt" data-act="lab" data-k="'+k+'" data-v="'+o[0]+'" aria-pressed="'+(String(cur)===String(o[0]))+'">'+esc(o[1])+'</button>').join('')+'</div>';
+}
+
+/* ---------- Stufe 1: Entscheiden ---------- */
+function viewEntscheiden(){
+  const g=G(S.gut), a=S.ant[g.id];
+  const liste=GUETER.map(x=>{const y=S.ant[x.id];let d='<span class="dot">offen</span>';
+    if(y.geprueft){const q=urteil(x,y);d='<span class="dot '+(q.k==='ok'?'ok':q.k==='warn'?'warn':'bad')+'">geprüft</span>';}
+    return '<button type="button" class="opt" data-act="gut" data-id="'+x.id+'" aria-pressed="'+(x.id===S.gut)+'"><span>'+esc(x.kurz)+'</span>'+d+'</button>';}).join('');
+  const faktenH=g.fakten.map(f=>'<li>'+esc(f)+'</li>').join('');
+  const wahl=ORDER.map(id=>'<button type="button" class="opt" data-act="wahl" data-id="'+id+'" aria-pressed="'+(a.prinzip===id)+'">'+esc(PR[id].name)+'</button>').join('');
+  const starter=['Es handelt sich um ein ___-Gut, weil …','Deshalb eignet sich …','… scheidet aus, weil …','Voraussetzung ist, dass …'].map(t=>'<button type="button" class="chip" data-act="starter" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('');
+  let h='<details class="card soft" open><summary>Ausgangssituation</summary><p>Die BüroMax GmbH nutzt die Ergebnisse der ABC/XYZ-Analyse, um die Beschaffung zu optimieren. Zwischen möglichst geringen Lagerkosten und möglichst hoher Lieferbereitschaft besteht ein Zielkonflikt. Für jede Gütergruppe soll ein passendes Bereitstellungsprinzip gefunden werden. Du bist Teil des Teams von Benny Jung. Entscheide, begründe und prüfe dann dein Ergebnis.</p></details>';
+  h+='<div class="split"><div class="card"><h3 style="margin-bottom:8px">Gütergruppen</h3><div class="gutlist">'+liste+'</div><p class="small muted" style="margin-top:10px">Fertig geprüft: '+anzGeprueft()+' von '+GUETER.length+'. Ab 3 geprüften Fällen öffnet sich das Labor.</p></div>';
+  h+='<div class="stack"><div class="card"><h2>'+esc(g.name)+'</h2><ul class="facts">'+faktenH+'</ul></div>';
+  h+='<div class="card"><div class="step"><b>1</b><h3>Ordne das Gut in die Matrix ein</h3></div>'+matrix(a.w,a.p,true)+'</div>';
+  h+='<div class="card"><div class="step"><b>2</b><h3>Wähle das Bereitstellungsprinzip</h3></div><div class="grid2">'+wahl+'</div></div>';
+  h+='<div class="card"><div class="step"><b>3</b><h3>Begründe deine Wahl</h3></div><p class="small muted">Nenne die Informationen, die für dich entscheidend waren, und sage auch, warum mindestens ein anderes Prinzip nicht passt.</p><div class="chips" style="margin-bottom:8px">'+starter+'</div><textarea id="txt" data-bind="ant.'+g.id+'.text" aria-label="Deine Begründung">'+esc(a.text)+'</textarea>'
+    +tippBox('gut:'+g.id,tippsGut(g))+(msg?'<p class="msg" role="alert" style="margin-top:8px">'+esc(msg)+'</p>':'')+'<div class="row" style="margin-top:8px"><button type="button" class="btn" data-act="pruefen">'+(a.geprueft?'Erneut prüfen':'Prüfen')+'</button></div></div>';
+  if(a.geprueft) h+=ergebnis(g,a);
+  h+=uebersicht();
+  return h+'</div></div>';
+}
+function urteil(g,a){
+  const res=bewerte(g);
+  const ein=a.w===g.w&&a.p===g.p;
+  let k,t;
+  if(a.prinzip===g.loesung){k='ok';t='Passt zur Musterlösung.';}
+  else if(res.empfehlung.typ==='grenzfall'&&res.empfehlung.ids.includes(a.prinzip)){k='warn';t='Vertretbar (Grenzfall). Die Musterlösung wählt '+PR[g.loesung].name+'.';}
+  else if(res.sys[a.prinzip].status==='rot'){k='bad';t='Nicht geeignet: Ein Muss-Kriterium ist nicht erfüllt.';}
+  else{k='warn';t='Möglich, aber weniger passend als '+PR[g.loesung].name+'.';}
+  return {k:k,t:t,ein:ein,res:res};
+}
+function ergebnis(g,a){
+  const u=urteil(g,a), res=u.res;
+  const kern=g.kern.map((t,i)=>'<label class="tick"><input type="checkbox" data-act="kern" data-i="'+i+'"'+(a.kern[i]?' checked':'')+'><span>'+esc(t)+'</span></label>').join('');
+  const n=Object.values(a.kern).filter(Boolean).length;
+  const daten='<span class="dot">Wertanteil '+g.w+'</span> <span class="dot">Verbrauch '+g.p+'</span> <span class="dot">Lieferant: '+(g.l?'zugesichert':'nicht zugesichert')+'</span> <span class="dot">Lieferzeit: '+g.t+'</span> <span class="dot">Anbindung: '+['nicht möglich','möglich, nicht eingerichtet','digital eingerichtet'][g.d]+'</span>';
+  let h='<div class="card" id="ergebnis"><h2 style="margin-bottom:8px">Auswertung</h2><div class="stack">';
+  h+='<div class="row"><span class="pill '+(u.ein?'gruen':'rot')+'">'+(u.ein?ICON.ok+'Einordnung richtig: '+g.w+g.p:ICON.fail+'Einordnung: '+(a.w||'?')+(a.p||'?')+', richtig wäre '+g.w+g.p)+'</span><span class="pill '+(u.k==='ok'?'gruen':u.k==='warn'?'gelb':'rot')+'">'+(u.k==='ok'?ICON.ok:u.k==='warn'?ICON.warn:ICON.fail)+esc(u.t)+'</span></div>';
+  h+='<div><b class="small">Daten aus Anlage 1:</b> '+daten+'<p class="small muted" style="margin-top:4px">'+esc(g.hinweis)+'</p></div>';
+  if(u.k!=='ok'&&!(u.k==='warn'&&res.empfehlung.typ==='grenzfall'&&res.empfehlung.ids.includes(a.prinzip))){const sc=res.sys[a.prinzip].checks,f=sc.find(c=>c.ok===false)||sc.find(c=>c.ok==='warn');h+='<div class="card soft"><b>Das hat nicht gepasst:</b> '+(f?esc(f.text):'Ein anderes Prinzip passt besser.')+'<p class="small muted" style="margin:6px 0 0">Ändere deine Wahl oben, passe die Begründung an und prüfe erneut. Die Karten unten zeigen dir, warum.</p></div>';}
+  h+=banner(res)+karten(res,{gewaehlt:a.prinzip});
+  h+='<div><h3>Musterbegründung: Was hast du genannt?</h3><p class="small muted">Hake ab, was in deiner Begründung vorkam.</p>'+kern+'<p><b>'+n+' von '+g.kern.length+' Kernaussagen genannt.</b></p></div>';
+  h+='<div class="row"><button type="button" class="btn ghost" data-act="insLabor" data-id="'+g.id+'"'+(offen(2)?'':' disabled')+'>Im Labor ausprobieren'+(offen(2)?'':' (noch gesperrt)')+'</button></div>';
+  return h+'</div></div>';
+}
+function uebersicht(){
+  const zeilen=GUETER.map(g=>{const a=S.ant[g.id];let b='–';if(a.geprueft){const u=urteil(g,a);b=u.k==='ok'?'passt':u.k==='warn'?'vertretbar / weniger passend':'nicht geeignet';}
+    return '<tr><td>'+esc(g.kurz)+'</td><td>'+(a.w&&a.p?a.w+a.p:'–')+'</td><td>'+(a.prinzip?esc(PR[a.prinzip].name):'–')+'</td><td>'+b+'</td></tr>';}).join('');
+  return '<div class="card"><h3>Ergebnisübersicht für die Präsentation</h3><p class="small muted">Denkt daran: Jede Entscheidung muss begründet sein.</p><div class="wrapx"><table><thead><tr><th>Gut</th><th>Einordnung</th><th>Prinzip</th><th>Ergebnis</th></tr></thead><tbody>'+zeilen+'</tbody></table></div>'
+   +'<div class="row" style="margin-top:8px"><button type="button" class="btn ghost" data-act="kopieren">Ergebnisse als Text kopieren</button></div>'
+   +(kopie?'<p class="small muted" style="margin-top:8px">Kopieren wurde blockiert. Markiere den Text und kopiere ihn selbst:</p><textarea id="kopiefeld" readonly>'+esc(kopie)+'</textarea>':'')+'</div>';
+}
+function ergebnisText(){
+  return GUETER.map(g=>{const a=S.ant[g.id];return g.name+'\nEinordnung: '+(a.w&&a.p?a.w+a.p:'–')+'\nPrinzip: '+(a.prinzip?PR[a.prinzip].name:'–')+'\nBegründung: '+(a.text||'–');}).join('\n\n');
+}
+
+/* ---------- Stufe 2: Labor ---------- */
+function laborStart(){const L=S.labor;return {w:L.w,p:L.p,l:L.l,t:L.t,d:L.d};}
+function viewLabor(){
+  const L=S.labor, res=bewerte(laborStart());
+  const vorl=GUETER.map(g=>'<button type="button" class="opt" data-act="vorlage" data-id="'+g.id+'" aria-pressed="'+(L.vorlage===g.id)+'">'+esc(g.kurz)+'</button>').join('');
+  let h='<div class="card soft"><h2>Labor</h2><p>Stelle die Bedingungen ein und beobachte, wie sich die Eignung der vier Prinzipien ändert. Die Muss-Kriterien entscheiden zuerst, danach zählen die Eignungshinweise.</p></div>';
+  h+='<div class="card"><div class="ctrl"><b>Vorlage laden (Daten aus Anlage 1)</b><div class="seg">'+vorl+'</div></div></div>';
+  h+='<div class="card stack"><div class="ctrl"><b>Wertanteil und Verbrauch (ABC/XYZ)</b>'+matrix(L.w,L.p,true)+'</div>';
+  h+='<div class="grid2"><div class="ctrl"><b>Lieferant</b>'+seg('l',[[true,'Qualität und Pünktlichkeit zugesichert'],[false,'nicht zugesichert']],L.l)+'</div>';
+  h+='<div class="ctrl"><b>Lieferzeit</b>'+seg('t',[['kurz','kurz (z. B. bis 5 Arbeitstage)'],['lang','lang']],L.t)+'</div></div>';
+  h+='<div class="ctrl"><b>Bestellanbindung</b>'+seg('d',[[0,'nicht möglich'],[1,'möglich, noch nicht eingerichtet'],[2,'digital angebunden, automatisiert']],L.d)+'</div></div>';
+  h+=banner(res)+karten(res);
+  h+='<div class="card"><h2 style="margin-bottom:6px">Kipp-Aufträge</h2><p class="muted">Lade ein Szenario, beschreibe die Veränderung in eigenen Worten und decke dann die Musterantwort auf. Zwei bearbeitete Aufträge öffnen Stufe 3.</p><div class="stack">';
+  KIPP.forEach((k,i)=>{
+    const st=kippSt(k.id);
+    const res2=bewerte(Object.assign({},pick(G(k.start)),k.aendere));
+    h+='<div class="card" style="background:var(--page)"><h3>'+(i+1)+'. '+esc(k.titel)+'</h3><p>'+esc(k.frage)+'</p><div class="row" style="margin-bottom:8px"><button type="button" class="btn ghost" data-act="szenario" data-id="'+k.id+'">Szenario laden</button></div>'
+     +tippBox('kipp:'+k.id,tippsKipp(k))+'<textarea data-bind="kipp.'+k.id+'.text" aria-label="Deine Antwort zu Auftrag '+(i+1)+'">'+esc(st.text)+'</textarea>'
+     +'<div class="row" style="margin-top:8px"><button type="button" class="btn" data-act="kippauf" data-id="'+k.id+'">'+(st.auf?'Musterantwort ausblenden':'Musterantwort aufdecken')+'</button></div>'
+     +(msgFor==='kipp'+k.id?'<p class="msg" role="alert" style="margin-top:8px">'+esc(msg)+'</p>':'')
+     +(st.auf?'<div class="card soft" style="margin-top:8px"><b>Ergebnis im Labor:</b> '+(res2.empfehlung.typ==='zielkonflikt'?'kein Prinzip erfüllt alle Muss-Kriterien (Zielkonflikt)':res2.empfehlung.typ==='grenzfall'?'Grenzfall '+esc(PR[res2.empfehlung.ids[0]].kurz)+' / '+esc(PR[res2.empfehlung.ids[1]].kurz):esc(PR[res2.empfehlung.ids[0]].name))+'<p style="margin-top:6px">'+esc(k.muster)+'</p></div>':'')+'</div>';
+  });
+  return h+'</div></div>';
+}
+function pick(g){return {w:g.w,p:g.p,l:g.l,t:g.t,d:g.d};}
+let msgFor='';
+
+/* ---------- Stufe 3: Vor- und Nachteile ---------- */
+function viewVN(){
+  let h='<div class="card soft"><h2>Vor- und Nachteile</h2><p>Sammle zuerst eigene Vor- und Nachteile. Danach deckst du die Musterlösung auf und hakst ab, was du schon hattest. Zwei aufgedeckte Prinzipien öffnen Stufe 4.</p></div>';
+  VN.forEach(v=>{
+    const st=vnSt(v.id);
+    h+='<div class="card"><h3 style="margin-bottom:8px">'+esc(v.name)+'</h3><div class="cols"><div><label for="v-'+v.id+'"><b>Vorteile</b></label><textarea id="v-'+v.id+'" data-bind="vn.'+v.id+'.vor">'+esc(st.vor)+'</textarea></div><div><label for="n-'+v.id+'"><b>Nachteile</b></label><textarea id="n-'+v.id+'" data-bind="vn.'+v.id+'.nach">'+esc(st.nach)+'</textarea></div></div>';
+    h+='<div style="margin-top:8px">'+tippBox('vn:'+v.id,tippsVn(v))+'</div><div class="row" style="margin-top:8px"><button type="button" class="btn" data-act="vnauf" data-id="'+v.id+'">'+(st.auf?'Musterlösung ausblenden':'Musterlösung aufdecken')+'</button></div>';
+    if(msgFor==='vn'+v.id) h+='<p class="msg" role="alert" style="margin-top:8px">'+esc(msg)+'</p>';
+    if(st.auf){
+      const tk=(arr,pre)=>arr.map((t,i)=>'<label class="tick"><input type="checkbox" data-act="vnhaken" data-id="'+v.id+'" data-k="'+pre+i+'"'+(st.h[pre+i]?' checked':'')+'><span>'+esc(t)+'</span></label>').join('');
+      const nv=v.v.filter((t,i)=>st.h['v'+i]).length, nn=v.n.filter((t,i)=>st.h['n'+i]).length;
+      h+='<div class="cols" style="margin-top:10px"><div class="vor"><b>Vorteile</b>'+tk(v.v,'v')+'<p class="small"><b>'+nv+' von '+v.v.length+' hattest du.</b></p></div><div class="nach"><b>Nachteile</b>'+tk(v.n,'n')+'<p class="small"><b>'+nn+' von '+v.n.length+' hattest du.</b></p></div></div>';
+    }
+    h+='</div>';
+  });
+  h+='<div class="card"><h3>Weitere Hilfen (Anlage 4)</h3><ul class="facts"><li><a href="https://studyflix.de/wirtschaft/just-in-time-1629" target="_blank" rel="noopener">Just-in-time (Studyflix)</a></li><li><a href="https://studyflix.de/wirtschaft/just-in-sequence-jis-1714" target="_blank" rel="noopener">Just-in-sequence (Studyflix)</a></li><li><a href="https://youtu.be/8wY2hsIosFM" target="_blank" rel="noopener">Just-in-time und Kanban (Video, Englisch, deutsche Untertitel möglich)</a></li><li><a href="https://youtu.be/aYN5yQv7M7w" target="_blank" rel="noopener">Kanban (Video)</a></li></ul></div>';
+  return h;
+}
+
+/* ---------- Stufe 4: Zusatzaufgabe und Abschluss ---------- */
+function viewAbschluss(){
+  S.zusatz=Object.assign({text:'',auf:false,h:{}},S.zusatz);S.abschluss=Object.assign({text:'',auf:false},S.abschluss);const z=S.zusatz, ab=S.abschluss;
+  let h='<div class="card soft"><h2>Vorratsplanung und Abschluss</h2></div>';
+  h+='<div class="card"><h3>Zusatzaufgabe für Schnelle</h3><p>Bei den anderen Gütergruppen der BüroMax GmbH soll eine Vorratsbeschaffung erfolgen. Zeige auf, welche Aspekte bei der Beschaffungsplanung zu berücksichtigen sind.</p><textarea data-bind="zusatz.text" aria-label="Aspekte der Beschaffungsplanung">'+esc(z.text)+'</textarea>'+tippBox('zus',tippsZus())+'<div class="row" style="margin-top:8px"><button type="button" class="btn" data-act="zusauf">'+(z.auf?'Musterlösung ausblenden':'Musterlösung aufdecken')+'</button></div>'+(msgFor==='zus'?'<p class="msg" role="alert" style="margin-top:8px">'+esc(msg)+'</p>':'');
+  if(z.auf){const n=ASPEKTE.filter((t,i)=>z.h[i]).length;h+='<div class="card soft" style="margin-top:8px"><b>Zu beachten sind zum Beispiel:</b>'+ASPEKTE.map((t,i)=>'<label class="tick"><input type="checkbox" data-act="zushaken" data-i="'+i+'"'+(z.h[i]?' checked':'')+'><span>'+esc(t)+'</span></label>').join('')+'<p><b>'+n+' von '+ASPEKTE.length+' hattest du.</b></p></div>';}
+  h+='</div>';
+  h+='<div class="card"><h3>Abschlussfrage</h3><p>Welches ist das beste Verfahren für einen Hersteller von Büromöbeln? Antworte mit deinen Erfahrungen aus Fällen und Labor.</p><textarea data-bind="abschluss.text" aria-label="Antwort auf die Abschlussfrage">'+esc(ab.text)+'</textarea>'+tippBox('ab',tippsAb())+'<div class="row" style="margin-top:8px"><button type="button" class="btn" data-act="abauf">'+(ab.auf?'Hinweis ausblenden':'Hinweis aufdecken')+'</button></div>'+(msgFor==='ab'?'<p class="msg" role="alert" style="margin-top:8px">'+esc(msg)+'</p>':'');
+  if(ab.auf) h+='<div class="card soft" style="margin-top:8px"><p>Ein einheitlich bestes Verfahren gibt es nicht. Welches Prinzip passt, hängt von der Gütergruppe ab: vom Wertanteil (ABC), von der Vorhersagegenauigkeit (XYZ), von Zuverlässigkeit und Lieferzeit des Lieferanten und davon, ob Bestellungen digital angebunden sind. Die BüroMax GmbH nutzt deshalb mehrere Prinzipien nebeneinander.</p><p><b>Vergleiche:</b> Der Chatbot in Anlage 2 antwortet auf dieselbe Frage nur sehr allgemein („hängt von verschiedenen Faktoren ab“). Welche konkreten Kriterien hast du dem voraus?</p></div>';
+  h+='</div>';
+  h+='<div class="card"><h3>Schon fertig?</h3><p><a href="https://www.learningsnacks.de/share/367826/3ac51d4996cc2511aa20685d6a07179884ba9f54" target="_blank" rel="noopener">Learningsnack zu den Bereitstellungsprinzipien</a></p><div class="row"><button type="button" class="btn ghost" data-act="reset">'+(resetFrage?'Wirklich alle Eingaben löschen?':'Neu beginnen')+'</button>'+(resetFrage?'<button type="button" class="btn" data-act="resetja">Ja, löschen</button><button type="button" class="btn ghost" data-act="resetnein">Abbrechen</button>':'')+'</div></div>';
+  return h;
+}
+
+/* ---------- Rendern und Ereignisse ---------- */
+function render(){
+  const y=window.scrollY;
+  const st=[[1,'Stufe 1','Entscheiden'],[2,'Stufe 2','Labor'],[3,'Stufe 3','Vor- und Nachteile'],[4,'Stufe 4','Abschluss']];
+  $('#path').innerHTML=st.map(s=>'<button type="button" data-act="stufe" data-n="'+s[0]+'"'+(offen(s[0])?'':' disabled')+(S.stufe===s[0]?' aria-current="step"':'')+'><small>'+s[1]+(offen(s[0])?'':' (gesperrt)')+'</small>'+s[2]+'</button>').join('');
+  lehrkraftZeichnen();
+  $('#ziel').textContent=zielText();
+  const v=[null,viewEntscheiden,viewLabor,viewVN,viewAbschluss][S.stufe];
+  $('#app').innerHTML=v();
+  window.scrollTo(0,y);
+}
+function setPath(path,val){const p=path.split('.');let o=S;for(let i=0;i<p.length-1;i++){if(o[p[i]]===undefined||o[p[i]]===null)o[p[i]]={};o=o[p[i]];}o[p[p.length-1]]=val;}
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.bind){setPath(t.dataset.bind,t.value);save();}});
+document.addEventListener('change',e=>{
+  const t=e.target,act=t.dataset&&t.dataset.act;if(!act)return;
+  if(act==='kern'){S.ant[S.gut].kern[t.dataset.i]=t.checked;}
+  else if(act==='vnhaken'){vnSt(t.dataset.id).h[t.dataset.k]=t.checked;}
+  else if(act==='zushaken'){S.zusatz.h[t.dataset.i]=t.checked;}
+  else return;
+  save();render();
+});
+function textLaenge(s){return (s||'').trim().length;}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-act]');if(!b||b.disabled)return;
+  const d=b.dataset,a=d.act;msg='';msgFor='';
+  const g=G(S.gut),ant=S.ant[S.gut];
+  if(a==='stufe'){S.stufe=+d.n;save();render();nachOben();return;}
+  else if(a==='gut'){S.gut=d.id;kopie='';}
+  else if(a==='cell'){if(S.stufe===1){ant.w=d.w;ant.p=d.p;}else{S.labor.w=d.w;S.labor.p=d.p;S.labor.vorlage=null;}}
+  else if(a==='wahl'){ant.prinzip=d.id;}
+  else if(a==='starter'){const ta=$('#txt');const cur=ta?ta.value:ant.text;ant.text=(cur&&!/\s$/.test(cur)?cur+' ':cur)+d.t+' ';}
+  else if(a==='pruefen'){
+    if(!ant.w||!ant.p) msg='Ordne das Gut zuerst in die Matrix ein.';
+    else if(!ant.prinzip) msg='Wähle ein Bereitstellungsprinzip.';
+    else if(!frei('gut:'+S.gut,textLaenge(ant.text),15)) msg='Schreibe eine Begründung (ein bis zwei Sätze) oder hole dir zwei Tipps.';
+    else{ant.geprueft=true;save();render();const el=$('#ergebnis');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});return;}
+  }
+  else if(a==='insLabor'){const x=G(d.id);S.labor={w:x.w,p:x.p,l:x.l,t:x.t,d:x.d,vorlage:x.id};S.stufe=2;save();render();nachOben();return;}
+  else if(a==='kopieren'){
+    const txt=ergebnisText();kopie='';
+    try{navigator.clipboard.writeText(txt).then(()=>{msg='Kopiert.';},()=>{kopie=txt;render();}).finally(()=>{});}catch(err){kopie=txt;}
+    if(!kopie){b.textContent='Kopiert';save();return;}
+  }
+  else if(a==='vorlage'){const x=G(d.id);S.labor={w:x.w,p:x.p,l:x.l,t:x.t,d:x.d,vorlage:x.id};}
+  else if(a==='lab'){let v=d.v;if(d.k==='l')v=(v==='true');else if(d.k==='d')v=+v;S.labor[d.k]=v;S.labor.vorlage=null;}
+  else if(a==='szenario'){const k=KIPP.find(x=>x.id===d.id),x=G(k.start);S.labor=Object.assign({w:x.w,p:x.p,l:x.l,t:x.t,d:x.d,vorlage:null},k.aendere);save();render();nachOben();return;}
+  else if(a==='kippauf'){const st=kippSt(d.id);
+    if(!st.auf&&!frei('kipp:'+d.id,textLaenge(st.text),10)){msg='Schreibe zuerst deine eigene Antwort oder hole dir zwei Tipps.';msgFor='kipp'+d.id;}else st.auf=!st.auf;}
+  else if(a==='vnauf'){const st=vnSt(d.id);
+    if(!st.auf&&!frei('vn:'+d.id,textLaenge(st.vor)+textLaenge(st.nach),20)){msg='Sammle zuerst eigene Vor- und Nachteile oder hole dir zwei Tipps.';msgFor='vn'+d.id;}else st.auf=!st.auf;}
+  else if(a==='zusauf'){if(!S.zusatz.auf&&!frei('zus',textLaenge(S.zusatz.text),15)){msg='Schreibe zuerst deine eigenen Aspekte oder hole dir zwei Tipps.';msgFor='zus';}else S.zusatz.auf=!S.zusatz.auf;}
+  else if(a==='abauf'){if(!S.abschluss.auf&&!frei('ab',textLaenge(S.abschluss.text),15)){msg='Schreibe zuerst deine eigene Antwort oder hole dir zwei Tipps.';msgFor='ab';}else S.abschluss.auf=!S.abschluss.auf;}
+  else if(a==='tipp'){S.tipp=S.tipp||{};S.tipp[d.key]=Math.min(3,(S.tipp[d.key]||0)+1);}
+  else if(a==='reset'){resetFrage=true;}
+  else if(a==='resetnein'){resetFrage=false;}
+  else if(a==='resetja'){S=fresh();resetFrage=false;}
+  save();render();
+});
+render();
+</script>
+<script>
+/* Höhenmeldung an die Lehrseite (eingebettet per iframe), wie in lagerkennzahlen/rechner.html */
+(function(){
+  if (window.parent === window) return;
+  var letzte = 0;
+  function melde(){ window.requestAnimationFrame(function(){ var h = document.documentElement.scrollHeight;
+    if (Math.abs(h - letzte) > 4){ letzte = h; try { window.parent.postMessage({ typ: "rechner-hoehe", hoehe: h }, "*"); } catch (e) {} } }); }
+  if (window.ResizeObserver) new ResizeObserver(melde).observe(document.body);
+  window.addEventListener("load", melde);
+})();
+</script>
+</body>
+</html>

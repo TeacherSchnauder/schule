@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bereitstellungsprinzipien · Lernplattform</title>
+<meta name="description" content="Bereitstellungsprinzipien: Just-in-time und Just-in-sequence, externes Kanban, Delivery on demand und Vorratsbeschaffung unterscheiden und begründet auswählen – mit Lernpfad in vier Stufen am Fall BüroMax GmbH.">
+<link rel="stylesheet" href="../../../assets/css/site.css">
+<style>
+  .prinzipien svg text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+</style>
+</head>
+<body>
+<div id="kopf"></div>
+<div id="krumen"></div>
+
+<main class="inhalt">
+
+  <div class="titelblock">
+    <p class="augenbraue">Beschaffung · Bereitstellung</p>
+    <h1>Bereitstellungsprinzipien</h1>
+    <p class="lead">Wie kommt das Material in die Produktion: auf Vorrat, genau im Takt der Fertigung, auf ein Signal hin oder erst bei konkretem Bedarf? Welches Prinzip passt, hängt vom Gut und vom Lieferanten ab. Im Lernpfad entscheiden Sie für fünf Gütergruppen der BüroMax GmbH, begründen Ihre Wahl und prüfen im Labor, wann eine Entscheidung kippt.</p>
+    <div class="knopfzeile">
+      <a class="knopf primaer" href="spiel.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>
+        Lernpfad starten
+      </a>
+      <a class="knopf sekundaer" href="#ueberblick">Zum Überblick</a>
+    </div>
+  </div>
+
+  <!-- ============================ Einführung ============================ -->
+  <section>
+    <h2 id="einfuehrung">Worum es geht</h2>
+    <div class="schmal">
+      <p>Jedes Unternehmen steht vor demselben Zielkonflikt: Ein großes Lager sichert die Lieferbereitschaft, bindet aber Kapital und verursacht Lagerkosten. Ein kleines Lager spart Kosten, macht aber abhängig von pünktlichen Lieferungen. Bereitstellungsprinzipien beschreiben, wie ein Unternehmen diesen Konflikt für eine Gütergruppe löst.</p>
+      <p>Grundlage der Entscheidung ist die <a href="../abc-xyz-analyse/">ABC/XYZ-Analyse</a>: Sie zeigt, wie hoch der Wertanteil eines Gutes ist (A, B, C) und wie gut sich sein Verbrauch vorhersagen lässt (X, Y, Z). Dazu kommen die Eigenschaften des Lieferanten: Sichert er Qualität und Pünktlichkeit zu, wie lang ist die Lieferzeit, lassen sich Bestellungen digital automatisieren?</p>
+    </div>
+  </section>
+
+  <!-- ============================ Überblick ============================ -->
+  <section>
+    <h2 id="ueberblick">Die vier Prinzipien im Überblick</h2>
+    <div class="ablauf prinzipien">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Materialfluss vom Lieferanten zur Produktion bei den vier Bereitstellungsprinzipien: Vorrat mit großem Lager, JIT mit Lieferung im Takt, Kanban mit Signal zurück zum Lieferanten, Delivery on demand mit Abruf bei Bedarf.">
+        <g font-size="13" fill="#2B3A4A">
+          <!-- Zeile 1 Vorrat -->
+          <text x="0" y="40" font-weight="700">Vorratsbeschaffung</text>
+          <rect x="200" y="20" width="90" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="245" y="42" text-anchor="middle">Lieferant</text>
+          <line x1="290" y1="37" x2="380" y2="37" stroke="#5B6270" stroke-width="2"/>
+          <g fill="#17518C"><rect x="388" y="20" width="14" height="14" rx="2"/><rect x="406" y="20" width="14" height="14" rx="2"/><rect x="424" y="20" width="14" height="14" rx="2"/><rect x="388" y="38" width="14" height="14" rx="2"/><rect x="406" y="38" width="14" height="14" rx="2"/><rect x="424" y="38" width="14" height="14" rx="2"/></g>
+          <line x1="446" y1="37" x2="536" y2="37" stroke="#5B6270" stroke-width="2"/>
+          <rect x="540" y="20" width="100" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="590" y="42" text-anchor="middle">Produktion</text>
+          <text x="660" y="42" fill="#5B6270">großes Lager</text>
+          <!-- Zeile 2 JIT -->
+          <text x="0" y="110" font-weight="700">JIT / JIS</text>
+          <rect x="200" y="90" width="90" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="245" y="112" text-anchor="middle">Lieferant</text>
+          <line x1="290" y1="107" x2="536" y2="107" stroke="#5B6270" stroke-width="2"/>
+          <rect x="406" y="100" width="14" height="14" rx="2" fill="#17518C"/>
+          <text x="413" y="88" text-anchor="middle" fill="#5B6270">1 · 2 · 3</text>
+          <rect x="540" y="90" width="100" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="590" y="112" text-anchor="middle">Produktion</text>
+          <text x="660" y="112" fill="#5B6270">im Takt</text>
+          <!-- Zeile 3 Kanban -->
+          <text x="0" y="180" font-weight="700">(Externes) Kanban</text>
+          <rect x="200" y="160" width="90" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="245" y="182" text-anchor="middle">Lieferant</text>
+          <line x1="290" y1="177" x2="380" y2="177" stroke="#5B6270" stroke-width="2"/>
+          <g fill="#17518C"><rect x="397" y="170" width="14" height="14" rx="2"/><rect x="415" y="170" width="14" height="14" rx="2"/></g>
+          <line x1="446" y1="177" x2="536" y2="177" stroke="#5B6270" stroke-width="2"/>
+          <rect x="540" y="160" width="100" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="590" y="182" text-anchor="middle">Produktion</text>
+          <path d="M590 196 C560 222, 280 222, 245 196" fill="none" stroke="#17518C" stroke-width="1.6" stroke-dasharray="5 4"/>
+          <text x="418" y="232" text-anchor="middle" fill="#17518C">Signal (Karte oder elektronisch)</text>
+          <text x="660" y="182" fill="#5B6270">Pull-Prinzip</text>
+          <!-- Zeile 4 DoD -->
+          <text x="0" y="270" font-weight="700">Delivery on demand</text>
+          <rect x="200" y="250" width="90" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="245" y="272" text-anchor="middle">Lieferant</text>
+          <line x1="290" y1="267" x2="536" y2="267" stroke="#5B6270" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="413" y="258" text-anchor="middle" fill="#5B6270">Abruf bei Bedarf</text>
+          <rect x="540" y="250" width="100" height="34" rx="6" fill="#E3EDF7" stroke="#17518C"/><text x="590" y="272" text-anchor="middle">Produktion</text>
+          <text x="660" y="272" fill="#5B6270">kaum Lager</text>
+        </g>
+      </svg>
+    </div>
+    <div class="tabellenrahmen" style="margin-top:16px">
+      <table class="daten">
+        <thead><tr><th style="width:22%">Prinzip</th><th>Was löst die Lieferung aus?</th><th style="width:36%">Voraussetzungen</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Just-in-time (JIT)</strong><br>Just-in-sequence (JIS)</td><td>Geliefert wird genau dann, wenn die Produktion das Material braucht, in kleinen Mengen. Bei JIS zusätzlich in der Reihenfolge, in der die Teile verbaut werden.</td><td>Präzise Bedarfsplanung, zuverlässiger Lieferant mit hoher Qualität, enge Kommunikation, leistungsfähige Logistik.</td></tr>
+          <tr><td><strong>(Externes) Kanban</strong></td><td>Ein Signal (Karte oder elektronisch) löst die Nachbestellung aus, sobald der Bestand zur Neige geht. Bestellt wird nach dem tatsächlichen Verbrauch (Pull-Prinzip).</td><td>Zuverlässiger Lieferant mit kurzen Lieferzeiten, eingebunden in den Kreislauf; bei externem Kanban eine (digitale) Bestellanbindung.</td></tr>
+          <tr><td><strong>Delivery on demand</strong></td><td>Geliefert wird auf Abruf, sobald ein konkreter Bedarf entsteht, ohne festen Lieferzeitpunkt (Pull-Prinzip).</td><td>Lieferant, der kurze Lieferzeiten zuverlässig einhält; schnelle Übermittlung des Bedarfs.</td></tr>
+          <tr><td><strong>Vorratsbeschaffung</strong></td><td>Große Mengen werden vorab beschafft und gelagert, um den künftigen Bedarf zu decken (Push-Prinzip).</td><td>Lagerraum und tragbare Kosten für Lager und Kapitalbindung.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p class="hinweis"><strong>Begriffe auf unterschiedlichen Ebenen:</strong> Die vier Prinzipien werden im Unterricht als Alternativen gegenübergestellt. Genau genommen ist Kanban ein Steuerungsverfahren, mit dem sich auch eine Just-in-time-Versorgung umsetzen lässt; die Prinzipien schließen sich also nicht immer aus. JIS ist eine Sonderform von JIT. „Delivery on demand“ ist kein fest definierter Fachbegriff; in Lehrbüchern finden Sie Ähnliches auch als Einzelbeschaffung im Bedarfsfall.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Lernpfad ============================ -->
+  <section>
+    <h2 id="lernpfad">Lernpfad: Bereitstellung bei der BüroMax GmbH</h2>
+    <div class="schmal">
+      <p>Die BüroMax GmbH stellt Büromöbel her und will für fünf Gütergruppen das passende Bereitstellungsprinzip finden. Der Lernpfad hat vier Stufen: <strong>Entscheiden</strong> (einordnen, wählen, begründen und mit einem Voraussetzungs-Check prüfen), <strong>Labor</strong> (Bedingungen verändern und erklären, warum die Empfehlung kippt), <strong>Vor- und Nachteile</strong> und <strong>Abschluss</strong> mit Vorratsplanung und der Frage nach dem „besten“ Verfahren. Wer nicht weiterkommt, holt sich bis zu drei Tipps. Der Fortschritt bleibt auf dem eigenen Gerät gespeichert.</p>
+    </div>
+    <div class="rahmen">
+      <iframe id="rechner-rahmen" src="spiel.html" title="Lernpfad Bereitstellungsprinzipien" loading="lazy"></iframe>
+    </div>
+    <div class="knopfzeile">
+      <a class="knopf sekundaer" href="spiel.html">Lernpfad in eigenem Fenster öffnen</a>
+    </div>
+    <div class="schmal" style="margin-top:14px">
+      <p class="hinweis"><strong>Hinweis zum Modell:</strong> Die Ampel im Lernpfad (geeignet, eingeschränkt, nicht geeignet) beruht auf einem vereinfachten Entscheidungsmodell mit Muss-Kriterien und Hinweisen. Es zeigt, welche Kriterien eine Entscheidung stützen, ersetzt aber keine Kostenrechnung. Die BüroMax GmbH ist ein fiktives Unternehmen.</p>
+    </div>
+  </section>
+
+  <!-- ============================ Einsatz ============================ -->
+  <section>
+    <h2 id="einsatz">Hinweise zum Einsatz</h2>
+    <div class="schmal">
+      <ul class="liste">
+        <li><strong>Bildungsplan:</strong> Wirtschaftsgymnasium VBWL, J1, BPE 6 (Beschaffung). Baut auf der ABC/XYZ-Analyse auf.</li>
+        <li><strong>Sozialform:</strong> Gruppenarbeit mit 3 bis 5 Personen an einem Gerät oder Einzelarbeit. Die Ergebnisübersicht in Stufe 1 lässt sich für die Präsentation als Text kopieren.</li>
+        <li><strong>Zeit:</strong> etwa eine Doppelstunde für alle vier Stufen (Schätzung).</li>
+        <li><strong>Freischaltung:</strong> Stufe 2 nach drei geprüften Fällen, Stufe 3 nach zwei Kipp-Aufträgen, Stufe 4 nach zwei aufgedeckten Prinzipien. Nach zwei Tipps geht es auch ohne eigenen Text weiter, niemand bleibt hängen.</li>
+        <li><strong>Lehrkraft-Zugang:</strong> unten im Lernpfad, gleiches Kennwort wie im Lernpfad Lagerkennzahlen. Er öffnet alle Stufen.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================ Merkkasten ============================ -->
+  <section>
+    <h2 id="zusammenfassung">Zusammenfassung</h2>
+    <div class="merkkasten">
+      <h2 style="margin:0 0 12px;font-size:1.25rem">Bereitstellungsprinzipien</h2>
+      <dl>
+        <div><dt>Zielkonflikt</dt><dd>Geringe Lagerkosten und Kapitalbindung gegen hohe Lieferbereitschaft.</dd></div>
+        <div><dt>Push und Pull</dt><dd>Vorratsbeschaffung beschafft vorab (Push). Kanban und Delivery on demand richten sich nach dem tatsächlichen Verbrauch bzw. Bedarf (Pull).</dd></div>
+        <div><dt>Entscheidungsfragen</dt><dd>Wie hoch ist der Wertanteil (ABC)? Wie gut lässt sich der Verbrauch vorhersagen (XYZ)? Sichert der Lieferant Qualität und Pünktlichkeit zu, wie lang ist die Lieferzeit? Lassen sich Bestellungen automatisieren?</dd></div>
+        <div><dt>Kein bestes Verfahren</dt><dd>Welches Prinzip passt, hängt von der Gütergruppe und vom Lieferanten ab. Unternehmen nutzen deshalb mehrere Prinzipien nebeneinander.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<div id="fuss"></div>
+
+<script src="../../../data/inhalte.js"></script>
+<script src="../../../assets/js/site.js"></script>
+<script>Schule.seite({ tiefe: 3, typ: "thema", id: "bereitstellungsprinzipien" });</script>
+<script>
+  (function(){
+    var rahmen = document.getElementById("rechner-rahmen");
+    window.addEventListener("message", function(e){
+      if(!rahmen || e.source !== rahmen.contentWindow) return;
+      var d = e.data;
+      if(d && d.typ === "rechner-hoehe" && d.hoehe > 300 && d.hoehe < 12000) rahmen.style.height = (d.hoehe + 4) + "px";
+    });
+  })();
+</script>
+</body>
+</html>

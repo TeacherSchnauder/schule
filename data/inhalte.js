@@ -153,12 +153,16 @@ window.INHALTE = {
       faecher: ["wirtschaft", "bwl", "pruefungsvorbereitung"],
       material: ["Simulator mit Prüfmodus", "Lagerverlauf", "Vergleichstabelle"]
     },
-    { id: "just-in-time", name: "Just-in-Time", bereich: "beschaffung", status: "geplant",
-      kurz: "Fertigungssynchrone Beschaffung ohne eigene Lagerhaltung.",
-      faecher: ["wirtschaft", "bwl"] },
-    { id: "just-in-sequence", name: "Just-in-Sequence", bereich: "beschaffung", status: "geplant",
-      kurz: "Anlieferung in der Reihenfolge der Fertigung.",
-      faecher: ["wirtschaft", "bwl"] },
+    {
+      id: "bereitstellungsprinzipien",
+      name: "Bereitstellungsprinzipien",
+      bereich: "beschaffung",
+      pfad: "wirtschaft/beschaffung/bereitstellungsprinzipien",
+      status: "aktiv",
+      kurz: "Just-in-time und Just-in-sequence, Kanban, Delivery on demand oder Vorrat? Für fünf Gütergruppen der BüroMax GmbH entscheiden, begründen und im Labor prüfen, wann die Entscheidung kippt – Lernpfad mit Tipps in vier Stufen.",
+      faecher: ["wirtschaft", "bwl", "pruefungsvorbereitung"],
+      material: ["Lernpfad mit Tipps", "Entscheidungslabor", "ABC/XYZ-Matrix"]
+    },
     {
       id: "abc-xyz-analyse",
       name: "ABC/XYZ-Analyse",

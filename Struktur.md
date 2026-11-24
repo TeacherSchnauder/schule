@@ -3,7 +3,10 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 18.11.2026 – neu: AWL als Fach mit eigenem Inhalt (Themenbereich
+**Stand:** 24.11.2026 – neu: Thema „Bereitstellungsprinzipien“ unter Wirtschaft ›
+Beschaffung (Lehrseite + Lernpfad `spiel.html`); ersetzt die geplanten Kacheln
+„Just-in-Time“ und „Just-in-Sequence“.
+Davor (18.11.2026): AWL als Fach mit eigenem Inhalt (Themenbereich
 „Entgelt, soziale Sicherung und Handelsrecht“, Weltraum-Lernspiel „Netto Nova“).
 Vorher: 3D-Lernspiel „The Capitalism Chronicles“ unter GGK › Geschichte
 und Fachseite FWS (Verweis). Davor: Rechtslehre als Fach mit eigenem Inhalt
