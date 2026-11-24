@@ -3,7 +3,10 @@
 Referenzdokument für die Arbeit an der Lernplattform. Wer ein neues Thema
 anlegt, findet hier alles Nötige, ohne den Code zu lesen.
 
-**Stand:** 24.11.2026 – neu: Thema „Bereitstellungsprinzipien“ unter Wirtschaft ›
+**Stand:** 24.11.2026 – neu: Prüfungsvorbereitung als Fach mit eigenem Inhalt, Themenbereich
+„VBL, Jahrgangsstufe 1“ mit dem Wissenslauf zur Klassenarbeit 2 (Lager, Kosten,
+Märkte; fünf Levels und Endboss).
+Davor (24.11.2026): Thema „Bereitstellungsprinzipien“ unter Wirtschaft ›
 Beschaffung (Lehrseite + Lernpfad `spiel.html`); ersetzt die geplanten Kacheln
 „Just-in-Time“ und „Just-in-Sequence“.
 Davor (18.11.2026): AWL als Fach mit eigenem Inhalt (Themenbereich
@@ -122,7 +125,16 @@ schule/
 │           └── README.md
 │
 ├── bwl/  vwl/  fws/            Fachseiten, die verlinken
-└── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
+├── pruefungsvorbereitung/      Fach mit eigenem Inhalt (Klassenarbeits- und Abiturvorbereitung)
+│   ├── index.html              Themenbereiche + alle Materialien zur Prüfungsvorbereitung
+│   └── vbl-j1/
+│       ├── index.html          Themenbereich VBL, Jahrgangsstufe 1
+│       └── wissenslauf-klassenarbeit-2/
+│           ├── index.html      Lehrseite
+│           ├── spiel.html      Lernspiel „Wissenslauf“, eigene Adresse für QR-Code
+│           └── README.md
+│
+└── lernfelder/  methodenkoffer/
 ```
 
 ---
@@ -130,13 +142,13 @@ schule/
 ## Zwei Arten von Fächern
 
 **Fächer mit eigenem Inhalt** (`rolle: "fach"`) tragen die Inhaltsseiten im
-eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `rechtslehre/`, `awl/`, `ki-coaches/`. Ihre Fachseite zeigt
+eigenen Ordnerbaum: `wirtschaft/`, `ggk/`, `rechtslehre/`, `awl/`, `pruefungsvorbereitung/`, `ki-coaches/`. Ihre Fachseite zeigt
 die Themenbereiche als Kacheln.
 
 **Fächer als Verweis** (`rolle: "sammlung"`) haben keine eigenen Inhaltsseiten.
 Sie zeigen Themen aus anderen Fachbäumen, damit ein Thema nur einmal existiert
 und trotzdem unter mehreren Fächern auftaucht: `bwl/`, `vwl/`, `fws/`,
-`lernfelder/`, `pruefungsvorbereitung/`, `methodenkoffer/`.
+`lernfelder/`, `methodenkoffer/`.
 
 Die Fachseiten von Rechtslehre und AWL zeigen beides: die eigenen Themenbereiche
 (`data-kacheln="bereiche"`) und darunter alle Themen mit `"rechtslehre"` in

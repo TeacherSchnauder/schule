@@ -52,7 +52,7 @@ window.INHALTE = {
 
     { id: "pruefungsvorbereitung", name: "Prüfungsvorbereitung", ordner: "pruefungsvorbereitung", icon: "haken",
       kurz: "Abituraufgaben, Abschlussprüfungen, Wiederholung.",
-      status: "aktiv", rolle: "sammlung" },
+      status: "aktiv", rolle: "fach" },
 
     { id: "methodenkoffer", name: "Methodenkoffer", ordner: "methodenkoffer", icon: "werkzeug",
       kurz: "Arbeitstechniken, Präsentation, wissenschaftliches Arbeiten.",
@@ -103,6 +103,10 @@ window.INHALTE = {
     { id: "awl-entgelt-handelsrecht", fach: "awl", name: "Entgelt, soziale Sicherung und Handelsrecht",
       ordner: "awl/entgelt-und-handelsrecht", status: "aktiv",
       kurz: "Sozialversicherung und Altersvorsorge, Gehaltsabrechnung mit Beitragsbemessungsgrenzen, Kaufmann, Firma, Vollmachten und KG." },
+
+    { id: "pruefung-vbl-j1", fach: "pruefungsvorbereitung", name: "VBL, Jahrgangsstufe 1",
+      ordner: "pruefungsvorbereitung/vbl-j1", status: "aktiv",
+      kurz: "Vorbereitung auf die Klassenarbeiten im Wirtschaftsgymnasium, Jahrgangsstufe 1." },
 
     { id: "ki-rechtslehre", fach: "ki-coaches", name: "Rechtslehre",
       ordner: "ki-coaches/rechtslehre", status: "aktiv",
@@ -240,6 +244,17 @@ window.INHALTE = {
       kurz: "Jump-and-run-Lernspiel zu Lieferverzug, Zahlungsverzug mit Verzugszinsen und Annahmeverzug – fünf Levels von Begriffen über Fälle und Fristen bis zum Urteil, mit Lernkompass.",
       faecher: ["rechtslehre", "pruefungsvorbereitung"],
       material: ["Jump-and-run-Lernspiel", "5 Levels", "Lernkompass"]
+    },
+
+    {
+      id: "wissenslauf-vbl-j1-ka2",
+      name: "Wissenslauf zur Klassenarbeit 2: Lager, Kosten, Märkte",
+      bereich: "pruefung-vbl-j1",
+      pfad: "pruefungsvorbereitung/vbl-j1/wissenslauf-klassenarbeit-2",
+      status: "aktiv",
+      kurz: "Vorbereitung auf Klassenarbeit 2 (VBL, J1): Jump-and-run-Lernspiel zu optimaler Bestellmenge, Lagerkennzahlen, Kostenverläufen mit Break-even, Preiselastizität und Angebot – fünf Levels und ein Endboss mit schweren Rechen- und Entscheidungsfragen, mit Lernkompass.",
+      faecher: ["pruefungsvorbereitung", "bwl", "vwl"],
+      material: ["Jump-and-run-Lernspiel", "5 Levels und Endboss", "Lernkompass"]
     },
 
     {

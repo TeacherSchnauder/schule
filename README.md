@@ -69,7 +69,16 @@ schule/
 │       └── vip-lernbegleiter/  Themenseite + coach.html (Prompt nur einmal, Themenkarten-Felder)
 │
 ├── bwl/  vwl/  fws/
-├── lernfelder/  pruefungsvorbereitung/  methodenkoffer/
+├── pruefungsvorbereitung/      Fach mit eigenen Inhaltsseiten (Klassenarbeits- und Abiturvorbereitung)
+│   ├── index.html
+│   └── vbl-j1/
+│       ├── index.html
+│       └── wissenslauf-klassenarbeit-2/
+│           ├── index.html      Lehrseite
+│           ├── spiel.html      Lernspiel „Wissenslauf“ zur Klassenarbeit 2 (eigene Adresse)
+│           └── README.md
+│
+├── lernfelder/  methodenkoffer/
 ```
 
 ### Fächer mit Inhalt und Fächer als Verweis
