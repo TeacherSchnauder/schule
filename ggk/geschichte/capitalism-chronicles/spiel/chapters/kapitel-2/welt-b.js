@@ -23,9 +23,21 @@ export const LAEDEN = [
 
 function schutt(b, rnd, { x = 0, z = 0, r = 3, h = 1.8, n = 40, farbe = PUTZ[0] }) {
   const farben = [farbe, FARBEN.ziegel, FARBEN.ziegelDunkel, 0x7a7266, 0x6a6258];
+  // Erst alle Steine auslosen (gleiche Zufallsfolge wie bisher), dann von außen nach innen ablegen:
+  // Ein Stein liegt höchstens so hoch wie der Kegel, aber nie höher als die Steine unter ihm.
+  const st = [];
   for (let k = 0; k < n; k++) {
-    const a = rnd() * PI * 2, dd = Math.sqrt(rnd()) * r, y = Math.max(0, (1 - dd / r) * h);
-    b.brocken(0.25 + rnd() * 0.5, farben[k % farben.length], { x: x + Math.cos(a) * dd, y: y * 0.9, z: z + Math.sin(a) * dd * 0.6, rx: rnd() * 3, ry: rnd() * 3, sy: 0.7 });
+    const a = rnd() * PI * 2, dd = Math.sqrt(rnd()) * r, kegel = Math.max(0, (1 - dd / r) * h) * 0.9;
+    st.push({ g: 0.25 + rnd() * 0.5, k, x: x + Math.cos(a) * dd, z: z + Math.sin(a) * dd * 0.6, kegel, rx: rnd() * 3, ry: rnd() * 3 });
+  }
+  st.sort((p, q) => p.kegel - q.kegel);
+  const liegt = [];
+  for (const s of st) {
+    let auflage = 0;
+    for (const t of liegt) if (Math.hypot(s.x - t.x, s.z - t.z) < 0.6 * (s.g + t.g)) auflage = Math.max(auflage, t.y + 0.55 * (s.g + t.g) * 0.7);
+    s.y = Math.min(s.kegel, auflage);
+    liegt.push(s);
+    b.brocken(s.g, farben[s.k % farben.length], { x: s.x, y: s.y, z: s.z, rx: s.rx, ry: s.ry, sy: 0.7 });
   }
 }
 // Ausgebrannte Fassade, lokal: Front nach +z. offenBis: Breite der Öffnung im Erdgeschoss (für einen Laden).
@@ -41,7 +53,11 @@ function ruine(b, rnd, { breite = 14, etagen = 4, eh = 3.3, farbe = PUTZ[0], kap
       if (wy1 + 0.9 < top && rnd() < 0.55) b.flaeche(fb * 0.9, 0.9 + rnd(), RUSS, { x: um, y: wy1 + 0.5, z: d / 2 + 0.01, streu: 0.1 });
       if (e === 0 && rnd() < 0.5) b.quader(fb, fh, 0.08, FARBEN.holz, { x: um, y: (wy0 + wy1) / 2, z: 0.05, streu: 0.12 });
     }
-    if (top < hoch - 0.3) for (let k = 0; k < 3; k++) b.brocken(0.25 + rnd() * 0.3, farbe, { x: u0 + rnd() * bw, y: top + 0.05, z: (rnd() - 0.5) * 0.4 });
+    // Brocken nur auf die Pfeiler legen (über Fensteröffnungen trägt nichts) und nur, wo unter der Mauerkrone Mauer steht
+    if (top < hoch - 0.3 && (erdgeschoss || top > eh)) for (let k = 0; k < 3; k++) {
+      const links = rnd() < 0.5, u = links ? u0 + rnd() * pw : u0 + bw - pw + rnd() * pw;
+      b.brocken(0.2 + rnd() * 0.15, farbe, { x: u, y: top + 0.05, z: (rnd() - 0.5) * 0.3, sy: 0.7 });
+    }
   }
   const sh = hoch * (0.4 + rnd() * 0.5), sh2 = hoch * (0.3 + rnd() * 0.5);
   b.quader(d, sh, tiefe, farbe, { x: -breite / 2 + d / 2, y: sh / 2, z: -tiefe / 2 });
@@ -223,7 +239,7 @@ export function baueFrankfurt() {
   return {
     szene, sonne: umg.sonne, folgeSonne: umg.folgeSonne, setze, setzeLaden, setzeLaeden, hindernisse, figuren,
     get schicht() { return aktiv; },
-    flaechen: [{ minX: -8.1, maxX: 8.1, minZ: -108, maxZ: 9 }, { minX: -19, maxX: -8, minZ: -32.5, maxZ: -22 }],
+    flaechen: [{ minX: -8.1, maxX: 8.1, minZ: -108, maxZ: 9 }, { minX: -19, maxX: -7, minZ: -32.5, maxZ: -22 }],
     grenzen: { minX: -18, maxX: 8.2, minZ: -114, maxZ: 15 },
     punkte: {
       start: { x: 0, z: 4, ry: PI }, markt: new THREE.Vector3(-10.5, 0, -26), schlange: new THREE.Vector3(6.6, 0, -19.5),

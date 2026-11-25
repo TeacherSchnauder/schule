@@ -29,13 +29,14 @@ function schluss(k) {
     f.inhalt.innerHTML = `<p>Ihr habt die Verteidigung gehört: 85 Jahre Lancashire mit Werner Plumpe und das Jahr 1948 mit der Freiburger Schule.</p>
       <div class="tabelle"><table><thead><tr><th>Prognose</th><th>Tipp 1845</th><th>Tipp heute</th></tr></thead><tbody>
       ${daten.kapsel.prognosen.map((p) => `<tr><td>${esc(p.titel)}</td><td>${esc(k.tippText(st().tippsKapitel1?.[p.id]))}</td><td>${esc(k.tippText(st().tippsNeu?.[p.id]))}</td></tr>`).join('')}</tbody></table></div>
-      <p>Kopiert jetzt eure Notizen. Ihr braucht sie im Tribunal (Kapitel III): Dort entscheidet ihr über die Leitfrage.</p>`;
-    const kopieren = el('button', 'knopf still', 'Notizen kopieren');
+      <p><b>Sichert jetzt eure Ergebnisse:</b> Übertragt eure Tipps und die wichtigsten Notizen auf das Arbeitsblatt. Mit „Notizen kopieren“ könnt ihr sie zusätzlich digital sichern, zum Beispiel für ein anderes Gerät.</p>
+      <p>Das Tribunal (Kapitel III) beginnt ihr in der nächsten Stunde gemeinsam.</p>`;
+    const kopieren = el('button', 'knopf', 'Notizen kopieren');
     kopieren.addEventListener('click', () => ui.kopiere(ui.notizenText(), kopieren));
-    const ok = el('button', 'knopf', 'Schließen');
+    const ok = el('button', 'knopf still', 'Schließen');
     ok.addEventListener('click', () => f.schliessen());
-    const links = el('div', 'links'); links.append(kopieren);
-    f.fuss.append(links, ok);
+    const links = el('div', 'links'); links.append(ok);
+    f.fuss.append(links, kopieren);
   });
 }
 

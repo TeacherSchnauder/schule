@@ -163,7 +163,8 @@ export function baueStrasseA() {
     sb.mit({ x: 7.5, z: HAEUSER[6] }, () => { for (const zz of [-0.5, 0.5]) sb.zylinder(0.33, 0.33, 0.04, 12, FARBEN.anthrazit, { y: 0.58, z: zz, rz: PI / 2 }); sb.quader(0.04, 0.04, 1.0, 0x6b2f25, { y: 0.85 }); sb.quader(0.04, 0.4, 0.04, 0x6b2f25, { y: 0.75, z: -0.2 }); });
     // Gewerkschaftsbüro mit Fahne
     sb.zylinder(0.05, 0.05, 3.4, 6, FARBEN.eisen, { x: 7.7, y: 4.6, z: HAEUSER[8] + 2.4, rz: 0.5 });
-    sb.quader(0.04, 1.2, 1.8, 0x8f3f2c, { x: 6.6, y: 5.0, z: HAEUSER[8] + 2.4 });
+    // Fahne am Mast: Hissseite liegt am oberen Mastende an, Tuch im selben Winkel wie der Mast
+    sb.quader(1.6, 1.1, 0.04, 0x8f3f2c, { x: 6.55, y: 5.1, z: HAEUSER[8] + 2.4, rz: 0.5 });
     aushang(g, 'FACTORY ACT', 'Hours of work · Inspection', -8.22, 1.9, TOR_Z - 6.9, PI / 2);
     aushang(g, 'NATIONAL INSURANCE 1911', 'Sickness · Unemployment', 8.03, 1.9, -14.5, -PI / 2, 2.2);
     // Fabrikausgang zur Mittagszeit

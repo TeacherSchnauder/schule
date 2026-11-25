@@ -215,11 +215,13 @@ export class Station5 {
     return new Promise((fertig) => {
       const f = ui.fenster({ titel: e.titel, beiSchliessen: () => fertig() });
       f.inhalt.innerHTML = e.text.split('\n').map((x) => `<p>${esc(x)}</p>`).join('');
-      const kopieren = el('button', 'knopf still', 'Notizen kopieren');
+      // Ende der Doppelstunde: Ergebnisse sichern ist der Hauptknopf, das nächste Kapitel beginnt gemeinsam
+      const kopieren = el('button', 'knopf', 'Notizen kopieren');
       kopieren.addEventListener('click', () => ui.kopiere(ui.notizenText(), kopieren));
-      const zu = el('button', 'knopf', 'Schließen');
+      const zu = el('button', 'knopf still', 'Schließen');
       zu.addEventListener('click', () => f.schliessen());
-      f.fuss.append(el('div', 'links'), kopieren, zu);
+      const links = el('div', 'links'); links.append(zu);
+      f.fuss.append(links, kopieren);
     });
   }
 }

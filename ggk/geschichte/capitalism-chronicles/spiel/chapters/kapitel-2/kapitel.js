@@ -320,7 +320,11 @@ export function baueKapitel(spiel, ui, daten) {
   };
   const NAMEN = { h: 'Zwischenhalt: Rollenwechsel' };
   ui.lehrkraft = {
-    spruenge: REIHENFOLGE.map((id) => ({ name: NAMEN[id] || (() => { const d = daten.stationen.find((x) => x.id === id); return `${d.roemisch}: ${d.name}`; })(), tu: sprung(id) })),
+    spruenge: [
+      ...REIHENFOLGE.map((id) => ({ name: NAMEN[id] || (() => { const d = daten.stationen.find((x) => x.id === id); return `${d.roemisch}: ${d.name}`; })(), tu: sprung(id) })),
+      // Nur für die Lehrkraft (z. B. schnelle Gruppen): Spielstand sichern, dann Kapitel III öffnen
+      { name: 'Kapitel III öffnen', tu: () => { spiel.sichere(); window.location.href = new URL('kapitel-3.html', window.location.href).href; } },
+    ],
     schalter: [
       { name: 'Station B5 (Kartellfall) spielen', an: () => b5Aktiv(), tu: () => { st().b5Aus = b5Aktiv(); spiel.sichere(); aktualisiere(); } },
       ...[['vorhersage', 'Vorhersage Schaufenster (Station B3)'], ['verhoer', 'Verhör mit Herrn Roth (Station B3)']]

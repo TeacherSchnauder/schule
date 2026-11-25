@@ -215,6 +215,8 @@ export function baueKapitel(spiel, ui, daten) {
       { name: 'Station IV: Arbeiterviertel', tu: sprung(() => { gib('s_irk', [2, 3], [...B2, 'beleg_kontor', 'beleg_manifest']); st().schritt = 6; st().s3 = FERTIG3; schnipsel(BIS_STATION[4]); }, () => spiel.aufStrasse(nord.pfad.laenge - 8, false, true, 'b')) },
       { name: 'Engels’ Brief (nach Station IV)', tu: sprung(vorBrief, briefOrt) },
       { name: 'Station V: Versammlung', tu: sprung(() => { vorBrief(); st().brief.fertig = true; st().brief.phase = 4; if (!st().tagebuch.includes('d_vater')) st().tagebuch.push('d_vater'); }, () => { spiel.aktiviereSzene('feld'); spiel.inBereich('feld', feld.punkte.eintritt.x, feld.punkte.eintritt.z, Math.PI); }) },
+      // Nur für die Lehrkraft (z. B. schnelle Gruppen): Spielstand sichern, dann Kapitel II öffnen
+      { name: 'Kapitel II öffnen', tu: () => { spiel.sichere(); window.location.href = new URL('kapitel-2.html', window.location.href).href; } },
     ],
     schalter: [
       ['vorhersage', 'Vorhersagen (Station II und III)'],
